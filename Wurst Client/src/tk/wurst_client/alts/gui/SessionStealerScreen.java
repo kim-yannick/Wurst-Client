@@ -129,7 +129,7 @@ public class SessionStealerScreen extends GuiScreen
 				}
 			}else if(button.id == 2)
 				MiscUtils
-					.openLink("https://www.google.com/search?q=%22session+id+is+token%22&tbs=qdr:m");
+					.openLink("https://www.google.com/search?q=%22session+id+is+token%22&tbs=qdr:d");
 	}
 	
 	/**
