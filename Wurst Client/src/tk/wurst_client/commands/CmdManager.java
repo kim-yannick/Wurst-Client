@@ -61,6 +61,7 @@ public class CmdManager implements ChatOutputListener
 		addCommand(new PotionCmd());
 		addCommand(new ProtectCmd());
 		addCommand(new RenameCmd());
+		addCommand(new RepairCmd());
 		addCommand(new RvCmd());
 		addCommand(new SayCmd());
 		addCommand(new SearchCmd());
