@@ -1,6 +1,6 @@
-From 601e40d7a630abe66aa3fd8f55002e824fcfa752 Mon Sep 17 00:00:00 2001
+From 4d8337ba9935e06e9131f92ada3a3731be726fee Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Sun, 4 Sep 2016 17:10:49 +0200
+Date: Fri, 9 Sep 2016 18:59:03 +0200
 Subject: [PATCH] Wurst
 
 ---
@@ -16,7 +16,7 @@ Subject: [PATCH] Wurst
  src/net/minecraft/client/Minecraft.java            | 387 ++++++++++++++-------
  src/net/minecraft/client/audio/SoundManager.java   |   8 +-
  .../client/entity/AbstractClientPlayer.java        |  19 +-
- .../minecraft/client/entity/EntityPlayerSP.java    | 156 +++++++--
+ .../minecraft/client/entity/EntityPlayerSP.java    | 182 ++++++++--
  src/net/minecraft/client/gui/FontRenderer.java     |  49 ++-
  src/net/minecraft/client/gui/Gui.java              |   8 +-
  src/net/minecraft/client/gui/GuiButton.java        |  96 ++---
@@ -232,7 +232,7 @@ Subject: [PATCH] Wurst
  .../minecraft/world/gen/ChunkProviderServer.java   |   3 +
  src/net/minecraft/world/gen/layer/GenLayer.java    |   1 +
  .../world/gen/structure/MapGenStructure.java       |   2 +
- 228 files changed, 2607 insertions(+), 1168 deletions(-)
+ 228 files changed, 2633 insertions(+), 1168 deletions(-)
 
 diff --git a/.gitignore b/.gitignore
 index eba4a99..aad12bb 100644
@@ -387,7 +387,7 @@ index 5c000b0..5cc96b1 100644
      }
  
 diff --git a/src/net/minecraft/block/BlockLiquid.java b/src/net/minecraft/block/BlockLiquid.java
-index 4689151..5987289 100644
+index 4689151..e1277d6 100644
 --- a/src/net/minecraft/block/BlockLiquid.java
 +++ b/src/net/minecraft/block/BlockLiquid.java
 @@ -2,6 +2,7 @@ package net.minecraft.block;
@@ -437,7 +437,7 @@ index 4689151..5987289 100644
      {
 -        return null;
 +		// TODO: Client
-+		return WurstClient.INSTANCE.mods.jesusMod.isEnabled() ? AxisAlignedBB
++		return WurstClient.INSTANCE.mods.jesusMod.shouldBeSolid() ? AxisAlignedBB
 +			.fromBounds(pos.getX() + minX, pos.getY() + minY,
 +				pos.getZ() + minZ, pos.getX() + maxX, pos.getY() + maxY,
 +				pos.getZ() + maxZ) : null;
@@ -1406,7 +1406,7 @@ index de9ca57..042182a 100644
  
      public float func_175156_o()
 diff --git a/src/net/minecraft/client/entity/EntityPlayerSP.java b/src/net/minecraft/client/entity/EntityPlayerSP.java
-index eefe303..7a3b59d 100644
+index eefe303..aeee082 100644
 --- a/src/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/src/net/minecraft/client/entity/EntityPlayerSP.java
 @@ -1,5 +1,6 @@
@@ -1450,7 +1450,7 @@ index eefe303..7a3b59d 100644
  import net.minecraft.potion.Potion;
  import net.minecraft.stats.StatBase;
  import net.minecraft.stats.StatFileWriter;
-@@ -51,6 +38,11 @@ import net.minecraft.util.MovementInput;
+@@ -51,6 +38,12 @@ import net.minecraft.util.MovementInput;
  import net.minecraft.util.ResourceLocation;
  import net.minecraft.world.IInteractionObject;
  import net.minecraft.world.World;
@@ -1458,11 +1458,12 @@ index eefe303..7a3b59d 100644
 +import tk.wurst_client.events.ChatOutputEvent;
 +import tk.wurst_client.events.UpdateEvent;
 +import tk.wurst_client.mods.BlinkMod;
++import tk.wurst_client.mods.JesusMod;
 +import tk.wurst_client.utils.EntityUtils;
  
  public class EntityPlayerSP extends AbstractClientPlayer
  {
-@@ -134,6 +126,10 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -134,6 +127,10 @@ public class EntityPlayerSP extends AbstractClientPlayer
      {
          if (this.worldObj.isBlockLoaded(new BlockPos(this.posX, 0.0D, this.posZ)))
          {
@@ -1473,7 +1474,7 @@ index eefe303..7a3b59d 100644
              super.onUpdate();
  
              if (this.isRiding())
-@@ -143,12 +139,24 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -143,12 +140,24 @@ public class EntityPlayerSP extends AbstractClientPlayer
              }
              else
              {
@@ -1500,7 +1501,7 @@ index eefe303..7a3b59d 100644
      {
          boolean var1 = this.isSprinting();
  
-@@ -184,36 +192,102 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -184,36 +193,127 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
          if (this.func_175160_A())
          {
@@ -1560,38 +1561,63 @@ index eefe303..7a3b59d 100644
                  {
 -                    this.sendQueue.addToSendQueue(new C03PacketPlayer(this.onGround));
 +                	BlinkMod.addToBlinkQueue(new C03PacketPlayer(this.onGround));
-                 }
++                }
 +			}else if(WurstClient.INSTANCE.mods.jesusMod.isActive()
-+				&& WurstClient.INSTANCE.mods.yesCheatMod.isActive()
-+				&& !isInWater()
-+				&& Minecraft.getMinecraft().theWorld
-+					.getBlockState(new BlockPos(this).add(0, -1, 0)).getBlock()
-+					.getMaterial() == Material.water)
++				&& WurstClient.INSTANCE.mods.jesusMod.isOverWater()
++				&& !mc.thePlayer.isInWater()
++				&& !(mc.thePlayer.fallDistance > 3F))
 +			{
-+				if(var13)
-+				{
-+					this.sendQueue
-+						.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(
-+							this.posX, this.getEntityBoundingBox().minY
-+								+ (ticksExisted % 2 == 0 ? 0.05 : -0.05),
-+							this.posZ, yaw, pitch,
++				if(!var13)
++					if(var14)
++						this.sendQueue
++							.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(
++								yaw, pitch, this.onGround));
++					else
++						this.sendQueue.addToSendQueue(new C03PacketPlayer(
 +							this.onGround));
-+				}else if(var14)
-+				{
-+					this.sendQueue
-+						.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(
-+							yaw, pitch, this.onGround));
++				else if(mc.thePlayer.movementInput == null)
++				{	
++					
 +				}else
 +				{
-+					this.sendQueue.addToSendQueue(new C03PacketPlayer(
-+						this.onGround));
++					JesusMod jesusMod = WurstClient.INSTANCE.mods.jesusMod;
++					jesusMod.time++;
++					if(jesusMod.time >= jesusMod.delay)
++					{
++						final double x = mc.thePlayer.posX;
++						final double y = mc.thePlayer.posY;
++						final double z = mc.thePlayer.posZ;
++						final float pitch2 = mc.thePlayer.rotationPitch;
++						final float yaw2 = mc.thePlayer.rotationYaw;
++						
++						if(mc.thePlayer.ticksExisted % 2 == 0)
++							mc.thePlayer.sendQueue
++								.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(
++									x, y - 0.05, z, yaw2, pitch2, true));
++						else
++							mc.thePlayer.sendQueue
++								.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(
++									x, y + 0.05, z, yaw2, pitch2, true));
++					}else if(var13 && var14)
++					{
++						this.sendQueue
++							.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(
++								this.posX, this.getEntityBoundingBox().minY,
++								this.posZ, yaw, pitch, this.onGround));
++					}else
++					{
++						this.sendQueue
++							.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(
++								this.posX, this.getEntityBoundingBox().minY,
++								this.posZ, this.onGround));
++					}
 +				}
 +			}else if(this.ridingEntity == null)
 +            {
 +                if (var13 && var14)
 +                {
 +                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(this.posX, this.getEntityBoundingBox().minY, this.posZ, yaw, pitch, this.onGround));
-+                }
+                 }
 +                else if (var13)
 +                {
 +                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.onGround));
@@ -1611,7 +1637,7 @@ index eefe303..7a3b59d 100644
                  var13 = false;
              }
  
-@@ -255,7 +329,29 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -255,7 +355,29 @@ public class EntityPlayerSP extends AbstractClientPlayer
       */
      public void sendChatMessage(String p_71165_1_)
      {
@@ -1642,7 +1668,7 @@ index eefe303..7a3b59d 100644
      }
  
      /**
-@@ -738,7 +834,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -738,7 +860,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
          boolean var4 = this.movementInput.moveForward >= var3;
          this.movementInput.updatePlayerMoveState();
  

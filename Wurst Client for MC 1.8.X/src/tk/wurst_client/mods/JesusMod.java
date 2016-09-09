@@ -7,13 +7,90 @@
  */
 package tk.wurst_client.mods;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import tk.wurst_client.WurstClient;
+import tk.wurst_client.events.listeners.UpdateListener;
+
 @Mod.Info(category = Mod.Category.MOVEMENT,
 	description = "Allows you to walk on water.\n"
 		+ "The real Jesus used this hack ~2000 years ago.\n"
 		+ "Bypasses NoCheat+ if YesCheat+ is enabled.",
 	name = "Jesus",
 	tutorial = "Mods/Jesus")
-public class JesusMod extends Mod
-{	
+public class JesusMod extends Mod implements UpdateListener
+{
+	private int ticksOutOfWater = 10;
+	public int time = 0;
+	public final int delay = 4;
 	
+	@Override
+	public void onEnable()
+	{
+		WurstClient.INSTANCE.events.add(UpdateListener.class, this);
+	}
+	
+	@Override
+	public void onUpdate()
+	{
+		if(!mc.gameSettings.keyBindSneak.pressed)
+			if(mc.thePlayer.isInWater())
+			{
+				mc.thePlayer.motionY = 0.11;
+				ticksOutOfWater = 0;
+			}else
+			{
+				if(ticksOutOfWater == 0)
+					mc.thePlayer.motionY = 0.30;
+				else if(ticksOutOfWater == 1)
+					mc.thePlayer.motionY = 0;
+				
+				ticksOutOfWater++;
+			}
+	}
+	
+	@Override
+	public void onDisable()
+	{
+		WurstClient.INSTANCE.events.remove(UpdateListener.class, this);
+	}
+	
+	public boolean isOverWater()
+	{
+		final EntityPlayerSP thePlayer = mc.thePlayer;
+		
+		boolean isOnWater = false;
+		boolean isOnSolid = false;
+		
+		for(final Object o : mc.theWorld.getCollidingBoundingBoxes(
+			thePlayer,
+			thePlayer.getEntityBoundingBox().offset(0, -1.0D, 0)
+				.contract(0.001D, 0D, 0.001D)))
+		{
+			final AxisAlignedBB bbox = (AxisAlignedBB)o;
+			final BlockPos blockPos =
+				new BlockPos(bbox.maxX - (bbox.maxX - bbox.minX) / 2.0,
+					bbox.maxY - (bbox.maxY - bbox.minY) / 2.0, bbox.maxZ
+						- (bbox.maxZ - bbox.minZ) / 2.0);
+			final Block block = mc.theWorld.getBlockState(blockPos).getBlock();
+			if(block.getMaterial() == Material.water
+				|| block.getMaterial() == Material.lava)
+				isOnWater = true;
+			else if(block.getMaterial() != Material.air)
+				isOnSolid = true;
+		}
+		
+		return isOnWater && !isOnSolid;
+	}
+	
+	public boolean shouldBeSolid()
+	{
+		return isActive() && !(mc.thePlayer == null)
+			&& !(mc.thePlayer.fallDistance > 3)
+			&& !mc.gameSettings.keyBindSneak.pressed
+			&& !mc.thePlayer.isInWater();
+	}
 }
