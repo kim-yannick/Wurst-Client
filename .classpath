@@ -44,6 +44,5 @@
 	<classpathentry kind="lib" path="lib/twitch-external-platform-4.5-natives-windows-64.jar"/>
 	<classpathentry kind="lib" path="lib/twitch-platform-6.5-natives-windows-64.jar"/>
 	<classpathentry kind="lib" path="lib/vecmath-1.5.2.jar"/>
-	<classpathentry kind="lib" path="lib/slick.jar" sourcepath="lib/slick-src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
