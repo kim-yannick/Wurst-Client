@@ -17,8 +17,11 @@ import com.google.gson.JsonObject;
 
 public class CheckboxSetting implements NavigatorSetting
 {
-	private String name;
+	private final String name;
 	private boolean checked;
+	private boolean locked;
+	private boolean lockChecked;
+	private int y;
 	
 	public CheckboxSetting(String name, boolean checked)
 	{
@@ -35,17 +38,11 @@ public class CheckboxSetting implements NavigatorSetting
 	@Override
 	public final void addToFeatureScreen(NavigatorFeatureScreen featureScreen)
 	{
+		y = 60 + featureScreen.getTextHeight() + 4;
 		featureScreen.addText("\n\n");
-		featureScreen.addCheckbox(featureScreen.new CheckboxData(name, checked,
-			60 + featureScreen.getTextHeight() - 8)
-		{
-			@Override
-			public void toggle()
-			{
-				setChecked(checked);
-				WurstClient.INSTANCE.files.saveNavigatorData();
-			}
-		});
+		update();
+		
+		featureScreen.addCheckbox(this);
 	}
 	
 	@Override
@@ -53,29 +50,60 @@ public class CheckboxSetting implements NavigatorSetting
 	{
 		ArrayList<PossibleKeybind> possibleKeybinds = new ArrayList<>();
 		String fullName = featureName + " " + name;
-		String command =
-			".setcheckbox " + featureName.toLowerCase() + " "
-				+ name.toLowerCase().replace(" ", "_") + " ";
+		String command = ".setcheckbox " + featureName.toLowerCase() + " "
+			+ name.toLowerCase().replace(" ", "_") + " ";
 		
-		possibleKeybinds.add(new PossibleKeybind(command + "toggle", "Toggle "
-			+ fullName));
-		possibleKeybinds.add(new PossibleKeybind(command + "on", "Enable "
-			+ fullName));
-		possibleKeybinds.add(new PossibleKeybind(command + "off", "Disable "
-			+ fullName));
+		possibleKeybinds
+			.add(new PossibleKeybind(command + "toggle", "Toggle " + fullName));
+		possibleKeybinds
+			.add(new PossibleKeybind(command + "on", "Enable " + fullName));
+		possibleKeybinds
+			.add(new PossibleKeybind(command + "off", "Disable " + fullName));
 		
 		return possibleKeybinds;
 	}
 	
 	public final boolean isChecked()
 	{
-		return checked;
+		return locked ? lockChecked : checked;
 	}
 	
 	public final void setChecked(boolean checked)
 	{
-		this.checked = checked;
+		if(!locked)
+		{
+			this.checked = checked;
+			update();
+			WurstClient.INSTANCE.files.saveNavigatorData();
+		}
+	}
+	
+	public final void toggle()
+	{
+		setChecked(!isChecked());
+	}
+	
+	public final void lock(boolean lockChecked)
+	{
+		this.lockChecked = lockChecked;
+		locked = true;
 		update();
+	}
+	
+	public final void unlock()
+	{
+		locked = false;
+		update();
+	}
+	
+	public final boolean isLocked()
+	{
+		return locked;
+	}
+	
+	public final int getY()
+	{
+		return y;
 	}
 	
 	@Override
@@ -92,7 +120,7 @@ public class CheckboxSetting implements NavigatorSetting
 	
 	@Override
 	public void update()
-	{	
+	{
 		
 	}
 }

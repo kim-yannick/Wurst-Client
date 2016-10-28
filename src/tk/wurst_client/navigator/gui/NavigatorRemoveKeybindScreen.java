@@ -75,8 +75,8 @@ public class NavigatorRemoveKeybindScreen extends NavigatorScreen
 		buttonList.add(removeButton);
 		
 		// cancel button
-		buttonList.add(new GuiButton(1, width / 2 + 2, height - 65, 149, 18,
-			"Cancel"));
+		buttonList.add(
+			new GuiButton(1, width / 2 + 2, height - 65, 149, 18, "Cancel"));
 	}
 	
 	@Override
@@ -99,13 +99,13 @@ public class NavigatorRemoveKeybindScreen extends NavigatorScreen
 	
 	@Override
 	protected void onMouseDrag(int x, int y, int button, long timeDragged)
-	{	
+	{
 		
 	}
 	
 	@Override
 	protected void onMouseRelease(int x, int y, int button)
-	{	
+	{
 		
 	}
 	
@@ -131,8 +131,8 @@ public class NavigatorRemoveKeybindScreen extends NavigatorScreen
 		int bgy2 = height - 43;
 		
 		// scissor box
-		RenderUtil.scissorBox(bgx1, bgy1, bgx2, bgy2
-			- (buttonList.isEmpty() ? 0 : 24));
+		RenderUtil.scissorBox(bgx1, bgy1, bgx2,
+			bgy2 - (buttonList.isEmpty() ? 0 : 24));
 		glEnable(GL_SCISSOR_TEST);
 		
 		// possible keybinds

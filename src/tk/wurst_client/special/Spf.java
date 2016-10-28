@@ -109,7 +109,7 @@ public class Spf implements NavigatorItem
 	}
 	
 	@Override
-	public final String getTutorialPage()
+	public final String getHelpPage()
 	{
 		return tutorial;
 	}

@@ -18,7 +18,7 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.BlockPos;
 
-import org.darkstorm.minecraft.gui.component.BoundedRangeComponent.ValueDisplay;
+import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 import org.darkstorm.minecraft.gui.component.Frame;
 import org.darkstorm.minecraft.gui.component.Label;
 import org.darkstorm.minecraft.gui.component.Label.TextAlignment;

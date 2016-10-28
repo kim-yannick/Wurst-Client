@@ -7,7 +7,7 @@
  */
 package tk.wurst_client.mods;
 
-import org.darkstorm.minecraft.gui.component.BoundedRangeComponent.ValueDisplay;
+import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;

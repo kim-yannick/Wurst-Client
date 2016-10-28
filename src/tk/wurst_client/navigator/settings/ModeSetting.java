@@ -17,11 +17,15 @@ import tk.wurst_client.navigator.gui.NavigatorFeatureScreen.ButtonData;
 
 import com.google.gson.JsonObject;
 
-public abstract class ModeSetting implements NavigatorSetting
+public class ModeSetting implements NavigatorSetting
 {
 	private String name;
 	private String[] modes;
 	private int selected;
+	private ButtonData[] buttons;
+	
+	private boolean locked;
+	private int lockSelected;
 	
 	public ModeSetting(String name, String[] modes, int selected)
 	{
@@ -31,54 +35,54 @@ public abstract class ModeSetting implements NavigatorSetting
 	}
 	
 	@Override
-	public String getName()
+	public final String getName()
 	{
 		return name;
 	}
 	
 	@Override
-	public void addToFeatureScreen(NavigatorFeatureScreen featureScreen)
+	public final void addToFeatureScreen(NavigatorFeatureScreen featureScreen)
 	{
 		// heading
 		featureScreen.addText("\n" + name + ":");
 		
 		// buttons
 		int y = 0;
-		ButtonData[] buttons = new ButtonData[modes.length];
+		buttons = new ButtonData[modes.length];
 		for(int i = 0; i < modes.length; i++)
 		{
 			int x = featureScreen.getMiddleX();
-			switch(i % 4)
+			switch(i % 3)
 			{
 				case 0:
-					x -= 132;
+					x -= 150;
+					y = 60 + featureScreen.getTextHeight() + 3;
 					featureScreen.addText("\n\n");
-					y = 60 + featureScreen.getTextHeight() - 2;
 					break;
 				case 1:
-					x -= 61;
+					x -= 49;
 					break;
 				case 2:
-					x += 11;
-					break;
-				case 3:
-					x += 83;
+					x += 52;
 					break;
 			}
 			final int iFinal = i;
-			ButtonData button =
-				featureScreen.new ButtonData(x, y, 50, 16, modes[i],
-					i == selected ? 0x00ff00 : 0x404040)
+			ButtonData button = featureScreen.new ButtonData(x, y, 97, 14,
+				modes[i], i == getSelected() ? 0x00ff00 : 0x404040)
+			{
+				@Override
+				public void press()
 				{
-					@Override
-					public void press()
-					{
-						buttons[selected].color = new Color(0x404040);
-						color = new Color(0x00ff00);
-						setSelected(iFinal);
-						WurstClient.INSTANCE.files.saveNavigatorData();
-					}
-				};
+					setSelected(iFinal);
+					WurstClient.INSTANCE.files.saveNavigatorData();
+				}
+				
+				@Override
+				public boolean isLocked()
+				{
+					return locked;
+				}
+			};
 			buttons[i] = button;
 			featureScreen.addButton(button);
 		}
@@ -89,35 +93,52 @@ public abstract class ModeSetting implements NavigatorSetting
 	{
 		ArrayList<PossibleKeybind> possibleKeybinds = new ArrayList<>();
 		String fullName = featureName + " " + name;
-		String command =
-			".setmode " + featureName.toLowerCase() + " "
-				+ name.toLowerCase().replace(" ", "_") + " ";
+		String command = ".setmode " + featureName.toLowerCase() + " "
+			+ name.toLowerCase().replace(" ", "_") + " ";
 		String description = "Set " + fullName + " to ";
 		
-		possibleKeybinds.add(new PossibleKeybind(command + "next", "Next "
-			+ fullName));
-		possibleKeybinds.add(new PossibleKeybind(command + "prev", "Previous "
-			+ fullName));
+		possibleKeybinds
+			.add(new PossibleKeybind(command + "next", "Next " + fullName));
+		possibleKeybinds
+			.add(new PossibleKeybind(command + "prev", "Previous " + fullName));
 		
 		for(String mode : modes)
-			possibleKeybinds.add(new PossibleKeybind(command
-				+ mode.toLowerCase(), description + mode));
+			possibleKeybinds.add(new PossibleKeybind(
+				command + mode.toLowerCase().replace(" ", "_"),
+				description + mode));
 		
 		return possibleKeybinds;
 	}
 	
-	protected int getSelected()
+	public final int getSelected()
 	{
-		return selected;
+		return locked ? lockSelected : selected;
 	}
 	
-	public void setSelected(int selected)
+	public final void setSelected(int selected)
 	{
-		this.selected = selected;
-		update();
+		if(!locked)
+		{
+			this.selected = selected;
+			if(buttons != null)
+				for(int i = 0; i < buttons.length; i++)
+					buttons[i].color = i == selected ? new Color(0x00ff00)
+						: new Color(0x404040);
+			update();
+		}
 	}
 	
-	public void nextMode()
+	public final String[] getModes()
+	{
+		return modes;
+	}
+	
+	public final String getSelectedMode()
+	{
+		return modes[getSelected()];
+	}
+	
+	public final void nextMode()
 	{
 		selected++;
 		if(selected >= modes.length)
@@ -125,7 +146,7 @@ public abstract class ModeSetting implements NavigatorSetting
 		update();
 	}
 	
-	public void prevMode()
+	public final void prevMode()
 	{
 		selected--;
 		if(selected <= -1)
@@ -133,24 +154,52 @@ public abstract class ModeSetting implements NavigatorSetting
 		update();
 	}
 	
-	public int indexOf(String mode)
+	public final int indexOf(String mode)
 	{
 		for(int i = 0; i < modes.length; i++)
 			if(modes[i].equalsIgnoreCase(mode))
 				return i;
-		
+			
 		return -1;
 	}
 	
+	public final void lock(int lockSelected)
+	{
+		this.lockSelected = lockSelected;
+		if(buttons != null)
+			for(int i = 0; i < buttons.length; i++)
+				buttons[i].color = i == lockSelected ? new Color(0x00ff00)
+					: new Color(0x404040);
+		locked = true;
+		update();
+	}
+	
+	public final void unlock()
+	{
+		locked = false;
+		setSelected(selected);
+	}
+	
+	public final boolean isLocked()
+	{
+		return locked;
+	}
+	
 	@Override
-	public void save(JsonObject json)
+	public final void save(JsonObject json)
 	{
 		json.addProperty(name, selected);
 	}
 	
 	@Override
-	public void load(JsonObject json)
+	public final void load(JsonObject json)
 	{
 		setSelected(json.get(name).getAsInt());
+	}
+	
+	@Override
+	public void update()
+	{
+		
 	}
 }

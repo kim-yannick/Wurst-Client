@@ -19,7 +19,7 @@ import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 
-import org.darkstorm.minecraft.gui.component.BoundedRangeComponent.ValueDisplay;
+import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.mods.Mod.Category;

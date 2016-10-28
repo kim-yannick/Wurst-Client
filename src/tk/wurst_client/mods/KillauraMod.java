@@ -10,7 +10,7 @@ package tk.wurst_client.mods;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.network.play.client.C02PacketUseEntity;
 
-import org.darkstorm.minecraft.gui.component.BoundedRangeComponent.ValueDisplay;
+import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.mods.Mod.Category;

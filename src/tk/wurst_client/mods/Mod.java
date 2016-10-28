@@ -137,7 +137,7 @@ public class Mod implements NavigatorItem
 	}
 	
 	@Override
-	public final String getTutorialPage()
+	public final String getHelpPage()
 	{
 		return tutorial;
 	}

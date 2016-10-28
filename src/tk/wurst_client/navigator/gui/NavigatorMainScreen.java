@@ -62,7 +62,7 @@ public class NavigatorMainScreen extends NavigatorScreen
 		if(keyCode == 1)
 			if(clickTimer == -1)
 				mc.displayGuiScreen((GuiScreen)null);
-		
+			
 		if(clickTimer == -1)
 		{
 			String oldText = searchBar.getText();
@@ -107,27 +107,27 @@ public class NavigatorMainScreen extends NavigatorScreen
 			{
 				// right click
 				NavigatorItem item = navigatorDisplayList.get(hoveredItem);
-				if(item.getTutorialPage().isEmpty())
+				if(item.getHelpPage().isEmpty())
 					return;
 				MiscUtils.openLink("https://www.wurst-client.tk/wiki/"
-					+ item.getTutorialPage());
+					+ item.getHelpPage() + "/");
 				WurstClient wurst = WurstClient.INSTANCE;
 				wurst.navigator.addPreference(item.getName());
 				wurst.files.saveNavigatorData();
-				wurst.navigator.analytics.trackEvent("tutorial", "open",
+				wurst.navigator.analytics.trackEvent("help", "open",
 					item.getName());
 			}
 	}
 	
 	@Override
 	protected void onMouseDrag(int x, int y, int button, long timeDragged)
-	{	
+	{
 		
 	}
 	
 	@Override
 	protected void onMouseRelease(int x, int y, int button)
-	{	
+	{
 		
 	}
 	
@@ -147,7 +147,8 @@ public class NavigatorMainScreen extends NavigatorScreen
 				String query = searchBar.getText();
 				if(query.isEmpty())
 					WurstClient.INSTANCE.navigator.analytics.trackPageView(
-						"/" + item.getType() + "/" + item.getName(), item.getName());
+						"/" + item.getType() + "/" + item.getName(),
+						item.getName());
 				else
 					WurstClient.INSTANCE.navigator.analytics
 						.trackPageViewFromSearch(
@@ -231,8 +232,8 @@ public class NavigatorMainScreen extends NavigatorScreen
 				area.height =
 					(int)(area.height * antiFactor + (height - 103) * factor);
 				
-				drawBackgroundBox(area.x, area.y, area.x + area.width, area.y
-					+ area.height);
+				drawBackgroundBox(area.x, area.y, area.x + area.width,
+					area.y + area.height);
 			}else
 			{
 				// color
@@ -250,8 +251,8 @@ public class NavigatorMainScreen extends NavigatorScreen
 					glColor4f(0.25F, 0.25F, 0.25F, 0.5F);
 				
 				// box & shadow
-				drawBox(area.x, area.y, area.x + area.width, area.y
-					+ area.height);
+				drawBox(area.x, area.y, area.x + area.width,
+					area.y + area.height);
 				
 				// separator
 				int bx1 = area.x + area.width - area.height;
@@ -302,8 +303,8 @@ public class NavigatorMainScreen extends NavigatorScreen
 				if(clickTimerNotRunning)
 				{
 					String buttonText = item.getName();
-					Fonts.segoe15.drawString(buttonText, area.x + 4,
-						area.y + 2, 0xffffff);
+					Fonts.segoe15.drawString(buttonText, area.x + 4, area.y + 2,
+						0xffffff);
 					glDisable(GL_TEXTURE_2D);
 				}
 			}

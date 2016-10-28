@@ -153,7 +153,7 @@ public abstract class Cmd implements NavigatorItem
 	}
 	
 	@Override
-	public final String getTutorialPage()
+	public final String getHelpPage()
 	{
 		return tutorial;
 	}

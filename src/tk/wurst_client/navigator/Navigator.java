@@ -36,8 +36,8 @@ public class Navigator
 			for(Field field : modFields)
 			{
 				if(field.getName().endsWith("Mod"))
-					navigatorList.add((NavigatorItem)field
-						.get(WurstClient.INSTANCE.mods));
+					navigatorList.add(
+						(NavigatorItem)field.get(WurstClient.INSTANCE.mods));
 			}
 		}catch(Exception e)
 		{
@@ -66,8 +66,8 @@ public class Navigator
 			for(Field field : specialFields)
 			{
 				if(field.getName().endsWith("Spf"))
-					navigatorList.add((NavigatorItem)field
-						.get(WurstClient.INSTANCE.special));
+					navigatorList.add(
+						(NavigatorItem)field.get(WurstClient.INSTANCE.special));
 			}
 		}catch(Exception e)
 		{
@@ -95,7 +95,7 @@ public class Navigator
 				|| mod.getTags().toLowerCase().contains(query)
 				|| mod.getDescription().toLowerCase().contains(query))
 				list.add(mod);
-		
+			
 		// sort search results
 		list.sort(new Comparator<NavigatorItem>()
 		{
@@ -165,7 +165,7 @@ public class Navigator
 	{
 		return navigatorList.iterator();
 	}
-
+	
 	public void sortFeatures()
 	{
 		navigatorList.sort(new Comparator<NavigatorItem>()
