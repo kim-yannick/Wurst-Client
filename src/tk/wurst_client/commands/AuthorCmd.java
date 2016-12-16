@@ -10,9 +10,8 @@ package tk.wurst_client.commands;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
-import tk.wurst_client.commands.Cmd.Info;
 
-@Info(help = "Changes the held book's author.",
+@Cmd.Info(help = "Changes the held book's author.",
 	name = "author",
 	syntax = {"<author>"})
 public class AuthorCmd extends Cmd

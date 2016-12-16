@@ -10,8 +10,8 @@ package tk.wurst_client.commands;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 
-import tk.wurst_client.events.ChatOutputEvent;
 import net.minecraft.util.BlockPos;
+import tk.wurst_client.events.ChatOutputEvent;
 
 @Cmd.Info(help = "Shows your current position or copies it to the clipboard.",
 	name = "getpos",

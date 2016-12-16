@@ -7,9 +7,7 @@
  */
 package tk.wurst_client.commands;
 
-import tk.wurst_client.commands.Cmd.Info;
-
-@Info(help = "Changes the settings of FastBreak.",
+@Cmd.Info(help = "Changes the settings of FastBreak.",
 	name = "fastbreak",
 	syntax = {"mode (normal|instant)"})
 public class FastBreakCmd extends Cmd

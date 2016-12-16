@@ -9,10 +9,9 @@ package tk.wurst_client.commands;
 
 import java.util.Iterator;
 
-import tk.wurst_client.commands.Cmd.Info;
 import tk.wurst_client.utils.MiscUtils;
 
-@Info(help = "Shows the command list or the help for a command.",
+@Cmd.Info(help = "Shows the command list or the help for a command.",
 	name = "help",
 	syntax = {"[<page>]", "[<command>]"})
 public class HelpCmd extends Cmd

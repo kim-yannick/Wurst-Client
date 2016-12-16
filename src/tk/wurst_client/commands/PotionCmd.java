@@ -16,10 +16,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import tk.wurst_client.commands.Cmd.Info;
 import tk.wurst_client.utils.MiscUtils;
 
-@Info(help = "Changes the effects of the held potion.",
+@Cmd.Info(help = "Changes the effects of the held potion.",
 	name = "potion",
 	syntax = {"add (<effect> <amplifier> <duration>)...",
 		"set (<effect> <amplifier> <duration>)...", "remove <effect>"})

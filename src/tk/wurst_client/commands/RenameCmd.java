@@ -8,9 +8,8 @@
 package tk.wurst_client.commands;
 
 import net.minecraft.item.ItemStack;
-import tk.wurst_client.commands.Cmd.Info;
 
-@Info(help = "Renames the item in your hand. Use $ for colors, use $$ for $.",
+@Cmd.Info(help = "Renames the item in your hand. Use $ for colors, use $$ for $.",
 	name = "rename",
 	syntax = {"<new_name>"})
 public class RenameCmd extends Cmd

@@ -10,9 +10,8 @@ package tk.wurst_client.commands;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
-import tk.wurst_client.commands.Cmd.Info;
 
-@Info(help = "Allows you to copy items that other people are holding\n"
+@Cmd.Info(help = "Allows you to copy items that other people are holding\n"
 	+ "or wearing. Requires creative mode.",
 	name = "copyitem",
 	syntax = {"<player> (hand|head|chest|legs|feet)"})

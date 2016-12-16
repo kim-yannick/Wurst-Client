@@ -10,10 +10,9 @@ package tk.wurst_client.commands;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import tk.wurst_client.commands.Cmd.Info;
 import tk.wurst_client.utils.MiscUtils;
 
-@Info(help = "Lists all keybinds.", name = "binds", syntax = {"[<page>]"})
+@Cmd.Info(help = "Lists all keybinds.", name = "binds", syntax = {"[<page>]"})
 public class BindsCmd extends Cmd
 {
 	@Override

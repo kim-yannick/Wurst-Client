@@ -10,11 +10,10 @@ package tk.wurst_client.commands;
 import net.minecraft.util.BlockPos;
 import tk.wurst_client.ai.PathFinder;
 import tk.wurst_client.ai.PathPoint;
-import tk.wurst_client.commands.Cmd.Info;
 import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.utils.RenderUtils;
 
-@Info(help = "Shows the shortest path to a specific point. Useful for labyrinths and caves.",
+@Cmd.Info(help = "Shows the shortest path to a specific point. Useful for labyrinths and caves.",
 	name = "path",
 	syntax = {"<x> <y> <z>", "<entity>"})
 public class PathCmd extends Cmd implements RenderListener

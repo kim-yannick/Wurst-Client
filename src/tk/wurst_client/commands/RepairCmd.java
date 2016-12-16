@@ -7,10 +7,10 @@
  */
 package tk.wurst_client.commands;
 
-import tk.wurst_client.events.ChatOutputEvent;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
+import tk.wurst_client.events.ChatOutputEvent;
 
 @Cmd.Info(help = "Repairs the held item. Requires creative mode.",
 	name = "repair",

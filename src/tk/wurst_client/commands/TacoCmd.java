@@ -8,19 +8,18 @@
 package tk.wurst_client.commands;
 
 import static org.lwjgl.opengl.GL11.*;
+
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-
-import tk.wurst_client.commands.Cmd.Info;
 import tk.wurst_client.events.ChatOutputEvent;
 import tk.wurst_client.events.listeners.GUIRenderListener;
 import tk.wurst_client.events.listeners.UpdateListener;
 
-@Info(help = "Spawns a dancing taco on your hotbar.\n"
+@Cmd.Info(help = "Spawns a dancing taco on your hotbar.\n"
 	+ "\"I love that little guy. So cute!\" -WiZARD",
 	name = "taco",
 	syntax = {})

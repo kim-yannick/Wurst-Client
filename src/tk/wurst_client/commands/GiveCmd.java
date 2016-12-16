@@ -14,10 +14,9 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
 import net.minecraft.util.ResourceLocation;
-import tk.wurst_client.commands.Cmd.Info;
 import tk.wurst_client.utils.MiscUtils;
 
-@Info(help = "Gives you an item with custom NBT data. Requires creative mode.",
+@Cmd.Info(help = "Gives you an item with custom NBT data. Requires creative mode.",
 	name = "give",
 	syntax = {"(<item_name>|<item_id>) [<amount>] [<metadata>] [<nbt>]",
 		"template <template_id> [<amount>]", "templates"})

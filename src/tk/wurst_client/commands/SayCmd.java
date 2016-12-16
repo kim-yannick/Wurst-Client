@@ -8,9 +8,8 @@
 package tk.wurst_client.commands;
 
 import net.minecraft.network.play.client.C01PacketChatMessage;
-import tk.wurst_client.commands.Cmd.Info;
 
-@Info(help = "Sends a chat message, even if the message starts with a dot.",
+@Cmd.Info(help = "Sends a chat message, even if the message starts with a dot.",
 	name = "say",
 	syntax = {"<message>"},
 	tags = ".legit,dots in chat,command bypass,prefix",

@@ -9,10 +9,9 @@ package tk.wurst_client.commands;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
-import tk.wurst_client.commands.Cmd.Info;
 import tk.wurst_client.events.ChatOutputEvent;
 
-@Info(help = "Enchants items with everything.",
+@Cmd.Info(help = "Enchants items with everything.",
 	name = "enchant",
 	syntax = {"[all]"})
 public class EnchantCmd extends Cmd

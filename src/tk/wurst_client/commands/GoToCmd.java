@@ -9,9 +9,8 @@ package tk.wurst_client.commands;
 
 import net.minecraft.util.BlockPos;
 import tk.wurst_client.ai.PathFinder;
-import tk.wurst_client.commands.Cmd.Info;
 
-@Info(help = "Walks or flies you to a specific location.",
+@Cmd.Info(help = "Walks or flies you to a specific location.",
 	name = "goto",
 	syntax = {"<x> <y> <z>", "<entity>"})
 public class GoToCmd extends Cmd

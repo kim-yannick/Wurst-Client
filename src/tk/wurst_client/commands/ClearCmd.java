@@ -7,9 +7,7 @@
  */
 package tk.wurst_client.commands;
 
-import tk.wurst_client.commands.Cmd.Info;
-
-@Info(help = "Clears the chat completely.", name = "clear", syntax = {})
+@Cmd.Info(help = "Clears the chat completely.", name = "clear", syntax = {})
 public class ClearCmd extends Cmd
 {
 	@Override
