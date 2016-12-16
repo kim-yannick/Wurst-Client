@@ -25,6 +25,7 @@ import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.settings.ModeSetting;
 import tk.wurst_client.navigator.settings.SliderSetting;
 import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
+import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 import tk.wurst_client.utils.BlockUtils;
 import tk.wurst_client.utils.RenderUtils;
 
@@ -33,8 +34,8 @@ import tk.wurst_client.utils.RenderUtils;
 		+ "Use .nuker mode <mode> to change the mode.",
 	name = "Nuker",
 	help = "Mods/Nuker")
-public class NukerMod extends Mod implements LeftClickListener, RenderListener,
-	UpdateListener
+public class NukerMod extends Mod
+	implements LeftClickListener, RenderListener, UpdateListener
 {
 	public float normalRange = 5F;
 	public float yesCheatRange = 4.25F;
@@ -114,9 +115,8 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 	public void onRender()
 	{
 		if(blockHitDelay == 0 && shouldRenderESP)
-			if(!mc.player.capabilities.isCreativeMode
-				&& currentBlock.getPlayerRelativeBlockHardness(mc.player,
-					mc.world, pos) < 1)
+			if(!mc.player.capabilities.isCreativeMode && currentBlock
+				.getPlayerRelativeBlockHardness(mc.player, mc.world, pos) < 1)
 				RenderUtils.nukerBox(pos, currentDamage);
 			else
 				RenderUtils.nukerBox(pos, 1);
@@ -125,7 +125,8 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 	@Override
 	public void onUpdate()
 	{
-		if(wurst.mods.yesCheatMod.isActive())
+		if(wurst.special.yesCheatSpf.getBypassLevel()
+			.ordinal() >= BypassLevel.ANTICHEAT.ordinal())
 			realRange = yesCheatRange;
 		else
 			realRange = normalRange;
@@ -156,13 +157,13 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 				Action.START_DESTROY_BLOCK, pos, side));
 			if(wurst.mods.autoToolMod.isActive() && oldSlot == -1)
 				oldSlot = mc.player.inventory.currentItem;
-			if(mc.player.capabilities.isCreativeMode
-				|| currentBlock.getPlayerRelativeBlockHardness(mc.player,
-					mc.world, pos) >= 1)
+			if(mc.player.capabilities.isCreativeMode || currentBlock
+				.getPlayerRelativeBlockHardness(mc.player, mc.world, pos) >= 1)
 			{
 				currentDamage = 0;
 				if(mc.player.capabilities.isCreativeMode
-					&& !wurst.mods.yesCheatMod.isActive())
+					&& wurst.special.yesCheatSpf.getBypassLevel()
+						.ordinal() < BypassLevel.ANTICHEAT.ordinal())
 					nukeAll();
 				else
 				{
@@ -178,11 +179,10 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 		mc.player.sendQueue.addToSendQueue(new C0APacketAnimation());
 		shouldRenderESP = true;
 		BlockUtils.faceBlockPacket(pos);
-		currentDamage +=
-			currentBlock.getPlayerRelativeBlockHardness(mc.player,
-				mc.world, pos)
-				* (wurst.mods.fastBreakMod.isActive()
-					&& wurst.options.fastbreakMode == 0
+		currentDamage += currentBlock.getPlayerRelativeBlockHardness(mc.player,
+			mc.world, pos)
+			* (wurst.mods.fastBreakMod.isActive()
+				&& wurst.options.fastbreakMode == 0
 					? wurst.mods.fastBreakMod.speed : 1);
 		mc.world.sendBlockBreakProgress(mc.player.getEntityId(), pos,
 			(int)(currentDamage * 10.0F) - 1);
@@ -222,13 +222,11 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 		if(mc.objectMouseOver == null
 			|| mc.objectMouseOver.getBlockPos() == null)
 			return;
-		if(mode == 1
-			&& mc.world.getBlockState(mc.objectMouseOver.getBlockPos())
-				.getBlock().getMaterial() != Material.air)
+		if(mode == 1 && mc.world.getBlockState(mc.objectMouseOver.getBlockPos())
+			.getBlock().getMaterial() != Material.air)
 		{
-			id =
-				Block.getIdFromBlock(mc.world.getBlockState(
-					mc.objectMouseOver.getBlockPos()).getBlock());
+			id = Block.getIdFromBlock(mc.world
+				.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock());
 			wurst.files.saveOptions();
 		}
 	}
@@ -246,9 +244,8 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 			alreadyProcessed.add(currentPos);
 			if(BlockUtils.getPlayerBlockDistance(currentPos) > realRange)
 				continue;
-			int currentID =
-				Block.getIdFromBlock(mc.world.getBlockState(currentPos)
-					.getBlock());
+			int currentID = Block
+				.getIdFromBlock(mc.world.getBlockState(currentPos).getBlock());
 			if(currentID != 0)
 				switch(mode)
 				{
@@ -261,19 +258,18 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 							return currentPos;
 						break;
 					case 3:
-						if(mc.world
-							.getBlockState(currentPos)
-							.getBlock()
-							.getPlayerRelativeBlockHardness(mc.player,
-								mc.world, currentPos) >= 1)
+						if(mc.world.getBlockState(currentPos).getBlock()
+							.getPlayerRelativeBlockHardness(mc.player, mc.world,
+								currentPos) >= 1)
 							return currentPos;
 						break;
 					default:
 						return currentPos;
 				}
-			if(!wurst.mods.yesCheatMod.isActive()
-				|| !mc.world.getBlockState(currentPos).getBlock()
-					.getMaterial().blocksMovement())
+			if(wurst.special.yesCheatSpf.getBypassLevel()
+				.ordinal() < BypassLevel.ANTICHEAT.ordinal()
+				|| !mc.world.getBlockState(currentPos).getBlock().getMaterial()
+					.blocksMovement())
 			{
 				queue.add(currentPos.add(0, 0, -1));// north
 				queue.add(currentPos.add(0, 0, 1));// south
@@ -296,8 +292,7 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 					int posY = (int)(Math.floor(mc.player.posY) + y);
 					int posZ = (int)(Math.floor(mc.player.posZ) + z);
 					BlockPos blockPos = new BlockPos(posX, posY, posZ);
-					Block block =
-						mc.world.getBlockState(blockPos).getBlock();
+					Block block = mc.world.getBlockState(blockPos).getBlock();
 					float xDiff = (float)(mc.player.posX - posX);
 					float yDiff = (float)(mc.player.posY - posY);
 					float zDiff = (float)(mc.player.posZ - posZ);
@@ -314,8 +309,8 @@ public class NukerMod extends Mod implements LeftClickListener, RenderListener,
 						if(mode == 1 && Block.getIdFromBlock(block) != id)
 							continue;
 						if(mode == 3
-							&& block.getPlayerRelativeBlockHardness(
-								mc.player, mc.world, blockPos) < 1)
+							&& block.getPlayerRelativeBlockHardness(mc.player,
+								mc.world, blockPos) < 1)
 							continue;
 						side = fakeObjectMouseOver.sideHit;
 						shouldRenderESP = true;

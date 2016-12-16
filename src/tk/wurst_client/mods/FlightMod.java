@@ -15,6 +15,7 @@ import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.settings.CheckboxSetting;
 import tk.wurst_client.navigator.settings.SliderSetting;
 import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
+import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 
 @Mod.Info(
 	description = "Allows you to you fly.\n"
@@ -30,14 +31,14 @@ public class FlightMod extends Mod implements UpdateListener
 	public double flyHeight;
 	private double startY;
 	
-	public final CheckboxSetting flightKickBypass = new CheckboxSetting(
-		"Flight-Kick-Bypass", false);
+	public final CheckboxSetting flightKickBypass =
+		new CheckboxSetting("Flight-Kick-Bypass", false);
 	
 	@Override
 	public String getRenderName()
 	{
-		if(wurst.mods.yesCheatMod.isActive()
-			|| wurst.mods.antiMacMod.isActive()
+		if(wurst.special.yesCheatSpf.getBypassLevel()
+			.ordinal() >= BypassLevel.ANTICHEAT.ordinal()
 			|| !flightKickBypass.isChecked())
 			return getName();
 		
@@ -97,9 +98,8 @@ public class FlightMod extends Mod implements UpdateListener
 			if(y < minY)
 				y = minY;
 			
-			C04PacketPlayerPosition packet =
-				new C04PacketPlayerPosition(mc.player.posX, y,
-					mc.player.posZ, true);
+			C04PacketPlayerPosition packet = new C04PacketPlayerPosition(
+				mc.player.posX, y, mc.player.posZ, true);
 			mc.player.sendQueue.addToSendQueue(packet);
 		}
 		
@@ -109,9 +109,8 @@ public class FlightMod extends Mod implements UpdateListener
 			if(y > mc.player.posY)
 				y = mc.player.posY;
 			
-			C04PacketPlayerPosition packet =
-				new C04PacketPlayerPosition(mc.player.posX, y,
-					mc.player.posZ, true);
+			C04PacketPlayerPosition packet = new C04PacketPlayerPosition(
+				mc.player.posX, y, mc.player.posZ, true);
 			mc.player.sendQueue.addToSendQueue(packet);
 		}
 	}
@@ -120,7 +119,7 @@ public class FlightMod extends Mod implements UpdateListener
 	public NavigatorItem[] getSeeAlso()
 	{
 		return new NavigatorItem[]{wurst.mods.jetpackMod, wurst.mods.glideMod,
-			wurst.mods.noFallMod, wurst.mods.yesCheatMod, wurst.mods.antiMacMod};
+			wurst.mods.noFallMod, wurst.special.yesCheatSpf};
 	}
 	
 	@Override
@@ -129,20 +128,20 @@ public class FlightMod extends Mod implements UpdateListener
 		if(wurst.mods.jetpackMod.isEnabled())
 			wurst.mods.jetpackMod.setEnabled(false);
 		
-		if(wurst.mods.yesCheatMod.isActive()
-			|| wurst.mods.antiMacMod.isActive())
+		if(wurst.special.yesCheatSpf.getBypassLevel()
+			.ordinal() >= BypassLevel.ANTICHEAT.ordinal())
 		{
 			double startX = mc.player.posX;
 			startY = mc.player.posY;
 			double startZ = mc.player.posZ;
 			for(int i = 0; i < 4; i++)
 			{
-				mc.player.sendQueue
-					.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(
-						startX, startY + 1.01, startZ, false));
-				mc.player.sendQueue
-					.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(
-						startX, startY, startZ, false));
+				mc.player.sendQueue.addToSendQueue(
+					new C03PacketPlayer.C04PacketPlayerPosition(startX,
+						startY + 1.01, startZ, false));
+				mc.player.sendQueue.addToSendQueue(
+					new C03PacketPlayer.C04PacketPlayerPosition(startX, startY,
+						startZ, false));
 			}
 			mc.player.jump();
 		}
@@ -152,7 +151,8 @@ public class FlightMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(wurst.mods.yesCheatMod.isActive())
+		if(wurst.special.yesCheatSpf.getBypassLevel()
+			.ordinal() > BypassLevel.ANTICHEAT.ordinal())
 		{
 			if(!mc.player.onGround)
 				if(mc.gameSettings.keyBindJump.pressed
@@ -160,14 +160,15 @@ public class FlightMod extends Mod implements UpdateListener
 					mc.player.motionY = 0.2;
 				else
 					mc.player.motionY = -0.02;
-		}else if(wurst.mods.antiMacMod.isActive())
+		}else if(wurst.special.yesCheatSpf.getBypassLevel()
+			.ordinal() == BypassLevel.ANTICHEAT.ordinal())
 		{
 			updateMS();
 			if(!mc.player.onGround)
 				if(mc.gameSettings.keyBindJump.pressed && hasTimePassedS(2))
 				{
-					mc.player.setPosition(mc.player.posX,
-						mc.player.posY + 8, mc.player.posZ);
+					mc.player.setPosition(mc.player.posX, mc.player.posY + 8,
+						mc.player.posZ);
 					updateLastMS();
 				}else if(mc.gameSettings.keyBindSneak.pressed)
 					mc.player.motionY = -0.4;
@@ -192,11 +193,10 @@ public class FlightMod extends Mod implements UpdateListener
 			if(flightKickBypass.isChecked())
 			{
 				updateFlyHeight();
-				mc.player.sendQueue
-					.addToSendQueue(new C03PacketPlayer(true));
+				mc.player.sendQueue.addToSendQueue(new C03PacketPlayer(true));
 				
-				if(flyHeight <= 290 && hasTimePassedM(500) || flyHeight > 290
-					&& hasTimePassedM(100))
+				if(flyHeight <= 290 && hasTimePassedM(500)
+					|| flyHeight > 290 && hasTimePassedM(100))
 				{
 					goToGround();
 					updateLastMS();

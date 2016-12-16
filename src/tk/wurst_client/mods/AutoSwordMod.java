@@ -14,6 +14,7 @@ import net.minecraft.item.ItemTool;
 import tk.wurst_client.events.listeners.LeftClickListener;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.navigator.NavigatorItem;
+import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 
 @Mod.Info(
 	description = "Automatically uses the best weapon in your hotbar to attack\n"
@@ -22,8 +23,8 @@ import tk.wurst_client.navigator.NavigatorItem;
 	noCheatCompatible = false,
 	tags = "auto sword",
 	help = "Mods/AutoSword")
-public class AutoSwordMod extends Mod implements LeftClickListener,
-	UpdateListener
+public class AutoSwordMod extends Mod
+	implements LeftClickListener, UpdateListener
 {
 	private int oldSlot;
 	private int timer;
@@ -62,7 +63,8 @@ public class AutoSwordMod extends Mod implements LeftClickListener,
 	@Override
 	public void onLeftClick()
 	{
-		if(wurst.mods.yesCheatMod.isActive())
+		if(wurst.special.yesCheatSpf.getBypassLevel()
+			.ordinal() >= BypassLevel.ANTICHEAT.ordinal())
 		{
 			setEnabled(false);
 			return;
@@ -87,9 +89,8 @@ public class AutoSwordMod extends Mod implements LeftClickListener,
 			if(item.getItem() instanceof ItemSword)
 				speed = ((ItemSword)item.getItem()).func_150931_i();
 			else if(item.getItem() instanceof ItemTool)
-				speed =
-					((ItemTool)item.getItem()).getToolMaterial()
-						.getDamageVsEntity();
+				speed = ((ItemTool)item.getItem()).getToolMaterial()
+					.getDamageVsEntity();
 			if(speed > bestSpeed)
 			{
 				bestSpeed = speed;
@@ -98,8 +99,7 @@ public class AutoSwordMod extends Mod implements LeftClickListener,
 		}
 		if(bestSlot != -1 && bestSlot != mc.player.inventory.currentItem)
 		{
-			wurst.mods.autoSwordMod.oldSlot =
-				mc.player.inventory.currentItem;
+			wurst.mods.autoSwordMod.oldSlot = mc.player.inventory.currentItem;
 			mc.player.inventory.currentItem = bestSlot;
 			wurst.mods.autoSwordMod.timer = 4;
 			wurst.events.add(UpdateListener.class, wurst.mods.autoSwordMod);

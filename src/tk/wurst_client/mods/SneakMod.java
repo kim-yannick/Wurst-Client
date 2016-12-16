@@ -12,9 +12,9 @@ import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.network.play.client.C0BPacketEntityAction;
 import net.minecraft.network.play.client.C0BPacketEntityAction.Action;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 
-@Mod.Info(
-	description = "Automatically sneaks all the time.",
+@Mod.Info(description = "Automatically sneaks all the time.",
 	name = "Sneak",
 	tags = "AutoSneaking",
 	help = "Mods/Sneak")
@@ -29,13 +29,14 @@ public class SneakMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(wurst.mods.yesCheatMod.isActive())
+		if(wurst.special.yesCheatSpf.getBypassLevel()
+			.ordinal() >= BypassLevel.ANTICHEAT.ordinal())
 		{
 			NetHandlerPlayClient sendQueue = mc.player.sendQueue;
-			sendQueue.addToSendQueue(new C0BPacketEntityAction(Minecraft
-				.getMinecraft().player, Action.START_SNEAKING));
-			sendQueue.addToSendQueue(new C0BPacketEntityAction(Minecraft
-				.getMinecraft().player, Action.STOP_SNEAKING));
+			sendQueue.addToSendQueue(new C0BPacketEntityAction(
+				Minecraft.getMinecraft().player, Action.START_SNEAKING));
+			sendQueue.addToSendQueue(new C0BPacketEntityAction(
+				Minecraft.getMinecraft().player, Action.STOP_SNEAKING));
 		}else
 			mc.player.sendQueue.addToSendQueue(new C0BPacketEntityAction(
 				Minecraft.getMinecraft().player, Action.START_SNEAKING));
@@ -46,7 +47,7 @@ public class SneakMod extends Mod implements UpdateListener
 	{
 		wurst.events.remove(UpdateListener.class, this);
 		mc.gameSettings.keyBindSneak.pressed = false;
-		mc.player.sendQueue.addToSendQueue(new C0BPacketEntityAction(
-			mc.player, Action.STOP_SNEAKING));
+		mc.player.sendQueue.addToSendQueue(
+			new C0BPacketEntityAction(mc.player, Action.STOP_SNEAKING));
 	}
 }

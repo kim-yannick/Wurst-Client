@@ -13,10 +13,10 @@ import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.settings.SliderSetting;
 import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
+import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 import tk.wurst_client.utils.EntityUtils;
 
-@Mod.Info(
-	description = "Automatically attacks everything in your range.",
+@Mod.Info(description = "Automatically attacks everything in your range.",
 	name = "Killaura",
 	tags = "kill aura",
 	help = "Mods/Killaura")
@@ -55,15 +55,15 @@ public class KillauraMod extends Mod implements UpdateListener
 				updateSpeedAndRange();
 			}
 		});
-		settings.add(new SliderSetting("FOV", fov, 30, 360, 10,
-			ValueDisplay.DEGREES)
-		{
-			@Override
-			public void update()
+		settings.add(
+			new SliderSetting("FOV", fov, 30, 360, 10, ValueDisplay.DEGREES)
 			{
-				fov = (int)getValue();
-			}
-		});
+				@Override
+				public void update()
+				{
+					fov = (int)getValue();
+				}
+			});
 	}
 	
 	@Override
@@ -113,8 +113,8 @@ public class KillauraMod extends Mod implements UpdateListener
 			if(EntityUtils.faceEntityPacket(en))
 			{
 				mc.player.swingItem();
-				mc.player.sendQueue.addToSendQueue(new C02PacketUseEntity(
-					en, C02PacketUseEntity.Action.ATTACK));
+				mc.player.sendQueue.addToSendQueue(new C02PacketUseEntity(en,
+					C02PacketUseEntity.Action.ATTACK));
 			}
 			updateLastMS();
 		}
@@ -129,7 +129,8 @@ public class KillauraMod extends Mod implements UpdateListener
 	
 	private void updateSpeedAndRange()
 	{
-		if(wurst.mods.yesCheatMod.isActive())
+		if(wurst.special.yesCheatSpf.getBypassLevel()
+			.ordinal() >= BypassLevel.ANTICHEAT.ordinal())
 		{
 			realSpeed = yesCheatSpeed;
 			realRange = yesCheatRange;

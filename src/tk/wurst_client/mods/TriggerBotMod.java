@@ -12,10 +12,10 @@ import net.minecraft.network.play.client.C02PacketUseEntity;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.navigator.NavigatorItem;
+import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 import tk.wurst_client.utils.EntityUtils;
 
-@Mod.Info(
-	description = "Automatically attacks the entity you're looking at.",
+@Mod.Info(description = "Automatically attacks the entity you're looking at.",
 	name = "TriggerBot",
 	tags = "trigger bot",
 	help = "Mods/TriggerBot")
@@ -56,17 +56,20 @@ public class TriggerBotMod extends Mod implements UpdateListener
 			&& mc.objectMouseOver.entityHit instanceof EntityLivingBase)
 		{
 			updateMS();
-			boolean yesCheatMode = wurst.mods.yesCheatMod.isActive();
+			boolean yesCheatMode = wurst.special.yesCheatSpf.getBypassLevel()
+				.ordinal() >= BypassLevel.ANTICHEAT.ordinal();
 			if(yesCheatMode
 				&& hasTimePassedS(wurst.mods.killauraMod.yesCheatSpeed)
 				|| !yesCheatMode
-				&& hasTimePassedS(wurst.mods.killauraMod.normalSpeed))
+					&& hasTimePassedS(wurst.mods.killauraMod.normalSpeed))
 			{
 				EntityLivingBase en =
 					(EntityLivingBase)mc.objectMouseOver.entityHit;
 				if((yesCheatMode
-					&& mc.player.getDistanceToEntity(en) <= wurst.mods.killauraMod.yesCheatRange || !yesCheatMode
-					&& mc.player.getDistanceToEntity(en) <= wurst.mods.killauraMod.normalRange)
+					&& mc.player.getDistanceToEntity(
+						en) <= wurst.mods.killauraMod.yesCheatRange
+					|| !yesCheatMode && mc.player.getDistanceToEntity(
+						en) <= wurst.mods.killauraMod.normalRange)
 					&& EntityUtils.isCorrectEntity(en, true))
 				{
 					if(wurst.mods.autoSwordMod.isActive())

@@ -9,6 +9,7 @@ package tk.wurst_client.mods;
 
 import net.minecraft.entity.EntityLivingBase;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 import tk.wurst_client.utils.EntityUtils;
 
 @Mod.Info(
@@ -76,7 +77,9 @@ public class ProtectMod extends Mod implements UpdateListener
 			mc.player.jump();
 		if(mc.player.isInWater() && mc.player.posY < friend.posY)
 			mc.player.motionY += 0.04;
-		if(wurst.mods.yesCheatMod.isActive())
+		if(wurst.special.yesCheatSpf
+			.getBypassLevel().ordinal() >= BypassLevel.ANTICHEAT
+			.ordinal())
 			speed = wurst.mods.killauraMod.yesCheatSpeed;
 		else
 			speed = wurst.mods.killauraMod.normalSpeed;

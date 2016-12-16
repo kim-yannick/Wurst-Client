@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 
 @Cmd.Info(description = "Drops all your items on the ground.",
 	name = "drop",
@@ -53,7 +54,8 @@ public class DropCmd extends Cmd implements UpdateListener
 					new ItemStack(item, 64)));
 			return;
 		}
-		if(wurst.mods.yesCheatMod.isActive())
+		if(wurst.special.yesCheatSpf.getBypassLevel()
+			.ordinal() >= BypassLevel.ANTICHEAT.ordinal())
 		{
 			timer++;
 			if(timer >= 5)

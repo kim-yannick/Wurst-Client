@@ -16,9 +16,9 @@ import net.minecraft.util.BlockPos;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.navigator.settings.SliderSetting;
 import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
+import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 
-@Mod.Info(
-	description = "Allows you to step up full blocks.",
+@Mod.Info(description = "Allows you to step up full blocks.",
 	name = "Step",
 	help = "Mods/Step")
 public class StepMod extends Mod implements UpdateListener
@@ -28,15 +28,15 @@ public class StepMod extends Mod implements UpdateListener
 	@Override
 	public void initSettings()
 	{
-		settings.add(new SliderSetting("Height", height, 1, 100, 1,
-			ValueDisplay.INTEGER)
-		{
-			@Override
-			public void update()
+		settings.add(
+			new SliderSetting("Height", height, 1, 100, 1, ValueDisplay.INTEGER)
 			{
-				height = (float)getValue();
-			}
-		});
+				@Override
+				public void update()
+				{
+					height = (float)getValue();
+				}
+			});
 	}
 	
 	@Override
@@ -48,25 +48,26 @@ public class StepMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(wurst.mods.yesCheatMod.isActive())
+		if(wurst.special.yesCheatSpf.getBypassLevel()
+			.ordinal() >= BypassLevel.ANTICHEAT.ordinal())
 		{
 			mc.player.stepHeight = 0.5F;
-			if(mc.player.onGround
-				&& !mc.player.isOnLadder()
-				&& (mc.player.movementInput.moveForward != 0.0F || mc.player.movementInput.moveStrafe != 0.0F)
+			if(mc.player.onGround && !mc.player.isOnLadder()
+				&& (mc.player.movementInput.moveForward != 0.0F
+					|| mc.player.movementInput.moveStrafe != 0.0F)
 				&& canStep() && !mc.player.movementInput.jump
 				&& mc.player.isCollidedHorizontally)
 			{
-				mc.getNetHandler().addToSendQueue(
-					new C04PacketPlayerPosition(mc.player.posX,
+				mc.getNetHandler()
+					.addToSendQueue(new C04PacketPlayerPosition(mc.player.posX,
 						mc.player.posY + 0.42D, mc.player.posZ,
 						mc.player.onGround));
-				mc.getNetHandler().addToSendQueue(
-					new C04PacketPlayerPosition(mc.player.posX,
+				mc.getNetHandler()
+					.addToSendQueue(new C04PacketPlayerPosition(mc.player.posX,
 						mc.player.posY + 0.753D, mc.player.posZ,
 						mc.player.onGround));
-				mc.player.setPosition(mc.player.posX,
-					mc.player.posY + 1D, mc.player.posZ);
+				mc.player.setPosition(mc.player.posX, mc.player.posY + 1D,
+					mc.player.posZ);
 			}
 		}else
 			mc.player.stepHeight = isEnabled() ? height : 0.5F;
@@ -99,19 +100,18 @@ public class StepMod extends Mod implements UpdateListener
 					for(int z = pos1.getZ(); z <= pos2.getZ(); z++)
 						if(y > player.posY - 1.0D && y <= player.posY)
 							collisionBlocks.add(new BlockPos(x, y, z));
-		
+						
 		BlockPos belowPlayerPos =
 			new BlockPos(player.posX, player.posY - 1.0D, player.posZ);
 		for(BlockPos collisionBlock : collisionBlocks)
 			if(!(player.worldObj.getBlockState(collisionBlock.add(0, 1, 0))
 				.getBlock() instanceof BlockFenceGate))
-				if(player.worldObj
-					.getBlockState(collisionBlock.add(0, 1, 0))
-					.getBlock()
-					.getCollisionBoundingBox(mc.world, belowPlayerPos,
+				if(player.worldObj.getBlockState(collisionBlock.add(0, 1, 0))
+					.getBlock().getCollisionBoundingBox(mc.world,
+						belowPlayerPos,
 						mc.world.getBlockState(collisionBlock)) != null)
 					return false;
-		
+				
 		return true;
 	}
 }

@@ -1,6 +1,6 @@
-From 2cae081ef2c5c0c1d3ef84fcc647796509c8ac21 Mon Sep 17 00:00:00 2001
+From b76dce4450d13a31982e2599294968b4e09c8a15 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 16 Dec 2016 18:45:15 +0100
+Date: Fri, 16 Dec 2016 21:41:42 +0100
 Subject: [PATCH] mod
 
 ---
@@ -85,7 +85,7 @@ Subject: [PATCH] mod
  .../client/gui/achievement/GuiAchievements.java    |   6 +-
  net/minecraft/client/gui/achievement/GuiStats.java |   9 +-
  net/minecraft/client/gui/inventory/GuiBeacon.java  |   3 +
- net/minecraft/client/gui/inventory/GuiChest.java   | 120 ++++-
+ net/minecraft/client/gui/inventory/GuiChest.java   | 114 +++-
  .../client/gui/inventory/GuiContainer.java         |  76 +--
  .../client/gui/inventory/GuiContainerCreative.java |  65 +--
  .../client/gui/inventory/GuiEditSign.java          |  32 ++
@@ -236,7 +236,7 @@ Subject: [PATCH] mod
  net/minecraft/world/gen/ChunkProviderServer.java   |   3 +
  net/minecraft/world/gen/layer/GenLayer.java        |   1 +
  .../world/gen/structure/MapGenStructure.java       |   2 +
- 232 files changed, 3000 insertions(+), 1555 deletions(-)
+ 232 files changed, 2994 insertions(+), 1555 deletions(-)
 
 diff --git a/net/minecraft/block/Block.java b/net/minecraft/block/Block.java
 index d8fe39f..47bb6ff 100644
@@ -5717,23 +5717,21 @@ index 3dc2b1e..e681e0a 100644
  import org.apache.logging.log4j.Logger;
  
 diff --git a/net/minecraft/client/gui/inventory/GuiChest.java b/net/minecraft/client/gui/inventory/GuiChest.java
-index 15a710a..0132bd9 100644
+index 15a710a..94e4fc4 100644
 --- a/net/minecraft/client/gui/inventory/GuiChest.java
 +++ b/net/minecraft/client/gui/inventory/GuiChest.java
-@@ -1,54 +1,142 @@
+@@ -1,54 +1,136 @@
  package net.minecraft.client.gui.inventory;
  
  import net.minecraft.client.Minecraft;
 +import net.minecraft.client.gui.GuiButton;
-+import net.minecraft.client.gui.inventory.GuiContainer;
  import net.minecraft.client.renderer.GlStateManager;
  import net.minecraft.inventory.ContainerChest;
  import net.minecraft.inventory.IInventory;
 +import net.minecraft.inventory.Slot;
  import net.minecraft.util.ResourceLocation;
 +import tk.wurst_client.WurstClient;
-+import tk.wurst_client.mods.AutoStealMod;
-+import tk.wurst_client.mods.YesCheatMod;
++import tk.wurst_client.special.YesCheatSpf.BypassLevel;
  
  public class GuiChest extends GuiContainer
  {
@@ -5782,13 +5780,6 @@ index 15a710a..0132bd9 100644
 +	}
 +
 +	// TODO: Client
-+	/*
-+	 * Copyright © 2014 - 2015 | Alexander01998 | All rights reserved.
-+	 * 
-+	 * This Source Code Form is subject to the terms of the Mozilla Public
-+	 * License, v. 2.0. If a copy of the MPL was not distributed with this
-+	 * file, You can obtain one at http://mozilla.org/MPL/2.0/.
-+	 */
 +	@Override
 +	protected void actionPerformed(GuiButton button)
 +	{
@@ -5806,8 +5797,9 @@ index 15a710a..0132bd9 100644
 +								(Slot)inventorySlots.inventorySlots.get(i);
 +							if(slot.getStack() == null)
 +								continue;
-+							if(WurstClient.INSTANCE.mods.yesCheatMod
-+								.isActive())
++							if(WurstClient.INSTANCE.special.yesCheatSpf
++								.getBypassLevel()
++								.ordinal() >= BypassLevel.ANTICHEAT.ordinal())
 +								Thread.sleep(250);
 +							handleMouseClick(slot, slot.slotNumber, 0, 1);
 +							handleMouseClick(slot, slot.slotNumber, 0, 6);
@@ -5826,14 +5818,16 @@ index 15a710a..0132bd9 100644
 +				{
 +					try
 +					{
-+						for(int i = inventoryRows * 9; i < inventoryRows * 9 + 44; i++)
++						for(int i = inventoryRows * 9; i < inventoryRows * 9
++							+ 44; i++)
 +						{
 +							Slot slot =
 +								(Slot)inventorySlots.inventorySlots.get(i);
 +							if(slot.getStack() == null)
 +								continue;
-+							if(WurstClient.INSTANCE.mods.yesCheatMod
-+								.isActive())
++							if(WurstClient.INSTANCE.special.yesCheatSpf
++								.getBypassLevel()
++								.ordinal() >= BypassLevel.ANTICHEAT.ordinal())
 +								Thread.sleep(250);
 +							handleMouseClick(slot, slot.slotNumber, 0, 1);
 +							handleMouseClick(slot, slot.slotNumber, 0, 6);
@@ -5844,7 +5838,7 @@ index 15a710a..0132bd9 100644
 +					}
 +				}
 +			}).start();
-     }
+ 	}
  
      /**
 -     * Draw the foreground layer for the GuiContainer (everything in front of the items). Args : mouseX, mouseY
