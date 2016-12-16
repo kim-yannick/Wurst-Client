@@ -15,9 +15,9 @@ import tk.wurst_client.events.listeners.UpdateListener;
 		+ "Does NOT block damage from standing inside of fire.\n"
 		+ "Requires a full hunger bar.",
 	name = "AntiFire",
-	noCheatCompatible = false,
 	tags = "anti fire, AntiBurn, anti burn, NoFire, no fire",
 	help = "Mods/AntiFire")
+@Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
 public class AntiFireMod extends Mod implements UpdateListener
 {
 	@Override
@@ -27,17 +27,17 @@ public class AntiFireMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+	}
+
+	@Override
 	public void onUpdate()
 	{
 		if(!mc.player.capabilities.isCreativeMode && mc.player.onGround
 			&& mc.player.isBurning())
 			for(int i = 0; i < 100; i++)
 				mc.player.connection.sendPacket(new C03PacketPlayer());
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
 	}
 }

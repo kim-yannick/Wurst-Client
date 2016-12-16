@@ -7,19 +7,21 @@
  */
 package tk.wurst_client.mods;
 
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.potion.Potion;
 import tk.wurst_client.events.listeners.UpdateListener;
 
-@Mod.Info(
-	description = "Blocks bad potion effects.",
+@Mod.Info(description = "Blocks bad potion effects.",
 	name = "AntiPotion",
-	noCheatCompatible = false,
 	tags = "NoPotion, Zoot, anti potions, no potions",
 	help = "Mods/AntiPotion")
+@Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
 public class AntiPotionMod extends Mod implements UpdateListener
 {
+	private final Potion[] blockedEffects = new Potion[]{Potion.hunger,
+		Potion.moveSlowdown, Potion.digSlowdown, Potion.harm, Potion.confusion,
+		Potion.blindness, Potion.weakness, Potion.wither, Potion.poison};
+	
 	@Override
 	public void onEnable()
 	{
@@ -27,27 +29,29 @@ public class AntiPotionMod extends Mod implements UpdateListener
 	}
 	
 	@Override
-	public void onUpdate()
-	{
-		EntityPlayerSP player = mc.player;
-		if(!player.capabilities.isCreativeMode && player.onGround
-			&& !player.getActivePotionEffects().isEmpty())
-			if(player.isPotionActive(Potion.hunger)
-				|| player.isPotionActive(Potion.moveSlowdown)
-				|| player.isPotionActive(Potion.digSlowdown)
-				|| player.isPotionActive(Potion.harm)
-				|| player.isPotionActive(Potion.confusion)
-				|| player.isPotionActive(Potion.blindness)
-				|| player.isPotionActive(Potion.weakness)
-				|| player.isPotionActive(Potion.wither)
-				|| player.isPotionActive(Potion.poison))
-				for(int i = 0; i < 1000; i++)
-					player.connection.sendPacket(new C03PacketPlayer());
-	}
-	
-	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
+	public void onUpdate()
+	{
+		if(!mc.player.capabilities.isCreativeMode && mc.player.onGround
+			&& hasBadEffect())
+			for(int i = 0; i < 1000; i++)
+				mc.player.connection.sendPacket(new C03PacketPlayer());
+	}
+	
+	private boolean hasBadEffect()
+	{
+		if(mc.player.getActivePotionEffects().isEmpty())
+			return false;
+		
+		for(Potion effect : blockedEffects)
+			if(mc.player.isPotionActive(effect))
+				return true;
+			
+		return false;
 	}
 }
