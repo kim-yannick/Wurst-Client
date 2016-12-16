@@ -1,6 +1,6 @@
-From d94874c4a29b048ab62862601b49646e0a2edb57 Mon Sep 17 00:00:00 2001
+From 48cf19b2bbee3da857f3c1bacfdebd58957c8b00 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 16 Dec 2016 16:57:18 +0100
+Date: Fri, 16 Dec 2016 17:08:12 +0100
 Subject: [PATCH] mod
 
 ---
@@ -35,7 +35,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/GuiFlatPresets.java       |   6 +-
  net/minecraft/client/gui/GuiGameOver.java          |  23 +-
  net/minecraft/client/gui/GuiHopper.java            |   2 +-
- net/minecraft/client/gui/GuiIngame.java            |  97 ++--
+ net/minecraft/client/gui/GuiIngame.java            |  86 ++--
  net/minecraft/client/gui/GuiIngameMenu.java        |  55 +-
  net/minecraft/client/gui/GuiKeyBindingList.java    |   3 +
  net/minecraft/client/gui/GuiLanguage.java          |   3 +
@@ -236,7 +236,7 @@ Subject: [PATCH] mod
  net/minecraft/world/gen/ChunkProviderServer.java   |   3 +
  net/minecraft/world/gen/layer/GenLayer.java        |   1 +
  .../world/gen/structure/MapGenStructure.java       |   2 +
- 232 files changed, 3008 insertions(+), 1555 deletions(-)
+ 232 files changed, 2997 insertions(+), 1555 deletions(-)
 
 diff --git a/net/minecraft/block/Block.java b/net/minecraft/block/Block.java
 index d8fe39f..47bb6ff 100644
@@ -2978,10 +2978,10 @@ index 4d52ca9..5c9d8fd 100644
          this.field_147083_w = p_i1092_2_;
          this.allowUserInput = false;
 diff --git a/net/minecraft/client/gui/GuiIngame.java b/net/minecraft/client/gui/GuiIngame.java
-index 12b2457..a09a68d 100644
+index 12b2457..2c7acaf 100644
 --- a/net/minecraft/client/gui/GuiIngame.java
 +++ b/net/minecraft/client/gui/GuiIngame.java
-@@ -1,13 +1,11 @@
+@@ -1,13 +1,15 @@
  package net.minecraft.client.gui;
  
 -import com.google.common.base.Predicate;
@@ -2993,10 +2993,14 @@ index 12b2457..a09a68d 100644
  import java.util.Iterator;
  import java.util.Random;
 +
++import com.google.common.base.Predicate;
++import com.google.common.collect.Iterables;
++import com.google.common.collect.Lists;
++
  import net.minecraft.block.material.Material;
  import net.minecraft.client.Minecraft;
  import net.minecraft.client.renderer.GlStateManager;
-@@ -33,15 +31,14 @@ import net.minecraft.scoreboard.Score;
+@@ -33,15 +35,9 @@ import net.minecraft.scoreboard.Score;
  import net.minecraft.scoreboard.ScoreObjective;
  import net.minecraft.scoreboard.ScorePlayerTeam;
  import net.minecraft.scoreboard.Scoreboard;
@@ -3011,15 +3015,10 @@ index 12b2457..a09a68d 100644
 +import net.minecraft.util.*;
  import net.minecraft.world.border.WorldBorder;
 +import tk.wurst_client.gui.UIRenderer;
-+import tk.wurst_client.mods.ArenaBrawlMod;
-+
-+import com.google.common.base.Predicate;
-+import com.google.common.collect.Iterables;
-+import com.google.common.collect.Lists;
  
  public class GuiIngame extends Gui
  {
-@@ -116,23 +113,23 @@ public class GuiIngame extends Gui
+@@ -116,23 +112,23 @@ public class GuiIngame extends Gui
  
          if (Minecraft.isFancyGraphicsEnabled())
          {
@@ -3047,7 +3046,7 @@ index 12b2457..a09a68d 100644
  
              if (var6 > 0.0F)
              {
-@@ -175,12 +172,12 @@ public class GuiIngame extends Gui
+@@ -175,12 +171,12 @@ public class GuiIngame extends Gui
          int var8;
          int var11;
  
@@ -3062,7 +3061,7 @@ index 12b2457..a09a68d 100644
              var7 = (float)var11 / 100.0F;
  
              if (var7 > 1.0F)
-@@ -198,7 +195,7 @@ public class GuiIngame extends Gui
+@@ -198,7 +194,7 @@ public class GuiIngame extends Gui
          GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
          var11 = var3 / 2 - 91;
  
@@ -3071,7 +3070,7 @@ index 12b2457..a09a68d 100644
          {
              this.func_175186_a(var2, var11);
          }
-@@ -211,7 +208,7 @@ public class GuiIngame extends Gui
+@@ -211,7 +207,7 @@ public class GuiIngame extends Gui
          {
              this.func_175182_a(var2);
          }
@@ -3080,7 +3079,7 @@ index 12b2457..a09a68d 100644
          {
              this.field_175197_u.func_175263_a(var2);
          }
-@@ -288,11 +285,11 @@ public class GuiIngame extends Gui
+@@ -288,11 +284,11 @@ public class GuiIngame extends Gui
                  GlStateManager.pushMatrix();
                  GlStateManager.scale(4.0F, 4.0F, 4.0F);
                  var9 = var8 << 24 & -16777216;
@@ -3094,7 +3093,7 @@ index 12b2457..a09a68d 100644
                  GlStateManager.popMatrix();
                  GlStateManager.disableBlend();
                  GlStateManager.popMatrix();
-@@ -301,9 +298,9 @@ public class GuiIngame extends Gui
+@@ -301,9 +297,9 @@ public class GuiIngame extends Gui
              this.mc.mcProfiler.endSection();
          }
  
@@ -3106,14 +3105,8 @@ index 12b2457..a09a68d 100644
  
          if (var15 != null)
          {
-@@ -320,8 +317,16 @@ public class GuiIngame extends Gui
-         if (var16 != null)
-         {
+@@ -322,6 +318,10 @@ public class GuiIngame extends Gui
              this.func_180475_a(var16, var2);
-+            //TODO: Client
-+        }else
-+        {
-+            ArenaBrawlMod.scoreboard = null;
          }
  
 +        //TODO: Client
@@ -3123,7 +3116,7 @@ index 12b2457..a09a68d 100644
          GlStateManager.enableBlend();
          GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
          GlStateManager.disableAlpha();
-@@ -333,7 +338,7 @@ public class GuiIngame extends Gui
+@@ -333,7 +333,7 @@ public class GuiIngame extends Gui
          GlStateManager.popMatrix();
          var16 = var12.getObjectiveInDisplaySlot(0);
  
@@ -3132,7 +3125,7 @@ index 12b2457..a09a68d 100644
          {
              this.overlayPlayerList.func_175246_a(true);
              this.overlayPlayerList.func_175249_a(var3, var12, var16);
-@@ -383,7 +388,7 @@ public class GuiIngame extends Gui
+@@ -383,7 +383,7 @@ public class GuiIngame extends Gui
      {
          this.mc.mcProfiler.startSection("jumpBar");
          this.mc.getTextureManager().bindTexture(Gui.icons);
@@ -3141,7 +3134,7 @@ index 12b2457..a09a68d 100644
          short var4 = 182;
          int var5 = (int)(var3 * (float)(var4 + 1));
          int var6 = p_175186_1_.getScaledHeight() - 32 + 3;
-@@ -401,13 +406,13 @@ public class GuiIngame extends Gui
+@@ -401,13 +401,13 @@ public class GuiIngame extends Gui
      {
          this.mc.mcProfiler.startSection("expBar");
          this.mc.getTextureManager().bindTexture(Gui.icons);
@@ -3157,7 +3150,7 @@ index 12b2457..a09a68d 100644
              var6 = p_175176_1_.getScaledHeight() - 32 + 3;
              this.drawTexturedModalRect(p_175176_2_, var6, 0, 64, var4, 5);
  
-@@ -419,11 +424,11 @@ public class GuiIngame extends Gui
+@@ -419,11 +419,11 @@ public class GuiIngame extends Gui
  
          this.mc.mcProfiler.endSection();
  
@@ -3171,7 +3164,7 @@ index 12b2457..a09a68d 100644
              var6 = (p_175176_1_.getScaledWidth() - this.func_175179_f().getStringWidth(var10)) / 2;
              int var7 = p_175176_1_.getScaledHeight() - 31 - 4;
              boolean var8 = false;
-@@ -469,7 +474,7 @@ public class GuiIngame extends Gui
+@@ -469,7 +469,7 @@ public class GuiIngame extends Gui
                  GlStateManager.pushMatrix();
                  GlStateManager.enableBlend();
                  GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
@@ -3180,7 +3173,7 @@ index 12b2457..a09a68d 100644
                  GlStateManager.disableBlend();
                  GlStateManager.popMatrix();
              }
-@@ -483,23 +488,23 @@ public class GuiIngame extends Gui
+@@ -483,23 +483,23 @@ public class GuiIngame extends Gui
          this.mc.mcProfiler.startSection("demo");
          String var2 = "";
  
@@ -3208,7 +3201,7 @@ index 12b2457..a09a68d 100644
          {
              return false;
          }
-@@ -513,9 +518,9 @@ public class GuiIngame extends Gui
+@@ -513,9 +513,9 @@ public class GuiIngame extends Gui
              {
                  if (this.mc.objectMouseOver != null && this.mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
                  {
@@ -3220,34 +3213,7 @@ index 12b2457..a09a68d 100644
                      {
                          return true;
                      }
-@@ -578,6 +583,8 @@ public class GuiIngame extends Gui
-         int var25 = p_180475_2_.getScaledWidth() - var6 - var24;
-         int var11 = 0;
-         Iterator var12 = var21.iterator();
-+        //TODO: Client
-+        ArrayList<String> wurst1 = new ArrayList<String>();
- 
-         while (var12.hasNext())
-         {
-@@ -585,6 +592,8 @@ public class GuiIngame extends Gui
-             ++var11;
-             ScorePlayerTeam var14 = var3.getPlayersTeam(var13.getPlayerName());
-             String var15 = ScorePlayerTeam.formatPlayerName(var14, var13.getPlayerName());
-+            //TODO: Client
-+            wurst1.add(var15);
-             String var16 = EnumChatFormatting.RED + "" + var13.getScorePoints();
-             int var18 = var23 - var11 * this.func_175179_f().FONT_HEIGHT;
-             int var19 = p_180475_2_.getScaledWidth() - var24 + 2;
-@@ -599,6 +608,8 @@ public class GuiIngame extends Gui
-                 drawRect(var25 - 2, var18 - 1, var19, var18, 1342177280);
-                 this.func_175179_f().drawString(var20, var25 + var6 / 2 - this.func_175179_f().getStringWidth(var20) / 2, var18 - this.func_175179_f().FONT_HEIGHT, 553648127);
-             }
-+            //TODO: Client
-+            ArenaBrawlMod.scoreboard = wurst1;
-         }
-     }
- 
-@@ -876,7 +887,7 @@ public class GuiIngame extends Gui
+@@ -876,7 +876,7 @@ public class GuiIngame extends Gui
  
              if (var2.isInsideOfMaterial(Material.water))
              {
@@ -3256,7 +3222,7 @@ index 12b2457..a09a68d 100644
                  var36 = MathHelper.ceiling_double_int((double)(var23 - 2) * 10.0D / 300.0D);
                  var25 = MathHelper.ceiling_double_int((double)var23 * 10.0D / 300.0D) - var36;
  
-@@ -921,7 +932,7 @@ public class GuiIngame extends Gui
+@@ -921,7 +921,7 @@ public class GuiIngame extends Gui
              }
  
              String var8 = BossStatus.bossName;
@@ -3265,7 +3231,7 @@ index 12b2457..a09a68d 100644
              GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
              this.mc.getTextureManager().bindTexture(icons);
          }
-@@ -953,8 +964,8 @@ public class GuiIngame extends Gui
+@@ -953,8 +953,8 @@ public class GuiIngame extends Gui
      {
          p_180480_1_ = 1.0F - p_180480_1_;
          p_180480_1_ = MathHelper.clamp_float(p_180480_1_, 0.0F, 1.0F);
@@ -3276,7 +3242,7 @@ index 12b2457..a09a68d 100644
          double var5 = Math.min(var3.func_177749_o() * (double)var3.getWarningTime() * 1000.0D, Math.abs(var3.getTargetSize() - var3.getDiameter()));
          double var7 = Math.max((double)var3.getWarningDistance(), var5);
  
-@@ -1047,7 +1058,7 @@ public class GuiIngame extends Gui
+@@ -1047,7 +1047,7 @@ public class GuiIngame extends Gui
                  GlStateManager.translate((float)(-(p_175184_2_ + 8)), (float)(-(p_175184_3_ + 12)), 0.0F);
              }
  
@@ -3285,7 +3251,7 @@ index 12b2457..a09a68d 100644
  
              if (var7 > 0.0F)
              {
-@@ -1082,9 +1093,9 @@ public class GuiIngame extends Gui
+@@ -1082,9 +1082,9 @@ public class GuiIngame extends Gui
          ++this.updateCounter;
          this.streamIndicator.func_152439_a();
  

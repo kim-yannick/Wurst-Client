@@ -32,7 +32,6 @@ public class ModManager
 	public final AntiMacMod antiMacMod = new AntiMacMod();
 	public final AntiPotionMod antiPotionMod = new AntiPotionMod();
 	public final AntiSpamMod antiSpamMod = new AntiSpamMod();
-	public final ArenaBrawlMod arenaBrawlMod = new ArenaBrawlMod();
 	public final AutoArmorMod autoArmorMod = new AutoArmorMod();
 	public final AutoBuildMod autoBuildMod = new AutoBuildMod();
 	public final AutoLeaveMod autoLeaveMod = new AutoLeaveMod();
