@@ -27,7 +27,7 @@ public class NavigatorRemoveKeybindScreen extends NavigatorScreen
 {
 	private NavigatorFeatureScreen parent;
 	private TreeMap<String, PossibleKeybind> existingKeybinds;
-	private String hoveredKeybind = "";
+	private String hoveredKey = "";
 	private String selectedKey = "";
 	private String text = "Select the keybind you want to remove.";
 	private GuiButton removeButton;
@@ -50,7 +50,11 @@ public class NavigatorRemoveKeybindScreen extends NavigatorScreen
 		{
 			case 0:
 				WurstClient wurst = WurstClient.INSTANCE;
-				wurst.keybinds.remove(selectedKey);
+				if(wurst.keybinds.get(selectedKey).size() == 1)
+					wurst.keybinds.remove(selectedKey);
+				else
+					wurst.keybinds.get(selectedKey)
+						.remove(existingKeybinds.get(selectedKey).getCommand());
 				wurst.files.saveKeybinds();
 				mc.displayGuiScreen(parent);
 				wurst.navigator.addPreference(parent.getItem().getName());
@@ -88,9 +92,9 @@ public class NavigatorRemoveKeybindScreen extends NavigatorScreen
 	protected void onMouseClick(int x, int y, int button)
 	{
 		// commands
-		if(!hoveredKeybind.isEmpty())
+		if(!hoveredKey.isEmpty())
 		{
-			selectedKey = hoveredKeybind;
+			selectedKey = hoveredKey;
 			removeButton.enabled = true;
 		}
 	}
@@ -134,7 +138,7 @@ public class NavigatorRemoveKeybindScreen extends NavigatorScreen
 		glEnable(GL_SCISSOR_TEST);
 		
 		// possible keybinds
-		hoveredKeybind = "";
+		hoveredKey = "";
 		int yi = bgy1 - 12 + scroll;
 		for(Entry<String, PossibleKeybind> entry : existingKeybinds.entrySet())
 		{
@@ -151,7 +155,7 @@ public class NavigatorRemoveKeybindScreen extends NavigatorScreen
 			// color
 			if(mouseX >= x1 && mouseX <= x2 && mouseY >= y1 && mouseY <= y2)
 			{
-				hoveredKeybind = key;
+				hoveredKey = key;
 				if(key.equals(selectedKey))
 					glColor4f(0F, 1F, 0F, 0.375F);
 				else
