@@ -9,6 +9,8 @@ package tk.wurst_client.gui.options;
 
 import java.util.ArrayList;
 
+import com.google.common.collect.Lists;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -18,8 +20,6 @@ import tk.wurst_client.gui.options.xray.GuiXRayBlocksManager;
 import tk.wurst_client.gui.options.zoom.GuiZoomManager;
 import tk.wurst_client.options.OptionsManager.GoogleAnalytics;
 import tk.wurst_client.utils.MiscUtils;
-
-import com.google.common.collect.Lists;
 
 public class GuiWurstOptions extends GuiScreen
 {

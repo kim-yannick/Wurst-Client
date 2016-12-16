@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.util.BlockPos;
 import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.utils.ChatUtils;
 import tk.wurst_client.utils.RenderUtils;
 
 @Mod.Info(
@@ -80,8 +81,8 @@ public class SearchMod extends Mod implements UpdateListener, RenderListener
 			}
 			if(matchingBlocks.size() >= maxBlocks && notify)
 			{
-				wurst.chat.warning(getName() + " found §lA LOT§r of blocks.");
-				wurst.chat
+				ChatUtils.warning(getName() + " found §lA LOT§r of blocks.");
+				ChatUtils
 					.message("To prevent lag, it will only show the first "
 						+ maxBlocks + " blocks.");
 				notify = false;

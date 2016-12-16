@@ -10,17 +10,16 @@ package tk.wurst_client.gui.multiplayer;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.lwjgl.input.Keyboard;
+
+import com.google.common.collect.Lists;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.util.EnumChatFormatting;
-
-import org.lwjgl.input.Keyboard;
-
 import tk.wurst_client.WurstClient;
-
-import com.google.common.collect.Lists;
 
 public class GuiCleanUp extends GuiScreen
 {

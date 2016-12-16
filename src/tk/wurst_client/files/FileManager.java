@@ -16,8 +16,8 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.TreeSet;
 import java.util.Map.Entry;
+import java.util.TreeSet;
 import java.util.function.Consumer;
 
 import com.google.common.collect.Sets;

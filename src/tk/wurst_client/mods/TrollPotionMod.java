@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
+import tk.wurst_client.utils.ChatUtils;
 
 @Mod.Info(
 	description = "Generates an incredibly annoying potion.\n"
@@ -26,12 +27,12 @@ public class TrollPotionMod extends Mod
 	{
 		if(mc.player.inventory.getStackInSlot(0) != null)
 		{
-			wurst.chat.error("Please clear the first slot in your hotbar.");
+			ChatUtils.error("Please clear the first slot in your hotbar.");
 			setEnabled(false);
 			return;
 		}else if(!mc.player.capabilities.isCreativeMode)
 		{
-			wurst.chat.error("Creative mode only.");
+			ChatUtils.error("Creative mode only.");
 			setEnabled(false);
 			return;
 		}
@@ -50,7 +51,7 @@ public class TrollPotionMod extends Mod
 		stack.setStackDisplayName("§c§lTroll§6§lPotion");
 		mc.player.sendQueue
 			.addToSendQueue(new C10PacketCreativeInventoryAction(36, stack));
-		wurst.chat.message("Potion created. Trololo!");
+		ChatUtils.message("Potion created. Trololo!");
 		setEnabled(false);
 	}
 }

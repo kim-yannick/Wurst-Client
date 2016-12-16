@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
+import tk.wurst_client.utils.ChatUtils;
 
 @Mod.Info(
 	description = "Generates a potion that can kill players in Creative mode.\n"
@@ -26,12 +27,12 @@ public class KillerPotionMod extends Mod
 	{
 		if(mc.player.inventory.getStackInSlot(0) != null)
 		{
-			wurst.chat.error("Please clear the first slot in your hotbar.");
+			ChatUtils.error("Please clear the first slot in your hotbar.");
 			setEnabled(false);
 			return;
 		}else if(!mc.player.capabilities.isCreativeMode)
 		{
-			wurst.chat.error("Creative mode only.");
+			ChatUtils.error("Creative mode only.");
 			setEnabled(false);
 			return;
 		}
@@ -49,7 +50,7 @@ public class KillerPotionMod extends Mod
 		
 		mc.player.sendQueue
 			.addToSendQueue(new C10PacketCreativeInventoryAction(36, stack));
-		wurst.chat.message("Potion created.");
+		ChatUtils.message("Potion created.");
 		setEnabled(false);
 	}
 }

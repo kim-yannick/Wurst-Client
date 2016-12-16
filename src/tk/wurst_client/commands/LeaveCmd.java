@@ -12,6 +12,7 @@ import net.minecraft.network.play.client.C02PacketUseEntity;
 import net.minecraft.network.play.client.C02PacketUseEntity.Action;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import tk.wurst_client.events.ChatOutputEvent;
+import tk.wurst_client.utils.ChatUtils;
 
 @Cmd.Info(help = "Leaves the current server or changes the mode of AutoLeave.",
 	name = "leave",
@@ -41,7 +42,7 @@ public class LeaveCmd extends Cmd
 			case 2:
 				wurst.mods.autoLeaveMod.setMode(parseMode(args[1]));
 				wurst.files.saveOptions();
-				wurst.chat
+				ChatUtils
 					.message("AutoLeave mode set to \"" + args[1] + "\".");
 				break;
 			default:

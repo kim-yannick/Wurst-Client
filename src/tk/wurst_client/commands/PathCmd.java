@@ -11,6 +11,7 @@ import net.minecraft.util.BlockPos;
 import tk.wurst_client.ai.PathFinder;
 import tk.wurst_client.ai.PathPoint;
 import tk.wurst_client.events.listeners.RenderListener;
+import tk.wurst_client.utils.ChatUtils;
 import tk.wurst_client.utils.RenderUtils;
 
 @Cmd.Info(help = "Shows the shortest path to a specific point. Useful for labyrinths and caves.",
@@ -48,7 +49,7 @@ public class PathCmd extends Cmd implements RenderListener
 					enabled = true;
 					wurst.events.add(RenderListener.class, PathCmd.this);
 				}else
-					wurst.chat.error("Could not find a path.");
+					ChatUtils.error("Could not find a path.");
 				System.out.println("Done after "
 					+ (System.nanoTime() - startTime) / 1e6 + "ms");
 			}

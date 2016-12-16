@@ -9,6 +9,7 @@ package tk.wurst_client.mods;
 
 import tk.wurst_client.gui.mods.GuiOpSign;
 import tk.wurst_client.navigator.NavigatorItem;
+import tk.wurst_client.utils.ChatUtils;
 
 @Mod.Info(
 	description = "Enable this mod, place a sign and click it to get OP.\n"
@@ -38,7 +39,7 @@ public class OpSignMod extends Mod
 	public void setCommand(String cmd)
 	{
 		command = cmd.replace("\"", "\\\\\"");
-		wurst.chat
+		ChatUtils
 			.message("Command set. Place & right click a sign to run it.");
 	}
 }

@@ -7,6 +7,9 @@
  */
 package tk.wurst_client.gui.alts;
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiPageButtonList;
@@ -15,9 +18,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.util.MathHelper;
-
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 
 public class GuiEmailField extends Gui
 {

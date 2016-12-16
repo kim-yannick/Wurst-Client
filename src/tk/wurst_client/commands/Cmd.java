@@ -18,6 +18,7 @@ import tk.wurst_client.WurstClient;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.PossibleKeybind;
 import tk.wurst_client.navigator.settings.NavigatorSetting;
+import tk.wurst_client.utils.ChatUtils;
 import tk.wurst_client.utils.EntityUtils;
 import tk.wurst_client.utils.MiscUtils;
 
@@ -167,7 +168,7 @@ public abstract class Cmd implements NavigatorItem
 	public final void printHelp()
 	{
 		for(String line : help.split("\n"))
-			WurstClient.INSTANCE.chat.message(line);
+			ChatUtils.message(line);
 	}
 	
 	public final void printSyntax()
@@ -180,7 +181,7 @@ public abstract class Cmd implements NavigatorItem
 				output += "\n    " + syntax[i];
 		}
 		for(String line : output.split("\n"))
-			WurstClient.INSTANCE.chat.message(line);
+			ChatUtils.message(line);
 	}
 	
 	protected final int[] argsToPos(String... args) throws Cmd.Error

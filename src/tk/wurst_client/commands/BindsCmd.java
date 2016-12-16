@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.TreeSet;
 
+import tk.wurst_client.utils.ChatUtils;
 import tk.wurst_client.utils.MiscUtils;
 
 @Cmd.Info(help = "Lists all keybinds.", name = "binds", syntax = {"[<page>]"})
@@ -33,9 +34,9 @@ public class BindsCmd extends Cmd
 				syntaxError("Invalid page: " + page);
 				return;
 			}
-			wurst.chat.message(
+			ChatUtils.message(
 				"Current keybinds: " + Integer.toString(wurst.keybinds.size()));
-			wurst.chat
+			ChatUtils
 				.message("Keybind list (page " + page + "/" + pages + "):");
 			Iterator<Entry<String, TreeSet<String>>> itr =
 				wurst.keybinds.entrySet().iterator();
@@ -44,7 +45,7 @@ public class BindsCmd extends Cmd
 				Entry<String, TreeSet<String>> entry = itr.next();
 				
 				if(i >= (page - 1) * 8 && i < (page - 1) * 8 + 8)
-					entry.getValue().forEach((cmd) -> wurst.chat
+					entry.getValue().forEach((cmd) -> ChatUtils
 						.message(entry.getKey() + ": " + cmd));
 			}
 		}else

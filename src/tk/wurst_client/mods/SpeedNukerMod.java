@@ -18,6 +18,7 @@ import tk.wurst_client.events.listeners.LeftClickListener;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.utils.BlockUtils;
+import tk.wurst_client.utils.ChatUtils;
 
 @Mod.Info(
 	description = "Faster Nuker that cannot bypass NoCheat+.",
@@ -74,16 +75,16 @@ public class SpeedNukerMod extends Mod implements LeftClickListener,
 		{
 			noCheatMessage();
 			setEnabled(false);
-			wurst.chat.message("Switching to " + wurst.mods.nukerMod.getName()
+			ChatUtils.message("Switching to " + wurst.mods.nukerMod.getName()
 				+ ".");
 			wurst.mods.nukerMod.setEnabled(true);
 			return;
 		}
 		if(mc.player.capabilities.isCreativeMode)
 		{
-			wurst.chat.error(getName() + " doesn't work in creative mode.");
+			ChatUtils.error(getName() + " doesn't work in creative mode.");
 			setEnabled(false);
-			wurst.chat.message("Switching to " + wurst.mods.nukerMod.getName()
+			ChatUtils.message("Switching to " + wurst.mods.nukerMod.getName()
 				+ ".");
 			wurst.mods.nukerMod.setEnabled(true);
 			return;

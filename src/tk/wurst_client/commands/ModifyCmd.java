@@ -13,6 +13,7 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
+import tk.wurst_client.utils.ChatUtils;
 import tk.wurst_client.utils.MiscUtils;
 
 @Cmd.Info(help = "Modifies items in creative mode.", name = "modify", syntax = {
@@ -100,7 +101,7 @@ public class ModifyCmd extends Cmd
 		player.sendQueue.addToSendQueue(new C10PacketCreativeInventoryAction(
 			36 + player.inventory.currentItem, item));
 		
-		wurst.chat.message("Item modified.");
+		ChatUtils.message("Item modified.");
 	}
 	
 	private NBTPath parseNBTPath(NBTTagCompound tag, String path)

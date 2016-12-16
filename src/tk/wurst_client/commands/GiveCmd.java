@@ -14,6 +14,7 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
 import net.minecraft.util.ResourceLocation;
+import tk.wurst_client.utils.ChatUtils;
 import tk.wurst_client.utils.MiscUtils;
 
 @Cmd.Info(help = "Gives you an item with custom NBT data. Requires creative mode.",
@@ -106,11 +107,11 @@ public class GiveCmd extends Cmd
 		// list all templates
 		if(args[0].equalsIgnoreCase("templates"))
 		{
-			wurst.chat.message("§cItem templates:");
+			ChatUtils.message("§cItem templates:");
 			for(int i = 0; i < templates.length; i++)
 			{
 				ItemTemplate template = templates[i];
-				wurst.chat.message("§c" + (i + 1) + "§c: §6" + template.name);
+				ChatUtils.message("§c" + (i + 1) + "§c: §6" + template.name);
 			}
 			return;
 		}
@@ -191,7 +192,7 @@ public class GiveCmd extends Cmd
 				mc.player.sendQueue
 					.addToSendQueue(new C10PacketCreativeInventoryAction(
 						36 + i, stack));
-				wurst.chat.message("Item" + (amount > 1 ? "s" : "")
+				ChatUtils.message("Item" + (amount > 1 ? "s" : "")
 					+ " created.");
 				return;
 			}

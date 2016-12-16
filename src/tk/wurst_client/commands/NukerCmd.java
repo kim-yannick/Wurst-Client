@@ -9,6 +9,7 @@ package tk.wurst_client.commands;
 
 import net.minecraft.block.Block;
 import tk.wurst_client.mods.NukerMod;
+import tk.wurst_client.utils.ChatUtils;
 import tk.wurst_client.utils.MiscUtils;
 
 @Cmd.Info(help = "Changes the settings of Nuker.", name = "nuker", syntax = {
@@ -41,25 +42,25 @@ public class NukerCmd extends Cmd
 				wurst.files.saveNavigatorData();
 			}
 			
-			wurst.chat.message("Nuker mode set to \"" + args[1] + "\".");
+			ChatUtils.message("Nuker mode set to \"" + args[1] + "\".");
 		}else if(args[0].equalsIgnoreCase("id") && MiscUtils.isInteger(args[1]))
 		{
 			if(nuker.getMode() != 1)
 			{
 				nuker.setMode(1);
 				wurst.files.saveNavigatorData();
-				wurst.chat.message("Nuker mode set to \"" + args[0] + "\".");
+				ChatUtils.message("Nuker mode set to \"" + args[0] + "\".");
 			}
 			
 			NukerMod.id = Integer.valueOf(args[1]);
-			wurst.chat.message("Nuker ID set to \"" + args[1] + "\".");
+			ChatUtils.message("Nuker ID set to \"" + args[1] + "\".");
 		}else if(args[0].equalsIgnoreCase("name"))
 		{
 			if(nuker.getMode() != 1)
 			{
 				nuker.setMode(1);
 				wurst.files.saveNavigatorData();
-				wurst.chat.message("Nuker mode set to \"" + args[0] + "\".");
+				ChatUtils.message("Nuker mode set to \"" + args[0] + "\".");
 			}
 			
 			int newId = Block.getIdFromBlock(Block.getBlockFromName(args[1]));
@@ -67,7 +68,7 @@ public class NukerCmd extends Cmd
 				error("The block \"" + args[1] + "\" could not be found.");
 			
 			NukerMod.id = newId;
-			wurst.chat.message("Nuker ID set to " + newId + " (" + args[1]
+			ChatUtils.message("Nuker ID set to " + newId + " (" + args[1]
 				+ ").");
 		}else
 			syntaxError();

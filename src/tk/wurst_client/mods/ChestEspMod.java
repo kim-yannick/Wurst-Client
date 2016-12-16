@@ -12,6 +12,7 @@ import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityEnderChest;
 import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.navigator.NavigatorItem;
+import tk.wurst_client.utils.ChatUtils;
 import tk.wurst_client.utils.RenderUtils;
 
 @Mod.Info(
@@ -68,8 +69,8 @@ public class ChestEspMod extends Mod implements RenderListener
 		}
 		if(i >= maxChests && shouldInform)
 		{
-			wurst.chat.warning(getName() + " found §lA LOT§r of chests.");
-			wurst.chat.message("To prevent lag, it will only show the first "
+			ChatUtils.warning(getName() + " found §lA LOT§r of chests.");
+			ChatUtils.message("To prevent lag, it will only show the first "
 				+ maxChests + " chests.");
 			shouldInform = false;
 		}else if(i < maxChests)
