@@ -15,13 +15,10 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemBow;
-
-import org.darkstorm.minecraft.gui.theme.wurst.WurstTheme;
-import org.darkstorm.minecraft.gui.util.RenderUtil;
-
 import tk.wurst_client.events.listeners.GUIRenderListener;
 import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.font.Fonts;
 import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
@@ -34,8 +31,8 @@ import tk.wurst_client.utils.RenderUtils;
 	name = "BowAimbot",
 	tags = "bow aimbot",
 	tutorial = "Mods/BowAimbot")
-public class BowAimbotMod extends Mod implements UpdateListener,
-	RenderListener, GUIRenderListener
+public class BowAimbotMod extends Mod
+	implements UpdateListener, RenderListener, GUIRenderListener
 {
 	private Entity target;
 	private float velocity;
@@ -71,7 +68,7 @@ public class BowAimbotMod extends Mod implements UpdateListener,
 		glDisable(GL_CULL_FACE);
 		glDisable(GL_TEXTURE_2D);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		RenderUtil.setColor(new Color(8, 8, 8, 128));
+		RenderUtils.setColor(new Color(8, 8, 8, 128));
 		ScaledResolution sr =
 			new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
 		int width = sr.getScaledWidth();
@@ -80,29 +77,19 @@ public class BowAimbotMod extends Mod implements UpdateListener,
 		glBegin(GL_QUADS);
 		{
 			glVertex2d(width / 2 + 1, height / 2 + 1);
-			glVertex2d(width
-				/ 2
-				+ ((WurstTheme)wurst.gui.getTheme()).getFontRenderer()
-					.getStringWidth(targetLocked) + 4, height / 2 + 1);
 			glVertex2d(
-				width
-					/ 2
-					+ ((WurstTheme)wurst.gui.getTheme()).getFontRenderer()
-						.getStringWidth(targetLocked) + 4,
-				height
-					/ 2
-					+ ((WurstTheme)wurst.gui.getTheme()).getFontRenderer().FONT_HEIGHT);
+				width / 2 + Fonts.segoe15.getStringWidth(targetLocked) + 4,
+				height / 2 + 1);
 			glVertex2d(
-				width / 2 + 1,
-				height
-					/ 2
-					+ ((WurstTheme)wurst.gui.getTheme()).getFontRenderer().FONT_HEIGHT);
+				width / 2 + Fonts.segoe15.getStringWidth(targetLocked) + 4,
+				height / 2 + Fonts.segoe15.FONT_HEIGHT + 2);
+			glVertex2d(width / 2 + 1,
+				height / 2 + Fonts.segoe15.FONT_HEIGHT + 2);
 		}
 		glEnd();
 		glEnable(GL_TEXTURE_2D);
-		((WurstTheme)wurst.gui.getTheme()).getFontRenderer()
-			.drawStringWithShadow(targetLocked, width / 2 + 2, height / 2,
-				RenderUtil.toRGBA(Color.WHITE));
+		Fonts.segoe15.drawStringWithShadow(targetLocked, width / 2 + 2,
+			height / 2, 0xffffffff);
 		glEnable(GL_CULL_FACE);
 		glDisable(GL_BLEND);
 	}
@@ -146,24 +133,19 @@ public class BowAimbotMod extends Mod implements UpdateListener,
 		if(velocity > 1)
 			velocity = 1;
 		double posX =
-			target.posX + (target.posX - target.prevPosX) * 5
-				- mc.player.posX;
-		double posY =
-			target.posY + (target.posY - target.prevPosY) * 5
-				+ target.getEyeHeight() - 0.15 - mc.player.posY
-				- mc.player.getEyeHeight();
+			target.posX + (target.posX - target.prevPosX) * 5 - mc.player.posX;
+		double posY = target.posY + (target.posY - target.prevPosY) * 5
+			+ target.getEyeHeight() - 0.15 - mc.player.posY
+			- mc.player.getEyeHeight();
 		double posZ =
-			target.posZ + (target.posZ - target.prevPosZ) * 5
-				- mc.player.posZ;
+			target.posZ + (target.posZ - target.prevPosZ) * 5 - mc.player.posZ;
 		float yaw = (float)(Math.atan2(posZ, posX) * 180 / Math.PI) - 90;
 		double y2 = Math.sqrt(posX * posX + posZ * posZ);
 		float g = 0.006F;
-		float tmp =
-			(float)(velocity * velocity * velocity * velocity - g
-				* (g * (y2 * y2) + 2 * posY * (velocity * velocity)));
-		float pitch =
-			(float)-Math.toDegrees(Math.atan((velocity * velocity - Math
-				.sqrt(tmp)) / (g * y2)));
+		float tmp = (float)(velocity * velocity * velocity * velocity
+			- g * (g * (y2 * y2) + 2 * posY * (velocity * velocity)));
+		float pitch = (float)-Math.toDegrees(
+			Math.atan((velocity * velocity - Math.sqrt(tmp)) / (g * y2)));
 		mc.player.rotationYaw = yaw;
 		mc.player.rotationPitch = pitch;
 	}

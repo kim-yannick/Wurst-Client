@@ -11,7 +11,10 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Color;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
@@ -19,9 +22,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
-
-import org.darkstorm.minecraft.gui.util.RenderUtil;
-import org.lwjgl.opengl.GL11;
 
 public class RenderUtils
 {
@@ -48,14 +48,14 @@ public class RenderUtils
 		GL11.glBlendFunc(770, 771);
 		GL11.glEnable(GL_BLEND);
 		GL11.glLineWidth(2.0F);
-		RenderUtil.setColor(color);
+		setColor(color);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL_DEPTH_TEST);
 		GL11.glDepthMask(false);
 		drawColorBox(new AxisAlignedBB(x, y, z, x2, y2, z2));
 		GL11.glColor4d(0, 0, 0, 0.5F);
-		RenderGlobal.drawOutlinedBoundingBox(new AxisAlignedBB(x, y, z, x2, y2,
-			z2), -1);
+		RenderGlobal.drawOutlinedBoundingBox(
+			new AxisAlignedBB(x, y, z, x2, y2, z2), -1);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL_DEPTH_TEST);
 		GL11.glDepthMask(true);
@@ -73,8 +73,8 @@ public class RenderUtils
 	 * @param z2
 	 * @param color
 	 */
-	public static void frame(double x, double y, double z, double x2,
-		double y2, double z2, Color color)
+	public static void frame(double x, double y, double z, double x2, double y2,
+		double z2, Color color)
 	{
 		x = x - Minecraft.getMinecraft().getRenderManager().renderPosX;
 		y = y - Minecraft.getMinecraft().getRenderManager().renderPosY;
@@ -88,9 +88,9 @@ public class RenderUtils
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL_DEPTH_TEST);
 		GL11.glDepthMask(false);
-		RenderUtil.setColor(color);
-		RenderGlobal.drawOutlinedBoundingBox(new AxisAlignedBB(x, y, z, x2, y2,
-			z2), -1);
+		setColor(color);
+		RenderGlobal.drawOutlinedBoundingBox(
+			new AxisAlignedBB(x, y, z, x2, y2, z2), -1);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL_DEPTH_TEST);
 		GL11.glDepthMask(true);
@@ -107,15 +107,12 @@ public class RenderUtils
 	 */
 	public static void blockESPBox(BlockPos blockPos)
 	{
-		double x =
-			blockPos.getX()
-				- Minecraft.getMinecraft().getRenderManager().renderPosX;
-		double y =
-			blockPos.getY()
-				- Minecraft.getMinecraft().getRenderManager().renderPosY;
-		double z =
-			blockPos.getZ()
-				- Minecraft.getMinecraft().getRenderManager().renderPosZ;
+		double x = blockPos.getX()
+			- Minecraft.getMinecraft().getRenderManager().renderPosX;
+		double y = blockPos.getY()
+			- Minecraft.getMinecraft().getRenderManager().renderPosY;
+		double z = blockPos.getZ()
+			- Minecraft.getMinecraft().getRenderManager().renderPosZ;
 		GL11.glBlendFunc(770, 771);
 		GL11.glEnable(GL_BLEND);
 		GL11.glLineWidth(1.0F);
@@ -125,8 +122,8 @@ public class RenderUtils
 		GL11.glDepthMask(false);
 		drawColorBox(new AxisAlignedBB(x, y, z, x + 1.0, y + 1.0, z + 1.0));
 		GL11.glColor4d(0, 0, 0, 0.5F);
-		RenderGlobal.drawOutlinedBoundingBox(new AxisAlignedBB(x, y, z,
-			x + 1.0, y + 1.0, z + 1.0), -1);
+		RenderGlobal.drawOutlinedBoundingBox(
+			new AxisAlignedBB(x, y, z, x + 1.0, y + 1.0, z + 1.0), -1);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL_DEPTH_TEST);
 		GL11.glDepthMask(true);
@@ -135,15 +132,12 @@ public class RenderUtils
 	
 	public static void framelessBlockESP(BlockPos blockPos, Color color)
 	{
-		double x =
-			blockPos.getX()
-				- Minecraft.getMinecraft().getRenderManager().renderPosX;
-		double y =
-			blockPos.getY()
-				- Minecraft.getMinecraft().getRenderManager().renderPosY;
-		double z =
-			blockPos.getZ()
-				- Minecraft.getMinecraft().getRenderManager().renderPosZ;
+		double x = blockPos.getX()
+			- Minecraft.getMinecraft().getRenderManager().renderPosX;
+		double y = blockPos.getY()
+			- Minecraft.getMinecraft().getRenderManager().renderPosY;
+		double z = blockPos.getZ()
+			- Minecraft.getMinecraft().getRenderManager().renderPosZ;
 		GL11.glBlendFunc(770, 771);
 		GL11.glEnable(GL_BLEND);
 		GL11.glLineWidth(2.0F);
@@ -161,15 +155,12 @@ public class RenderUtils
 	
 	public static void emptyBlockESPBox(BlockPos blockPos)
 	{
-		double x =
-			blockPos.getX()
-				- Minecraft.getMinecraft().getRenderManager().renderPosX;
-		double y =
-			blockPos.getY()
-				- Minecraft.getMinecraft().getRenderManager().renderPosY;
-		double z =
-			blockPos.getZ()
-				- Minecraft.getMinecraft().getRenderManager().renderPosZ;
+		double x = blockPos.getX()
+			- Minecraft.getMinecraft().getRenderManager().renderPosX;
+		double y = blockPos.getY()
+			- Minecraft.getMinecraft().getRenderManager().renderPosY;
+		double z = blockPos.getZ()
+			- Minecraft.getMinecraft().getRenderManager().renderPosZ;
 		GL11.glBlendFunc(770, 771);
 		GL11.glEnable(GL_BLEND);
 		GL11.glLineWidth(2.0F);
@@ -177,8 +168,8 @@ public class RenderUtils
 		GL11.glDisable(GL_DEPTH_TEST);
 		GL11.glDepthMask(false);
 		GL11.glColor4d(0, 0, 0, 0.5F);
-		RenderGlobal.drawOutlinedBoundingBox(new AxisAlignedBB(x, y, z,
-			x + 1.0, y + 1.0, z + 1.0), -1);
+		RenderGlobal.drawOutlinedBoundingBox(
+			new AxisAlignedBB(x, y, z, x + 1.0, y + 1.0, z + 1.0), -1);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL_DEPTH_TEST);
 		GL11.glDepthMask(true);
@@ -201,9 +192,10 @@ public class RenderUtils
 		GL11.glDepthMask(false);
 		if(mode == 0)// Enemy
 			GL11.glColor4d(
-				1 - Minecraft.getMinecraft().player
-					.getDistanceToEntity(entity) / 40,
-				Minecraft.getMinecraft().player.getDistanceToEntity(entity) / 40,
+				1 - Minecraft.getMinecraft().player.getDistanceToEntity(entity)
+					/ 40,
+				Minecraft.getMinecraft().player.getDistanceToEntity(entity)
+					/ 40,
 				0, 0.5F);
 		else if(mode == 1)// Friend
 			GL11.glColor4d(0, 0, 1, 0.5F);
@@ -216,35 +208,20 @@ public class RenderUtils
 		Minecraft.getMinecraft().getRenderManager();
 		RenderGlobal.drawOutlinedBoundingBox(
 			new AxisAlignedBB(
-				entity.boundingBox.minX
-					- 0.05
-					- entity.posX
+				entity.boundingBox.minX - 0.05 - entity.posX
 					+ (entity.posX - Minecraft.getMinecraft()
 						.getRenderManager().renderPosX),
-				entity.boundingBox.minY
-					- entity.posY
-					+ (entity.posY - Minecraft.getMinecraft()
-						.getRenderManager().renderPosY),
-				entity.boundingBox.minZ
-					- 0.05
-					- entity.posZ
-					+ (entity.posZ - Minecraft.getMinecraft()
-						.getRenderManager().renderPosZ),
-				entity.boundingBox.maxX
-					+ 0.05
-					- entity.posX
-					+ (entity.posX - Minecraft.getMinecraft()
-						.getRenderManager().renderPosX),
-				entity.boundingBox.maxY
-					+ 0.1
-					- entity.posY
-					+ (entity.posY - Minecraft.getMinecraft()
-						.getRenderManager().renderPosY),
-				entity.boundingBox.maxZ
-					+ 0.05
-					- entity.posZ
-					+ (entity.posZ - Minecraft.getMinecraft()
-						.getRenderManager().renderPosZ)), -1);
+				entity.boundingBox.minY - entity.posY + (entity.posY
+					- Minecraft.getMinecraft().getRenderManager().renderPosY),
+				entity.boundingBox.minZ - 0.05 - entity.posZ + (entity.posZ
+					- Minecraft.getMinecraft().getRenderManager().renderPosZ),
+				entity.boundingBox.maxX + 0.05 - entity.posX + (entity.posX
+					- Minecraft.getMinecraft().getRenderManager().renderPosX),
+				entity.boundingBox.maxY + 0.1 - entity.posY + (entity.posY
+					- Minecraft.getMinecraft().getRenderManager().renderPosY),
+				entity.boundingBox.maxZ + 0.05 - entity.posZ + (entity.posZ
+					- Minecraft.getMinecraft().getRenderManager().renderPosZ)),
+			-1);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL_DEPTH_TEST);
 		GL11.glDepthMask(true);
@@ -253,15 +230,12 @@ public class RenderUtils
 	
 	public static void nukerBox(BlockPos blockPos, float damage)
 	{
-		double x =
-			blockPos.getX()
-				- Minecraft.getMinecraft().getRenderManager().renderPosX;
-		double y =
-			blockPos.getY()
-				- Minecraft.getMinecraft().getRenderManager().renderPosY;
-		double z =
-			blockPos.getZ()
-				- Minecraft.getMinecraft().getRenderManager().renderPosZ;
+		double x = blockPos.getX()
+			- Minecraft.getMinecraft().getRenderManager().renderPosX;
+		double y = blockPos.getY()
+			- Minecraft.getMinecraft().getRenderManager().renderPosY;
+		double z = blockPos.getZ()
+			- Minecraft.getMinecraft().getRenderManager().renderPosZ;
 		GL11.glBlendFunc(770, 771);
 		GL11.glEnable(GL_BLEND);
 		GL11.glLineWidth(1.0F);
@@ -269,13 +243,15 @@ public class RenderUtils
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL_DEPTH_TEST);
 		GL11.glDepthMask(false);
-		drawColorBox(new AxisAlignedBB(x + 0.5 - damage / 2, y + 0.5 - damage
-			/ 2, z + 0.5 - damage / 2, x + 0.5 + damage / 2, y + 0.5 + damage
-			/ 2, z + 0.5 + damage / 2));
+		drawColorBox(new AxisAlignedBB(x + 0.5 - damage / 2,
+			y + 0.5 - damage / 2, z + 0.5 - damage / 2, x + 0.5 + damage / 2,
+			y + 0.5 + damage / 2, z + 0.5 + damage / 2));
 		GL11.glColor4d(0, 0, 0, 0.5F);
-		RenderGlobal.drawOutlinedBoundingBox(new AxisAlignedBB(x + 0.5 - damage
-			/ 2, y + 0.5 - damage / 2, z + 0.5 - damage / 2, x + 0.5 + damage
-			/ 2, y + 0.5 + damage / 2, z + 0.5 + damage / 2), -1);
+		RenderGlobal.drawOutlinedBoundingBox(
+			new AxisAlignedBB(x + 0.5 - damage / 2, y + 0.5 - damage / 2,
+				z + 0.5 - damage / 2, x + 0.5 + damage / 2,
+				y + 0.5 + damage / 2, z + 0.5 + damage / 2),
+			-1);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL_DEPTH_TEST);
 		GL11.glDepthMask(true);
@@ -284,15 +260,12 @@ public class RenderUtils
 	
 	public static void searchBox(BlockPos blockPos)
 	{
-		double x =
-			blockPos.getX()
-				- Minecraft.getMinecraft().getRenderManager().renderPosX;
-		double y =
-			blockPos.getY()
-				- Minecraft.getMinecraft().getRenderManager().renderPosY;
-		double z =
-			blockPos.getZ()
-				- Minecraft.getMinecraft().getRenderManager().renderPosZ;
+		double x = blockPos.getX()
+			- Minecraft.getMinecraft().getRenderManager().renderPosX;
+		double y = blockPos.getY()
+			- Minecraft.getMinecraft().getRenderManager().renderPosY;
+		double z = blockPos.getZ()
+			- Minecraft.getMinecraft().getRenderManager().renderPosZ;
 		GL11.glBlendFunc(770, 771);
 		GL11.glEnable(GL_BLEND);
 		GL11.glLineWidth(1.0F);
@@ -305,8 +278,8 @@ public class RenderUtils
 		GL11.glDepthMask(false);
 		drawColorBox(new AxisAlignedBB(x, y, z, x + 1.0, y + 1.0, z + 1.0));
 		GL11.glColor4d(0, 0, 0, 0.5);
-		RenderGlobal.drawOutlinedBoundingBox(new AxisAlignedBB(x, y, z,
-			x + 1.0, y + 1.0, z + 1.0), -1);
+		RenderGlobal.drawOutlinedBoundingBox(
+			new AxisAlignedBB(x, y, z, x + 1.0, y + 1.0, z + 1.0), -1);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL_DEPTH_TEST);
 		GL11.glDepthMask(true);
@@ -318,78 +291,123 @@ public class RenderUtils
 		Tessellator ts = Tessellator.getInstance();
 		WorldRenderer wr = ts.getWorldRenderer();
 		wr.startDrawingQuads();// Starts X.
-		wr.addVertex(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ);
-		wr.addVertex(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ);
-		wr.addVertex(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ);
-		wr.addVertex(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ);
-		wr.addVertex(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ);
-		wr.addVertex(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		wr.addVertex(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ);
-		wr.addVertex(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ);
+		wr.addVertex(axisalignedbb.minX, axisalignedbb.minY,
+			axisalignedbb.minZ);
+		wr.addVertex(axisalignedbb.minX, axisalignedbb.maxY,
+			axisalignedbb.minZ);
+		wr.addVertex(axisalignedbb.maxX, axisalignedbb.minY,
+			axisalignedbb.minZ);
+		wr.addVertex(axisalignedbb.maxX, axisalignedbb.maxY,
+			axisalignedbb.minZ);
+		wr.addVertex(axisalignedbb.maxX, axisalignedbb.minY,
+			axisalignedbb.maxZ);
+		wr.addVertex(axisalignedbb.maxX, axisalignedbb.maxY,
+			axisalignedbb.maxZ);
+		wr.addVertex(axisalignedbb.minX, axisalignedbb.minY,
+			axisalignedbb.maxZ);
+		wr.addVertex(axisalignedbb.minX, axisalignedbb.maxY,
+			axisalignedbb.maxZ);
 		ts.draw();
 		wr.startDrawingQuads();
-		wr.addVertex(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ);
-		wr.addVertex(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ);
-		wr.addVertex(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ);
-		wr.addVertex(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ);
-		wr.addVertex(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		wr.addVertex(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ);
-		wr.addVertex(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		wr.addVertex(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ);
+		wr.addVertex(axisalignedbb.maxX, axisalignedbb.maxY,
+			axisalignedbb.minZ);
+		wr.addVertex(axisalignedbb.maxX, axisalignedbb.minY,
+			axisalignedbb.minZ);
+		wr.addVertex(axisalignedbb.minX, axisalignedbb.maxY,
+			axisalignedbb.minZ);
+		wr.addVertex(axisalignedbb.minX, axisalignedbb.minY,
+			axisalignedbb.minZ);
+		wr.addVertex(axisalignedbb.minX, axisalignedbb.maxY,
+			axisalignedbb.maxZ);
+		wr.addVertex(axisalignedbb.minX, axisalignedbb.minY,
+			axisalignedbb.maxZ);
+		wr.addVertex(axisalignedbb.maxX, axisalignedbb.maxY,
+			axisalignedbb.maxZ);
+		wr.addVertex(axisalignedbb.maxX, axisalignedbb.minY,
+			axisalignedbb.maxZ);
 		ts.draw();// Ends X.
 		wr.startDrawingQuads();// Starts Y.
-		wr.addVertex(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ);
-		wr.addVertex(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ);
-		wr.addVertex(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		wr.addVertex(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		wr.addVertex(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ);
-		wr.addVertex(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		wr.addVertex(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		wr.addVertex(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ);
+		wr.addVertex(axisalignedbb.minX, axisalignedbb.maxY,
+			axisalignedbb.minZ);
+		wr.addVertex(axisalignedbb.maxX, axisalignedbb.maxY,
+			axisalignedbb.minZ);
+		wr.addVertex(axisalignedbb.maxX, axisalignedbb.maxY,
+			axisalignedbb.maxZ);
+		wr.addVertex(axisalignedbb.minX, axisalignedbb.maxY,
+			axisalignedbb.maxZ);
+		wr.addVertex(axisalignedbb.minX, axisalignedbb.maxY,
+			axisalignedbb.minZ);
+		wr.addVertex(axisalignedbb.minX, axisalignedbb.maxY,
+			axisalignedbb.maxZ);
+		wr.addVertex(axisalignedbb.maxX, axisalignedbb.maxY,
+			axisalignedbb.maxZ);
+		wr.addVertex(axisalignedbb.maxX, axisalignedbb.maxY,
+			axisalignedbb.minZ);
 		ts.draw();
 		wr.startDrawingQuads();
-		wr.addVertex(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ);
-		wr.addVertex(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ);
-		wr.addVertex(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ);
-		wr.addVertex(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ);
-		wr.addVertex(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ);
-		wr.addVertex(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ);
-		wr.addVertex(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ);
-		wr.addVertex(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ);
+		wr.addVertex(axisalignedbb.minX, axisalignedbb.minY,
+			axisalignedbb.minZ);
+		wr.addVertex(axisalignedbb.maxX, axisalignedbb.minY,
+			axisalignedbb.minZ);
+		wr.addVertex(axisalignedbb.maxX, axisalignedbb.minY,
+			axisalignedbb.maxZ);
+		wr.addVertex(axisalignedbb.minX, axisalignedbb.minY,
+			axisalignedbb.maxZ);
+		wr.addVertex(axisalignedbb.minX, axisalignedbb.minY,
+			axisalignedbb.minZ);
+		wr.addVertex(axisalignedbb.minX, axisalignedbb.minY,
+			axisalignedbb.maxZ);
+		wr.addVertex(axisalignedbb.maxX, axisalignedbb.minY,
+			axisalignedbb.maxZ);
+		wr.addVertex(axisalignedbb.maxX, axisalignedbb.minY,
+			axisalignedbb.minZ);
 		ts.draw();// Ends Y.
 		wr.startDrawingQuads();// Starts Z.
-		wr.addVertex(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ);
-		wr.addVertex(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ);
-		wr.addVertex(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ);
-		wr.addVertex(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		wr.addVertex(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ);
-		wr.addVertex(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		wr.addVertex(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ);
-		wr.addVertex(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ);
+		wr.addVertex(axisalignedbb.minX, axisalignedbb.minY,
+			axisalignedbb.minZ);
+		wr.addVertex(axisalignedbb.minX, axisalignedbb.maxY,
+			axisalignedbb.minZ);
+		wr.addVertex(axisalignedbb.minX, axisalignedbb.minY,
+			axisalignedbb.maxZ);
+		wr.addVertex(axisalignedbb.minX, axisalignedbb.maxY,
+			axisalignedbb.maxZ);
+		wr.addVertex(axisalignedbb.maxX, axisalignedbb.minY,
+			axisalignedbb.maxZ);
+		wr.addVertex(axisalignedbb.maxX, axisalignedbb.maxY,
+			axisalignedbb.maxZ);
+		wr.addVertex(axisalignedbb.maxX, axisalignedbb.minY,
+			axisalignedbb.minZ);
+		wr.addVertex(axisalignedbb.maxX, axisalignedbb.maxY,
+			axisalignedbb.minZ);
 		ts.draw();
 		wr.startDrawingQuads();
-		wr.addVertex(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		wr.addVertex(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.maxZ);
-		wr.addVertex(axisalignedbb.minX, axisalignedbb.maxY, axisalignedbb.minZ);
-		wr.addVertex(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ);
-		wr.addVertex(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.minZ);
-		wr.addVertex(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.minZ);
-		wr.addVertex(axisalignedbb.maxX, axisalignedbb.maxY, axisalignedbb.maxZ);
-		wr.addVertex(axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ);
+		wr.addVertex(axisalignedbb.minX, axisalignedbb.maxY,
+			axisalignedbb.maxZ);
+		wr.addVertex(axisalignedbb.minX, axisalignedbb.minY,
+			axisalignedbb.maxZ);
+		wr.addVertex(axisalignedbb.minX, axisalignedbb.maxY,
+			axisalignedbb.minZ);
+		wr.addVertex(axisalignedbb.minX, axisalignedbb.minY,
+			axisalignedbb.minZ);
+		wr.addVertex(axisalignedbb.maxX, axisalignedbb.maxY,
+			axisalignedbb.minZ);
+		wr.addVertex(axisalignedbb.maxX, axisalignedbb.minY,
+			axisalignedbb.minZ);
+		wr.addVertex(axisalignedbb.maxX, axisalignedbb.maxY,
+			axisalignedbb.maxZ);
+		wr.addVertex(axisalignedbb.maxX, axisalignedbb.minY,
+			axisalignedbb.maxZ);
 		ts.draw();// Ends Z.
 	}
 	
 	public static void tracerLine(Entity entity, int mode)
 	{
-		double x =
-			entity.posX
-				- Minecraft.getMinecraft().getRenderManager().renderPosX;
-		double y =
-			entity.posY + entity.height / 2
-				- Minecraft.getMinecraft().getRenderManager().renderPosY;
-		double z =
-			entity.posZ
-				- Minecraft.getMinecraft().getRenderManager().renderPosZ;
+		double x = entity.posX
+			- Minecraft.getMinecraft().getRenderManager().renderPosX;
+		double y = entity.posY + entity.height / 2
+			- Minecraft.getMinecraft().getRenderManager().renderPosY;
+		double z = entity.posZ
+			- Minecraft.getMinecraft().getRenderManager().renderPosZ;
 		glBlendFunc(770, 771);
 		glEnable(GL_BLEND);
 		glLineWidth(2.0F);
@@ -398,9 +416,10 @@ public class RenderUtils
 		glDepthMask(false);
 		if(mode == 0)// Enemy
 			GL11.glColor4d(
-				1 - Minecraft.getMinecraft().player
-					.getDistanceToEntity(entity) / 40,
-				Minecraft.getMinecraft().player.getDistanceToEntity(entity) / 40,
+				1 - Minecraft.getMinecraft().player.getDistanceToEntity(entity)
+					/ 40,
+				Minecraft.getMinecraft().player.getDistanceToEntity(entity)
+					/ 40,
 				0, 0.5F);
 		else if(mode == 1)// Friend
 			GL11.glColor4d(0, 0, 1, 0.5F);
@@ -424,22 +443,19 @@ public class RenderUtils
 	
 	public static void tracerLine(Entity entity, Color color)
 	{
-		double x =
-			entity.posX
-				- Minecraft.getMinecraft().getRenderManager().renderPosX;
-		double y =
-			entity.posY + entity.height / 2
-				- Minecraft.getMinecraft().getRenderManager().renderPosY;
-		double z =
-			entity.posZ
-				- Minecraft.getMinecraft().getRenderManager().renderPosZ;
+		double x = entity.posX
+			- Minecraft.getMinecraft().getRenderManager().renderPosX;
+		double y = entity.posY + entity.height / 2
+			- Minecraft.getMinecraft().getRenderManager().renderPosY;
+		double z = entity.posZ
+			- Minecraft.getMinecraft().getRenderManager().renderPosZ;
 		glBlendFunc(770, 771);
 		glEnable(GL_BLEND);
 		glLineWidth(2.0F);
 		glDisable(GL11.GL_TEXTURE_2D);
 		glDisable(GL_DEPTH_TEST);
 		glDepthMask(false);
-		RenderUtil.setColor(color);
+		setColor(color);
 		glBegin(GL_LINES);
 		{
 			glVertex3d(0, Minecraft.getMinecraft().player.getEyeHeight(), 0);
@@ -463,7 +479,7 @@ public class RenderUtils
 		glDisable(GL11.GL_TEXTURE_2D);
 		glDisable(GL_DEPTH_TEST);
 		glDepthMask(false);
-		RenderUtil.setColor(color);
+		setColor(color);
 		glBegin(GL_LINES);
 		{
 			glVertex3d(0, Minecraft.getMinecraft().player.getEyeHeight(), 0);
@@ -474,5 +490,24 @@ public class RenderUtils
 		glEnable(GL_DEPTH_TEST);
 		glDepthMask(true);
 		glDisable(GL_BLEND);
+	}
+	
+	public static void scissorBox(int x, int y, int xend, int yend)
+	{
+		int width = xend - x;
+		int height = yend - y;
+		ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft(),
+			Minecraft.getMinecraft().displayWidth,
+			Minecraft.getMinecraft().displayHeight);
+		int factor = sr.getScaleFactor();
+		int bottomY = Minecraft.getMinecraft().currentScreen.height - yend;
+		glScissor(x * factor, bottomY * factor, width * factor,
+			height * factor);
+	}
+	
+	public static void setColor(Color c)
+	{
+		glColor4f(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f,
+			c.getAlpha() / 255f);
 	}
 }
