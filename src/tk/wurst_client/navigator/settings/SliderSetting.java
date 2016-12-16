@@ -9,10 +9,10 @@ package tk.wurst_client.navigator.settings;
 
 import java.util.ArrayList;
 
+import com.google.gson.JsonObject;
+
 import tk.wurst_client.navigator.PossibleKeybind;
 import tk.wurst_client.navigator.gui.NavigatorFeatureScreen;
-
-import com.google.gson.JsonObject;
 
 public class SliderSetting implements NavigatorSetting
 {
@@ -92,6 +92,11 @@ public class SliderSetting implements NavigatorSetting
 	public final float getValueF()
 	{
 		return (float)getValue();
+	}
+	
+	public final int getValueI()
+	{
+		return (int)getValue();
 	}
 	
 	public final void setValue(double value)
@@ -227,6 +232,7 @@ public class SliderSetting implements NavigatorSetting
 	public final void load(JsonObject json)
 	{
 		value = json.get(name).getAsDouble();
+		update();
 	}
 	
 	@Override
@@ -237,13 +243,11 @@ public class SliderSetting implements NavigatorSetting
 	
 	public static enum ValueDisplay
 	{
-		DECIMAL((v) -> Double.toString(v)),
-		INTEGER((v) -> Integer.toString((int)v)),
-		PERCENTAGE((v) -> v * 1e6 * 100D * 1e6 / 1e12 + "%"),
+		DECIMAL((v) -> Math.round(v * 1e6) / 1e6 + ""),
+		INTEGER((v) -> (int)v + ""),
+		PERCENTAGE((v) -> (int)(Math.round(v * 1e8) / 1e6) + "%"),
 		DEGREES((v) -> (int)v + "°"),
-		NONE((v) -> {
-			return "";
-		});
+		NONE((v) -> "");
 		
 		private ValueProcessor processor;
 		

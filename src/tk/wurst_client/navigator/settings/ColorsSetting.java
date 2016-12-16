@@ -10,17 +10,19 @@ package tk.wurst_client.navigator.settings;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import tk.wurst_client.navigator.PossibleKeybind;
 import tk.wurst_client.navigator.gui.NavigatorFeatureScreen;
 import tk.wurst_client.utils.JsonUtils;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 public class ColorsSetting implements NavigatorSetting
 {
 	private String name;
 	private boolean[] selected;
+	private boolean locked;
+	private boolean[] lockSelected;
 	
 	public ColorsSetting(String name, boolean[] selected)
 	{
@@ -66,6 +68,12 @@ public class ColorsSetting implements NavigatorSetting
 			{
 				setSelected(index, !selected[index]);
 				updateColor();
+			}
+			
+			@Override
+			public boolean isLocked()
+			{
+				return locked;
 			}
 			
 			public void updateColor()
@@ -117,6 +125,12 @@ public class ColorsSetting implements NavigatorSetting
 					}
 					update();
 				}
+				
+				@Override
+				public boolean isLocked()
+				{
+					return locked;
+				}
 			});
 		
 		// all off button
@@ -134,6 +148,12 @@ public class ColorsSetting implements NavigatorSetting
 					}
 					update();
 				}
+				
+				@Override
+				public boolean isLocked()
+				{
+					return locked;
+				}
 			});
 	}
 	
@@ -145,13 +165,34 @@ public class ColorsSetting implements NavigatorSetting
 	
 	public boolean[] getSelected()
 	{
-		return selected;
+		return locked ? lockSelected : selected;
 	}
 	
 	public void setSelected(int index, boolean selected)
 	{
-		this.selected[index] = selected;
+		if(!locked)
+		{
+			this.selected[index] = selected;
+			update();
+		}
+	}
+	
+	public final void lock(boolean[] lockSelected)
+	{
+		this.lockSelected = lockSelected;
+		locked = true;
 		update();
+	}
+	
+	public final void unlock()
+	{
+		locked = false;
+		update();
+	}
+	
+	public final boolean isLocked()
+	{
+		return locked;
 	}
 	
 	@Override
@@ -166,6 +207,7 @@ public class ColorsSetting implements NavigatorSetting
 		JsonArray jsonColors = json.get(name).getAsJsonArray();
 		for(int i = 0; i < selected.length; i++)
 			selected[i] = jsonColors.get(i).getAsBoolean();
+		update();
 	}
 	
 	@Override
