@@ -21,6 +21,7 @@ import tk.wurst_client.utils.ChatUtils;
 	name = "CMD-Block",
 	tags = "CmdBlock, CommandBlock, cmd block, command block",
 	help = "Mods/CMD-Block")
+@Mod.Bypasses
 public class CmdBlockMod extends Mod
 {
 	@Override

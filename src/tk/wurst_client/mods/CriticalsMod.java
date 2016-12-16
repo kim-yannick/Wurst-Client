@@ -15,11 +15,11 @@ import tk.wurst_client.events.listeners.LeftClickListener;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.settings.ModeSetting;
 
-@Mod.Info(
-	description = "Changes all your hits to critical hits.",
+@Mod.Info(description = "Changes all your hits to critical hits.",
 	name = "Criticals",
 	tags = "Crits",
 	help = "Mods/Criticals")
+@Mod.Bypasses
 public class CriticalsMod extends Mod implements LeftClickListener
 {
 	private int mode = 1;
@@ -88,12 +88,12 @@ public class CriticalsMod extends Mod implements LeftClickListener
 					
 					sendQueue.sendPacket(new C04PacketPlayerPosition(posX,
 						posY + 0.0625D, posZ, true));
-					sendQueue.sendPacket(new C04PacketPlayerPosition(posX,
-						posY, posZ, false));
+					sendQueue.sendPacket(
+						new C04PacketPlayerPosition(posX, posY, posZ, false));
 					sendQueue.sendPacket(new C04PacketPlayerPosition(posX,
 						posY + 1.1E-5D, posZ, false));
-					sendQueue.sendPacket(new C04PacketPlayerPosition(posX,
-						posY, posZ, false));
+					sendQueue.sendPacket(
+						new C04PacketPlayerPosition(posX, posY, posZ, false));
 					break;
 			}
 			

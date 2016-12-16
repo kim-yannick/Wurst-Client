@@ -17,6 +17,7 @@ import net.minecraft.util.IChatComponent;
 	noCheatCompatible = false,
 	tags = "auto sign",
 	help = "Mods/AutoSign")
+@Mod.Bypasses
 public class AutoSignMod extends Mod
 {
 	public IChatComponent[] signText;

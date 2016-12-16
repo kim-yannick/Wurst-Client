@@ -16,6 +16,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	name = "BunnyHop",
 	tags = "AutoJump, BHop, bunny hop, auto jump",
 	help = "Mods/BunnyHop")
+@Mod.Bypasses
 public class BunnyHopMod extends Mod implements UpdateListener
 {
 	@Override
@@ -27,7 +28,8 @@ public class BunnyHopMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if((mc.player.moveForward != 0 || Minecraft.getMinecraft().player.moveStrafing != 0)
+		if((mc.player.moveForward != 0
+			|| Minecraft.getMinecraft().player.moveStrafing != 0)
 			&& !mc.player.isSneaking() && mc.player.onGround)
 			mc.player.jump();
 	}

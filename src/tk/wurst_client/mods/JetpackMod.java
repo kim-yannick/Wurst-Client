@@ -18,10 +18,11 @@ import tk.wurst_client.navigator.settings.CheckboxSetting;
 	noCheatCompatible = false,
 	tags = "jet pack",
 	help = "Mods/Jetpack")
+@Mod.Bypasses
 public class JetpackMod extends Mod implements UpdateListener
 {
-	public final CheckboxSetting flightKickBypass = new CheckboxSetting(
-		"Flight-Kick-Bypass", false);
+	public final CheckboxSetting flightKickBypass =
+		new CheckboxSetting("Flight-Kick-Bypass", false);
 	
 	@Override
 	public void onEnable()
@@ -40,10 +41,9 @@ public class JetpackMod extends Mod implements UpdateListener
 	@Override
 	public String getRenderName()
 	{
-		return getName()
-			+ (flightKickBypass.isChecked() ? "[Kick: "
-				+ (wurst.mods.flightMod.flyHeight <= 300 ? "Safe" : "Unsafe")
-				+ "]" : "");
+		return getName() + (flightKickBypass.isChecked() ? "[Kick: "
+			+ (wurst.mods.flightMod.flyHeight <= 300 ? "Safe" : "Unsafe") + "]"
+			: "");
 	}
 	
 	@Override

@@ -15,6 +15,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	name = "AutoMine",
 	tags = "AutoBreak, auto mine, auto break",
 	help = "Mods/AutoMine")
+@Mod.Bypasses
 public class AutoMineMod extends Mod implements UpdateListener
 {
 	@Override
@@ -30,8 +31,8 @@ public class AutoMineMod extends Mod implements UpdateListener
 		if(mc.objectMouseOver == null
 			|| mc.objectMouseOver.getBlockPos() == null)
 			return;
-		if(Block.getIdFromBlock(mc.world.getBlockState(
-			mc.objectMouseOver.getBlockPos()).getBlock()) != 0)
+		if(Block.getIdFromBlock(mc.world
+			.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock()) != 0)
 			mc.gameSettings.keyBindAttack.pressed = true;
 		else
 			mc.gameSettings.keyBindAttack.pressed = false;

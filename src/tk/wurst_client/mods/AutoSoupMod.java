@@ -28,6 +28,7 @@ import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 	name = "AutoSoup",
 	tags = "auto soup",
 	help = "Mods/AutoSoup")
+@Mod.Bypasses
 public class AutoSoupMod extends Mod implements UpdateListener
 {
 	public float health = 20F;
@@ -35,15 +36,15 @@ public class AutoSoupMod extends Mod implements UpdateListener
 	@Override
 	public void initSettings()
 	{
-		settings.add(new SliderSetting("Health", health, 2, 20, 1,
-			ValueDisplay.INTEGER)
-		{
-			@Override
-			public void update()
+		settings.add(
+			new SliderSetting("Health", health, 2, 20, 1, ValueDisplay.INTEGER)
 			{
-				health = (float)getValue();
-			}
-		});
+				@Override
+				public void update()
+				{
+					health = (float)getValue();
+				}
+			});
 	}
 	
 	@Override
@@ -62,7 +63,8 @@ public class AutoSoupMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		// check if no container is open
-		if(mc.currentScreen instanceof GuiContainer && !(mc.currentScreen instanceof GuiInventory))
+		if(mc.currentScreen instanceof GuiContainer
+			&& !(mc.currentScreen instanceof GuiInventory))
 			return;
 		
 		EntityPlayerSP player = mc.player;
@@ -99,12 +101,13 @@ public class AutoSoupMod extends Mod implements UpdateListener
 			int oldSlot = player.inventory.currentItem;
 			NetHandlerPlayClient sendQueue = player.connection;
 			
-			sendQueue.sendPacket(new C09PacketHeldItemChange(
-				soupInHotbar - 36));
+			sendQueue
+				.sendPacket(new C09PacketHeldItemChange(soupInHotbar - 36));
 			playerController.updateController();
-			sendQueue.sendPacket(new C08PacketPlayerBlockPlacement(
-				new BlockPos(-1, -1, -1), -1, inventoryContainer.getSlot(
-					soupInHotbar).getStack(), 0.0F, 0.0F, 0.0F));
+			sendQueue.sendPacket(
+				new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), -1,
+					inventoryContainer.getSlot(soupInHotbar).getStack(), 0.0F,
+					0.0F, 0.0F));
 			sendQueue.sendPacket(new C09PacketHeldItemChange(oldSlot));
 		}else
 			// move soup in inventory to hotbar

@@ -12,10 +12,11 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.TreeMap;
 
+@Mod.Bypasses
 public class ModManager
 {
-	private final TreeMap<String, Mod> mods = new TreeMap<String, Mod>(
-		new Comparator<String>()
+	private final TreeMap<String, Mod> mods =
+		new TreeMap<String, Mod>(new Comparator<String>()
 		{
 			@Override
 			public int compare(String o1, String o2)

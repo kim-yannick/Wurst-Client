@@ -13,10 +13,10 @@ import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.utils.RenderUtils;
 
-@Mod.Info(
-	description = "Draws lines to players around you.",
+@Mod.Info(description = "Draws lines to players around you.",
 	name = "Tracers",
 	help = "Mods/Tracers")
+@Mod.Bypasses
 public class TracersMod extends Mod implements RenderListener
 {
 	@Override

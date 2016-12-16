@@ -9,11 +9,11 @@ package tk.wurst_client.mods;
 
 import tk.wurst_client.events.listeners.UpdateListener;
 
-@Mod.Info(
-	description = "Allows you to see in the dark.",
+@Mod.Info(description = "Allows you to see in the dark.",
 	name = "Fullbright",
 	tags = "NightVision, full bright, brightness, night vision",
 	help = "Mods/Fullbright")
+@Mod.Bypasses
 public class FullbrightMod extends Mod implements UpdateListener
 {
 	public FullbrightMod()

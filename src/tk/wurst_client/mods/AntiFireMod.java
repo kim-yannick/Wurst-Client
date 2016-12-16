@@ -31,7 +31,7 @@ public class AntiFireMod extends Mod implements UpdateListener
 	{
 		wurst.events.remove(UpdateListener.class, this);
 	}
-
+	
 	@Override
 	public void onUpdate()
 	{

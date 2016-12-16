@@ -15,6 +15,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	name = "NoWeb",
 	tags = "no web",
 	help = "Mods/NoWeb")
+@Mod.Bypasses
 public class NoWebMod extends Mod implements UpdateListener
 {
 	@Override

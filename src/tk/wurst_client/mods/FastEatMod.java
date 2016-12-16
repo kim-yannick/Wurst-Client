@@ -17,6 +17,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	noCheatCompatible = false,
 	tags = "FastNom, fast eat, fast nom",
 	help = "Mods/FastEat")
+@Mod.Bypasses
 public class FastEatMod extends Mod implements UpdateListener
 {
 	@Override
@@ -28,15 +29,14 @@ public class FastEatMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(mc.player.getHealth() > 0
-			&& mc.player.onGround
+		if(mc.player.getHealth() > 0 && mc.player.onGround
 			&& mc.player.inventory.getCurrentItem() != null
-			&& mc.player.inventory.getCurrentItem().getItem() instanceof ItemFood
+			&& mc.player.inventory.getCurrentItem()
+				.getItem() instanceof ItemFood
 			&& mc.player.getFoodStats().needFood()
 			&& mc.gameSettings.keyBindUseItem.pressed)
 			for(int i = 0; i < 100; i++)
-				mc.player.connection
-					.sendPacket(new C03PacketPlayer(false));
+				mc.player.connection.sendPacket(new C03PacketPlayer(false));
 	}
 	
 	@Override

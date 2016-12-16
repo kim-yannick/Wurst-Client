@@ -16,6 +16,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	noCheatCompatible = false,
 	tags = "no slowdown, no slow down",
 	help = "Mods/NoSlowdown")
+@Mod.Bypasses
 public class NoSlowdownMod extends Mod implements UpdateListener
 {
 	@Override

@@ -30,6 +30,7 @@ import tk.wurst_client.utils.ChatUtils;
 	name = "Kaboom",
 	noCheatCompatible = false,
 	help = "Mods/Kaboom")
+@Mod.Bypasses
 public class KaboomMod extends Mod implements UpdateListener
 {
 	private int range = 6;
@@ -38,15 +39,15 @@ public class KaboomMod extends Mod implements UpdateListener
 	@Override
 	public void initSettings()
 	{
-		settings.add(new SliderSetting("Power", power, 32, 512, 32,
-			ValueDisplay.INTEGER)
-		{
-			@Override
-			public void update()
+		settings.add(
+			new SliderSetting("Power", power, 32, 512, 32, ValueDisplay.INTEGER)
 			{
-				power = (int)getValue();
-			}
-		});
+				@Override
+				public void update()
+				{
+					power = (int)getValue();
+				}
+			});
 	}
 	
 	@Override
@@ -73,7 +74,7 @@ public class KaboomMod extends Mod implements UpdateListener
 				{
 					new Explosion(mc.world, mc.player, mc.player.posX,
 						mc.player.posY, mc.player.posZ, 6F, false, true)
-						.doExplosionB(true);
+							.doExplosionB(true);
 					for(int x = range; x >= -range - 1; x--)
 						for(int z = range; z >= -range; z--)
 						{
@@ -88,13 +89,12 @@ public class KaboomMod extends Mod implements UpdateListener
 							float xDiff = (float)(mc.player.posX - posX);
 							float yDiff = (float)(mc.player.posY - posY);
 							float zDiff = (float)(mc.player.posZ - posZ);
-							float currentDistance =
-								BlockUtils
-									.getBlockDistance(xDiff, yDiff, zDiff);
+							float currentDistance = BlockUtils
+								.getBlockDistance(xDiff, yDiff, zDiff);
 							MovingObjectPosition fakeObjectMouseOver =
 								mc.objectMouseOver;
-							fakeObjectMouseOver.setBlockPos(new BlockPos(posX,
-								posY, posZ));
+							fakeObjectMouseOver
+								.setBlockPos(new BlockPos(posX, posY, posZ));
 							if(Block.getIdFromBlock(block) != 0 && posY >= 0
 								&& currentDistance <= range)
 							{

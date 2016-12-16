@@ -14,6 +14,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	description = "Makes you jump automatically when reaching the edge of a block.\n"
 		+ "Useful for parkours, Jump'n'Runs, etc.",
 	name = "Parkour")
+@Mod.Bypasses
 public class ParkourMod extends Mod implements UpdateListener
 {
 	@Override

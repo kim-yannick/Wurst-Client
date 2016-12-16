@@ -27,6 +27,7 @@ import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 	name = "AutoSplashPot",
 	tags = "AutoPotion,auto potion,auto splash potion",
 	help = "Mods/AutoSplashPot")
+@Mod.Bypasses
 public class AutoSplashPotMod extends Mod implements UpdateListener
 {
 	public float health = 18F;
@@ -34,15 +35,15 @@ public class AutoSplashPotMod extends Mod implements UpdateListener
 	@Override
 	public void initSettings()
 	{
-		settings.add(new SliderSetting("Health", health, 2, 20, 1,
-			ValueDisplay.INTEGER)
-		{
-			@Override
-			public void update()
+		settings.add(
+			new SliderSetting("Health", health, 2, 20, 1, ValueDisplay.INTEGER)
 			{
-				health = (float)getValue();
-			}
-		});
+				@Override
+				public void update()
+				{
+					health = (float)getValue();
+				}
+			});
 	}
 	
 	@Override
@@ -80,20 +81,18 @@ public class AutoSplashPotMod extends Mod implements UpdateListener
 				// throw potion in hotbar
 				int oldSlot = mc.player.inventory.currentItem;
 				NetHandlerPlayClient sendQueue = mc.player.connection;
-				sendQueue
-					.sendPacket(new C03PacketPlayer.C05PacketPlayerLook(
-						mc.player.rotationYaw, 90.0F, mc.player.onGround));
-				sendQueue.sendPacket(new C09PacketHeldItemChange(
-					potionInHotbar - 36));
+				sendQueue.sendPacket(new C03PacketPlayer.C05PacketPlayerLook(
+					mc.player.rotationYaw, 90.0F, mc.player.onGround));
+				sendQueue.sendPacket(
+					new C09PacketHeldItemChange(potionInHotbar - 36));
 				mc.playerController.updateController();
 				sendQueue.sendPacket(new C08PacketPlayerBlockPlacement(
 					mc.player.inventoryContainer.getSlot(potionInHotbar)
 						.getStack()));
 				sendQueue.sendPacket(new C09PacketHeldItemChange(oldSlot));
-				sendQueue
-					.sendPacket(new C03PacketPlayer.C05PacketPlayerLook(
-						mc.player.rotationYaw, mc.player.rotationPitch,
-						mc.player.onGround));
+				sendQueue.sendPacket(new C03PacketPlayer.C05PacketPlayerLook(
+					mc.player.rotationYaw, mc.player.rotationPitch,
+					mc.player.onGround));
 				
 				// reset timer
 				updateLastMS();

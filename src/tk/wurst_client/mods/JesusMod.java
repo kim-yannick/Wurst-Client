@@ -21,6 +21,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 		+ "Bypasses NoCheat+ if YesCheat+ is enabled.",
 	name = "Jesus",
 	help = "Mods/Jesus")
+@Mod.Bypasses
 public class JesusMod extends Mod implements UpdateListener
 {
 	private int ticksOutOfWater = 10;
@@ -65,16 +66,15 @@ public class JesusMod extends Mod implements UpdateListener
 		boolean isOnWater = false;
 		boolean isOnSolid = false;
 		
-		for(final Object o : mc.world.getCollidingBoundingBoxes(
-			thePlayer,
+		for(final Object o : mc.world.getCollidingBoundingBoxes(thePlayer,
 			thePlayer.getEntityBoundingBox().offset(0, -1.0D, 0)
 				.contract(0.001D, 0D, 0.001D)))
 		{
 			final AxisAlignedBB bbox = (AxisAlignedBB)o;
 			final BlockPos blockPos =
 				new BlockPos(bbox.maxX - (bbox.maxX - bbox.minX) / 2.0,
-					bbox.maxY - (bbox.maxY - bbox.minY) / 2.0, bbox.maxZ
-						- (bbox.maxZ - bbox.minZ) / 2.0);
+					bbox.maxY - (bbox.maxY - bbox.minY) / 2.0,
+					bbox.maxZ - (bbox.maxZ - bbox.minZ) / 2.0);
 			final Block block = mc.world.getBlockState(blockPos).getBlock();
 			if(block.getMaterial() == Material.water
 				|| block.getMaterial() == Material.lava)
@@ -90,7 +90,6 @@ public class JesusMod extends Mod implements UpdateListener
 	{
 		return isActive() && !(mc.player == null)
 			&& !(mc.player.fallDistance > 3)
-			&& !mc.gameSettings.keyBindSneak.pressed
-			&& !mc.player.isInWater();
+			&& !mc.gameSettings.keyBindSneak.pressed && !mc.player.isInWater();
 	}
 }

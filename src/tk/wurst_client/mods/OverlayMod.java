@@ -15,10 +15,10 @@ import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.utils.RenderUtils;
 
-@Mod.Info(
-	description = "Renders the Nuker animation when you mine a block.",
+@Mod.Info(description = "Renders the Nuker animation when you mine a block.",
 	name = "Overlay",
 	help = "Mods/Overlay")
+@Mod.Bypasses
 public class OverlayMod extends Mod implements RenderListener
 {
 	@Override
@@ -41,8 +41,7 @@ public class OverlayMod extends Mod implements RenderListener
 			return;
 		BlockPos pos = mc.objectMouseOver.getBlockPos();
 		Block mouseOverBlock =
-			mc.world.getBlockState(mc.objectMouseOver.getBlockPos())
-				.getBlock();
+			mc.world.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock();
 		if(Block.getIdFromBlock(mouseOverBlock) != 0)
 			RenderUtils.nukerBox(pos, PlayerControllerMP.curBlockDamageMP);
 	}

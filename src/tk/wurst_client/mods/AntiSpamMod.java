@@ -19,6 +19,7 @@ import tk.wurst_client.events.listeners.ChatInputListener;
 	name = "AntiSpam",
 	tags = "NoSpam, ChatFilter, anti spam, no spam, chat filter",
 	help = "Mods/AntiSpam")
+@Mod.Bypasses
 public class AntiSpamMod extends Mod implements ChatInputListener
 {
 	@Override

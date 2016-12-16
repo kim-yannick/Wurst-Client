@@ -9,11 +9,11 @@ package tk.wurst_client.mods;
 
 import tk.wurst_client.events.listeners.UpdateListener;
 
-@Mod.Info(
-	description = "Automatically swims like a dolphin.",
+@Mod.Info(description = "Automatically swims like a dolphin.",
 	name = "Dolphin",
 	tags = "AutoSwim, auto swim",
 	help = "Mods/Dolphin")
+@Mod.Bypasses
 public class DolphinMod extends Mod implements UpdateListener
 {
 	@Override

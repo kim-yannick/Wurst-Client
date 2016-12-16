@@ -17,6 +17,7 @@ import tk.wurst_client.events.listeners.ChatOutputListener;
 	name = "FancyChat",
 	tags = "fancy chat",
 	help = "Mods/FancyChat")
+@Mod.Bypasses
 public class FancyChatMod extends Mod implements ChatOutputListener
 {
 	private final String blacklist = "(){}[]|";
@@ -42,7 +43,7 @@ public class FancyChatMod extends Mod implements ChatOutputListener
 				out += new String(Character.toChars(chr + 0xFEE0));
 			else
 				out += chr;
-		
+			
 		event.setMessage(out);
 	}
 	

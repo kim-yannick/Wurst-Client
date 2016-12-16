@@ -11,11 +11,11 @@ import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 
-@Mod.Info(
-	description = "Allows you to see ores through walls.",
+@Mod.Info(description = "Allows you to see ores through walls.",
 	name = "X-Ray",
 	tags = "xray, x ray",
 	help = "Mods/X-Ray")
+@Mod.Bypasses
 public class XRayMod extends Mod
 {
 	public static ArrayList<Block> xrayBlocks = new ArrayList<Block>();

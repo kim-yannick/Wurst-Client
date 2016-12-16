@@ -14,10 +14,8 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import tk.wurst_client.events.listeners.UpdateListener;
 
-@Mod.Info(
-	description = "Thousands of colors!",
-	name = "LSD",
-	help = "Mods/LSD")
+@Mod.Info(description = "Thousands of colors!", name = "LSD", help = "Mods/LSD")
+@Mod.Bypasses
 public class LsdMod extends Mod implements UpdateListener
 {
 	@Override
@@ -39,8 +37,8 @@ public class LsdMod extends Mod implements UpdateListener
 				mc.entityRenderer.shaderIndex = 19;
 				
 				if(mc.entityRenderer.shaderIndex != EntityRenderer.shaderCount)
-					mc.entityRenderer
-						.func_175069_a(EntityRenderer.shaderResourceLocations[19]);
+					mc.entityRenderer.func_175069_a(
+						EntityRenderer.shaderResourceLocations[19]);
 				else
 					mc.entityRenderer.theShaderGroup = null;
 			}
@@ -51,8 +49,8 @@ public class LsdMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		if(!OpenGlHelper.shadersSupported)
-			mc.player.addPotionEffect(new PotionEffect(Potion.confusion
-				.getId(), 10801220));
+			mc.player.addPotionEffect(
+				new PotionEffect(Potion.confusion.getId(), 10801220));
 		mc.gameSettings.smoothCamera = isEnabled();
 	}
 	

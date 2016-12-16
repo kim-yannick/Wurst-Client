@@ -15,6 +15,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	name = "NoFall",
 	tags = "no fall",
 	help = "Mods/NoFall")
+@Mod.Bypasses
 public class NoFallMod extends Mod implements UpdateListener
 {
 	@Override

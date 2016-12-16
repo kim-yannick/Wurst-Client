@@ -13,11 +13,11 @@ import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.utils.RenderUtils;
 
-@Mod.Info(
-	description = "Allows you to see items through walls.",
+@Mod.Info(description = "Allows you to see items through walls.",
 	name = "ItemESP",
 	tags = "item esp",
 	help = "Mods/ItemESP")
+@Mod.Bypasses
 public class ItemEspMod extends Mod implements RenderListener
 {
 	@Override

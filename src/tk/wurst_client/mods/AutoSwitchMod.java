@@ -17,6 +17,7 @@ import tk.wurst_client.navigator.NavigatorItem;
 	name = "AutoSwitch",
 	tags = "auto switch",
 	help = "Mods/AutoSwitch")
+@Mod.Bypasses
 public class AutoSwitchMod extends Mod implements UpdateListener
 {
 	@Override

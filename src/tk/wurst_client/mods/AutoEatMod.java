@@ -12,11 +12,11 @@ import net.minecraft.item.ItemStack;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.navigator.NavigatorItem;
 
-@Mod.Info(
-	description = "Automatically eats food when necessary.",
+@Mod.Info(description = "Automatically eats food when necessary.",
 	name = "AutoEat",
 	tags = "AutoSoup,auto eat,auto soup",
 	help = "Mods/AutoEat")
+@Mod.Bypasses
 public class AutoEatMod extends Mod implements UpdateListener
 {
 	private int oldSlot;
@@ -73,16 +73,14 @@ public class AutoEatMod extends Mod implements UpdateListener
 					stop();
 					return;
 				}
-				ItemStack item =
-					mc.player.inventory.getStackInSlot(bestSlot);
+				ItemStack item = mc.player.inventory.getStackInSlot(bestSlot);
 				if(item == null || !(item.getItem() instanceof ItemFood))
 				{
 					stop();
 					return;
 				}
 				mc.player.inventory.currentItem = bestSlot;
-				mc.playerController
-					.sendUseItem(mc.player, mc.world, item);
+				mc.playerController.sendUseItem(mc.player, mc.world, item);
 				mc.gameSettings.keyBindUseItem.pressed = true;
 			}
 			

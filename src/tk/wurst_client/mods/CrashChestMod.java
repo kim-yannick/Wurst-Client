@@ -20,6 +20,7 @@ import tk.wurst_client.utils.ChatUtils;
 	name = "CrashChest",
 	tags = "crash chest",
 	help = "Mods/CrashChest")
+@Mod.Bypasses
 public class CrashChestMod extends Mod
 {
 	@Override

@@ -23,8 +23,8 @@ import tk.wurst_client.utils.RenderUtils;
 	name = "BaseFinder",
 	tags = "base finder, factions",
 	help = "Mods/BaseFinder")
-public class BaseFinderMod extends Mod implements UpdateListener,
-	RenderListener
+@Mod.Bypasses
+public class BaseFinderMod extends Mod implements UpdateListener, RenderListener
 {
 	public BaseFinderMod()
 	{
@@ -69,8 +69,8 @@ public class BaseFinderMod extends Mod implements UpdateListener,
 						int posY = (int)(mc.player.posY + y);
 						int posZ = (int)(mc.player.posZ + z);
 						BlockPos pos = new BlockPos(posX, posY, posZ);
-						if(!naturalBlocks.contains(mc.world.getBlockState(
-							pos).getBlock()))
+						if(!naturalBlocks
+							.contains(mc.world.getBlockState(pos).getBlock()))
 							matchingBlocks.add(pos);
 						if(matchingBlocks.size() >= maxBlocks)
 							break;
@@ -84,9 +84,8 @@ public class BaseFinderMod extends Mod implements UpdateListener,
 			if(matchingBlocks.size() >= maxBlocks && shouldInform)
 			{
 				ChatUtils.warning(getName() + " found §lA LOT§r of blocks.");
-				ChatUtils
-					.message("To prevent lag, it will only show the first "
-						+ maxBlocks + " blocks.");
+				ChatUtils.message("To prevent lag, it will only show the first "
+					+ maxBlocks + " blocks.");
 				shouldInform = false;
 			}else if(matchingBlocks.size() < maxBlocks)
 				shouldInform = true;

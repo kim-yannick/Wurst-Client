@@ -16,6 +16,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	name = "NoClip",
 	tags = "no clip",
 	help = "Mods/NoClip")
+@Mod.Bypasses
 public class NoClipMod extends Mod implements UpdateListener
 {
 	@Override

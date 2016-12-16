@@ -19,6 +19,7 @@ import tk.wurst_client.events.listeners.LeftClickListener;
 	name = "BlockHit",
 	tags = "AutoBlock, BlockHitting, auto block, block hitting",
 	help = "Mods/BlockHit")
+@Mod.Bypasses
 public class BlockHitMod extends Mod implements LeftClickListener
 {
 	@Override

@@ -17,6 +17,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	name = "HeadRoll",
 	tags = "head roll",
 	help = "Mods/HeadRoll")
+@Mod.Bypasses
 public class HeadRollMod extends Mod implements UpdateListener
 {
 	@Override
@@ -28,11 +29,10 @@ public class HeadRollMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		mc.player.connection
-			.sendPacket(new C05PacketPlayerLook(Minecraft
-				.getMinecraft().player.rotationYaw, (float)Math
-				.sin(mc.player.ticksExisted % 20 / 10d * Math.PI) * 90,
-				mc.player.onGround));
+		mc.player.connection.sendPacket(new C05PacketPlayerLook(
+			Minecraft.getMinecraft().player.rotationYaw,
+			(float)Math.sin(mc.player.ticksExisted % 20 / 10d * Math.PI) * 90,
+			mc.player.onGround));
 	}
 	
 	@Override

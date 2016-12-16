@@ -12,7 +12,8 @@ package tk.wurst_client.mods;
 	name = "PotionSaver",
 	tags = "potion saver",
 	help = "Mods/PotionSaver")
+@Mod.Bypasses
 public class PotionSaverMod extends Mod
-{	
+{
 	
 }

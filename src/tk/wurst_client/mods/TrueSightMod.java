@@ -7,12 +7,12 @@
  */
 package tk.wurst_client.mods;
 
-@Mod.Info(
-	description = "Allows you to see invisible entities.",
+@Mod.Info(description = "Allows you to see invisible entities.",
 	name = "TrueSight",
 	tags = "true sight",
 	help = "Mods/TrueSight")
+@Mod.Bypasses
 public class TrueSightMod extends Mod
-{	
+{
 	
 }

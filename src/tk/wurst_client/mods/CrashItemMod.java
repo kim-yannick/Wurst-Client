@@ -17,13 +17,14 @@ import tk.wurst_client.utils.ChatUtils;
 	name = "CrashItem",
 	tags = "CrashNametag, CrashTag, crash item, crash nametag, crash tag",
 	help = "Mods/CrashItem")
+@Mod.Bypasses
 public class CrashItemMod extends Mod
 {
 	@Override
 	public void onEnable()
 	{
-		if(mc.player.inventory.getCurrentItem() == null
-			|| !(mc.player.inventory.getCurrentItem().getItem() instanceof ItemNameTag))
+		if(mc.player.inventory.getCurrentItem() == null || !(mc.player.inventory
+			.getCurrentItem().getItem() instanceof ItemNameTag))
 		{
 			ChatUtils.error("You are not holding a nametag in your hand.");
 			setEnabled(false);

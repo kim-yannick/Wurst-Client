@@ -13,7 +13,8 @@ package tk.wurst_client.mods;
 	name = "NameTags",
 	tags = "name tags",
 	help = "Mods/NameTags")
+@Mod.Bypasses
 public class NameTagsMod extends Mod
-{	
+{
 	
 }

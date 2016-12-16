@@ -23,6 +23,7 @@ import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 	noCheatCompatible = false,
 	tags = "auto sword",
 	help = "Mods/AutoSword")
+@Mod.Bypasses
 public class AutoSwordMod extends Mod
 	implements LeftClickListener, UpdateListener
 {

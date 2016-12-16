@@ -15,6 +15,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	name = "Panic",
 	tags = "legit, disable",
 	help = "Mods/Panic")
+@Mod.Bypasses
 public class PanicMod extends Mod implements UpdateListener
 {
 	@Override

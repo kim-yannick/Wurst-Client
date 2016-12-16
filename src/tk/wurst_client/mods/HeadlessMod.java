@@ -17,6 +17,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	name = "Headless",
 	tags = "head less",
 	help = "Mods/Headless")
+@Mod.Bypasses
 public class HeadlessMod extends Mod implements UpdateListener
 {
 	@Override
@@ -28,10 +29,9 @@ public class HeadlessMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		mc.player.connection
-			.sendPacket(new C05PacketPlayerLook(Minecraft
-				.getMinecraft().player.rotationYaw, 180F, Minecraft
-				.getMinecraft().player.onGround));
+		mc.player.connection.sendPacket(
+			new C05PacketPlayerLook(Minecraft.getMinecraft().player.rotationYaw,
+				180F, Minecraft.getMinecraft().player.onGround));
 	}
 	
 	@Override

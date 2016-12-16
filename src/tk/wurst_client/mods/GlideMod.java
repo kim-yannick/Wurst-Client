@@ -10,11 +10,11 @@ package tk.wurst_client.mods;
 import net.minecraft.block.material.Material;
 import tk.wurst_client.events.listeners.UpdateListener;
 
-@Mod.Info(
-	description = "Makes you fall like if you had a hang glider.",
+@Mod.Info(description = "Makes you fall like if you had a hang glider.",
 	name = "Glide",
 	noCheatCompatible = false,
 	help = "Mods/Glide")
+@Mod.Bypasses
 public class GlideMod extends Mod implements UpdateListener
 {
 	@Override

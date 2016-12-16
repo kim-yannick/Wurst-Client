@@ -16,6 +16,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 		+ "extremely tired and about to fall asleep!",
 	name = "Tired",
 	help = "Mods/Tired")
+@Mod.Bypasses
 public class TiredMod extends Mod implements UpdateListener
 {
 	@Override
@@ -27,9 +28,8 @@ public class TiredMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		mc.player.connection
-			.sendPacket(new C05PacketPlayerLook(Minecraft
-				.getMinecraft().player.rotationYaw,
+		mc.player.connection.sendPacket(
+			new C05PacketPlayerLook(Minecraft.getMinecraft().player.rotationYaw,
 				mc.player.ticksExisted % 100, mc.player.onGround));
 	}
 	

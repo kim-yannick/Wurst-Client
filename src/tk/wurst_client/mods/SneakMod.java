@@ -18,6 +18,7 @@ import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 	name = "Sneak",
 	tags = "AutoSneaking",
 	help = "Mods/Sneak")
+@Mod.Bypasses
 public class SneakMod extends Mod implements UpdateListener
 {
 	@Override

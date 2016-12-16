@@ -17,6 +17,7 @@ import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 	name = "FastBreak",
 	tags = "SpeedyGonzales, fast break, speedy gonzales",
 	help = "Mods/FastBreak")
+@Mod.Bypasses
 public class FastBreakMod extends Mod
 {
 	public float speed = 2;
@@ -24,15 +25,15 @@ public class FastBreakMod extends Mod
 	@Override
 	public void initSettings()
 	{
-		settings.add(new SliderSetting("Speed", speed, 1, 5, 0.05,
-			ValueDisplay.DECIMAL)
-		{
-			@Override
-			public void update()
+		settings.add(
+			new SliderSetting("Speed", speed, 1, 5, 0.05, ValueDisplay.DECIMAL)
 			{
-				speed = (float)getValue();
-			}
-		});
+				@Override
+				public void update()
+				{
+					speed = (float)getValue();
+				}
+			});
 	}
 	
 	@Override

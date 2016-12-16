@@ -33,6 +33,7 @@ import tk.wurst_client.utils.RenderUtils;
 	
 	tags = "AimAssist, ArrowPrediction, aim assist, arrow prediction",
 	help = "Mods/Trajectories")
+@Mod.Bypasses
 public class TrajectoriesMod extends Mod implements RenderListener
 {
 	@Override
@@ -61,28 +62,26 @@ public class TrajectoriesMod extends Mod implements RenderListener
 		// check if item is throwable
 		Item item = stack.getItem();
 		if(!(item instanceof ItemBow || item instanceof ItemSnowball
-			|| item instanceof ItemEgg || item instanceof ItemEnderPearl || (item instanceof ItemPotion && ItemPotion
-			.isSplash(stack.getItemDamage()))))
+			|| item instanceof ItemEgg || item instanceof ItemEnderPearl
+			|| (item instanceof ItemPotion
+				&& ItemPotion.isSplash(stack.getItemDamage()))))
 			return;
 		
 		boolean usingBow =
 			player.getCurrentEquippedItem().getItem() instanceof ItemBow;
 		
 		// calculate starting position
-		double arrowPosX =
-			player.lastTickPosX + (player.posX - player.lastTickPosX)
-				* mc.timer.renderPartialTicks
-				- MathHelper.cos((float)Math.toRadians(player.rotationYaw))
-				* 0.16F;
-		double arrowPosY =
-			player.lastTickPosY + (player.posY - player.lastTickPosY)
+		double arrowPosX = player.lastTickPosX
+			+ (player.posX - player.lastTickPosX) * mc.timer.renderPartialTicks
+			- MathHelper.cos((float)Math.toRadians(player.rotationYaw)) * 0.16F;
+		double arrowPosY = player.lastTickPosY
+			+ (player.posY - player.lastTickPosY)
 				* Minecraft.getMinecraft().timer.renderPartialTicks
-				+ player.getEyeHeight() - 0.1;
-		double arrowPosZ =
-			player.lastTickPosZ + (player.posZ - player.lastTickPosZ)
+			+ player.getEyeHeight() - 0.1;
+		double arrowPosZ = player.lastTickPosZ
+			+ (player.posZ - player.lastTickPosZ)
 				* Minecraft.getMinecraft().timer.renderPartialTicks
-				- MathHelper.sin((float)Math.toRadians(player.rotationYaw))
-				* 0.16F;
+			- MathHelper.sin((float)Math.toRadians(player.rotationYaw)) * 0.16F;
 		
 		// calculate starting motion
 		float arrowMotionFactor = usingBow ? 1F : 0.4F;
@@ -93,9 +92,8 @@ public class TrajectoriesMod extends Mod implements RenderListener
 		float arrowMotionY = -MathHelper.sin(pitch) * arrowMotionFactor;
 		float arrowMotionZ =
 			MathHelper.cos(yaw) * MathHelper.cos(pitch) * arrowMotionFactor;
-		double arrowMotion =
-			Math.sqrt(arrowMotionX * arrowMotionX + arrowMotionY * arrowMotionY
-				+ arrowMotionZ * arrowMotionZ);
+		double arrowMotion = Math.sqrt(arrowMotionX * arrowMotionX
+			+ arrowMotionY * arrowMotionY + arrowMotionZ * arrowMotionZ);
 		arrowMotionX /= arrowMotion;
 		arrowMotionY /= arrowMotion;
 		arrowMotionZ /= arrowMotion;
@@ -137,16 +135,15 @@ public class TrajectoriesMod extends Mod implements RenderListener
 		// draw trajectory line
 		double gravity =
 			usingBow ? 0.05D : item instanceof ItemPotion ? 0.4D : 0.03D;
-		Vec3 playerVector =
-			new Vec3(player.posX, player.posY + player.getEyeHeight(),
-				player.posZ);
+		Vec3 playerVector = new Vec3(player.posX,
+			player.posY + player.getEyeHeight(), player.posZ);
 		GL11.glColor3d(0, 1, 0);
 		GL11.glBegin(GL11.GL_LINE_STRIP);
 		for(int i = 0; i < 1000; i++)
 		{
-			GL11.glVertex3d(arrowPosX - renderManager.renderPosX, arrowPosY
-				- renderManager.renderPosY, arrowPosZ
-				- renderManager.renderPosZ);
+			GL11.glVertex3d(arrowPosX - renderManager.renderPosX,
+				arrowPosY - renderManager.renderPosY,
+				arrowPosZ - renderManager.renderPosZ);
 			
 			arrowPosX += arrowMotionX;
 			arrowPosY += arrowMotionY;
@@ -156,8 +153,8 @@ public class TrajectoriesMod extends Mod implements RenderListener
 			arrowMotionZ *= 0.99D;
 			arrowMotionY -= gravity;
 			
-			if(mc.world.rayTraceBlocks(playerVector, new Vec3(arrowPosX,
-				arrowPosY, arrowPosZ)) != null)
+			if(mc.world.rayTraceBlocks(playerVector,
+				new Vec3(arrowPosX, arrowPosY, arrowPosZ)) != null)
 				break;
 		}
 		GL11.glEnd();
@@ -166,9 +163,8 @@ public class TrajectoriesMod extends Mod implements RenderListener
 		double renderX = arrowPosX - renderManager.renderPosX;
 		double renderY = arrowPosY - renderManager.renderPosY;
 		double renderZ = arrowPosZ - renderManager.renderPosZ;
-		AxisAlignedBB bb =
-			new AxisAlignedBB(renderX - 0.5, renderY - 0.5, renderZ - 0.5,
-				renderX + 0.5, renderY + 0.5, renderZ + 0.5);
+		AxisAlignedBB bb = new AxisAlignedBB(renderX - 0.5, renderY - 0.5,
+			renderZ - 0.5, renderX + 0.5, renderY + 0.5, renderZ + 0.5);
 		GL11.glColor4d(0, 1, 0, 0.15F);
 		RenderUtils.drawColorBox(bb);
 		GL11.glColor4d(0, 0, 0, 0.5F);

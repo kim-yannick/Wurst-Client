@@ -19,6 +19,7 @@ import tk.wurst_client.utils.ChatUtils;
 	name = "OP-Sign",
 	tags = "Force OP,OP Sign,Sign OP,sign hack,admin hack,OpSign",
 	help = "Mods/OP-Sign_(Force_OP)")
+@Mod.Bypasses
 public class OpSignMod extends Mod
 {
 	public String command;
@@ -39,7 +40,6 @@ public class OpSignMod extends Mod
 	public void setCommand(String cmd)
 	{
 		command = cmd.replace("\"", "\\\\\"");
-		ChatUtils
-			.message("Command set. Place & right click a sign to run it.");
+		ChatUtils.message("Command set. Place & right click a sign to run it.");
 	}
 }

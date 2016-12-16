@@ -7,13 +7,12 @@
  */
 package tk.wurst_client.mods;
 
-@Mod.Info(
-	description = "Blocks blindness and nausea.",
+@Mod.Info(description = "Blocks blindness and nausea.",
 	name = "AntiBlind",
 	tags = "AntiBlindness, anti blindness",
 	help = "Mods/AntiBlind")
 @Mod.Bypasses
 public class AntiBlindMod extends Mod
-{	
+{
 	
 }

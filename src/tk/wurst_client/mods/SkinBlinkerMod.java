@@ -18,6 +18,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	name = "SkinBlinker",
 	tags = "SpookySkin, skin blinker, spooky skin",
 	help = "Mods/SkinBlinker")
+@Mod.Bypasses
 public class SkinBlinkerMod extends Mod implements UpdateListener
 {
 	@Override
@@ -35,8 +36,8 @@ public class SkinBlinkerMod extends Mod implements UpdateListener
 			updateLastMS();
 			Set activeParts = mc.gameSettings.func_178876_d();
 			for(EnumPlayerModelParts part : EnumPlayerModelParts.values())
-				mc.gameSettings
-					.func_178878_a(part, !activeParts.contains(part));
+				mc.gameSettings.func_178878_a(part,
+					!activeParts.contains(part));
 		}
 	}
 	

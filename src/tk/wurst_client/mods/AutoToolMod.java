@@ -21,8 +21,9 @@ import tk.wurst_client.navigator.NavigatorItem;
 	name = "AutoTool",
 	tags = "auto tool",
 	help = "Mods/AutoTool")
-public class AutoToolMod extends Mod implements LeftClickListener,
-	UpdateListener
+@Mod.Bypasses
+public class AutoToolMod extends Mod
+	implements LeftClickListener, UpdateListener
 {
 	private boolean isActive = false;
 	private int oldSlot;
@@ -47,8 +48,7 @@ public class AutoToolMod extends Mod implements LeftClickListener,
 		{
 			isActive = false;
 			mc.player.inventory.currentItem = oldSlot;
-		}else if(isActive
-			&& mc.objectMouseOver != null
+		}else if(isActive && mc.objectMouseOver != null
 			&& mc.objectMouseOver.getBlockPos() != null
 			&& mc.world.getBlockState(mc.objectMouseOver.getBlockPos())
 				.getBlock().getMaterial() != Material.air)
@@ -70,8 +70,8 @@ public class AutoToolMod extends Mod implements LeftClickListener,
 		if(mc.objectMouseOver == null
 			|| mc.objectMouseOver.getBlockPos() == null)
 			return;
-		if(mc.world.getBlockState(mc.objectMouseOver.getBlockPos())
-			.getBlock().getMaterial() != Material.air)
+		if(mc.world.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock()
+			.getMaterial() != Material.air)
 		{
 			isActive = true;
 			oldSlot = mc.player.inventory.currentItem;

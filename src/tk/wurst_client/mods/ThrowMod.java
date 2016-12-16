@@ -16,6 +16,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 		+ "Use the .throw command to change the amount of uses per click.",
 	name = "Throw",
 	help = "Mods/Throw")
+@Mod.Bypasses
 public class ThrowMod extends Mod implements UpdateListener
 {
 	@Override

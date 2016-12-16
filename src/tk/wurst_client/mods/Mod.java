@@ -23,6 +23,7 @@ import tk.wurst_client.navigator.PossibleKeybind;
 import tk.wurst_client.navigator.settings.NavigatorSetting;
 import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 
+@Mod.Bypasses
 public class Mod implements NavigatorItem
 {
 	private final String name = getClass().getAnnotation(Info.class).name();

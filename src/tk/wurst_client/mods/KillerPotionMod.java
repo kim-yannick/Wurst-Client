@@ -20,6 +20,7 @@ import tk.wurst_client.utils.ChatUtils;
 	name = "KillerPotion",
 	tags = "killer potion",
 	help = "Mods/KillerPotion")
+@Mod.Bypasses
 public class KillerPotionMod extends Mod
 {
 	@Override

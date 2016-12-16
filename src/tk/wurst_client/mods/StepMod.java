@@ -21,6 +21,7 @@ import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 @Mod.Info(description = "Allows you to step up full blocks.",
 	name = "Step",
 	help = "Mods/Step")
+@Mod.Bypasses
 public class StepMod extends Mod implements UpdateListener
 {
 	public float height = 1F;

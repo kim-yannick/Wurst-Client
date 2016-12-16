@@ -9,11 +9,11 @@ package tk.wurst_client.mods;
 
 import tk.wurst_client.events.listeners.UpdateListener;
 
-@Mod.Info(
-	description = "Makes you twerk like Miley Cyrus!",
+@Mod.Info(description = "Makes you twerk like Miley Cyrus!",
 	name = "MileyCyrus",
 	tags = "miley cyrus, twerk",
 	help = "Mods/MileyCyrus")
+@Mod.Bypasses
 public class MileyCyrusMod extends Mod implements UpdateListener
 {
 	private int timer;

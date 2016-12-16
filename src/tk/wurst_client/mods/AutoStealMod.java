@@ -13,7 +13,8 @@ package tk.wurst_client.mods;
 	name = "AutoSteal",
 	tags = "auto steal",
 	help = "Mods/AutoSteal")
+@Mod.Bypasses
 public class AutoStealMod extends Mod
-{	
+{
 	
 }

@@ -21,6 +21,7 @@ import tk.wurst_client.navigator.settings.ModeSetting;
 	name = "AutoLeave",
 	tags = "AutoDisconnect, auto leave, auto disconnect",
 	help = "Mods/AutoLeave")
+@Mod.Bypasses
 public class AutoLeaveMod extends Mod implements UpdateListener
 {
 	private int mode = 0;
@@ -57,8 +58,9 @@ public class AutoLeaveMod extends Mod implements UpdateListener
 	{
 		if(mc.player.getHealth() <= 8.0
 			&& !mc.player.capabilities.isCreativeMode
-			&& (!mc.isIntegratedServerRunning() || Minecraft.getMinecraft().player.connection
-				.getPlayerInfo().size() > 1))
+			&& (!mc.isIntegratedServerRunning()
+				|| Minecraft.getMinecraft().player.connection.getPlayerInfo()
+					.size() > 1))
 		{
 			switch(mode)
 			{
@@ -70,14 +72,13 @@ public class AutoLeaveMod extends Mod implements UpdateListener
 						.sendPacket(new C01PacketChatMessage("§"));
 					break;
 				case 2:
-					mc.player.connection
-						.sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(
-							3.1e7d, 100, 3.1e7d, false));
+					mc.player.connection.sendPacket(
+						new C03PacketPlayer.C04PacketPlayerPosition(3.1e7d, 100,
+							3.1e7d, false));
 					break;
 				case 3:
-					mc.player.connection
-						.sendPacket(new C02PacketUseEntity(mc.player,
-							Action.ATTACK));
+					mc.player.connection.sendPacket(
+						new C02PacketUseEntity(mc.player, Action.ATTACK));
 					break;
 				default:
 					break;

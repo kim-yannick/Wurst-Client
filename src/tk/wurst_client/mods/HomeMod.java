@@ -12,10 +12,10 @@ import tk.wurst_client.events.listeners.ChatInputListener;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.utils.ChatUtils;
 
-@Mod.Info(
-	description = "Types \"/home\" instantly.",
+@Mod.Info(description = "Types \"/home\" instantly.",
 	name = "/home",
 	help = "Mods/home")
+@Mod.Bypasses
 public class HomeMod extends Mod implements UpdateListener, ChatInputListener
 {
 	private int disableTimer;

@@ -17,11 +17,11 @@ import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.utils.RenderUtils;
 
-@Mod.Info(
-	description = "Allows you to see fake blocks in Prophunt.",
+@Mod.Info(description = "Allows you to see fake blocks in Prophunt.",
 	name = "ProphuntESP",
 	tags = "prophunt esp",
 	help = "Mods/ProphuntESP")
+@Mod.Bypasses
 public class ProphuntEspMod extends Mod implements RenderListener
 {
 	@Override
@@ -49,9 +49,12 @@ public class ProphuntEspMod extends Mod implements RenderListener
 				Color color;
 				if(mc.player.getDistanceToEntity((Entity)entity) >= 0.5)
 					color =
-						new Color(1F, 0F, 0F, 0.5F - MathHelper.abs(MathHelper
-							.sin(Minecraft.getSystemTime() % 1000L / 1000.0F
-								* (float)Math.PI * 1.0F) * 0.3F));
+						new Color(1F, 0F, 0F,
+							0.5F - MathHelper
+								.abs(MathHelper
+									.sin(Minecraft.getSystemTime() % 1000L
+										/ 1000.0F * (float)Math.PI * 1.0F)
+									* 0.3F));
 				else
 					color = new Color(0, 0, 0, 0);
 				RenderUtils.box(x - 0.5, y - 0.1, z - 0.5, x + 0.5, y + 0.9,

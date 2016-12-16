@@ -7,12 +7,12 @@
  */
 package tk.wurst_client.mods;
 
-@Mod.Info(
-	description = "Allows you to see caves through walls.",
+@Mod.Info(description = "Allows you to see caves through walls.",
 	name = "CaveFinder",
 	tags = "cave finder",
 	help = "Mods/CaveFinder")
+@Mod.Bypasses
 public class CaveFinderMod extends Mod
-{	
+{
 	
 }

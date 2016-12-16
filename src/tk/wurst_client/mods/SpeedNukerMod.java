@@ -25,6 +25,7 @@ import tk.wurst_client.utils.ChatUtils;
 	name = "SpeedNuker",
 	tags = "FastNuker, speed nuker, fast nuker",
 	help = "Mods/SpeedNuker")
+@Mod.Bypasses
 public class SpeedNukerMod extends Mod
 	implements LeftClickListener, UpdateListener
 {

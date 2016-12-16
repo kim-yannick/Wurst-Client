@@ -9,11 +9,11 @@ package tk.wurst_client.mods;
 
 import tk.wurst_client.events.listeners.UpdateListener;
 
-@Mod.Info(
-	description = "Automatically walks all the time.",
+@Mod.Info(description = "Automatically walks all the time.",
 	name = "AutoWalk",
 	tags = "auto walk",
 	help = "Mods/AutoWalk")
+@Mod.Bypasses
 public class AutoWalkMod extends Mod implements UpdateListener
 {
 	@Override

@@ -7,12 +7,12 @@
  */
 package tk.wurst_client.mods;
 
-@Mod.Info(
-	description = "Allows you to interact with liquid blocks.",
+@Mod.Info(description = "Allows you to interact with liquid blocks.",
 	name = "Liquids",
 	noCheatCompatible = false,
 	help = "Mods/Liquids")
+@Mod.Bypasses
 public class LiquidsMod extends Mod
-{	
+{
 	
 }

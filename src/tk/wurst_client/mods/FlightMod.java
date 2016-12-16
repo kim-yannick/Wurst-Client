@@ -24,6 +24,7 @@ import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 	name = "Flight",
 	tags = "FlyHack,fly hack,flying",
 	help = "Mods/Flight")
+@Mod.Bypasses
 public class FlightMod extends Mod implements UpdateListener
 {
 	public float speed = 1F;

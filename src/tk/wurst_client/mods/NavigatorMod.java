@@ -9,11 +9,11 @@ package tk.wurst_client.mods;
 
 import tk.wurst_client.navigator.gui.NavigatorMainScreen;
 
-@Mod.Info(
-	description = "",
+@Mod.Info(description = "",
 	name = "Navigator",
 	tags = "ClickGUI",
 	help = "Mods/Navigator")
+@Mod.Bypasses
 public class NavigatorMod extends Mod
 {
 	@Override

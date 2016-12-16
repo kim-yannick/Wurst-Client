@@ -13,7 +13,8 @@ package tk.wurst_client.mods;
 	name = "NameProtect",
 	tags = "name protect",
 	help = "Mods/NameProtect")
+@Mod.Bypasses
 public class NameProtectMod extends Mod
-{	
+{
 	
 }

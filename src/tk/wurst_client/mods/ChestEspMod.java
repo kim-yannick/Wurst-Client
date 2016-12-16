@@ -15,11 +15,11 @@ import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.utils.ChatUtils;
 import tk.wurst_client.utils.RenderUtils;
 
-@Mod.Info(
-	description = "Allows you to see chests through walls.",
+@Mod.Info(description = "Allows you to see chests through walls.",
 	name = "ChestESP",
 	tags = "ChestFinder, chest esp, chest finder",
 	help = "Mods/ChestESP")
+@Mod.Bypasses
 public class ChestEspMod extends Mod implements RenderListener
 {
 	private int maxChests = 1000;

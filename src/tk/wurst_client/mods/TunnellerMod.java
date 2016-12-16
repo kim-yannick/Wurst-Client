@@ -24,6 +24,7 @@ import tk.wurst_client.utils.RenderUtils;
 @Mod.Info(description = "Digs a 3x3 tunnel around you.",
 	name = "Tunneller",
 	help = "Mods/Tunneller")
+@Mod.Bypasses
 public class TunnellerMod extends Mod implements RenderListener, UpdateListener
 {
 	private static Block currentBlock;

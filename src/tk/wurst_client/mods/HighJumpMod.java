@@ -10,12 +10,12 @@ package tk.wurst_client.mods;
 import tk.wurst_client.navigator.settings.SliderSetting;
 import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 
-@Mod.Info(
-	description = "Makes you jump much higher.",
+@Mod.Info(description = "Makes you jump much higher.",
 	name = "HighJump",
 	noCheatCompatible = false,
 	tags = "high jump",
 	help = "Mods/HighJump")
+@Mod.Bypasses
 public class HighJumpMod extends Mod
 {
 	public int jumpHeight = 6;

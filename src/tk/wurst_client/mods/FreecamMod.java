@@ -16,6 +16,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	name = "Freecam",
 	tags = "free cam, spectator",
 	help = "Mods/Freecam")
+@Mod.Bypasses
 public class FreecamMod extends Mod implements UpdateListener
 {
 	private EntityOtherPlayerMP fakePlayer = null;

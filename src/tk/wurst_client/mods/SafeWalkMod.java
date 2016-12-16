@@ -12,7 +12,8 @@ package tk.wurst_client.mods;
 	name = "SafeWalk",
 	tags = "safe walk",
 	help = "Mods/SafeWalk")
+@Mod.Bypasses
 public class SafeWalkMod extends Mod
-{	
+{
 	
 }

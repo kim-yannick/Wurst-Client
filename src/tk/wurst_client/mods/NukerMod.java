@@ -34,6 +34,7 @@ import tk.wurst_client.utils.RenderUtils;
 		+ "Use .nuker mode <mode> to change the mode.",
 	name = "Nuker",
 	help = "Mods/Nuker")
+@Mod.Bypasses
 public class NukerMod extends Mod
 	implements LeftClickListener, RenderListener, UpdateListener
 {

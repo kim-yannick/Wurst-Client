@@ -24,6 +24,7 @@ import tk.wurst_client.navigator.NavigatorItem;
 	noCheatCompatible = false,
 	tags = "RapidFire, BowSpam, fast bow, rapid fire, bow spam",
 	help = "Mods/FastBow")
+@Mod.Bypasses
 public class FastBowMod extends Mod implements UpdateListener
 {
 	@Override
@@ -42,32 +43,23 @@ public class FastBowMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		if(mc.player.getHealth() > 0
-			&& (mc.player.onGround || Minecraft.getMinecraft().player.capabilities.isCreativeMode)
+			&& (mc.player.onGround
+				|| Minecraft.getMinecraft().player.capabilities.isCreativeMode)
 			&& mc.player.inventory.getCurrentItem() != null
 			&& mc.player.inventory.getCurrentItem().getItem() instanceof ItemBow
 			&& mc.gameSettings.keyBindUseItem.pressed)
 		{
 			mc.playerController.sendUseItem(mc.player, mc.world,
 				mc.player.inventory.getCurrentItem());
-			mc.player.inventory
-				.getCurrentItem()
-				.getItem()
-				.onItemRightClick(mc.player.inventory.getCurrentItem(),
-					mc.world, mc.player);
+			mc.player.inventory.getCurrentItem().getItem().onItemRightClick(
+				mc.player.inventory.getCurrentItem(), mc.world, mc.player);
 			for(int i = 0; i < 20; i++)
-				mc.player.connection
-					.sendPacket(new C03PacketPlayer(false));
-			Minecraft
-				.getMinecraft()
-				.getNetHandler()
-				.sendPacket(
-					new C07PacketPlayerDigging(Action.RELEASE_USE_ITEM,
-						new BlockPos(0, 0, 0), EnumFacing.DOWN));
-			mc.player.inventory
-				.getCurrentItem()
-				.getItem()
-				.onPlayerStoppedUsing(mc.player.inventory.getCurrentItem(),
-					mc.world, mc.player, 10);
+				mc.player.connection.sendPacket(new C03PacketPlayer(false));
+			Minecraft.getMinecraft().getNetHandler()
+				.sendPacket(new C07PacketPlayerDigging(Action.RELEASE_USE_ITEM,
+					new BlockPos(0, 0, 0), EnumFacing.DOWN));
+			mc.player.inventory.getCurrentItem().getItem().onPlayerStoppedUsing(
+				mc.player.inventory.getCurrentItem(), mc.world, mc.player, 10);
 		}
 	}
 	

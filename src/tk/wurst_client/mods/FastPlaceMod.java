@@ -16,6 +16,7 @@ import tk.wurst_client.navigator.NavigatorItem;
 	name = "FastPlace",
 	tags = "fast place",
 	help = "Mods/FastPlace")
+@Mod.Bypasses
 public class FastPlaceMod extends Mod implements UpdateListener
 {
 	@Override

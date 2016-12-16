@@ -14,11 +14,11 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import tk.wurst_client.events.listeners.UpdateListener;
 
-@Mod.Info(
-	description = "Manages your armor automatically.",
+@Mod.Info(description = "Manages your armor automatically.",
 	name = "AutoArmor",
 	tags = "auto armor",
 	help = "Mods/AutoArmor")
+@Mod.Bypasses
 public class AutoArmorMod extends Mod implements UpdateListener
 {
 	private int[] bestArmor;
@@ -34,7 +34,7 @@ public class AutoArmorMod extends Mod implements UpdateListener
 	{
 		if(mc.player.capabilities.isCreativeMode
 			|| mc.currentScreen instanceof GuiContainer
-			&& !(mc.currentScreen instanceof GuiInventory))
+				&& !(mc.currentScreen instanceof GuiInventory))
 			return;
 		updateMS();
 		if(hasTimePassedM(3000))
@@ -49,7 +49,8 @@ public class AutoArmorMod extends Mod implements UpdateListener
 					&& itemstack.getItem() instanceof ItemArmor)
 				{
 					ItemArmor armor = (ItemArmor)itemstack.getItem();
-					if(armor.damageReduceAmount > bestArmor[3 - armor.armorType])
+					if(armor.damageReduceAmount > bestArmor[3
+						- armor.armorType])
 						bestArmor[3 - armor.armorType] = i;
 				}
 			}
@@ -65,15 +66,14 @@ public class AutoArmorMod extends Mod implements UpdateListener
 				ItemArmor bestArmor;
 				try
 				{
-					bestArmor =
-						(ItemArmor)mc.player.inventory.getStackInSlot(
-							this.bestArmor[i]).getItem();
+					bestArmor = (ItemArmor)mc.player.inventory
+						.getStackInSlot(this.bestArmor[i]).getItem();
 				}catch(Exception e)
 				{
 					bestArmor = null;
 				}
-				if(bestArmor != null
-					&& (currentArmor == null || bestArmor.damageReduceAmount > currentArmor.damageReduceAmount))
+				if(bestArmor != null && (currentArmor == null
+					|| bestArmor.damageReduceAmount > currentArmor.damageReduceAmount))
 					if(mc.player.inventory.getFirstEmptyStack() != -1
 						|| currentArmor == null)
 					{
@@ -81,8 +81,8 @@ public class AutoArmorMod extends Mod implements UpdateListener
 							mc.player);
 						mc.playerController.windowClick(0,
 							this.bestArmor[i] < 9 ? 36 + this.bestArmor[i]
-								: this.bestArmor[i], 0, 1, Minecraft
-								.getMinecraft().player);
+								: this.bestArmor[i],
+							0, 1, Minecraft.getMinecraft().player);
 					}
 			}
 			updateLastMS();
