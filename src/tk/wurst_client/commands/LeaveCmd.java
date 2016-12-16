@@ -25,7 +25,7 @@ public class LeaveCmd extends Cmd
 		if(args.length > 2)
 			syntaxError();
 		if(mc.isIntegratedServerRunning()
-			&& mc.player.sendQueue.getPlayerInfo().size() == 1)
+			&& mc.player.connection.getPlayerInfo().size() == 1)
 			error("Cannot leave server when in singleplayer.");
 		switch(args.length)
 		{
@@ -70,15 +70,15 @@ public class LeaveCmd extends Cmd
 				mc.world.sendQuittingDisconnectingPacket();
 				break;
 			case 1:
-				mc.player.sendQueue.addToSendQueue(new C01PacketChatMessage(
+				mc.player.connection.sendPacket(new C01PacketChatMessage(
 					"§"));
 				break;
 			case 2:
-				mc.player.sendQueue
-					.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(
+				mc.player.connection
+					.sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(
 						3.1e7d, 100, 3.1e7d, false));
 			case 3:
-				mc.player.sendQueue.addToSendQueue(new C02PacketUseEntity(
+				mc.player.connection.sendPacket(new C02PacketUseEntity(
 					mc.player, Action.ATTACK));
 				break;
 			default:

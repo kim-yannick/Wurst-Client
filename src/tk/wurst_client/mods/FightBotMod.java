@@ -7,10 +7,20 @@
  */
 package tk.wurst_client.mods;
 
-import net.minecraft.entity.EntityLivingBase;
+import org.lwjgl.input.Keyboard;
+
+import net.minecraft.client.settings.GameSettings;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.Entity;
+import net.minecraft.network.play.client.C02PacketUseEntity;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.navigator.NavigatorItem;
+import tk.wurst_client.navigator.settings.CheckboxSetting;
+import tk.wurst_client.navigator.settings.SliderSetting;
+import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 import tk.wurst_client.utils.EntityUtils;
+import tk.wurst_client.utils.EntityUtils.TargetSettings;
 
 @Mod.Info(
 	description = "A bot that automatically fights for you.\n"
@@ -18,12 +28,59 @@ import tk.wurst_client.utils.EntityUtils;
 	name = "FightBot",
 	tags = "fight bot",
 	help = "Mods/FightBot")
+@Mod.Bypasses(ghostMode = false)
 public class FightBotMod extends Mod implements UpdateListener
 {
-	private float speed;
-	private float range = 6F;
-	private double distance = 3D;
-	private EntityLivingBase entity;
+	public CheckboxSetting useKillaura =
+		new CheckboxSetting("Use Killaura settings", true)
+		{
+			@Override
+			public void update()
+			{
+				if(isChecked())
+				{
+					KillauraMod killaura = wurst.mods.killauraMod;
+					speed.lockToValue(killaura.speed.getValue());
+					range.lockToValue(killaura.range.getValue());
+				}else
+				{
+					speed.unlock();
+					range.unlock();
+				}
+			};
+		};
+	public SliderSetting speed =
+		new SliderSetting("Speed", 20, 0.1, 20, 0.1, ValueDisplay.DECIMAL);
+	public SliderSetting range =
+		new SliderSetting("Range", 6, 1, 6, 0.05, ValueDisplay.DECIMAL);
+	public SliderSetting distance =
+		new SliderSetting("Distance", 3, 1, 6, 0.05, ValueDisplay.DECIMAL);
+	
+	private TargetSettings followSettings = new TargetSettings();
+	private TargetSettings attackSettings = new TargetSettings()
+	{
+		@Override
+		public float getRange()
+		{
+			return range.getValueF();
+		};
+	};
+	
+	@Override
+	public void initSettings()
+	{
+		settings.add(useKillaura);
+		settings.add(speed);
+		settings.add(range);
+		settings.add(distance);
+	}
+	
+	@Override
+	public NavigatorItem[] getSeeAlso()
+	{
+		return new NavigatorItem[]{wurst.mods.killauraMod,
+			wurst.special.targetSpf, wurst.special.yesCheatSpf};
+	}
 	
 	@Override
 	public void onEnable()
@@ -32,58 +89,116 @@ public class FightBotMod extends Mod implements UpdateListener
 	}
 	
 	@Override
-	public void onUpdate()
+	public void onDisable()
 	{
-		entity = EntityUtils.getClosestEntity(true, false);
-		if(entity == null)
-			return;
-		if(entity.getHealth() <= 0 || entity.isDead
-			|| mc.player.getHealth() <= 0)
-		{
-			entity = null;
-			mc.gameSettings.keyBindForward.pressed = false;
-			return;
-		}
-		double xDist = Math.abs(mc.player.posX - entity.posX);
-		double zDist = Math.abs(mc.player.posZ - entity.posZ);
-		EntityUtils.faceEntityClient(entity);
-		if(xDist > distance || zDist > distance)
-			mc.gameSettings.keyBindForward.pressed = true;
-		else
-			mc.gameSettings.keyBindForward.pressed = false;
-		if(mc.player.isCollidedHorizontally && mc.player.onGround)
-			mc.player.jump();
-		if(mc.player.isInWater() && mc.player.posY < entity.posY)
-			mc.player.motionY += 0.04;
-		if(wurst.special.yesCheatSpf.getBypassLevel()
-			.ordinal() >= BypassLevel.ANTICHEAT.ordinal())
-			speed = wurst.mods.killauraMod.yesCheatSpeed;
-		else
-			speed = wurst.mods.killauraMod.normalSpeed;
-		updateMS();
-		if(hasTimePassedS(speed))
-			if(mc.player.getDistanceToEntity(entity) <= range)
-			{
-				if(wurst.mods.autoSwordMod.isActive())
-					AutoSwordMod.setSlot();
-				wurst.mods.criticalsMod.doCritical();
-				wurst.mods.blockHitMod.doBlock();
-				if(EntityUtils.getDistanceFromMouse(entity) > 55)
-					EntityUtils.faceEntityClient(entity);
-				else
-				{
-					EntityUtils.faceEntityClient(entity);
-					mc.player.swingItem();
-					mc.playerController.attackEntity(mc.player, entity);
-				}
-				updateLastMS();
-			}
+		// remove listener
+		wurst.events.remove(UpdateListener.class, this);
+		
+		// reset keys
+		resetKeys();
 	}
 	
 	@Override
-	public void onDisable()
+	public void onUpdate()
 	{
-		wurst.events.remove(UpdateListener.class, this);
-		mc.gameSettings.keyBindForward.pressed = false;
+		// update timer
+		updateMS();
+		
+		// reset keys
+		resetKeys();
+		
+		// set entity
+		Entity entity = EntityUtils.getClosestEntity(followSettings);
+		if(entity == null)
+			return;
+		
+		// jump if necessary
+		if(mc.player.isCollidedHorizontally)
+			mc.gameSettings.keyBindJump.pressed = true;
+		
+		// swim up if necessary
+		if(mc.player.isInWater() && mc.player.posY < entity.posY)
+			mc.gameSettings.keyBindJump.pressed = true;
+		
+		// control height if flying
+		if(!mc.player.onGround
+			&& (mc.player.capabilities.isFlying
+				|| wurst.mods.flightMod.isActive())
+			&& Math.sqrt(Math.pow(mc.player.posX - entity.posX, 2)
+				+ Math.pow(mc.player.posZ - entity.posZ, 2)) <= range
+					.getValue())
+		{
+			if(mc.player.posY > entity.posY + 1D)
+				mc.gameSettings.keyBindSneak.pressed = true;
+			else if(mc.player.posY < entity.posY - 1D)
+				mc.gameSettings.keyBindJump.pressed = true;
+		}
+		
+		// follow entity
+		mc.gameSettings.keyBindForward.pressed =
+			mc.player.getDistanceToEntity(entity) > distance.getValueF();
+		if(!EntityUtils.faceEntityClient(entity))
+			return;
+		
+		// check timer
+		if(!hasTimePassedS(speed.getValueF()))
+			return;
+		
+		// check range
+		if(!EntityUtils.isCorrectEntity(entity, attackSettings))
+			return;
+		
+		// AutoSword
+		if(wurst.mods.autoSwordMod.isActive())
+			AutoSwordMod.setSlot();
+		
+		// Criticals
+		wurst.mods.criticalsMod.doCritical();
+		
+		// BlockHit
+		wurst.mods.blockHitMod.doBlock();
+		
+		// attack entity
+		mc.player.swingItem();
+		mc.player.connection.sendPacket(
+			new C02PacketUseEntity(entity, C02PacketUseEntity.Action.ATTACK));
+		
+		// reset timer
+		updateLastMS();
+	}
+	
+	@Override
+	public void onYesCheatUpdate(BypassLevel bypassLevel)
+	{
+		switch(bypassLevel)
+		{
+			default:
+			case OFF:
+			case MINEPLEX_ANTICHEAT:
+				speed.unlock();
+				range.unlock();
+				distance.unlock();
+				break;
+			case ANTICHEAT:
+			case OLDER_NCP:
+			case LATEST_NCP:
+			case GHOST_MODE:
+				speed.lockToMax(12);
+				range.lockToMax(4.25);
+				distance.lockToMax(4.25);
+				break;
+		}
+	}
+	
+	private void resetKeys()
+	{
+		// get keys
+		GameSettings gs = mc.gameSettings;
+		KeyBinding[] keys = new KeyBinding[]{gs.keyBindForward, gs.keyBindJump,
+			gs.keyBindSneak};
+		
+		// reset keys
+		for(KeyBinding key : keys)
+			key.pressed = Keyboard.isKeyDown(key.getKeyCode());
 	}
 }

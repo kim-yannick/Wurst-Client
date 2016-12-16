@@ -26,8 +26,8 @@ public class BuildUtils
 		mouseOver.getBlockPos();
 		if(playerYaw > -45 && playerYaw <= 45)
 			for(int[] element : building)
-				Minecraft.getMinecraft().player.sendQueue
-					.addToSendQueue(new C08PacketPlayerBlockPlacement(
+				Minecraft.getMinecraft().player.connection
+					.sendPacket(new C08PacketPlayerBlockPlacement(
 						new BlockPos(Minecraft.getMinecraft().objectMouseOver
 							.getBlockPos().getX() + element[0], Minecraft
 							.getMinecraft().objectMouseOver.getBlockPos()
@@ -50,8 +50,8 @@ public class BuildUtils
 								.getBlockPos().getZ() + element[2])));
 		else if(playerYaw > 45 && playerYaw <= 135)
 			for(int[] element : building)
-				Minecraft.getMinecraft().player.sendQueue
-					.addToSendQueue(new C08PacketPlayerBlockPlacement(
+				Minecraft.getMinecraft().player.connection
+					.sendPacket(new C08PacketPlayerBlockPlacement(
 						new BlockPos(Minecraft.getMinecraft().objectMouseOver
 							.getBlockPos().getX() - element[2], Minecraft
 							.getMinecraft().objectMouseOver.getBlockPos()
@@ -74,8 +74,8 @@ public class BuildUtils
 								.getBlockPos().getZ() + element[0])));
 		else if(playerYaw > 135 || playerYaw <= -135)
 			for(int[] element : building)
-				Minecraft.getMinecraft().player.sendQueue
-					.addToSendQueue(new C08PacketPlayerBlockPlacement(
+				Minecraft.getMinecraft().player.connection
+					.sendPacket(new C08PacketPlayerBlockPlacement(
 						new BlockPos(Minecraft.getMinecraft().objectMouseOver
 							.getBlockPos().getX() - element[0], Minecraft
 							.getMinecraft().objectMouseOver.getBlockPos()
@@ -98,8 +98,8 @@ public class BuildUtils
 								.getBlockPos().getZ() - element[2])));
 		else if(playerYaw > -135 && playerYaw <= -45)
 			for(int[] element : building)
-				Minecraft.getMinecraft().player.sendQueue
-					.addToSendQueue(new C08PacketPlayerBlockPlacement(
+				Minecraft.getMinecraft().player.connection
+					.sendPacket(new C08PacketPlayerBlockPlacement(
 						new BlockPos(Minecraft.getMinecraft().objectMouseOver
 							.getBlockPos().getX() + element[2], Minecraft
 							.getMinecraft().objectMouseOver.getBlockPos()
@@ -132,8 +132,8 @@ public class BuildUtils
 				+ building[i][1], mouseOver.getBlockPos().getZ()
 				+ building[i][2]));
 			Minecraft.getMinecraft().player.swingItem();
-			Minecraft.getMinecraft().player.sendQueue
-				.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(
+			Minecraft.getMinecraft().player.connection
+				.sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(
 					mouseOver.getBlockPos().getX() + building[i][0], mouseOver
 						.getBlockPos().getY() + building[i][1], mouseOver
 						.getBlockPos().getZ() + building[i][2]),
@@ -152,8 +152,8 @@ public class BuildUtils
 				+ building[i][1], mouseOver.getBlockPos().getZ()
 				+ building[i][0]));
 			Minecraft.getMinecraft().player.swingItem();
-			Minecraft.getMinecraft().player.sendQueue
-				.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(
+			Minecraft.getMinecraft().player.connection
+				.sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(
 					mouseOver.getBlockPos().getX() - building[i][2], mouseOver
 						.getBlockPos().getY() + building[i][1], mouseOver
 						.getBlockPos().getZ() + building[i][0]),
@@ -172,8 +172,8 @@ public class BuildUtils
 				+ building[i][1], mouseOver.getBlockPos().getZ()
 				- building[i][2]));
 			Minecraft.getMinecraft().player.swingItem();
-			Minecraft.getMinecraft().player.sendQueue
-				.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(
+			Minecraft.getMinecraft().player.connection
+				.sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(
 					mouseOver.getBlockPos().getX() - building[i][0], mouseOver
 						.getBlockPos().getY() + building[i][1], mouseOver
 						.getBlockPos().getZ() - building[i][2]),
@@ -192,8 +192,8 @@ public class BuildUtils
 				+ building[i][1], mouseOver.getBlockPos().getZ()
 				- building[i][0]));
 			Minecraft.getMinecraft().player.swingItem();
-			Minecraft.getMinecraft().player.sendQueue
-				.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(
+			Minecraft.getMinecraft().player.connection
+				.sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(
 					mouseOver.getBlockPos().getX() + building[i][2], mouseOver
 						.getBlockPos().getY() + building[i][1], mouseOver
 						.getBlockPos().getZ() - building[i][0]),
@@ -217,8 +217,8 @@ public class BuildUtils
 			playerYaw += 360;
 		if(playerYaw > -45 && playerYaw <= 45)
 			for(int[] element : building)
-				Minecraft.getMinecraft().player.sendQueue
-					.addToSendQueue(new C08PacketPlayerBlockPlacement(
+				Minecraft.getMinecraft().player.connection
+					.sendPacket(new C08PacketPlayerBlockPlacement(
 						new BlockPos(convertPos(1,
 							Minecraft.getMinecraft().objectMouseOver.sideHit
 								.getIndex())
@@ -241,8 +241,8 @@ public class BuildUtils
 								.getBlockPos().getZ() + element[2])));
 		else if(playerYaw > 45 && playerYaw <= 135)
 			for(int[] element : building)
-				Minecraft.getMinecraft().player.sendQueue
-					.addToSendQueue(new C08PacketPlayerBlockPlacement(
+				Minecraft.getMinecraft().player.connection
+					.sendPacket(new C08PacketPlayerBlockPlacement(
 						new BlockPos(convertPos(1,
 							Minecraft.getMinecraft().objectMouseOver.sideHit
 								.getIndex())
@@ -265,8 +265,8 @@ public class BuildUtils
 								.getBlockPos().getZ() + element[0])));
 		else if(playerYaw > 135 || playerYaw <= -135)
 			for(int[] element : building)
-				Minecraft.getMinecraft().player.sendQueue
-					.addToSendQueue(new C08PacketPlayerBlockPlacement(
+				Minecraft.getMinecraft().player.connection
+					.sendPacket(new C08PacketPlayerBlockPlacement(
 						new BlockPos(convertPos(1,
 							Minecraft.getMinecraft().objectMouseOver.sideHit
 								.getIndex())
@@ -289,8 +289,8 @@ public class BuildUtils
 								.getBlockPos().getZ() - element[2])));
 		else if(playerYaw > -135 && playerYaw <= -45)
 			for(int[] element : building)
-				Minecraft.getMinecraft().player.sendQueue
-					.addToSendQueue(new C08PacketPlayerBlockPlacement(
+				Minecraft.getMinecraft().player.connection
+					.sendPacket(new C08PacketPlayerBlockPlacement(
 						new BlockPos(convertPos(1,
 							Minecraft.getMinecraft().objectMouseOver.sideHit
 								.getIndex())
@@ -323,8 +323,8 @@ public class BuildUtils
 					2, mouseOver) + building[i][1],
 				convertPosNext(3, mouseOver) + building[i][2]));
 			Minecraft.getMinecraft().player.swingItem();
-			Minecraft.getMinecraft().player.sendQueue
-				.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(
+			Minecraft.getMinecraft().player.connection
+				.sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(
 					convertPosNext(1, mouseOver) + building[i][0],
 					convertPosNext(2, mouseOver) + building[i][1],
 					convertPosNext(3, mouseOver) + building[i][2]),
@@ -343,8 +343,8 @@ public class BuildUtils
 					2, mouseOver) + building[i][1],
 				convertPosNext(3, mouseOver) + building[i][0]));
 			Minecraft.getMinecraft().player.swingItem();
-			Minecraft.getMinecraft().player.sendQueue
-				.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(
+			Minecraft.getMinecraft().player.connection
+				.sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(
 					convertPosNext(1, mouseOver) - building[i][2],
 					convertPosNext(2, mouseOver) + building[i][1],
 					convertPosNext(3, mouseOver) + building[i][0]),
@@ -363,8 +363,8 @@ public class BuildUtils
 					2, mouseOver) + building[i][1],
 				convertPosNext(3, mouseOver) - building[i][2]));
 			Minecraft.getMinecraft().player.swingItem();
-			Minecraft.getMinecraft().player.sendQueue
-				.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(
+			Minecraft.getMinecraft().player.connection
+				.sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(
 					convertPosNext(1, mouseOver) - building[i][0],
 					convertPosNext(2, mouseOver) + building[i][1],
 					convertPosNext(3, mouseOver) - building[i][2]),
@@ -383,8 +383,8 @@ public class BuildUtils
 					2, mouseOver) + building[i][1],
 				convertPosNext(3, mouseOver) - building[i][0]));
 			Minecraft.getMinecraft().player.swingItem();
-			Minecraft.getMinecraft().player.sendQueue
-				.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(
+			Minecraft.getMinecraft().player.connection
+				.sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(
 					convertPosNext(1, mouseOver) + building[i][2],
 					convertPosNext(2, mouseOver) + building[i][1],
 					convertPosNext(3, mouseOver) - building[i][0]),
@@ -701,8 +701,8 @@ public class BuildUtils
 			playerYaw += 360;
 		if(playerYaw > -45 && playerYaw <= 45)
 			for(int[] element : building)
-				Minecraft.getMinecraft().player.sendQueue
-					.addToSendQueue(new C08PacketPlayerBlockPlacement(
+				Minecraft.getMinecraft().player.connection
+					.sendPacket(new C08PacketPlayerBlockPlacement(
 						new BlockPos(
 							(int)Minecraft.getMinecraft().player.posX
 								+ element[0],
@@ -724,8 +724,8 @@ public class BuildUtils
 								.getBlockPos().getZ() + element[2])));
 		else if(playerYaw > 45 && playerYaw <= 135)
 			for(int[] element : building)
-				Minecraft.getMinecraft().player.sendQueue
-					.addToSendQueue(new C08PacketPlayerBlockPlacement(
+				Minecraft.getMinecraft().player.connection
+					.sendPacket(new C08PacketPlayerBlockPlacement(
 						new BlockPos(
 							(int)(Minecraft.getMinecraft().player.posX - element[2]),
 							(int)Minecraft.getMinecraft().player.posY - 2
@@ -746,8 +746,8 @@ public class BuildUtils
 								.getBlockPos().getZ() + element[0])));
 		else if(playerYaw > 135 || playerYaw <= -135)
 			for(int[] element : building)
-				Minecraft.getMinecraft().player.sendQueue
-					.addToSendQueue(new C08PacketPlayerBlockPlacement(
+				Minecraft.getMinecraft().player.connection
+					.sendPacket(new C08PacketPlayerBlockPlacement(
 						new BlockPos(
 							(int)Minecraft.getMinecraft().player.posX
 								- element[0],
@@ -769,8 +769,8 @@ public class BuildUtils
 								.getBlockPos().getZ() - element[2])));
 		else if(playerYaw > -135 && playerYaw <= -45)
 			for(int[] element : building)
-				Minecraft.getMinecraft().player.sendQueue
-					.addToSendQueue(new C08PacketPlayerBlockPlacement(
+				Minecraft.getMinecraft().player.connection
+					.sendPacket(new C08PacketPlayerBlockPlacement(
 						new BlockPos(
 							(int)Minecraft.getMinecraft().player.posX
 								+ element[2],
@@ -802,8 +802,8 @@ public class BuildUtils
 				+ building[i][0], (int)posY - 2 + building[i][1], (int)posZ
 				+ building[i][2]));
 			Minecraft.getMinecraft().player.swingItem();
-			Minecraft.getMinecraft().player.sendQueue
-				.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(
+			Minecraft.getMinecraft().player.connection
+				.sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(
 					(int)posX - 1 + building[i][0], (int)posY - 2
 						+ building[i][1], (int)posZ + building[i][2]),
 					building[i][3],
@@ -820,8 +820,8 @@ public class BuildUtils
 				(int)(posX - 1 - building[i][2]), (int)posY - 2
 					+ building[i][1], (int)posZ + building[i][0]));
 			Minecraft.getMinecraft().player.swingItem();
-			Minecraft.getMinecraft().player.sendQueue
-				.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(
+			Minecraft.getMinecraft().player.connection
+				.sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(
 					(int)(posX - 1 - building[i][2]), (int)posY - 2
 						+ building[i][1], (int)posZ + building[i][0]),
 					convertSide(building[i][3], 1),
@@ -838,8 +838,8 @@ public class BuildUtils
 				- building[i][0], (int)posY - 2 + building[i][1], (int)posZ
 				- building[i][2]));
 			Minecraft.getMinecraft().player.swingItem();
-			Minecraft.getMinecraft().player.sendQueue
-				.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(
+			Minecraft.getMinecraft().player.connection
+				.sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(
 					(int)posX - 1 - building[i][0], (int)posY - 2
 						+ building[i][1], (int)posZ - building[i][2]),
 					convertSide(building[i][3], 2),
@@ -856,8 +856,8 @@ public class BuildUtils
 				+ building[i][2], (int)posY - 2 + building[i][1], (int)posZ
 				- building[i][0]));
 			Minecraft.getMinecraft().player.swingItem();
-			Minecraft.getMinecraft().player.sendQueue
-				.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(
+			Minecraft.getMinecraft().player.connection
+				.sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(
 					(int)posX - 1 + building[i][2], (int)posY - 2
 						+ building[i][1], (int)posZ - building[i][0]),
 					convertSide(building[i][3], 3),

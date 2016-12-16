@@ -8,48 +8,89 @@
 package tk.wurst_client.commands;
 
 import net.minecraft.util.BlockPos;
-import tk.wurst_client.ai.PathFinder;
+import tk.wurst_client.ai.GotoAI;
+import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.utils.ChatUtils;
+import tk.wurst_client.utils.EntityUtils.TargetSettings;
 
 @Cmd.Info(description = "Walks or flies you to a specific location.",
 	name = "goto",
-	syntax = {"<x> <y> <z>", "<entity>"})
-public class GoToCmd extends Cmd
+	syntax = {"<x> <y> <z>", "<entity>", "-path"},
+	help = "Commands/goto")
+public class GoToCmd extends Cmd implements UpdateListener
 {
+	private GotoAI ai;
+	private boolean enabled;
+	
+	private TargetSettings targetSettings = new TargetSettings()
+	{
+		@Override
+		public boolean targetFriends()
+		{
+			return true;
+		}
+		
+		@Override
+		public boolean targetBehindWalls()
+		{
+			return true;
+		};
+	};
+	
 	@Override
 	public void execute(String[] args) throws Error
 	{
-		int[] pos = argsToPos(args);
-		if(Math.abs(pos[0] - mc.player.posX) > 256
-			|| Math.abs(pos[2] - mc.player.posZ) > 256)
+		// disable if enabled
+		if(enabled)
 		{
-			ChatUtils.error("Goal is out of range!");
-			ChatUtils.message("Maximum range is 256 blocks.");
-			return;
+			disable();
+			
+			if(args.length == 0)
+				return;
 		}
-		tk.wurst_client.mods.GoToCmdMod.setGoal(new BlockPos(pos[0], pos[1],
-			pos[2]));
-		Thread thread = new Thread(new Runnable()
+		
+		// set PathFinder
+		if(args.length == 1 && args[0].equals("-path"))
 		{
-			@Override
-			public void run()
-			{
-				System.out.println("Finding path");
-				long startTime = System.nanoTime();
-				PathFinder pathFinder =
-					new PathFinder(tk.wurst_client.mods.GoToCmdMod.getGoal());
-				if(pathFinder.find())
-				{
-					tk.wurst_client.mods.GoToCmdMod.setPath(pathFinder
-						.formatPath());
-					wurst.mods.goToCmdMod.setEnabled(true);
-				}else
-					ChatUtils.error("Could not find a path.");
-				System.out.println("Done after "
-					+ (System.nanoTime() - startTime) / 1e6 + "ms");
-			}
-		});
-		thread.setPriority(Thread.MIN_PRIORITY);
-		thread.start();
+			BlockPos goal = wurst.commands.pathCmd.getLastGoal();
+			if(goal != null)
+				ai = new GotoAI(goal);
+			else
+				error("No previous position on .path.");
+		}else
+		{
+			int[] goal = argsToPos(targetSettings, args);
+			ai = new GotoAI(new BlockPos(goal[0], goal[1], goal[2]));
+		}
+		
+		// start
+		enabled = true;
+		wurst.events.add(UpdateListener.class, this);
+	}
+	
+	@Override
+	public void onUpdate()
+	{
+		ai.update();
+		
+		if(ai.isDone() || ai.isFailed())
+		{
+			if(ai.isFailed())
+				ChatUtils.error("Could not find a path.");
+			
+			disable();
+		}
+	}
+	
+	private void disable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+		ai.stop();
+		enabled = false;
+	}
+	
+	public boolean isActive()
+	{
+		return enabled;
 	}
 }

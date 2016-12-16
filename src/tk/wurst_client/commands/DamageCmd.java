@@ -38,17 +38,17 @@ public class DamageCmd extends Cmd
 		double posX = mc.player.posX;
 		double posY = mc.player.posY;
 		double posZ = mc.player.posZ;
-		NetHandlerPlayClient sendQueue = mc.player.sendQueue;
+		NetHandlerPlayClient sendQueue = mc.player.connection;
 		
 		// apply damage
 		for(int i = 0; (double)i < 80 + 20 * (dmg - 1D); ++i)
 		{
-			sendQueue.addToSendQueue(new C04PacketPlayerPosition(posX,
+			sendQueue.sendPacket(new C04PacketPlayerPosition(posX,
 				posY + 0.049D, posZ, false));
-			sendQueue.addToSendQueue(new C04PacketPlayerPosition(posX, posY,
+			sendQueue.sendPacket(new C04PacketPlayerPosition(posX, posY,
 				posZ, false));
 		}
-		sendQueue.addToSendQueue(new C04PacketPlayerPosition(posX, posY, posZ,
+		sendQueue.sendPacket(new C04PacketPlayerPosition(posX, posY, posZ,
 			true));
 	}
 }

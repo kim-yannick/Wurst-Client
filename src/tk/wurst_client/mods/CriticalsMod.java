@@ -84,15 +84,15 @@ public class CriticalsMod extends Mod implements LeftClickListener
 					double posX = mc.player.posX;
 					double posY = mc.player.posY;
 					double posZ = mc.player.posZ;
-					NetHandlerPlayClient sendQueue = mc.player.sendQueue;
+					NetHandlerPlayClient sendQueue = mc.player.connection;
 					
-					sendQueue.addToSendQueue(new C04PacketPlayerPosition(posX,
+					sendQueue.sendPacket(new C04PacketPlayerPosition(posX,
 						posY + 0.0625D, posZ, true));
-					sendQueue.addToSendQueue(new C04PacketPlayerPosition(posX,
+					sendQueue.sendPacket(new C04PacketPlayerPosition(posX,
 						posY, posZ, false));
-					sendQueue.addToSendQueue(new C04PacketPlayerPosition(posX,
+					sendQueue.sendPacket(new C04PacketPlayerPosition(posX,
 						posY + 1.1E-5D, posZ, false));
-					sendQueue.addToSendQueue(new C04PacketPlayerPosition(posX,
+					sendQueue.sendPacket(new C04PacketPlayerPosition(posX,
 						posY, posZ, false));
 					break;
 			}

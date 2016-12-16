@@ -59,11 +59,11 @@ public class StepMod extends Mod implements UpdateListener
 				&& mc.player.isCollidedHorizontally)
 			{
 				mc.getNetHandler()
-					.addToSendQueue(new C04PacketPlayerPosition(mc.player.posX,
+					.sendPacket(new C04PacketPlayerPosition(mc.player.posX,
 						mc.player.posY + 0.42D, mc.player.posZ,
 						mc.player.onGround));
 				mc.getNetHandler()
-					.addToSendQueue(new C04PacketPlayerPosition(mc.player.posX,
+					.sendPacket(new C04PacketPlayerPosition(mc.player.posX,
 						mc.player.posY + 0.753D, mc.player.posZ,
 						mc.player.onGround));
 				mc.player.setPosition(mc.player.posX, mc.player.posY + 1D,

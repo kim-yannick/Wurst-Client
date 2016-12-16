@@ -100,7 +100,7 @@ public class FlightMod extends Mod implements UpdateListener
 			
 			C04PacketPlayerPosition packet = new C04PacketPlayerPosition(
 				mc.player.posX, y, mc.player.posZ, true);
-			mc.player.sendQueue.addToSendQueue(packet);
+			mc.player.connection.sendPacket(packet);
 		}
 		
 		for(double y = minY; y < mc.player.posY;)
@@ -111,7 +111,7 @@ public class FlightMod extends Mod implements UpdateListener
 			
 			C04PacketPlayerPosition packet = new C04PacketPlayerPosition(
 				mc.player.posX, y, mc.player.posZ, true);
-			mc.player.sendQueue.addToSendQueue(packet);
+			mc.player.connection.sendPacket(packet);
 		}
 	}
 	
@@ -136,10 +136,10 @@ public class FlightMod extends Mod implements UpdateListener
 			double startZ = mc.player.posZ;
 			for(int i = 0; i < 4; i++)
 			{
-				mc.player.sendQueue.addToSendQueue(
+				mc.player.connection.sendPacket(
 					new C03PacketPlayer.C04PacketPlayerPosition(startX,
 						startY + 1.01, startZ, false));
-				mc.player.sendQueue.addToSendQueue(
+				mc.player.connection.sendPacket(
 					new C03PacketPlayer.C04PacketPlayerPosition(startX, startY,
 						startZ, false));
 			}
@@ -193,7 +193,7 @@ public class FlightMod extends Mod implements UpdateListener
 			if(flightKickBypass.isChecked())
 			{
 				updateFlyHeight();
-				mc.player.sendQueue.addToSendQueue(new C03PacketPlayer(true));
+				mc.player.connection.sendPacket(new C03PacketPlayer(true));
 				
 				if(flyHeight <= 290 && hasTimePassedM(500)
 					|| flyHeight > 290 && hasTimePassedM(100))

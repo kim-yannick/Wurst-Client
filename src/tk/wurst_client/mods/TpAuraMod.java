@@ -9,21 +9,91 @@ package tk.wurst_client.mods;
 
 import java.util.Random;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.Entity;
 import net.minecraft.network.play.client.C02PacketUseEntity;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.navigator.NavigatorItem;
+import tk.wurst_client.navigator.settings.CheckboxSetting;
+import tk.wurst_client.navigator.settings.SliderSetting;
+import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 import tk.wurst_client.utils.EntityUtils;
+import tk.wurst_client.utils.EntityUtils.TargetSettings;
 
 @Mod.Info(
 	description = "Automatically attacks the closest valid entity while teleporting around it.",
 	name = "TP-Aura",
-	noCheatCompatible = false,
-	tags = "TpAura, EnderAura, tp aura, ender aura",
+	tags = "TpAura, EnderAura, Ender-Aura, tp aura, ender aura",
 	help = "Mods/TP-Aura")
+@Mod.Bypasses(ghostMode = false,
+	latestNCP = false,
+	olderNCP = false,
+	antiCheat = false)
 public class TpAuraMod extends Mod implements UpdateListener
 {
 	private Random random = new Random();
+	
+	public CheckboxSetting useKillaura =
+		new CheckboxSetting("Use Killaura settings", true)
+		{
+			@Override
+			public void update()
+			{
+				if(isChecked())
+				{
+					KillauraMod killaura = wurst.mods.killauraMod;
+					speed.lockToValue(killaura.speed.getValue());
+					range.lockToValue(killaura.range.getValue());
+					fov.lockToValue(killaura.fov.getValue());
+					hitThroughWalls.lock(killaura.hitThroughWalls.isChecked());
+				}else
+				{
+					speed.unlock();
+					range.unlock();
+					fov.unlock();
+					hitThroughWalls.unlock();
+				}
+			};
+		};
+	public SliderSetting speed =
+		new SliderSetting("Speed", 20, 0.1, 20, 0.1, ValueDisplay.DECIMAL);
+	public SliderSetting range =
+		new SliderSetting("Range", 6, 1, 6, 0.05, ValueDisplay.DECIMAL);
+	// TODO: Does it even make sense to have an FOV setting for this?
+	public SliderSetting fov =
+		new SliderSetting("FOV", 360, 30, 360, 10, ValueDisplay.DEGREES);
+	public CheckboxSetting hitThroughWalls =
+		new CheckboxSetting("Hit through walls", false);
+	
+	private TargetSettings targetSettings = new TargetSettings()
+	{
+		@Override
+		public boolean targetBehindWalls()
+		{
+			return hitThroughWalls.isChecked();
+		}
+		
+		@Override
+		public float getRange()
+		{
+			return range.getValueF();
+		}
+		
+		@Override
+		public float getFOV()
+		{
+			return fov.getValueF();
+		}
+	};
+	
+	@Override
+	public void initSettings()
+	{
+		settings.add(useKillaura);
+		settings.add(speed);
+		settings.add(range);
+		settings.add(fov);
+		settings.add(hitThroughWalls);
+	}
 	
 	@Override
 	public NavigatorItem[] getSeeAlso()
@@ -52,37 +122,53 @@ public class TpAuraMod extends Mod implements UpdateListener
 	}
 	
 	@Override
-	public void onUpdate()
-	{
-		updateMS();
-		EntityLivingBase en = EntityUtils.getClosestEntity(true, true);
-		if(en == null
-			|| mc.player.getDistanceToEntity(en) > wurst.mods.killauraMod.realRange)
-		{
-			EntityUtils.lookChanged = false;
-			return;
-		}
-		EntityUtils.lookChanged = true;
-		if(hasTimePassedS(wurst.mods.killauraMod.realSpeed))
-		{
-			mc.player.setPosition(en.posX + random.nextInt(3) * 2 - 2,
-				en.posY, en.posZ + random.nextInt(3) * 2 - 2);
-			if(wurst.mods.autoSwordMod.isActive())
-				AutoSwordMod.setSlot();
-			wurst.mods.criticalsMod.doCritical();
-			wurst.mods.blockHitMod.doBlock();
-			EntityUtils.faceEntityPacket(en);
-			mc.player.swingItem();
-			mc.player.sendQueue.addToSendQueue(new C02PacketUseEntity(en,
-				C02PacketUseEntity.Action.ATTACK));
-			updateLastMS();
-		}
-	}
-	
-	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
 		EntityUtils.lookChanged = false;
+	}
+	
+	@Override
+	public void onUpdate()
+	{
+		// update timer
+		updateMS();
+		
+		// set entity
+		Entity entity = EntityUtils.getClosestEntity(targetSettings);
+		
+		// head rotation
+		EntityUtils.lookChanged = entity != null;
+		if(!EntityUtils.lookChanged)
+			return;
+		
+		// teleport
+		mc.player.setPosition(entity.posX + random.nextInt(3) * 2 - 2,
+			entity.posY, entity.posZ + random.nextInt(3) * 2 - 2);
+		
+		// check timer / cooldown
+		if(!hasTimePassedS(speed.getValueF()))
+			return;
+		
+		// AutoSword
+		if(wurst.mods.autoSwordMod.isActive())
+			AutoSwordMod.setSlot();
+		
+		// Criticals
+		wurst.mods.criticalsMod.doCritical();
+		
+		// BlockHit
+		wurst.mods.blockHitMod.doBlock();
+		
+		// face entity
+		EntityUtils.faceEntityPacket(entity);
+		
+		// attack entity
+		mc.player.swingItem();
+		mc.player.connection.sendPacket(
+			new C02PacketUseEntity(entity, C02PacketUseEntity.Action.ATTACK));
+		
+		// reset timer
+		updateLastMS();
 	}
 }

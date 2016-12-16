@@ -107,7 +107,7 @@ public class NukerLegitMod extends Mod implements LeftClickListener,
 		BlockUtils.faceBlockClient(pos);
 		if(currentDamage == 0)
 		{
-			mc.player.sendQueue.addToSendQueue(new C07PacketPlayerDigging(
+			mc.player.connection.sendPacket(new C07PacketPlayerDigging(
 				Action.START_DESTROY_BLOCK, pos, side));
 			if(wurst.mods.autoToolMod.isActive() && oldSlot == -1)
 				oldSlot = mc.player.inventory.currentItem;
@@ -125,7 +125,7 @@ public class NukerLegitMod extends Mod implements LeftClickListener,
 		}
 		if(wurst.mods.autoToolMod.isActive())
 			AutoToolMod.setSlot(pos);
-		mc.player.sendQueue.addToSendQueue(new C0APacketAnimation());
+		mc.player.connection.sendPacket(new C0APacketAnimation());
 		shouldRenderESP = true;
 		currentDamage +=
 			currentBlock.getPlayerRelativeBlockHardness(mc.player,
@@ -134,7 +134,7 @@ public class NukerLegitMod extends Mod implements LeftClickListener,
 			(int)(currentDamage * 10.0F) - 1);
 		if(currentDamage >= 1)
 		{
-			mc.player.sendQueue.addToSendQueue(new C07PacketPlayerDigging(
+			mc.player.connection.sendPacket(new C07PacketPlayerDigging(
 				Action.STOP_DESTROY_BLOCK, pos, side));
 			mc.playerController.onPlayerDestroyBlock(pos, side);
 			blockHitDelay = (byte)4;

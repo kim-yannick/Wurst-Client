@@ -49,8 +49,8 @@ public class DropCmd extends Cmd implements UpdateListener
 			Item item = null;
 			while(item == null)
 				item = Item.getItemById(new Random().nextInt(431));
-			mc.player.sendQueue
-				.addToSendQueue(new C10PacketCreativeInventoryAction(-1,
+			mc.player.connection
+				.sendPacket(new C10PacketCreativeInventoryAction(-1,
 					new ItemStack(item, 64)));
 			return;
 		}

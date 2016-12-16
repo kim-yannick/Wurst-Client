@@ -9,11 +9,15 @@ package tk.wurst_client.mods;
 
 import java.util.ArrayList;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.Entity;
 import net.minecraft.network.play.client.C02PacketUseEntity;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.navigator.NavigatorItem;
+import tk.wurst_client.navigator.settings.CheckboxSetting;
+import tk.wurst_client.navigator.settings.SliderSetting;
+import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 import tk.wurst_client.utils.EntityUtils;
+import tk.wurst_client.utils.EntityUtils.TargetSettings;
 
 @Mod.Info(
 	description = "Faster Killaura that attacks multiple entities at once.",
@@ -21,9 +25,73 @@ import tk.wurst_client.utils.EntityUtils;
 	noCheatCompatible = false,
 	tags = "ForceField, multi aura, force field",
 	help = "Mods/MultiAura")
+@Mod.Bypasses(ghostMode = false,
+	latestNCP = false,
+	olderNCP = false,
+	antiCheat = false)
 public class MultiAuraMod extends Mod implements UpdateListener
 {
-	private float range = 6F;
+	public CheckboxSetting useKillaura =
+		new CheckboxSetting("Use Killaura settings", false)
+		{
+			@Override
+			public void update()
+			{
+				if(isChecked())
+				{
+					KillauraMod killaura = wurst.mods.killauraMod;
+					speed.lockToValue(killaura.speed.getValue());
+					range.lockToValue(killaura.range.getValue());
+					fov.lockToValue(killaura.fov.getValue());
+					hitThroughWalls.lock(killaura.hitThroughWalls.isChecked());
+				}else
+				{
+					speed.unlock();
+					range.unlock();
+					fov.unlock();
+					hitThroughWalls.unlock();
+				}
+			};
+		};
+	public SliderSetting speed =
+		new SliderSetting("Speed", 20, 0.1, 20, 0.1, ValueDisplay.DECIMAL);
+	public SliderSetting range =
+		new SliderSetting("Range", 6, 1, 6, 0.05, ValueDisplay.DECIMAL);
+	public SliderSetting fov =
+		new SliderSetting("FOV", 360, 30, 360, 10, ValueDisplay.DEGREES);
+	public CheckboxSetting hitThroughWalls =
+		new CheckboxSetting("Hit through walls", true);
+	
+	private TargetSettings targetSettings = new TargetSettings()
+	{
+		@Override
+		public boolean targetBehindWalls()
+		{
+			return hitThroughWalls.isChecked();
+		}
+		
+		@Override
+		public float getRange()
+		{
+			return range.getValueF();
+		}
+		
+		@Override
+		public float getFOV()
+		{
+			return fov.getValueF();
+		}
+	};
+	
+	@Override
+	public void initSettings()
+	{
+		settings.add(useKillaura);
+		settings.add(speed);
+		settings.add(range);
+		settings.add(fov);
+		settings.add(hitThroughWalls);
+	}
 	
 	@Override
 	public NavigatorItem[] getSeeAlso()
@@ -51,40 +119,51 @@ public class MultiAuraMod extends Mod implements UpdateListener
 	}
 	
 	@Override
-	public void onUpdate()
-	{
-		updateMS();
-		EntityLivingBase closestEntity =
-			EntityUtils.getClosestEntity(true, false);
-		if(closestEntity == null
-			|| mc.player.getDistanceToEntity(closestEntity) > range)
-		{
-			EntityUtils.lookChanged = false;
-			return;
-		}
-		EntityUtils.lookChanged = true;
-		
-		if(wurst.mods.autoSwordMod.isActive())
-			AutoSwordMod.setSlot();
-		wurst.mods.criticalsMod.doCritical();
-		wurst.mods.blockHitMod.doBlock();
-		ArrayList<EntityLivingBase> entities =
-			EntityUtils.getCloseEntities(true, range);
-		for(int i = 0; i < Math.min(entities.size(), 64); i++)
-		{
-			EntityLivingBase en = entities.get(i);
-			EntityUtils.faceEntityPacket(en);
-			mc.player.swingItem();
-			mc.player.sendQueue.addToSendQueue(new C02PacketUseEntity(en,
-				C02PacketUseEntity.Action.ATTACK));
-		}
-		updateLastMS();
-	}
-	
-	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
 		EntityUtils.lookChanged = false;
+	}
+	
+	@Override
+	public void onUpdate()
+	{
+		// update timer
+		updateMS();
+		
+		// check timer
+		if(!hasTimePassedS(speed.getValueF()))
+			return;
+		
+		// get entities
+		ArrayList<Entity> entities =
+			EntityUtils.getValidEntities(targetSettings);
+		
+		// head rotation
+		EntityUtils.lookChanged = !entities.isEmpty();
+		if(!EntityUtils.lookChanged)
+			return;
+		
+		// AutoSword
+		if(wurst.mods.autoSwordMod.isActive())
+			AutoSwordMod.setSlot();
+		
+		// Criticals
+		wurst.mods.criticalsMod.doCritical();
+		
+		// BlockHit
+		wurst.mods.blockHitMod.doBlock();
+		
+		// attack entities
+		for(Entity entity : entities)
+		{
+			EntityUtils.faceEntityPacket(entity);
+			mc.player.swingItem();
+			mc.player.connection.sendPacket(new C02PacketUseEntity(entity,
+				C02PacketUseEntity.Action.ATTACK));
+		}
+		
+		// reset timer
+		updateLastMS();
 	}
 }

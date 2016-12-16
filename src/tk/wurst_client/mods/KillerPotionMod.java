@@ -48,8 +48,8 @@ public class KillerPotionMod extends Mod
 		stack.setTagInfo("CustomPotionEffects", effects);
 		stack.setStackDisplayName("§c§lKiller§6§lPotion");
 		
-		mc.player.sendQueue
-			.addToSendQueue(new C10PacketCreativeInventoryAction(36, stack));
+		mc.player.connection
+			.sendPacket(new C10PacketCreativeInventoryAction(36, stack));
 		ChatUtils.message("Potion created.");
 		setEnabled(false);
 	}

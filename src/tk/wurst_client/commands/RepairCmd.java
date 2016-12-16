@@ -39,7 +39,7 @@ public class RepairCmd extends Cmd
 		
 		// repair item
 		item.setItemDamage(0);
-		player.sendQueue.addToSendQueue(new C10PacketCreativeInventoryAction(
+		player.connection.sendPacket(new C10PacketCreativeInventoryAction(
 			36 + player.inventory.currentItem, item));
 	}
 	

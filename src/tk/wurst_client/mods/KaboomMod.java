@@ -102,14 +102,14 @@ public class KaboomMod extends Mod implements UpdateListener
 									continue;
 								EnumFacing side = fakeObjectMouseOver.sideHit;
 								BlockUtils.faceBlockPacket(pos);
-								mc.player.sendQueue
-									.addToSendQueue(new C0APacketAnimation());
-								mc.player.sendQueue
-									.addToSendQueue(new C07PacketPlayerDigging(
+								mc.player.connection
+									.sendPacket(new C0APacketAnimation());
+								mc.player.connection
+									.sendPacket(new C07PacketPlayerDigging(
 										Action.START_DESTROY_BLOCK, pos, side));
 								for(int i = 0; i < power; i++)
-									mc.player.sendQueue
-										.addToSendQueue(new C07PacketPlayerDigging(
+									mc.player.connection
+										.sendPacket(new C07PacketPlayerDigging(
 											Action.STOP_DESTROY_BLOCK, pos,
 											side));
 								block.onBlockDestroyedByPlayer(

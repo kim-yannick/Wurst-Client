@@ -54,8 +54,8 @@ public class BlockUtils
 		float yaw =
 			(float)(Math.atan2(diffZ, diffX) * 180.0D / Math.PI) - 90.0F;
 		float pitch = (float)-(Math.atan2(diffY, dist) * 180.0D / Math.PI);
-		Minecraft.getMinecraft().player.sendQueue
-			.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(Minecraft
+		Minecraft.getMinecraft().player.connection
+			.sendPacket(new C03PacketPlayer.C05PacketPlayerLook(Minecraft
 				.getMinecraft().player.rotationYaw
 				+ MathHelper.wrapAngleTo180_float(yaw
 					- Minecraft.getMinecraft().player.rotationYaw),

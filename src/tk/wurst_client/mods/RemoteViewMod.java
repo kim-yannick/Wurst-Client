@@ -7,14 +7,12 @@
  */
 package tk.wurst_client.mods;
 
-import java.util.UUID;
-
 import net.minecraft.client.entity.EntityOtherPlayerMP;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.Entity;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.utils.ChatUtils;
 import tk.wurst_client.utils.EntityUtils;
+import tk.wurst_client.utils.EntityUtils.TargetSettings;
 
 @Mod.Info(
 	description = "Allows you to see the world as someone else.\n"
@@ -22,95 +20,153 @@ import tk.wurst_client.utils.EntityUtils;
 	name = "RemoteView",
 	tags = "remote view",
 	help = "Mods/RemoteView")
+@Mod.Bypasses
 public class RemoteViewMod extends Mod implements UpdateListener
 {
-	private EntityPlayerSP newView = null;
+	private Entity entity = null;
+	
 	private double oldX;
 	private double oldY;
 	private double oldZ;
 	private float oldYaw;
 	private float oldPitch;
-	private EntityLivingBase otherView = null;
-	private static UUID otherID = null;
 	private boolean wasInvisible;
+	
+	private TargetSettings targetSettingsFind = new TargetSettings()
+	{
+		@Override
+		public boolean targetFriends()
+		{
+			return true;
+		}
+		
+		@Override
+		public boolean targetBehindWalls()
+		{
+			return true;
+		};
+	};
+	
+	private TargetSettings targetSettingsKeep = new TargetSettings()
+	{
+		@Override
+		public boolean targetFriends()
+		{
+			return true;
+		}
+		
+		@Override
+		public boolean targetBehindWalls()
+		{
+			return true;
+		};
+		
+		@Override
+		public boolean targetInvisiblePlayers()
+		{
+			return true;
+		}
+		
+		@Override
+		public boolean targetInvisibleMobs()
+		{
+			return true;
+		}
+	};
 	
 	@Override
 	public void onEnable()
 	{
-		if(EntityUtils.getClosestEntityRaw(false) == null)
+		// find entity if not already set
+		if(entity == null)
 		{
-			ChatUtils.message("There is no nearby entity.");
-			setEnabled(false);
-			return;
+			entity = EntityUtils.getClosestEntity(targetSettingsFind);
+			
+			// check if entity was found
+			if(entity == null)
+			{
+				ChatUtils.message("There is no nearby entity.");
+				setEnabled(false);
+				return;
+			}
 		}
+		
+		// save old data
 		oldX = mc.player.posX;
 		oldY = mc.player.posY;
 		oldZ = mc.player.posZ;
 		oldYaw = mc.player.rotationYaw;
 		oldPitch = mc.player.rotationPitch;
+		wasInvisible = entity.isInvisibleToPlayer(mc.player);
+		
+		// activate NoClip
 		mc.player.noClip = true;
-		if(otherID == null)
-			otherID = EntityUtils.getClosestEntityRaw(false).getUniqueID();
-		otherView = EntityUtils.searchEntityByIdRaw(otherID);
-		wasInvisible = otherView.isInvisibleToPlayer(mc.player);
+		
+		// spawn fake player
 		EntityOtherPlayerMP fakePlayer =
 			new EntityOtherPlayerMP(mc.world, mc.player.getGameProfile());
 		fakePlayer.clonePlayer(mc.player, true);
 		fakePlayer.copyLocationAndAnglesFrom(mc.player);
 		fakePlayer.rotationYawHead = mc.player.rotationYawHead;
 		mc.world.addEntityToWorld(-69, fakePlayer);
-		ChatUtils.message("Now viewing " + otherView.getName() + ".");
+		
+		// success message
+		ChatUtils.message("Now viewing " + entity.getName() + ".");
+		
+		// add listener
 		wurst.events.add(UpdateListener.class, this);
-	}
-	
-	public static void onEnabledByCommand(String viewName)
-	{
-		try
-		{
-			if(otherID == null && !viewName.equals(""))
-				otherID =
-					EntityUtils.searchEntityByNameRaw(viewName).getUniqueID();
-			wurst.mods.remoteViewMod.toggle();
-		}catch(NullPointerException e)
-		{
-			ChatUtils.error("Entity not found.");
-		}
-	}
-	
-	@Override
-	public void onUpdate()
-	{
-		if(EntityUtils.searchEntityByIdRaw(otherID) == null)
-		{
-			setEnabled(false);
-			return;
-		}
-		newView = mc.player;
-		otherView = EntityUtils.searchEntityByIdRaw(otherID);
-		newView.copyLocationAndAnglesFrom(otherView);
-		mc.player.motionX = 0;
-		mc.player.motionY = 0;
-		mc.player.motionZ = 0;
-		mc.player = newView;
-		otherView.setInvisible(true);
 	}
 	
 	@Override
 	public void onDisable()
 	{
+		// remove listener
 		wurst.events.remove(UpdateListener.class, this);
-		if(otherView != null)
+		
+		// reset entity
+		if(entity != null)
 		{
-			ChatUtils
-				.message("No longer viewing " + otherView.getName() + ".");
-			otherView.setInvisible(wasInvisible);
-			mc.player.noClip = false;
-			mc.player.setPositionAndRotation(oldX, oldY, oldZ, oldYaw,
-				oldPitch);
-			mc.world.removeEntityFromWorld(-69);
+			ChatUtils.message("No longer viewing " + entity.getName() + ".");
+			entity.setInvisible(wasInvisible);
+			entity = null;
 		}
-		newView = null;
-		otherView = null;
-		otherID = null;
+		
+		// reset player
+		mc.player.noClip = false;
+		mc.player.setPositionAndRotation(oldX, oldY, oldZ, oldYaw, oldPitch);
+		
+		// remove fake player
+		mc.world.removeEntityFromWorld(-69);
+	}
+	
+	public void onToggledByCommand(String viewName)
+	{
+		// set entity
+		if(!isEnabled() && viewName != null && !viewName.isEmpty())
+			entity =
+				EntityUtils.getEntityWithName(viewName, targetSettingsFind);
+		
+		// toggle RemoteView
+		toggle();
+	}
+	
+	@Override
+	public void onUpdate()
+	{
+		// validate entity
+		if(!EntityUtils.isCorrectEntity(entity, targetSettingsKeep))
+		{
+			setEnabled(false);
+			return;
+		}
+		
+		// update position, rotation, etc.
+		mc.player.copyLocationAndAnglesFrom(entity);
+		mc.player.motionX = 0;
+		mc.player.motionY = 0;
+		mc.player.motionZ = 0;
+		
+		// set entity invisible
+		entity.setInvisible(true);
 	}
 }

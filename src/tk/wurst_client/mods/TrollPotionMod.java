@@ -49,8 +49,8 @@ public class TrollPotionMod extends Mod
 		}
 		stack.setTagInfo("CustomPotionEffects", effects);
 		stack.setStackDisplayName("§c§lTroll§6§lPotion");
-		mc.player.sendQueue
-			.addToSendQueue(new C10PacketCreativeInventoryAction(36, stack));
+		mc.player.connection
+			.sendPacket(new C10PacketCreativeInventoryAction(36, stack));
 		ChatUtils.message("Potion created. Trololo!");
 		setEnabled(false);
 	}

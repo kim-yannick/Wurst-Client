@@ -153,7 +153,7 @@ public class NukerMod extends Mod
 		BlockUtils.faceBlockPacket(pos);
 		if(currentDamage == 0)
 		{
-			mc.player.sendQueue.addToSendQueue(new C07PacketPlayerDigging(
+			mc.player.connection.sendPacket(new C07PacketPlayerDigging(
 				Action.START_DESTROY_BLOCK, pos, side));
 			if(wurst.mods.autoToolMod.isActive() && oldSlot == -1)
 				oldSlot = mc.player.inventory.currentItem;
@@ -176,7 +176,7 @@ public class NukerMod extends Mod
 		}
 		if(wurst.mods.autoToolMod.isActive())
 			AutoToolMod.setSlot(pos);
-		mc.player.sendQueue.addToSendQueue(new C0APacketAnimation());
+		mc.player.connection.sendPacket(new C0APacketAnimation());
 		shouldRenderESP = true;
 		BlockUtils.faceBlockPacket(pos);
 		currentDamage += currentBlock.getPlayerRelativeBlockHardness(mc.player,
@@ -188,14 +188,14 @@ public class NukerMod extends Mod
 			(int)(currentDamage * 10.0F) - 1);
 		if(currentDamage >= 1)
 		{
-			mc.player.sendQueue.addToSendQueue(new C07PacketPlayerDigging(
+			mc.player.connection.sendPacket(new C07PacketPlayerDigging(
 				Action.STOP_DESTROY_BLOCK, pos, side));
 			mc.playerController.onPlayerDestroyBlock(pos, side);
 			blockHitDelay = (byte)4;
 			currentDamage = 0;
 		}else if(wurst.mods.fastBreakMod.isActive()
 			&& wurst.options.fastbreakMode == 1)
-			mc.player.sendQueue.addToSendQueue(new C07PacketPlayerDigging(
+			mc.player.connection.sendPacket(new C07PacketPlayerDigging(
 				Action.STOP_DESTROY_BLOCK, pos, side));
 	}
 	
@@ -315,8 +315,8 @@ public class NukerMod extends Mod
 						side = fakeObjectMouseOver.sideHit;
 						shouldRenderESP = true;
 						BlockUtils.faceBlockPacket(pos);
-						mc.player.sendQueue
-							.addToSendQueue(new C07PacketPlayerDigging(
+						mc.player.connection
+							.sendPacket(new C07PacketPlayerDigging(
 								Action.START_DESTROY_BLOCK, blockPos, side));
 						block.onBlockDestroyedByPlayer(mc.world, blockPos,
 							mc.world.getBlockState(blockPos));

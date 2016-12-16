@@ -236,11 +236,11 @@ public class SpeedNukerMod extends Mod
 						if(!mc.player.onGround)
 							continue;
 						EnumFacing side = fakeObjectMouseOver.sideHit;
-						mc.player.sendQueue
-							.addToSendQueue(new C07PacketPlayerDigging(
+						mc.player.connection
+							.sendPacket(new C07PacketPlayerDigging(
 								Action.START_DESTROY_BLOCK, blockPos, side));
-						mc.player.sendQueue
-							.addToSendQueue(new C07PacketPlayerDigging(
+						mc.player.connection
+							.sendPacket(new C07PacketPlayerDigging(
 								Action.STOP_DESTROY_BLOCK, blockPos, side));
 					}
 				}

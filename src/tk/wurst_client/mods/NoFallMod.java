@@ -27,7 +27,7 @@ public class NoFallMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		if(mc.player.fallDistance > 2)
-			mc.player.sendQueue.addToSendQueue(new C03PacketPlayer(true));
+			mc.player.connection.sendPacket(new C03PacketPlayer(true));
 	}
 	
 	@Override

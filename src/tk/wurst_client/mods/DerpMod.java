@@ -31,8 +31,8 @@ public class DerpMod extends Mod implements UpdateListener
 		float yaw =
 			mc.player.rotationYaw + (float)(Math.random() * 360 - 180);
 		float pitch = (float)(Math.random() * 180 - 90);
-		mc.player.sendQueue
-			.addToSendQueue(new C05PacketPlayerLook(yaw, pitch,
+		mc.player.connection
+			.sendPacket(new C05PacketPlayerLook(yaw, pitch,
 				mc.player.onGround));
 	}
 	

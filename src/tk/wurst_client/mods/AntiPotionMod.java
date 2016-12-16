@@ -42,7 +42,7 @@ public class AntiPotionMod extends Mod implements UpdateListener
 				|| player.isPotionActive(Potion.wither)
 				|| player.isPotionActive(Potion.poison))
 				for(int i = 0; i < 1000; i++)
-					player.sendQueue.addToSendQueue(new C03PacketPlayer());
+					player.connection.sendPacket(new C03PacketPlayer());
 	}
 	
 	@Override

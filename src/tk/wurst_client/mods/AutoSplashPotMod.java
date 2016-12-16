@@ -79,19 +79,19 @@ public class AutoSplashPotMod extends Mod implements UpdateListener
 			{
 				// throw potion in hotbar
 				int oldSlot = mc.player.inventory.currentItem;
-				NetHandlerPlayClient sendQueue = mc.player.sendQueue;
+				NetHandlerPlayClient sendQueue = mc.player.connection;
 				sendQueue
-					.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(
+					.sendPacket(new C03PacketPlayer.C05PacketPlayerLook(
 						mc.player.rotationYaw, 90.0F, mc.player.onGround));
-				sendQueue.addToSendQueue(new C09PacketHeldItemChange(
+				sendQueue.sendPacket(new C09PacketHeldItemChange(
 					potionInHotbar - 36));
 				mc.playerController.updateController();
-				sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(
+				sendQueue.sendPacket(new C08PacketPlayerBlockPlacement(
 					mc.player.inventoryContainer.getSlot(potionInHotbar)
 						.getStack()));
-				sendQueue.addToSendQueue(new C09PacketHeldItemChange(oldSlot));
+				sendQueue.sendPacket(new C09PacketHeldItemChange(oldSlot));
 				sendQueue
-					.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(
+					.sendPacket(new C03PacketPlayer.C05PacketPlayerLook(
 						mc.player.rotationYaw, mc.player.rotationPitch,
 						mc.player.onGround));
 				

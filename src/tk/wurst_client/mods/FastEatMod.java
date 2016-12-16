@@ -35,8 +35,8 @@ public class FastEatMod extends Mod implements UpdateListener
 			&& mc.player.getFoodStats().needFood()
 			&& mc.gameSettings.keyBindUseItem.pressed)
 			for(int i = 0; i < 100; i++)
-				mc.player.sendQueue
-					.addToSendQueue(new C03PacketPlayer(false));
+				mc.player.connection
+					.sendPacket(new C03PacketPlayer(false));
 	}
 	
 	@Override

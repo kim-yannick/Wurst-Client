@@ -54,7 +54,7 @@ public class BlinkMod extends Mod
 	public void onDisable()
 	{
 		for(Packet packet : packets)
-			mc.player.sendQueue.addToSendQueue(packet);
+			mc.player.connection.sendPacket(packet);
 		packets.clear();
 		mc.world.removeEntityFromWorld(-69);
 		fakePlayer = null;

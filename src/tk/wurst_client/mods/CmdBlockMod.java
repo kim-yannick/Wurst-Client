@@ -48,8 +48,8 @@ public class CmdBlockMod extends Mod
 		nbtTagCompound.setTag("Command", new NBTTagString(cmd));
 		stack.writeToNBT(nbtTagCompound);
 		stack.setTagInfo("BlockEntityTag", nbtTagCompound);
-		mc.player.sendQueue
-			.addToSendQueue(new C10PacketCreativeInventoryAction(36, stack));
+		mc.player.connection
+			.sendPacket(new C10PacketCreativeInventoryAction(36, stack));
 		ChatUtils.message("Command Block created.");
 	}
 }

@@ -57,7 +57,7 @@ public class AutoLeaveMod extends Mod implements UpdateListener
 	{
 		if(mc.player.getHealth() <= 8.0
 			&& !mc.player.capabilities.isCreativeMode
-			&& (!mc.isIntegratedServerRunning() || Minecraft.getMinecraft().player.sendQueue
+			&& (!mc.isIntegratedServerRunning() || Minecraft.getMinecraft().player.connection
 				.getPlayerInfo().size() > 1))
 		{
 			switch(mode)
@@ -66,17 +66,17 @@ public class AutoLeaveMod extends Mod implements UpdateListener
 					mc.world.sendQuittingDisconnectingPacket();
 					break;
 				case 1:
-					mc.player.sendQueue
-						.addToSendQueue(new C01PacketChatMessage("§"));
+					mc.player.connection
+						.sendPacket(new C01PacketChatMessage("§"));
 					break;
 				case 2:
-					mc.player.sendQueue
-						.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(
+					mc.player.connection
+						.sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(
 							3.1e7d, 100, 3.1e7d, false));
 					break;
 				case 3:
-					mc.player.sendQueue
-						.addToSendQueue(new C02PacketUseEntity(mc.player,
+					mc.player.connection
+						.sendPacket(new C02PacketUseEntity(mc.player,
 							Action.ATTACK));
 					break;
 				default:

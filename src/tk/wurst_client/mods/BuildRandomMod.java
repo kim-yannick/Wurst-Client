@@ -98,8 +98,8 @@ public class BuildRandomMod extends Mod implements UpdateListener
 		fakeObjectMouseOver.setBlockPos(randomPos);
 		BlockUtils.faceBlockPacket(randomPos);
 		mc.player.swingItem();
-		mc.player.sendQueue
-			.addToSendQueue(new C08PacketPlayerBlockPlacement(randomPos,
+		mc.player.connection
+			.sendPacket(new C08PacketPlayerBlockPlacement(randomPos,
 				fakeObjectMouseOver.sideHit.getIndex(), Minecraft
 					.getMinecraft().player.inventory.getCurrentItem(),
 				(float)fakeObjectMouseOver.hitVec.xCoord

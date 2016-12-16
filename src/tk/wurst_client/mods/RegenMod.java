@@ -33,7 +33,7 @@ public class RegenMod extends Mod implements UpdateListener
 			&& mc.player.getHealth() < 20 && mc.player.getHealth() != 0
 			&& mc.player.onGround)
 			for(int i = 0; i < 1000; i++)
-				mc.player.sendQueue.addToSendQueue(new C03PacketPlayer());
+				mc.player.connection.sendPacket(new C03PacketPlayer());
 	}
 	
 	@Override

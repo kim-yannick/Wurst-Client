@@ -7,23 +7,112 @@
  */
 package tk.wurst_client.mods;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.Entity;
+import net.minecraft.network.play.client.C02PacketUseEntity;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 import tk.wurst_client.utils.EntityUtils;
+import tk.wurst_client.utils.EntityUtils.TargetSettings;
 
 @Mod.Info(
-	description = "A bot that follows the closest entity and protects it.",
+	description = "A bot that follows the closest entity and protects it from other entities.\n"
+		+ "Use .protect <entity> to protect a specific entity instead of the closest one.",
 	name = "Protect",
 	help = "Mods/Protect")
+@Mod.Bypasses(ghostMode = false)
 public class ProtectMod extends Mod implements UpdateListener
 {
-	private EntityLivingBase friend;
-	private EntityLivingBase enemy;
+	private Entity friend;
+	private Entity enemy;
 	private float range = 6F;
 	private double distanceF = 2D;
 	private double distanceE = 3D;
-	private float speed;
+	
+	private TargetSettings friendSettingsFind = new TargetSettings()
+	{
+		@Override
+		public boolean targetFriends()
+		{
+			return true;
+		}
+		
+		@Override
+		public float getRange()
+		{
+			return range;
+		}
+	};
+	
+	private TargetSettings friendSettingsKeep = new TargetSettings()
+	{
+		@Override
+		public boolean targetFriends()
+		{
+			return true;
+		}
+		
+		@Override
+		public boolean targetBehindWalls()
+		{
+			return true;
+		};
+		
+		@Override
+		public boolean targetPlayers()
+		{
+			return true;
+		}
+		
+		@Override
+		public boolean targetAnimals()
+		{
+			return true;
+		}
+		
+		@Override
+		public boolean targetMonsters()
+		{
+			return true;
+		}
+		
+		@Override
+		public boolean targetGolems()
+		{
+			return true;
+		}
+		
+		@Override
+		public boolean targetSleepingPlayers()
+		{
+			return true;
+		}
+		
+		@Override
+		public boolean targetInvisiblePlayers()
+		{
+			return true;
+		}
+		
+		@Override
+		public boolean targetInvisibleMobs()
+		{
+			return true;
+		}
+		
+		@Override
+		public boolean targetTeams()
+		{
+			return false;
+		}
+	};
+	
+	private TargetSettings enemySettings = new TargetSettings()
+	{
+		@Override
+		public float getRange()
+		{
+			return range;
+		};
+	};
 	
 	@Override
 	public String getRenderName()
@@ -37,68 +126,10 @@ public class ProtectMod extends Mod implements UpdateListener
 	@Override
 	public void onEnable()
 	{
-		friend = null;
-		EntityLivingBase en = EntityUtils.getClosestEntity(false, true);
-		if(en != null && mc.player.getDistanceToEntity(en) <= range)
-			friend = en;
+		// set friend
+		friend = EntityUtils.getClosestEntity(friendSettingsFind);
+		
 		wurst.events.add(UpdateListener.class, this);
-	}
-	
-	@Override
-	public void onUpdate()
-	{
-		if(friend == null || friend.isDead || friend.getHealth() <= 0
-			|| mc.player.getHealth() <= 0)
-		{
-			friend = null;
-			enemy = null;
-			setEnabled(false);
-			return;
-		}
-		if(enemy != null && (enemy.getHealth() <= 0 || enemy.isDead))
-			enemy = null;
-		double xDistF = Math.abs(mc.player.posX - friend.posX);
-		double zDistF = Math.abs(mc.player.posZ - friend.posZ);
-		double xDistE = distanceE;
-		double zDistE = distanceE;
-		if(enemy != null && mc.player.getDistanceToEntity(enemy) <= range)
-		{
-			xDistE = Math.abs(mc.player.posX - enemy.posX);
-			zDistE = Math.abs(mc.player.posZ - enemy.posZ);
-		}else
-			EntityUtils.faceEntityClient(friend);
-		if((xDistF > distanceF || zDistF > distanceF)
-			&& (enemy == null || mc.player.getDistanceToEntity(enemy) > range)
-			|| xDistE > distanceE || zDistE > distanceE)
-			mc.gameSettings.keyBindForward.pressed = true;
-		else
-			mc.gameSettings.keyBindForward.pressed = false;
-		if(mc.player.isCollidedHorizontally && mc.player.onGround)
-			mc.player.jump();
-		if(mc.player.isInWater() && mc.player.posY < friend.posY)
-			mc.player.motionY += 0.04;
-		if(wurst.special.yesCheatSpf
-			.getBypassLevel().ordinal() >= BypassLevel.ANTICHEAT
-			.ordinal())
-			speed = wurst.mods.killauraMod.yesCheatSpeed;
-		else
-			speed = wurst.mods.killauraMod.normalSpeed;
-		updateMS();
-		if(hasTimePassedS(speed) && EntityUtils.getClosestEnemy(friend) != null)
-		{
-			enemy = EntityUtils.getClosestEnemy(friend);
-			if(mc.player.getDistanceToEntity(enemy) <= range)
-			{
-				if(wurst.mods.autoSwordMod.isActive())
-					AutoSwordMod.setSlot();
-				wurst.mods.criticalsMod.doCritical();
-				wurst.mods.blockHitMod.doBlock();
-				EntityUtils.faceEntityClient(enemy);
-				mc.player.swingItem();
-				mc.playerController.attackEntity(mc.player, enemy);
-				updateLastMS();
-			}
-		}
 	}
 	
 	@Override
@@ -109,7 +140,72 @@ public class ProtectMod extends Mod implements UpdateListener
 			mc.gameSettings.keyBindForward.pressed = false;
 	}
 	
-	public void setFriend(EntityLivingBase friend)
+	@Override
+	public void onUpdate()
+	{
+		// check if player died, friend died or friend disappeared
+		if(mc.player.getHealth() <= 0
+			|| !EntityUtils.isCorrectEntity(friend, friendSettingsKeep))
+		{
+			friend = null;
+			enemy = null;
+			setEnabled(false);
+			return;
+		}
+		
+		// set enemy
+		enemy = EntityUtils.getClosestEntityOtherThan(friend, enemySettings);
+		
+		// jump if necessary
+		if(mc.player.isCollidedHorizontally && mc.player.onGround)
+			mc.player.jump();
+		
+		// swim up if necessary
+		if(mc.player.isInWater()
+			&& mc.player.posY < (enemy != null ? enemy.posY : friend.posY))
+			mc.player.motionY += 0.04;
+		
+		// update timer
+		updateMS();
+		
+		if(enemy == null)
+		{
+			// follow friend
+			EntityUtils.faceEntityClient(friend);
+			mc.gameSettings.keyBindForward.pressed =
+				mc.player.getDistanceToEntity(friend) > distanceF;
+		}else
+		{
+			// follow enemy
+			EntityUtils.faceEntityClient(enemy);
+			mc.gameSettings.keyBindForward.pressed =
+				mc.player.getDistanceToEntity(enemy) > distanceE;
+			
+			// check timer
+			if(!hasTimePassedS(wurst.mods.killauraMod.speed.getValueF()))
+				return;
+			
+			// AutoSword
+			if(wurst.mods.autoSwordMod.isActive())
+				AutoSwordMod.setSlot();
+			
+			// Criticals
+			wurst.mods.criticalsMod.doCritical();
+			
+			// BlockHit
+			wurst.mods.blockHitMod.doBlock();
+			
+			// attack enemy
+			mc.player.swingItem();
+			mc.player.connection.sendPacket(new C02PacketUseEntity(enemy,
+				C02PacketUseEntity.Action.ATTACK));
+			
+			// reset timer
+			updateLastMS();
+		}
+	}
+	
+	public void setFriend(Entity friend)
 	{
 		this.friend = friend;
 	}

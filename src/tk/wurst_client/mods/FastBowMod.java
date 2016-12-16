@@ -55,12 +55,12 @@ public class FastBowMod extends Mod implements UpdateListener
 				.onItemRightClick(mc.player.inventory.getCurrentItem(),
 					mc.world, mc.player);
 			for(int i = 0; i < 20; i++)
-				mc.player.sendQueue
-					.addToSendQueue(new C03PacketPlayer(false));
+				mc.player.connection
+					.sendPacket(new C03PacketPlayer(false));
 			Minecraft
 				.getMinecraft()
 				.getNetHandler()
-				.addToSendQueue(
+				.sendPacket(
 					new C07PacketPlayerDigging(Action.RELEASE_USE_ITEM,
 						new BlockPos(0, 0, 0), EnumFacing.DOWN));
 			mc.player.inventory

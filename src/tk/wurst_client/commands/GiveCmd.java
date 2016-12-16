@@ -189,8 +189,8 @@ public class GiveCmd extends Cmd
 		for(int i = 0; i < 9; i++)
 			if(mc.player.inventory.getStackInSlot(i) == null)
 			{
-				mc.player.sendQueue
-					.addToSendQueue(new C10PacketCreativeInventoryAction(
+				mc.player.connection
+					.sendPacket(new C10PacketCreativeInventoryAction(
 						36 + i, stack));
 				ChatUtils.message("Item" + (amount > 1 ? "s" : "")
 					+ " created.");

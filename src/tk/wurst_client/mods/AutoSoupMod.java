@@ -97,15 +97,15 @@ public class AutoSoupMod extends Mod implements UpdateListener
 		{
 			// eat soup in hotbar
 			int oldSlot = player.inventory.currentItem;
-			NetHandlerPlayClient sendQueue = player.sendQueue;
+			NetHandlerPlayClient sendQueue = player.connection;
 			
-			sendQueue.addToSendQueue(new C09PacketHeldItemChange(
+			sendQueue.sendPacket(new C09PacketHeldItemChange(
 				soupInHotbar - 36));
 			playerController.updateController();
-			sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(
+			sendQueue.sendPacket(new C08PacketPlayerBlockPlacement(
 				new BlockPos(-1, -1, -1), -1, inventoryContainer.getSlot(
 					soupInHotbar).getStack(), 0.0F, 0.0F, 0.0F));
-			sendQueue.addToSendQueue(new C09PacketHeldItemChange(oldSlot));
+			sendQueue.sendPacket(new C09PacketHeldItemChange(oldSlot));
 		}else
 			// move soup in inventory to hotbar
 			playerController.windowClick(0, soupInInventory, 0, 1, player);

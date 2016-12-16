@@ -7,20 +7,62 @@
  */
 package tk.wurst_client.mods;
 
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.network.play.client.C02PacketUseEntity;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.navigator.NavigatorItem;
+import tk.wurst_client.navigator.settings.CheckboxSetting;
+import tk.wurst_client.navigator.settings.SliderSetting;
+import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 import tk.wurst_client.special.YesCheatSpf.BypassLevel;
 import tk.wurst_client.utils.EntityUtils;
+import tk.wurst_client.utils.EntityUtils.TargetSettings;
 
 @Mod.Info(description = "Automatically attacks the entity you're looking at.",
 	name = "TriggerBot",
 	tags = "trigger bot",
 	help = "Mods/TriggerBot")
+@Mod.Bypasses
 public class TriggerBotMod extends Mod implements UpdateListener
 {
+	public CheckboxSetting useKillaura =
+		new CheckboxSetting("Use Killaura settings", true)
+		{
+			@Override
+			public void update()
+			{
+				if(isChecked())
+				{
+					KillauraMod killaura = wurst.mods.killauraMod;
+					speed.lockToValue(killaura.speed.getValue());
+					range.lockToValue(killaura.range.getValue());
+				}else
+				{
+					speed.unlock();
+					range.unlock();
+				}
+			};
+		};
+	public SliderSetting speed =
+		new SliderSetting("Speed", 20, 0.1, 20, 0.1, ValueDisplay.DECIMAL);
+	public SliderSetting range =
+		new SliderSetting("Range", 6, 1, 6, 0.05, ValueDisplay.DECIMAL);
+	
+	private TargetSettings targetSettings = new TargetSettings()
+	{
+		@Override
+		public float getRange()
+		{
+			return range.getValueF();
+		}
+	};
+	
+	@Override
+	public void initSettings()
+	{
+		settings.add(useKillaura);
+		settings.add(speed);
+		settings.add(range);
+	}
 	
 	@Override
 	public NavigatorItem[] getSeeAlso()
@@ -49,45 +91,66 @@ public class TriggerBotMod extends Mod implements UpdateListener
 	}
 	
 	@Override
-	public void onUpdate()
-	{
-		if(mc.objectMouseOver != null
-			&& mc.objectMouseOver.typeOfHit == MovingObjectType.ENTITY
-			&& mc.objectMouseOver.entityHit instanceof EntityLivingBase)
-		{
-			updateMS();
-			boolean yesCheatMode = wurst.special.yesCheatSpf.getBypassLevel()
-				.ordinal() >= BypassLevel.ANTICHEAT.ordinal();
-			if(yesCheatMode
-				&& hasTimePassedS(wurst.mods.killauraMod.yesCheatSpeed)
-				|| !yesCheatMode
-					&& hasTimePassedS(wurst.mods.killauraMod.normalSpeed))
-			{
-				EntityLivingBase en =
-					(EntityLivingBase)mc.objectMouseOver.entityHit;
-				if((yesCheatMode
-					&& mc.player.getDistanceToEntity(
-						en) <= wurst.mods.killauraMod.yesCheatRange
-					|| !yesCheatMode && mc.player.getDistanceToEntity(
-						en) <= wurst.mods.killauraMod.normalRange)
-					&& EntityUtils.isCorrectEntity(en, true))
-				{
-					if(wurst.mods.autoSwordMod.isActive())
-						AutoSwordMod.setSlot();
-					wurst.mods.criticalsMod.doCritical();
-					wurst.mods.blockHitMod.doBlock();
-					mc.player.swingItem();
-					mc.player.sendQueue.addToSendQueue(new C02PacketUseEntity(
-						en, C02PacketUseEntity.Action.ATTACK));
-					updateLastMS();
-				}
-			}
-		}
-	}
-	
-	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
+	public void onUpdate()
+	{
+		// update timer
+		updateMS();
+		
+		// check timer
+		if(!hasTimePassedS(speed.getValueF()))
+			return;
+		
+		// check entity
+		if(mc.objectMouseOver == null || !EntityUtils
+			.isCorrectEntity(mc.objectMouseOver.entityHit, targetSettings))
+			return;
+		
+		// AutoSword
+		if(wurst.mods.autoSwordMod.isActive())
+			AutoSwordMod.setSlot();
+		
+		// Criticals
+		wurst.mods.criticalsMod.doCritical();
+		
+		// BlockHit
+		wurst.mods.blockHitMod.doBlock();
+		
+		// attack entity
+		mc.player.swingItem();
+		mc.player.connection.sendPacket(new C02PacketUseEntity(
+			mc.objectMouseOver.entityHit, C02PacketUseEntity.Action.ATTACK));
+		
+		// reset timer
+		updateLastMS();
+	}
+	
+	@Override
+	public void onYesCheatUpdate(BypassLevel bypassLevel)
+	{
+		switch(bypassLevel)
+		{
+			default:
+			case OFF:
+			case MINEPLEX_ANTICHEAT:
+				speed.unlock();
+				range.unlock();
+				break;
+			case ANTICHEAT:
+			case OLDER_NCP:
+			case LATEST_NCP:
+				speed.lockToMax(12);
+				range.lockToMax(4.25);
+				break;
+			case GHOST_MODE:
+				speed.lockToMax(12);
+				range.lockToMax(4.25);
+				break;
+		}
 	}
 }

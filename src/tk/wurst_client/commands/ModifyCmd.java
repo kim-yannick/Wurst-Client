@@ -98,7 +98,7 @@ public class ModifyCmd extends Cmd
 		}else
 			syntaxError();
 		
-		player.sendQueue.addToSendQueue(new C10PacketCreativeInventoryAction(
+		player.connection.sendPacket(new C10PacketCreativeInventoryAction(
 			36 + player.inventory.currentItem, item));
 		
 		ChatUtils.message("Item modified.");
