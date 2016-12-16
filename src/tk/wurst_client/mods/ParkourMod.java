@@ -25,12 +25,12 @@ public class ParkourMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(mc.thePlayer.onGround && !mc.thePlayer.isSneaking()
-			&& mc.theWorld.getCollidingBoundingBoxes(mc.thePlayer,
-				mc.thePlayer.getEntityBoundingBox().offset(0, -0.5, 0)
+		if(mc.player.onGround && !mc.player.isSneaking()
+			&& mc.world.getCollidingBoundingBoxes(mc.player,
+				mc.player.getEntityBoundingBox().offset(0, -0.5, 0)
 					.contract(0.001, 0, 0.001))
 				.isEmpty())
-			mc.thePlayer.jump();
+			mc.player.jump();
 	}
 	
 	@Override

@@ -41,33 +41,33 @@ public class BlinkMod extends Mod
 	{
 		lastTime = System.currentTimeMillis();
 		
-		oldX = mc.thePlayer.posX;
-		oldY = mc.thePlayer.posY;
-		oldZ = mc.thePlayer.posZ;
+		oldX = mc.player.posX;
+		oldY = mc.player.posY;
+		oldZ = mc.player.posZ;
 		fakePlayer =
-			new EntityOtherPlayerMP(mc.theWorld, mc.thePlayer.getGameProfile());
-		fakePlayer.clonePlayer(mc.thePlayer, true);
-		fakePlayer.copyLocationAndAnglesFrom(mc.thePlayer);
-		fakePlayer.rotationYawHead = mc.thePlayer.rotationYawHead;
-		mc.theWorld.addEntityToWorld(-69, fakePlayer);
+			new EntityOtherPlayerMP(mc.world, mc.player.getGameProfile());
+		fakePlayer.clonePlayer(mc.player, true);
+		fakePlayer.copyLocationAndAnglesFrom(mc.player);
+		fakePlayer.rotationYawHead = mc.player.rotationYawHead;
+		mc.world.addEntityToWorld(-69, fakePlayer);
 	}
 	
 	@Override
 	public void onDisable()
 	{
 		for(Packet packet : packets)
-			mc.thePlayer.sendQueue.addToSendQueue(packet);
+			mc.player.sendQueue.addToSendQueue(packet);
 		packets.clear();
-		mc.theWorld.removeEntityFromWorld(-69);
+		mc.world.removeEntityFromWorld(-69);
 		fakePlayer = null;
 		blinkTime = 0;
 	}
 	
 	public static void addToBlinkQueue(Packet packet)
 	{
-		if(mc.thePlayer.posX != mc.thePlayer.prevPosX
-			|| mc.thePlayer.posZ != Minecraft.getMinecraft().thePlayer.prevPosZ
-			|| mc.thePlayer.posY != Minecraft.getMinecraft().thePlayer.prevPosY)
+		if(mc.player.posX != mc.player.prevPosX
+			|| mc.player.posZ != Minecraft.getMinecraft().player.prevPosZ
+			|| mc.player.posY != Minecraft.getMinecraft().player.prevPosY)
 		{
 			blinkTime += System.currentTimeMillis() - lastTime;
 			packets.add(packet);
@@ -78,8 +78,8 @@ public class BlinkMod extends Mod
 	public void cancel()
 	{
 		packets.clear();
-		mc.thePlayer.setPositionAndRotation(oldX, oldY, oldZ,
-			mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch);
+		mc.player.setPositionAndRotation(oldX, oldY, oldZ,
+			mc.player.rotationYaw, mc.player.rotationPitch);
 		setEnabled(false);
 	}
 }

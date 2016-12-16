@@ -69,7 +69,7 @@ public class AutoSoupMod extends Mod implements UpdateListener
 		if(mc.currentScreen instanceof GuiContainer && !(mc.currentScreen instanceof GuiInventory))
 			return;
 		
-		EntityPlayerSP player = mc.thePlayer;
+		EntityPlayerSP player = mc.player;
 		
 		// check if health is low
 		if(player.getHealth() >= health)
@@ -126,7 +126,7 @@ public class AutoSoupMod extends Mod implements UpdateListener
 		for(int i = startSlot; i < endSlot; i++)
 		{
 			ItemStack stack =
-				mc.thePlayer.inventoryContainer.getSlot(i).getStack();
+				mc.player.inventoryContainer.getSlot(i).getStack();
 			if(stack != null && stack.getItem() == Items.mushroom_stew)
 				return i;
 		}

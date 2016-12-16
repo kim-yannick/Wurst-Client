@@ -30,10 +30,10 @@ public class ForcePushMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		EntityLivingBase en = EntityUtils.getClosestEntity(true, true);
-		if(mc.thePlayer.onGround && en != null
-			&& en.getDistanceToEntity(mc.thePlayer) < 1)
+		if(mc.player.onGround && en != null
+			&& en.getDistanceToEntity(mc.player) < 1)
 			for(int i = 0; i < 1000; i++)
-				mc.thePlayer.sendQueue
+				mc.player.sendQueue
 					.addToSendQueue(new C03PacketPlayer(true));
 	}
 	

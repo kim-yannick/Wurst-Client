@@ -34,7 +34,7 @@ public class AddAltCmd extends Cmd
 				NetworkPlayerInfo info = (NetworkPlayerInfo)itr.next();
 				String crackedName =
 					StringUtils.stripControlCodes(info.getPlayerNameForReal());
-				if(crackedName.equals(mc.thePlayer.getName())
+				if(crackedName.equals(mc.player.getName())
 					|| crackedName.equals("Alexander01998")
 					|| GuiAltList.alts.contains(new Alt(crackedName, null, null)))
 					continue;

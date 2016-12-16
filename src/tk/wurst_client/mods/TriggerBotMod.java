@@ -67,16 +67,16 @@ public class TriggerBotMod extends Mod implements UpdateListener
 				EntityLivingBase en =
 					(EntityLivingBase)mc.objectMouseOver.entityHit;
 				if((yesCheatMode
-					&& mc.thePlayer.getDistanceToEntity(en) <= wurst.mods.killauraMod.yesCheatRange || !yesCheatMode
-					&& mc.thePlayer.getDistanceToEntity(en) <= wurst.mods.killauraMod.normalRange)
+					&& mc.player.getDistanceToEntity(en) <= wurst.mods.killauraMod.yesCheatRange || !yesCheatMode
+					&& mc.player.getDistanceToEntity(en) <= wurst.mods.killauraMod.normalRange)
 					&& EntityUtils.isCorrectEntity(en, true))
 				{
 					if(wurst.mods.autoSwordMod.isActive())
 						AutoSwordMod.setSlot();
 					wurst.mods.criticalsMod.doCritical();
 					wurst.mods.blockHitMod.doBlock();
-					mc.thePlayer.swingItem();
-					mc.thePlayer.sendQueue.addToSendQueue(new C02PacketUseEntity(
+					mc.player.swingItem();
+					mc.player.sendQueue.addToSendQueue(new C02PacketUseEntity(
 						en, C02PacketUseEntity.Action.ATTACK));
 					updateLastMS();
 				}

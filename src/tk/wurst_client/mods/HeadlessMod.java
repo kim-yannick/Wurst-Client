@@ -30,10 +30,10 @@ public class HeadlessMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		mc.thePlayer.sendQueue
+		mc.player.sendQueue
 			.addToSendQueue(new C05PacketPlayerLook(Minecraft
-				.getMinecraft().thePlayer.rotationYaw, 180F, Minecraft
-				.getMinecraft().thePlayer.onGround));
+				.getMinecraft().player.rotationYaw, 180F, Minecraft
+				.getMinecraft().player.onGround));
 	}
 	
 	@Override

@@ -36,7 +36,7 @@ public class FollowMod extends Mod implements UpdateListener
 	{
 		entity = null;
 		EntityLivingBase en = EntityUtils.getClosestEntity(false, true);
-		if(en != null && mc.thePlayer.getDistanceToEntity(en) <= range)
+		if(en != null && mc.player.getDistanceToEntity(en) <= range)
 			entity = en;
 		wurst.events.add(UpdateListener.class, this);
 	}
@@ -49,23 +49,23 @@ public class FollowMod extends Mod implements UpdateListener
 			setEnabled(false);
 			return;
 		}
-		if(entity.isDead || mc.thePlayer.isDead)
+		if(entity.isDead || mc.player.isDead)
 		{
 			entity = null;
 			setEnabled(false);
 			return;
 		}
-		double xDist = Math.abs(mc.thePlayer.posX - entity.posX);
-		double zDist = Math.abs(mc.thePlayer.posZ - entity.posZ);
+		double xDist = Math.abs(mc.player.posX - entity.posX);
+		double zDist = Math.abs(mc.player.posZ - entity.posZ);
 		EntityUtils.faceEntityClient(entity);
 		if(xDist > 1D || zDist > 1D)
 			mc.gameSettings.keyBindForward.pressed = true;
 		else
 			mc.gameSettings.keyBindForward.pressed = false;
-		if(mc.thePlayer.isCollidedHorizontally && mc.thePlayer.onGround)
-			mc.thePlayer.jump();
-		if(mc.thePlayer.isInWater() && mc.thePlayer.posY < entity.posY)
-			mc.thePlayer.motionY += 0.04;
+		if(mc.player.isCollidedHorizontally && mc.player.onGround)
+			mc.player.jump();
+		if(mc.player.isInWater() && mc.player.posY < entity.posY)
+			mc.player.motionY += 0.04;
 	}
 	
 	@Override

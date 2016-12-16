@@ -20,8 +20,8 @@ public class GoToCmd extends Cmd
 	public void execute(String[] args) throws Error
 	{
 		int[] pos = argsToPos(args);
-		if(Math.abs(pos[0] - mc.thePlayer.posX) > 256
-			|| Math.abs(pos[2] - mc.thePlayer.posZ) > 256)
+		if(Math.abs(pos[0] - mc.player.posX) > 256
+			|| Math.abs(pos[2] - mc.player.posZ) > 256)
 		{
 			wurst.chat.error("Goal is out of range!");
 			wurst.chat.message("Maximum range is 256 blocks.");

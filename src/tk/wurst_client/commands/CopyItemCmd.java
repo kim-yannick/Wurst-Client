@@ -23,12 +23,12 @@ public class CopyItemCmd extends Cmd
 	{
 		if(args.length != 2)
 			syntaxError();
-		if(!mc.thePlayer.capabilities.isCreativeMode)
+		if(!mc.player.capabilities.isCreativeMode)
 			error("Creative mode only.");
 		
 		// find item
 		ItemStack item = null;
-		for(Object entity : mc.theWorld.loadedEntityList)
+		for(Object entity : mc.world.loadedEntityList)
 			if(entity instanceof EntityOtherPlayerMP)
 			{
 				EntityOtherPlayerMP player = (EntityOtherPlayerMP)entity;
@@ -63,9 +63,9 @@ public class CopyItemCmd extends Cmd
 		
 		// copy item
 		for(int i = 0; i < 9; i++)
-			if(mc.thePlayer.inventory.getStackInSlot(i) == null)
+			if(mc.player.inventory.getStackInSlot(i) == null)
 			{
-				mc.thePlayer.sendQueue
+				mc.player.sendQueue
 					.addToSendQueue(new C10PacketCreativeInventoryAction(
 						36 + i, item));
 				wurst.chat.message("Item copied.");

@@ -36,10 +36,10 @@ public class AutoSwitchMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(mc.thePlayer.inventory.currentItem == 8)
-			mc.thePlayer.inventory.currentItem = 0;
+		if(mc.player.inventory.currentItem == 8)
+			mc.player.inventory.currentItem = 0;
 		else
-			mc.thePlayer.inventory.currentItem++;
+			mc.player.inventory.currentItem++;
 	}
 	
 	@Override

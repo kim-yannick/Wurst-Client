@@ -32,7 +32,7 @@ public class AutoMineMod extends Mod implements UpdateListener
 		if(mc.objectMouseOver == null
 			|| mc.objectMouseOver.getBlockPos() == null)
 			return;
-		if(Block.getIdFromBlock(mc.theWorld.getBlockState(
+		if(Block.getIdFromBlock(mc.world.getBlockState(
 			mc.objectMouseOver.getBlockPos()).getBlock()) != 0)
 			mc.gameSettings.keyBindAttack.pressed = true;
 		else

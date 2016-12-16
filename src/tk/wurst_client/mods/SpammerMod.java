@@ -440,7 +440,7 @@ public class SpammerMod extends Mod
 									for(int i = 0; i < spam.split("\n").length; i++)
 									{
 										String message = spam.split("\n")[i];
-										mc.thePlayer
+										mc.player
 											.sendAutomaticChatMessage(message);
 										Thread.sleep(wurst.options.spamDelay);
 									}

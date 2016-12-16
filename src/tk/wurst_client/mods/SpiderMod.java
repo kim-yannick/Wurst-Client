@@ -27,8 +27,8 @@ public class SpiderMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(mc.thePlayer.isCollidedHorizontally)
-			mc.thePlayer.motionY = 0.2;
+		if(mc.player.isCollidedHorizontally)
+			mc.player.motionY = 0.2;
 	}
 	
 	@Override

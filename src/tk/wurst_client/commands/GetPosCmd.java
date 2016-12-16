@@ -23,7 +23,7 @@ public class GetPosCmd extends Cmd
 	{
 		if(args.length > 1)
 			syntaxError();
-		BlockPos blockpos = new BlockPos(mc.thePlayer);
+		BlockPos blockpos = new BlockPos(mc.player);
 		String pos =
 			blockpos.getX() + " " + blockpos.getY() + " " + blockpos.getZ();
 		if(args.length == 0)

@@ -29,7 +29,7 @@ public class AnnoyCmd extends Cmd implements ChatInputListener
 			{
 				name = args[0];
 				wurst.chat.message("Now annoying " + name + ".");
-				if(name.equals(mc.thePlayer.getName()))
+				if(name.equals(mc.player.getName()))
 					wurst.chat.warning("Annoying yourself is a bad idea!");
 				wurst.events.add(ChatInputListener.class, this);
 			}else
@@ -57,12 +57,12 @@ public class AnnoyCmd extends Cmd implements ChatInputListener
 		if(message.startsWith("<" + name + ">") || message.contains(name + ">"))
 		{
 			String repeatMessage = message.substring(message.indexOf(">") + 1);
-			mc.thePlayer.sendChatMessage(repeatMessage);
+			mc.player.sendChatMessage(repeatMessage);
 		}else if(message.contains("] " + name + ":")
 			|| message.contains("]" + name + ":"))
 		{
 			String repeatMessage = message.substring(message.indexOf(":") + 1);
-			mc.thePlayer.sendChatMessage(repeatMessage);
+			mc.player.sendChatMessage(repeatMessage);
 		}
 	}
 }

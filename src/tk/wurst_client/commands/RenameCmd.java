@@ -18,7 +18,7 @@ public class RenameCmd extends Cmd
 	@Override
 	public void execute(String[] args) throws Error
 	{
-		if(!mc.thePlayer.capabilities.isCreativeMode)
+		if(!mc.player.capabilities.isCreativeMode)
 			error("Creative mode only.");
 		if(args.length == 0)
 			syntaxError();
@@ -26,7 +26,7 @@ public class RenameCmd extends Cmd
 		for(int i = 1; i < args.length; i++)
 			message += " " + args[i];
 		message = message.replace("$", "§").replace("§§", "$");
-		ItemStack item = mc.thePlayer.inventory.getCurrentItem();
+		ItemStack item = mc.player.inventory.getCurrentItem();
 		if(item == null)
 			error("There is no item in your hand.");
 		item.setStackDisplayName(message);

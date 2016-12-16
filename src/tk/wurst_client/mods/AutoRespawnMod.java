@@ -28,7 +28,7 @@ public class AutoRespawnMod extends Mod implements DeathListener
 	@Override
 	public void onDeath()
 	{
-		mc.thePlayer.respawnPlayer();
+		mc.player.respawnPlayer();
 		mc.displayGuiScreen((GuiScreen)null);
 	}
 	

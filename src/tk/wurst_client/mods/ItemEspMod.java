@@ -37,7 +37,7 @@ public class ItemEspMod extends Mod implements RenderListener
 	@Override
 	public void onRender()
 	{
-		for(Object entity : mc.theWorld.loadedEntityList)
+		for(Object entity : mc.world.loadedEntityList)
 			if(entity instanceof EntityItem)
 				RenderUtils.entityESPBox((Entity)entity, 2);
 	}

@@ -18,6 +18,6 @@ public class TpCmd extends Cmd
 	public void execute(String[] args) throws Error
 	{
 		int[] pos = argsToPos(args);
-		mc.thePlayer.setPosition(pos[0], pos[1], pos[2]);
+		mc.player.setPosition(pos[0], pos[1], pos[2]);
 	}
 }

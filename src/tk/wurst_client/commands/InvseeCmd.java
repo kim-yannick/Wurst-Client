@@ -24,7 +24,7 @@ public class InvseeCmd extends Cmd implements RenderListener
 	{
 		if(args.length != 1)
 			syntaxError();
-		if(mc.thePlayer.capabilities.isCreativeMode)
+		if(mc.player.capabilities.isCreativeMode)
 		{
 			wurst.chat.error("Survival mode only.");
 			return;
@@ -37,7 +37,7 @@ public class InvseeCmd extends Cmd implements RenderListener
 	public void onRender()
 	{
 		boolean found = false;
-		for(Object entity : mc.theWorld.loadedEntityList)
+		for(Object entity : mc.world.loadedEntityList)
 			if(entity instanceof EntityOtherPlayerMP)
 			{
 				EntityOtherPlayerMP player = (EntityOtherPlayerMP)entity;

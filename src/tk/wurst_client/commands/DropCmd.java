@@ -49,7 +49,7 @@ public class DropCmd extends Cmd implements UpdateListener
 			Item item = null;
 			while(item == null)
 				item = Item.getItemById(new Random().nextInt(431));
-			mc.thePlayer.sendQueue
+			mc.player.sendQueue
 				.addToSendQueue(new C10PacketCreativeInventoryAction(-1,
 					new ItemStack(item, 64)));
 			return;
@@ -59,7 +59,7 @@ public class DropCmd extends Cmd implements UpdateListener
 			timer++;
 			if(timer >= 5)
 			{
-				mc.playerController.windowClick(0, counter, 1, 4, mc.thePlayer);
+				mc.playerController.windowClick(0, counter, 1, 4, mc.player);
 				counter++;
 				timer = 0;
 				if(counter >= 45)
@@ -68,7 +68,7 @@ public class DropCmd extends Cmd implements UpdateListener
 		}else
 		{
 			for(int i = 9; i < 45; i++)
-				mc.playerController.windowClick(0, i, 1, 4, mc.thePlayer);
+				mc.playerController.windowClick(0, i, 1, 4, mc.player);
 			wurst.events.remove(UpdateListener.class, this);
 		}
 	}

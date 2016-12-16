@@ -201,9 +201,9 @@ public class RenderUtils
 		GL11.glDepthMask(false);
 		if(mode == 0)// Enemy
 			GL11.glColor4d(
-				1 - Minecraft.getMinecraft().thePlayer
+				1 - Minecraft.getMinecraft().player
 					.getDistanceToEntity(entity) / 40,
-				Minecraft.getMinecraft().thePlayer.getDistanceToEntity(entity) / 40,
+				Minecraft.getMinecraft().player.getDistanceToEntity(entity) / 40,
 				0, 0.5F);
 		else if(mode == 1)// Friend
 			GL11.glColor4d(0, 0, 1, 0.5F);
@@ -398,9 +398,9 @@ public class RenderUtils
 		glDepthMask(false);
 		if(mode == 0)// Enemy
 			GL11.glColor4d(
-				1 - Minecraft.getMinecraft().thePlayer
+				1 - Minecraft.getMinecraft().player
 					.getDistanceToEntity(entity) / 40,
-				Minecraft.getMinecraft().thePlayer.getDistanceToEntity(entity) / 40,
+				Minecraft.getMinecraft().player.getDistanceToEntity(entity) / 40,
 				0, 0.5F);
 		else if(mode == 1)// Friend
 			GL11.glColor4d(0, 0, 1, 0.5F);
@@ -412,7 +412,7 @@ public class RenderUtils
 			GL11.glColor4d(0, 1, 0, 0.5F);
 		glBegin(GL_LINES);
 		{
-			glVertex3d(0, Minecraft.getMinecraft().thePlayer.getEyeHeight(), 0);
+			glVertex3d(0, Minecraft.getMinecraft().player.getEyeHeight(), 0);
 			glVertex3d(x, y, z);
 		}
 		glEnd();
@@ -442,7 +442,7 @@ public class RenderUtils
 		RenderUtil.setColor(color);
 		glBegin(GL_LINES);
 		{
-			glVertex3d(0, Minecraft.getMinecraft().thePlayer.getEyeHeight(), 0);
+			glVertex3d(0, Minecraft.getMinecraft().player.getEyeHeight(), 0);
 			glVertex3d(x, y, z);
 		}
 		glEnd();
@@ -466,7 +466,7 @@ public class RenderUtils
 		RenderUtil.setColor(color);
 		glBegin(GL_LINES);
 		{
-			glVertex3d(0, Minecraft.getMinecraft().thePlayer.getEyeHeight(), 0);
+			glVertex3d(0, Minecraft.getMinecraft().player.getEyeHeight(), 0);
 			glVertex3d(x, y, z);
 		}
 		glEnd();

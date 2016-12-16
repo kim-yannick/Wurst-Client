@@ -51,7 +51,7 @@ public class AutoSwordMod extends Mod implements LeftClickListener,
 			timer--;
 			return;
 		}
-		mc.thePlayer.inventory.currentItem = oldSlot;
+		mc.player.inventory.currentItem = oldSlot;
 		wurst.events.remove(UpdateListener.class, this);
 	}
 	
@@ -83,7 +83,7 @@ public class AutoSwordMod extends Mod implements LeftClickListener,
 		int bestSlot = -1;
 		for(int i = 0; i < 9; i++)
 		{
-			ItemStack item = mc.thePlayer.inventory.getStackInSlot(i);
+			ItemStack item = mc.player.inventory.getStackInSlot(i);
 			if(item == null)
 				continue;
 			float speed = 0;
@@ -99,11 +99,11 @@ public class AutoSwordMod extends Mod implements LeftClickListener,
 				bestSlot = i;
 			}
 		}
-		if(bestSlot != -1 && bestSlot != mc.thePlayer.inventory.currentItem)
+		if(bestSlot != -1 && bestSlot != mc.player.inventory.currentItem)
 		{
 			wurst.mods.autoSwordMod.oldSlot =
-				mc.thePlayer.inventory.currentItem;
-			mc.thePlayer.inventory.currentItem = bestSlot;
+				mc.player.inventory.currentItem;
+			mc.player.inventory.currentItem = bestSlot;
 			wurst.mods.autoSwordMod.timer = 4;
 			wurst.events.add(UpdateListener.class, wurst.mods.autoSwordMod);
 		}

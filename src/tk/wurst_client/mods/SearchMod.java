@@ -64,11 +64,11 @@ public class SearchMod extends Mod implements UpdateListener, RenderListener
 				{
 					for(int z = range; z >= -range; z--)
 					{
-						int posX = (int)(mc.thePlayer.posX + x);
-						int posY = (int)(mc.thePlayer.posY + y);
-						int posZ = (int)(mc.thePlayer.posZ + z);
+						int posX = (int)(mc.player.posX + x);
+						int posY = (int)(mc.player.posY + y);
+						int posZ = (int)(mc.player.posZ + z);
 						BlockPos pos = new BlockPos(posX, posY, posZ);
-						if(Block.getIdFromBlock(mc.theWorld.getBlockState(pos)
+						if(Block.getIdFromBlock(mc.world.getBlockState(pos)
 							.getBlock()) == wurst.options.searchID)
 							matchingBlocks.add(pos);
 						if(matchingBlocks.size() >= maxBlocks)

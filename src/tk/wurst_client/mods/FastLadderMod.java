@@ -27,8 +27,8 @@ public class FastLadderMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(mc.thePlayer.isOnLadder() && mc.thePlayer.isCollidedHorizontally)
-			mc.thePlayer.motionY = 0.2872;
+		if(mc.player.isOnLadder() && mc.player.isCollidedHorizontally)
+			mc.player.motionY = 0.2872;
 	}
 	
 	@Override

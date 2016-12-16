@@ -101,7 +101,7 @@ public class GiveCmd extends Cmd
 		// validate input
 		if(args.length < 1)
 			syntaxError();
-		if(!mc.thePlayer.capabilities.isCreativeMode)
+		if(!mc.player.capabilities.isCreativeMode)
 			error("Creative mode only.");
 		
 		// list all templates
@@ -187,9 +187,9 @@ public class GiveCmd extends Cmd
 		
 		// give item
 		for(int i = 0; i < 9; i++)
-			if(mc.thePlayer.inventory.getStackInSlot(i) == null)
+			if(mc.player.inventory.getStackInSlot(i) == null)
 			{
-				mc.thePlayer.sendQueue
+				mc.player.sendQueue
 					.addToSendQueue(new C10PacketCreativeInventoryAction(
 						36 + i, stack));
 				wurst.chat.message("Item" + (amount > 1 ? "s" : "")

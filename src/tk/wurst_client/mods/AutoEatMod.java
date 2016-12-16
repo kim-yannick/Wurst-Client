@@ -40,14 +40,14 @@ public class AutoEatMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(oldSlot != -1 || mc.thePlayer.capabilities.isCreativeMode
-			|| mc.thePlayer.getFoodStats().getFoodLevel() >= 20)
+		if(oldSlot != -1 || mc.player.capabilities.isCreativeMode
+			|| mc.player.getFoodStats().getFoodLevel() >= 20)
 			return;
 		float bestSaturation = 0F;
 		bestSlot = -1;
 		for(int i = 0; i < 9; i++)
 		{
-			ItemStack item = mc.thePlayer.inventory.getStackInSlot(i);
+			ItemStack item = mc.player.inventory.getStackInSlot(i);
 			if(item == null)
 				continue;
 			float saturation = 0;
@@ -62,36 +62,36 @@ public class AutoEatMod extends Mod implements UpdateListener
 		}
 		if(bestSlot == -1)
 			return;
-		oldSlot = mc.thePlayer.inventory.currentItem;
+		oldSlot = mc.player.inventory.currentItem;
 		wurst.events.add(UpdateListener.class, new UpdateListener()
 		{
 			@Override
 			public void onUpdate()
 			{
 				if(!AutoEatMod.this.isActive()
-					|| mc.thePlayer.capabilities.isCreativeMode
-					|| mc.thePlayer.getFoodStats().getFoodLevel() >= 20)
+					|| mc.player.capabilities.isCreativeMode
+					|| mc.player.getFoodStats().getFoodLevel() >= 20)
 				{
 					stop();
 					return;
 				}
 				ItemStack item =
-					mc.thePlayer.inventory.getStackInSlot(bestSlot);
+					mc.player.inventory.getStackInSlot(bestSlot);
 				if(item == null || !(item.getItem() instanceof ItemFood))
 				{
 					stop();
 					return;
 				}
-				mc.thePlayer.inventory.currentItem = bestSlot;
+				mc.player.inventory.currentItem = bestSlot;
 				mc.playerController
-					.sendUseItem(mc.thePlayer, mc.theWorld, item);
+					.sendUseItem(mc.player, mc.world, item);
 				mc.gameSettings.keyBindUseItem.pressed = true;
 			}
 			
 			private void stop()
 			{
 				mc.gameSettings.keyBindUseItem.pressed = false;
-				mc.thePlayer.inventory.currentItem = oldSlot;
+				mc.player.inventory.currentItem = oldSlot;
 				oldSlot = -1;
 				wurst.events.remove(UpdateListener.class, this);
 			}

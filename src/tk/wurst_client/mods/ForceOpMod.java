@@ -337,7 +337,7 @@ public class ForceOpMod extends Mod implements ChatInputListener
 							@Override
 							public void run()
 							{
-								mc.thePlayer.sendChatMessage("/login "
+								mc.player.sendChatMessage("/login "
 									+ mc.session.getUsername());
 								lastPW = 0;
 								loadPWList();
@@ -350,7 +350,7 @@ public class ForceOpMod extends Mod implements ChatInputListener
 										gotWrongPWMSG = false;
 									while(!cbDontWait.isSelected()
 										&& !hasGotWrongPWMSG()
-										|| mc.thePlayer == null)
+										|| mc.player == null)
 									{
 										if(!wurst.mods.forceOpMod.isActive())
 											return;
@@ -361,7 +361,7 @@ public class ForceOpMod extends Mod implements ChatInputListener
 										{
 											e.printStackTrace();
 										}
-										if(mc.thePlayer == null)
+										if(mc.player == null)
 											gotWrongPWMSG = true;// If you get
 										// kicked,
 										// it won't
@@ -380,7 +380,7 @@ public class ForceOpMod extends Mod implements ChatInputListener
 									while(!sent)
 										try
 										{
-											mc.thePlayer
+											mc.player
 												.sendChatMessage("/login "
 													+ passwords[i]);
 											sent = true;

@@ -54,12 +54,12 @@ public class JetpackMod extends Mod implements UpdateListener
 		updateMS();
 		
 		if(mc.gameSettings.keyBindJump.pressed)
-			mc.thePlayer.jump();
+			mc.player.jump();
 		
 		if(flightKickBypass.isChecked())
 		{
 			wurst.mods.flightMod.updateFlyHeight();
-			mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer(true));
+			mc.player.sendQueue.addToSendQueue(new C03PacketPlayer(true));
 			
 			if(wurst.mods.flightMod.flyHeight <= 290 && hasTimePassedM(500)
 				|| wurst.mods.flightMod.flyHeight > 290 && hasTimePassedM(100))

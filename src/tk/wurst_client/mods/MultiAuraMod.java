@@ -59,7 +59,7 @@ public class MultiAuraMod extends Mod implements UpdateListener
 		EntityLivingBase closestEntity =
 			EntityUtils.getClosestEntity(true, false);
 		if(closestEntity == null
-			|| mc.thePlayer.getDistanceToEntity(closestEntity) > range)
+			|| mc.player.getDistanceToEntity(closestEntity) > range)
 		{
 			EntityUtils.lookChanged = false;
 			return;
@@ -76,8 +76,8 @@ public class MultiAuraMod extends Mod implements UpdateListener
 		{
 			EntityLivingBase en = entities.get(i);
 			EntityUtils.faceEntityPacket(en);
-			mc.thePlayer.swingItem();
-			mc.thePlayer.sendQueue.addToSendQueue(new C02PacketUseEntity(en,
+			mc.player.swingItem();
+			mc.player.sendQueue.addToSendQueue(new C02PacketUseEntity(en,
 				C02PacketUseEntity.Action.ATTACK));
 		}
 		updateLastMS();

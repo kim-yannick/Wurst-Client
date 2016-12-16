@@ -30,7 +30,7 @@ public class PathPoint
 	
 	public ArrayList<BlockPos> getNeighbors()
 	{
-		BlockPos playerPos = new BlockPos(Minecraft.getMinecraft().thePlayer);
+		BlockPos playerPos = new BlockPos(Minecraft.getMinecraft().player);
 		ArrayList<BlockPos> neighbors = new ArrayList<BlockPos>();
 		neighbors.add(pos.add(0, 0, -1));// north
 		neighbors.add(pos.add(0, 0, 1));// south

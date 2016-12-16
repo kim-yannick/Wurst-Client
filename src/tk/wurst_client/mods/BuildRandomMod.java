@@ -61,10 +61,10 @@ public class BuildRandomMod extends Mod implements UpdateListener
 			for(int x = (int)range; x >= -range - 1; x--)
 			{
 				for(int z = (int)range; z >= -range; z--)
-					if(Block.getIdFromBlock(mc.theWorld.getBlockState(
-						new BlockPos((int)(x + mc.thePlayer.posX),
-							(int)(y + mc.thePlayer.posY),
-							(int)(z + mc.thePlayer.posZ))).getBlock()) != 0
+					if(Block.getIdFromBlock(mc.world.getBlockState(
+						new BlockPos((int)(x + mc.player.posX),
+							(int)(y + mc.player.posY),
+							(int)(z + mc.player.posZ))).getBlock()) != 0
 						&& BlockUtils.getBlockDistance(x, y, z) <= range)
 					{
 						hasBlocks = true;
@@ -82,16 +82,16 @@ public class BuildRandomMod extends Mod implements UpdateListener
 		while(distance > range
 			|| distance < -range
 			|| randomPos == null
-			|| Block.getIdFromBlock(mc.theWorld.getBlockState(randomPos)
+			|| Block.getIdFromBlock(mc.world.getBlockState(randomPos)
 				.getBlock()) == 0)
 		{
 			xDiff = (int)(Math.random() * range * 2 - range - 1);
 			yDiff = (int)(Math.random() * range * 2 - range);
 			zDiff = (int)(Math.random() * range * 2 - range);
 			distance = BlockUtils.getBlockDistance(xDiff, yDiff, zDiff);
-			int randomPosX = (int)(xDiff + mc.thePlayer.posX);
-			int randomPosY = (int)(yDiff + mc.thePlayer.posY);
-			int randomPosZ = (int)(zDiff + mc.thePlayer.posZ);
+			int randomPosX = (int)(xDiff + mc.player.posX);
+			int randomPosY = (int)(yDiff + mc.player.posY);
+			int randomPosZ = (int)(zDiff + mc.player.posZ);
 			randomPos = new BlockPos(randomPosX, randomPosY, randomPosZ);
 		}
 		MovingObjectPosition fakeObjectMouseOver = mc.objectMouseOver;
@@ -99,11 +99,11 @@ public class BuildRandomMod extends Mod implements UpdateListener
 			return;
 		fakeObjectMouseOver.setBlockPos(randomPos);
 		BlockUtils.faceBlockPacket(randomPos);
-		mc.thePlayer.swingItem();
-		mc.thePlayer.sendQueue
+		mc.player.swingItem();
+		mc.player.sendQueue
 			.addToSendQueue(new C08PacketPlayerBlockPlacement(randomPos,
 				fakeObjectMouseOver.sideHit.getIndex(), Minecraft
-					.getMinecraft().thePlayer.inventory.getCurrentItem(),
+					.getMinecraft().player.inventory.getCurrentItem(),
 				(float)fakeObjectMouseOver.hitVec.xCoord
 					- fakeObjectMouseOver.getBlockPos().getX(),
 				(float)fakeObjectMouseOver.hitVec.yCoord

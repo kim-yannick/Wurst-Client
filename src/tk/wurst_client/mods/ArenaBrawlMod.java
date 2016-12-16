@@ -206,18 +206,18 @@ public class ArenaBrawlMod extends Mod implements ChatInputListener,
 			scanTotems();
 			getTarget();
 			updateFrame();
-			if(!mc.thePlayer.isCollidedHorizontally
-				&& mc.thePlayer.moveForward > 0 && !mc.thePlayer.isSneaking())
+			if(!mc.player.isCollidedHorizontally
+				&& mc.player.moveForward > 0 && !mc.player.isSneaking())
 			{// Built-in AutoSprint and BunnyHop:
-				mc.thePlayer.setSprinting(true);
-				if(mc.thePlayer.onGround && mc.thePlayer.isSprinting())
-					mc.thePlayer.jump();
+				mc.player.setSprinting(true);
+				if(mc.player.onGround && mc.player.isSprinting())
+					mc.player.jump();
 			}
 			if(targetType == TargetType.BLOCK_E)
 			{
-				float distX = (float)(blockTarget[0] - mc.thePlayer.posX);
-				float distY = (float)(blockTarget[1] - mc.thePlayer.posY);
-				float distZ = (float)(blockTarget[2] - mc.thePlayer.posZ);
+				float distX = (float)(blockTarget[0] - mc.player.posX);
+				float distY = (float)(blockTarget[1] - mc.player.posY);
+				float distZ = (float)(blockTarget[2] - mc.player.posZ);
 				if(BlockUtils.getBlockDistance(distX, distY, distZ) <= 4.25)
 				{// If the target is an enemy totem in range:
 					faceTarget();
@@ -231,7 +231,7 @@ public class ArenaBrawlMod extends Mod implements ChatInputListener,
 				}
 			}else if(targetType == TargetType.ENTITY_E)
 			{
-				if(mc.thePlayer.getDistanceToEntity(entityTarget) <= 4.25)
+				if(mc.player.getDistanceToEntity(entityTarget) <= 4.25)
 				{// If the target is an enemy in range:
 					faceTarget();
 					attackTarget();
@@ -285,7 +285,7 @@ public class ArenaBrawlMod extends Mod implements ChatInputListener,
 	@Override
 	public void onDeath()
 	{
-		mc.thePlayer.respawnPlayer();
+		mc.player.respawnPlayer();
 		GuiScreen.mc.displayGuiScreen((GuiScreen)null);
 		wurst.chat.message("You died.");
 		setEnabled(false);
@@ -428,10 +428,10 @@ public class ArenaBrawlMod extends Mod implements ChatInputListener,
 			for(int x = 50; x >= -50; x--)
 				for(int z = 50; z >= -50; z--)
 				{
-					int posX = (int)(mc.thePlayer.posX + x);
-					int posY = (int)(mc.thePlayer.posY + y);
-					int posZ = (int)(mc.thePlayer.posZ + z);
-					if(Block.getIdFromBlock(mc.theWorld.getBlockState(
+					int posX = (int)(mc.player.posX + x);
+					int posY = (int)(mc.player.posY + y);
+					int posZ = (int)(mc.player.posZ + z);
+					if(Block.getIdFromBlock(mc.world.getBlockState(
 						new BlockPos(posX, posY, posZ)).getBlock()) == Block
 						.getIdFromBlock(Block.getBlockFromName("wool")))
 						matchingBlocks.add(new int[]{posX, posY, posZ});
@@ -440,7 +440,7 @@ public class ArenaBrawlMod extends Mod implements ChatInputListener,
 		for(int i = 0; i < matchingBlocks.size(); i++)
 		{
 			IBlockState blockState =
-				mc.theWorld.getBlockState(new BlockPos(
+				mc.world.getBlockState(new BlockPos(
 					matchingBlocks.get(i)[0], matchingBlocks.get(i)[1] + 1,
 					matchingBlocks.get(i)[2]));
 			if(blockState.getBlock().getMetaFromState(blockState) == 14// red
@@ -452,7 +452,7 @@ public class ArenaBrawlMod extends Mod implements ChatInputListener,
 		for(int i = 0; i < matchingBlocks.size(); i++)
 		{
 			IBlockState blockState =
-				mc.theWorld.getBlockState(new BlockPos(
+				mc.world.getBlockState(new BlockPos(
 					matchingBlocks.get(i)[0], matchingBlocks.get(i)[1] + 1,
 					matchingBlocks.get(i)[2]));
 			if(blockState.getBlock().getMetaFromState(blockState) == 5// lime
@@ -474,17 +474,17 @@ public class ArenaBrawlMod extends Mod implements ChatInputListener,
 			float dist = 999999999;
 			for(int[] totem : enemyTotems)
 			{
-				float distX = (float)(totem[0] - mc.thePlayer.posX);
-				float distY = (float)(totem[1] - mc.thePlayer.posY);
-				float distZ = (float)(totem[2] - mc.thePlayer.posZ);
+				float distX = (float)(totem[0] - mc.player.posX);
+				float distY = (float)(totem[1] - mc.player.posY);
+				float distZ = (float)(totem[2] - mc.player.posZ);
 				dist = BlockUtils.getBlockDistance(distX, distY, distZ);
 				if(closestTotem == null)
 					closestTotem = totem;
 				else
 				{
-					float distXC = (float)(closestTotem[0] - mc.thePlayer.posX);
-					float distYC = (float)(closestTotem[1] - mc.thePlayer.posY);
-					float distZC = (float)(closestTotem[2] - mc.thePlayer.posZ);
+					float distXC = (float)(closestTotem[0] - mc.player.posX);
+					float distYC = (float)(closestTotem[1] - mc.player.posY);
+					float distZC = (float)(closestTotem[2] - mc.player.posZ);
 					float distC =
 						BlockUtils.getBlockDistance(distXC, distYC, distZC);
 					if(dist < distC)
@@ -513,7 +513,7 @@ public class ArenaBrawlMod extends Mod implements ChatInputListener,
 			{
 				entityTarget = enemy2;
 				target = 8;
-			}else if(mc.thePlayer.getDistanceToEntity(enemy1) <= mc.thePlayer
+			}else if(mc.player.getDistanceToEntity(enemy1) <= mc.player
 				.getDistanceToEntity(enemy2))
 			{
 				entityTarget = enemy1;
@@ -524,7 +524,7 @@ public class ArenaBrawlMod extends Mod implements ChatInputListener,
 				target = 8;
 			}
 			targetType = TargetType.ENTITY_E;
-			if(mc.thePlayer.getDistanceToEntity(entityTarget) <= 4.25)
+			if(mc.player.getDistanceToEntity(entityTarget) <= 4.25)
 				return;
 		}// Enemies have a lower priority than enemy totems.
 		if(!friendTotems.isEmpty())
@@ -533,17 +533,17 @@ public class ArenaBrawlMod extends Mod implements ChatInputListener,
 			float dist = 999999999;
 			for(int[] totem : friendTotems)
 			{
-				float distX = (float)(totem[0] - mc.thePlayer.posX);
-				float distY = (float)(totem[1] - mc.thePlayer.posY);
-				float distZ = (float)(totem[2] - mc.thePlayer.posZ);
+				float distX = (float)(totem[0] - mc.player.posX);
+				float distY = (float)(totem[1] - mc.player.posY);
+				float distZ = (float)(totem[2] - mc.player.posZ);
 				dist = BlockUtils.getBlockDistance(distX, distY, distZ);
 				if(closestTotem == null)
 					closestTotem = totem;
 				else
 				{
-					float distXC = (float)(closestTotem[0] - mc.thePlayer.posX);
-					float distYC = (float)(closestTotem[1] - mc.thePlayer.posY);
-					float distZC = (float)(closestTotem[2] - mc.thePlayer.posZ);
+					float distXC = (float)(closestTotem[0] - mc.player.posX);
+					float distYC = (float)(closestTotem[1] - mc.player.posY);
+					float distZC = (float)(closestTotem[2] - mc.player.posZ);
 					float distC =
 						BlockUtils.getBlockDistance(distXC, distYC, distZC);
 					if(dist < distC)
@@ -597,15 +597,15 @@ public class ArenaBrawlMod extends Mod implements ChatInputListener,
 		}else if(targetType == TargetType.ENTITY_E)
 			if(System.currentTimeMillis() >= lastAttack + 100)
 			{
-				if(mc.thePlayer.experienceLevel >= level)
+				if(mc.player.experienceLevel >= level)
 					mc.gameSettings.keyBindUseItem.pressed =
 						!mc.gameSettings.keyBindUseItem.pressed;
 				else
 				{
 					mc.gameSettings.keyBindUseItem.pressed = false;
-					mc.thePlayer.swingItem();
+					mc.player.swingItem();
 					mc.playerController
-						.attackEntity(mc.thePlayer, entityTarget);
+						.attackEntity(mc.player, entityTarget);
 				}
 				lastAttack = System.currentTimeMillis();
 			}

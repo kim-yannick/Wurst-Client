@@ -52,7 +52,7 @@ public class TrajectoriesMod extends Mod implements RenderListener
 	@Override
 	public void onRender()
 	{
-		EntityPlayerSP player = mc.thePlayer;
+		EntityPlayerSP player = mc.player;
 		
 		// check if player is holding item
 		ItemStack stack = player.getCurrentEquippedItem();
@@ -157,7 +157,7 @@ public class TrajectoriesMod extends Mod implements RenderListener
 			arrowMotionZ *= 0.99D;
 			arrowMotionY -= gravity;
 			
-			if(mc.theWorld.rayTraceBlocks(playerVector, new Vec3(arrowPosX,
+			if(mc.world.rayTraceBlocks(playerVector, new Vec3(arrowPosX,
 				arrowPosY, arrowPosZ)) != null)
 				break;
 		}

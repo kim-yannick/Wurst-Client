@@ -27,9 +27,9 @@ public class AutoSprintMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(!mc.thePlayer.isCollidedHorizontally && mc.thePlayer.moveForward > 0
-			&& !mc.thePlayer.isSneaking())
-			mc.thePlayer.setSprinting(true);
+		if(!mc.player.isCollidedHorizontally && mc.player.moveForward > 0
+			&& !mc.player.isSneaking())
+			mc.player.setSprinting(true);
 	}
 	
 	@Override

@@ -37,16 +37,16 @@ public class JesusMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		if(!mc.gameSettings.keyBindSneak.pressed)
-			if(mc.thePlayer.isInWater())
+			if(mc.player.isInWater())
 			{
-				mc.thePlayer.motionY = 0.11;
+				mc.player.motionY = 0.11;
 				ticksOutOfWater = 0;
 			}else
 			{
 				if(ticksOutOfWater == 0)
-					mc.thePlayer.motionY = 0.30;
+					mc.player.motionY = 0.30;
 				else if(ticksOutOfWater == 1)
-					mc.thePlayer.motionY = 0;
+					mc.player.motionY = 0;
 				
 				ticksOutOfWater++;
 			}
@@ -60,12 +60,12 @@ public class JesusMod extends Mod implements UpdateListener
 	
 	public boolean isOverWater()
 	{
-		final EntityPlayerSP thePlayer = mc.thePlayer;
+		final EntityPlayerSP thePlayer = mc.player;
 		
 		boolean isOnWater = false;
 		boolean isOnSolid = false;
 		
-		for(final Object o : mc.theWorld.getCollidingBoundingBoxes(
+		for(final Object o : mc.world.getCollidingBoundingBoxes(
 			thePlayer,
 			thePlayer.getEntityBoundingBox().offset(0, -1.0D, 0)
 				.contract(0.001D, 0D, 0.001D)))
@@ -75,7 +75,7 @@ public class JesusMod extends Mod implements UpdateListener
 				new BlockPos(bbox.maxX - (bbox.maxX - bbox.minX) / 2.0,
 					bbox.maxY - (bbox.maxY - bbox.minY) / 2.0, bbox.maxZ
 						- (bbox.maxZ - bbox.minZ) / 2.0);
-			final Block block = mc.theWorld.getBlockState(blockPos).getBlock();
+			final Block block = mc.world.getBlockState(blockPos).getBlock();
 			if(block.getMaterial() == Material.water
 				|| block.getMaterial() == Material.lava)
 				isOnWater = true;
@@ -88,9 +88,9 @@ public class JesusMod extends Mod implements UpdateListener
 	
 	public boolean shouldBeSolid()
 	{
-		return isActive() && !(mc.thePlayer == null)
-			&& !(mc.thePlayer.fallDistance > 3)
+		return isActive() && !(mc.player == null)
+			&& !(mc.player.fallDistance > 3)
 			&& !mc.gameSettings.keyBindSneak.pressed
-			&& !mc.thePlayer.isInWater();
+			&& !mc.player.isInWater();
 	}
 }

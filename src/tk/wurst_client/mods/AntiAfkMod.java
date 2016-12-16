@@ -32,7 +32,7 @@ public class AntiAfkMod extends Mod implements UpdateListener
 	{
 		try
 		{
-			block = new BlockPos(mc.thePlayer);
+			block = new BlockPos(mc.player);
 		}catch(Exception e)
 		{
 			e.printStackTrace();

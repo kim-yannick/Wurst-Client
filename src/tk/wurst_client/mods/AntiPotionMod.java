@@ -31,7 +31,7 @@ public class AntiPotionMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		EntityPlayerSP player = mc.thePlayer;
+		EntityPlayerSP player = mc.player;
 		if(!player.capabilities.isCreativeMode && player.onGround
 			&& !player.getActivePotionEffects().isEmpty())
 			if(player.isPotionActive(Potion.hunger)

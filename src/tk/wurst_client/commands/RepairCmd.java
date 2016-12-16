@@ -24,7 +24,7 @@ public class RepairCmd extends Cmd
 			syntaxError();
 		
 		// check for creative mode
-		EntityPlayerSP player = mc.thePlayer;
+		EntityPlayerSP player = mc.player;
 		if(!player.capabilities.isCreativeMode)
 			error("Creative mode only.");
 		

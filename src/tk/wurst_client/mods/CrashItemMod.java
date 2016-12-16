@@ -21,13 +21,13 @@ public class CrashItemMod extends Mod
 	@Override
 	public void onEnable()
 	{
-		if(mc.thePlayer.inventory.getCurrentItem() == null
-			|| !(mc.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemNameTag))
+		if(mc.player.inventory.getCurrentItem() == null
+			|| !(mc.player.inventory.getCurrentItem().getItem() instanceof ItemNameTag))
 		{
 			wurst.chat.error("You are not holding a nametag in your hand.");
 			setEnabled(false);
 			return;
-		}else if(!mc.thePlayer.capabilities.isCreativeMode)
+		}else if(!mc.player.capabilities.isCreativeMode)
 		{
 			wurst.chat.error("Creative mode only.");
 			setEnabled(false);
@@ -39,9 +39,9 @@ public class CrashItemMod extends Mod
 			StringBuilder builder = new StringBuilder().append(stackName);
 			stackName = builder.append("############").toString();
 		}
-		mc.thePlayer.inventory.getCurrentItem().setStackDisplayName(stackName);
-		mc.displayGuiScreen(new GuiInventory(mc.thePlayer));
-		mc.thePlayer.closeScreen();
+		mc.player.inventory.getCurrentItem().setStackDisplayName(stackName);
+		mc.displayGuiScreen(new GuiInventory(mc.player));
+		mc.player.closeScreen();
 		wurst.chat.message("CrashItem created. Right click a mob with it.");
 		setEnabled(false);
 	}

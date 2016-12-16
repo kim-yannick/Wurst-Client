@@ -30,10 +30,10 @@ public class PotionCmd extends Cmd
 	{
 		if(args.length == 0)
 			syntaxError();
-		if(!mc.thePlayer.capabilities.isCreativeMode)
+		if(!mc.player.capabilities.isCreativeMode)
 			error("Creative mode only.");
 		
-		ItemStack currentItem = mc.thePlayer.inventory.getCurrentItem();
+		ItemStack currentItem = mc.player.inventory.getCurrentItem();
 		if(currentItem == null
 			|| Item.getIdFromItem(currentItem.getItem()) != 373)
 			error("You are not holding a potion in your hand.");

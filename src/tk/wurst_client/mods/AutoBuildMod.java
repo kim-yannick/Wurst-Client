@@ -403,7 +403,7 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 			&& mc.gameSettings.keyBindUseItem.pressed
 			&& mc.objectMouseOver != null
 			&& mc.objectMouseOver.getBlockPos() != null
-			&& mc.theWorld.getBlockState(mc.objectMouseOver.getBlockPos())
+			&& mc.world.getBlockState(mc.objectMouseOver.getBlockPos())
 				.getBlock().getMaterial() != Material.air)
 		{
 			if(wurst.mods.fastPlaceMod.isActive())
@@ -415,7 +415,7 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 				blockIndex = 0;
 				shouldBuild = true;
 				mouseOver = mc.objectMouseOver;
-				playerYaw = mc.thePlayer.rotationYaw;
+				playerYaw = mc.player.rotationYaw;
 				while(playerYaw > 180)
 					playerYaw -= 360;
 				while(playerYaw < -180)
@@ -434,7 +434,7 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 				if(playerYaw > -45 && playerYaw <= 45)
 					try
 					{
-						if(Block.getIdFromBlock(mc.theWorld.getBlockState(
+						if(Block.getIdFromBlock(mc.world.getBlockState(
 							new BlockPos(BuildUtils
 								.convertPosNext(1, mouseOver)
 								+ BuildUtils.convertPosInAdvancedBuiling(1,
@@ -452,7 +452,7 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 				else if(playerYaw > 45 && playerYaw <= 135)
 					try
 					{
-						if(Block.getIdFromBlock(mc.theWorld.getBlockState(
+						if(Block.getIdFromBlock(mc.world.getBlockState(
 							new BlockPos(BuildUtils
 								.convertPosNext(1, mouseOver)
 								- BuildUtils.convertPosInAdvancedBuiling(3,
@@ -470,7 +470,7 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 				else if(playerYaw > 135 || playerYaw <= -135)
 					try
 					{
-						if(Block.getIdFromBlock(mc.theWorld.getBlockState(
+						if(Block.getIdFromBlock(mc.world.getBlockState(
 							new BlockPos(BuildUtils
 								.convertPosNext(1, mouseOver)
 								- BuildUtils.convertPosInAdvancedBuiling(1,
@@ -488,7 +488,7 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 				else if(playerYaw > -135 && playerYaw <= -45)
 					try
 					{
-						if(Block.getIdFromBlock(mc.theWorld.getBlockState(
+						if(Block.getIdFromBlock(mc.world.getBlockState(
 							new BlockPos(BuildUtils
 								.convertPosNext(1, mouseOver)
 								+ BuildUtils.convertPosInAdvancedBuiling(3,
@@ -517,7 +517,7 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 			&& mc.gameSettings.keyBindUseItem.pressed
 			&& mc.objectMouseOver != null
 			&& mc.objectMouseOver.getBlockPos() != null
-			&& mc.theWorld.getBlockState(mc.objectMouseOver.getBlockPos())
+			&& mc.world.getBlockState(mc.objectMouseOver.getBlockPos())
 				.getBlock().getMaterial() != Material.air)
 		{
 			if(wurst.mods.fastPlaceMod.isActive())
@@ -529,7 +529,7 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 				blockIndex = 0;
 				shouldBuild = true;
 				mouseOver = mc.objectMouseOver;
-				playerYaw = mc.thePlayer.rotationYaw;
+				playerYaw = mc.player.rotationYaw;
 				while(playerYaw > 180)
 					playerYaw -= 360;
 				while(playerYaw < -180)
@@ -548,7 +548,7 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 				if(playerYaw > -45 && playerYaw <= 45)
 					try
 					{
-						if(Block.getIdFromBlock(mc.theWorld.getBlockState(
+						if(Block.getIdFromBlock(mc.world.getBlockState(
 							new BlockPos(mouseOver.getBlockPos().getX()
 								+ BuildUtils.convertPosInBuiling(1, blockIndex,
 									templates.get(template), mouseOver),
@@ -566,7 +566,7 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 				else if(playerYaw > 45 && playerYaw <= 135)
 					try
 					{
-						if(Block.getIdFromBlock(mc.theWorld.getBlockState(
+						if(Block.getIdFromBlock(mc.world.getBlockState(
 							new BlockPos(mouseOver.getBlockPos().getX()
 								- BuildUtils.convertPosInBuiling(3, blockIndex,
 									templates.get(template), mouseOver),
@@ -584,7 +584,7 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 				else if(playerYaw > 135 || playerYaw <= -135)
 					try
 					{
-						if(Block.getIdFromBlock(mc.theWorld.getBlockState(
+						if(Block.getIdFromBlock(mc.world.getBlockState(
 							new BlockPos(mouseOver.getBlockPos().getX()
 								- BuildUtils.convertPosInBuiling(1, blockIndex,
 									templates.get(template), mouseOver),
@@ -602,7 +602,7 @@ public class AutoBuildMod extends Mod implements UpdateListener, RenderListener
 				else if(playerYaw > -135 && playerYaw <= -45)
 					try
 					{
-						if(Block.getIdFromBlock(mc.theWorld.getBlockState(
+						if(Block.getIdFromBlock(mc.world.getBlockState(
 							new BlockPos(mouseOver.getBlockPos().getX()
 								+ BuildUtils.convertPosInBuiling(3, blockIndex,
 									templates.get(template), mouseOver),

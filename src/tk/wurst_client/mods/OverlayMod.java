@@ -43,7 +43,7 @@ public class OverlayMod extends Mod implements RenderListener
 			return;
 		BlockPos pos = mc.objectMouseOver.getBlockPos();
 		Block mouseOverBlock =
-			mc.theWorld.getBlockState(mc.objectMouseOver.getBlockPos())
+			mc.world.getBlockState(mc.objectMouseOver.getBlockPos())
 				.getBlock();
 		if(Block.getIdFromBlock(mouseOverBlock) != 0)
 			RenderUtils.nukerBox(pos, PlayerControllerMP.curBlockDamageMP);

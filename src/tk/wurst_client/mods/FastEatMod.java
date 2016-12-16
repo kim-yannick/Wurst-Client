@@ -30,14 +30,14 @@ public class FastEatMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(mc.thePlayer.getHealth() > 0
-			&& mc.thePlayer.onGround
-			&& mc.thePlayer.inventory.getCurrentItem() != null
-			&& mc.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemFood
-			&& mc.thePlayer.getFoodStats().needFood()
+		if(mc.player.getHealth() > 0
+			&& mc.player.onGround
+			&& mc.player.inventory.getCurrentItem() != null
+			&& mc.player.inventory.getCurrentItem().getItem() instanceof ItemFood
+			&& mc.player.getFoodStats().needFood()
 			&& mc.gameSettings.keyBindUseItem.pressed)
 			for(int i = 0; i < 100; i++)
-				mc.thePlayer.sendQueue
+				mc.player.sendQueue
 					.addToSendQueue(new C03PacketPlayer(false));
 	}
 	

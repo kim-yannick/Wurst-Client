@@ -62,10 +62,10 @@ public class InstantBunkerMod extends Mod implements UpdateListener,
 			i = 0;
 			shouldBuild = true;
 			MouseOver = mc.objectMouseOver;
-			posX = mc.thePlayer.posX;
-			posY = mc.thePlayer.posY;
-			posZ = mc.thePlayer.posZ;
-			playerYaw = mc.thePlayer.rotationYaw;
+			posX = mc.player.posX;
+			posY = mc.player.posY;
+			posZ = mc.player.posZ;
+			playerYaw = mc.player.rotationYaw;
 			while(playerYaw > 180)
 				playerYaw -= 360;
 			while(playerYaw < -180)
@@ -237,7 +237,7 @@ public class InstantBunkerMod extends Mod implements UpdateListener,
 				if(playerYaw > -45 && playerYaw <= 45)
 					try
 					{
-						if(Block.getIdFromBlock(mc.theWorld.getBlockState(
+						if(Block.getIdFromBlock(mc.world.getBlockState(
 							new BlockPos((int)posX
 								+ BuildUtils.convertPosInAdvancedBuiling(1, i,
 									building), (int)posY
@@ -252,7 +252,7 @@ public class InstantBunkerMod extends Mod implements UpdateListener,
 				else if(playerYaw > 45 && playerYaw <= 135)
 					try
 					{
-						if(Block.getIdFromBlock(mc.theWorld.getBlockState(
+						if(Block.getIdFromBlock(mc.world.getBlockState(
 							new BlockPos((int)posX
 								- BuildUtils.convertPosInAdvancedBuiling(3, i,
 									building), (int)posY
@@ -267,7 +267,7 @@ public class InstantBunkerMod extends Mod implements UpdateListener,
 				else if(playerYaw > 135 || playerYaw <= -135)
 					try
 					{
-						if(Block.getIdFromBlock(mc.theWorld.getBlockState(
+						if(Block.getIdFromBlock(mc.world.getBlockState(
 							new BlockPos((int)posX
 								- BuildUtils.convertPosInAdvancedBuiling(1, i,
 									building), (int)posY
@@ -282,7 +282,7 @@ public class InstantBunkerMod extends Mod implements UpdateListener,
 				else if(playerYaw > -135 && playerYaw <= -45)
 					try
 					{
-						if(Block.getIdFromBlock(mc.theWorld.getBlockState(
+						if(Block.getIdFromBlock(mc.world.getBlockState(
 							new BlockPos((int)posX
 								+ BuildUtils.convertPosInAdvancedBuiling(3, i,
 									building), (int)posY

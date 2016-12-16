@@ -22,9 +22,9 @@ public class AuthorCmd extends Cmd
 	{
 		if(args.length == 0)
 			syntaxError();
-		if(!mc.thePlayer.capabilities.isCreativeMode)
+		if(!mc.player.capabilities.isCreativeMode)
 			error("Creative mode only.");
-		ItemStack item = mc.thePlayer.inventory.getCurrentItem();
+		ItemStack item = mc.player.inventory.getCurrentItem();
 		if(item == null || Item.getIdFromItem(item.getItem()) != 387)
 			error("You are not holding a written book in your hand.");
 		String author = args[0];

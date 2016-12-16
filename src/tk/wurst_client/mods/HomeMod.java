@@ -35,7 +35,7 @@ public class HomeMod extends Mod implements UpdateListener, ChatInputListener
 		if(disableTimer == 4)
 			setEnabled(false);
 		else if(disableTimer == 0)
-			mc.thePlayer.sendChatMessage("/home");
+			mc.player.sendChatMessage("/home");
 		disableTimer++;
 	}
 	

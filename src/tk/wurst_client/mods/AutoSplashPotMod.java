@@ -67,7 +67,7 @@ public class AutoSplashPotMod extends Mod implements UpdateListener
 			return;
 		
 		// check if health is low
-		if(mc.thePlayer.getHealth() >= health)
+		if(mc.player.getHealth() >= health)
 			return;
 		
 		// find health potions
@@ -82,29 +82,29 @@ public class AutoSplashPotMod extends Mod implements UpdateListener
 			if(potionInHotbar != -1)
 			{
 				// throw potion in hotbar
-				int oldSlot = mc.thePlayer.inventory.currentItem;
-				NetHandlerPlayClient sendQueue = mc.thePlayer.sendQueue;
+				int oldSlot = mc.player.inventory.currentItem;
+				NetHandlerPlayClient sendQueue = mc.player.sendQueue;
 				sendQueue
 					.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(
-						mc.thePlayer.rotationYaw, 90.0F, mc.thePlayer.onGround));
+						mc.player.rotationYaw, 90.0F, mc.player.onGround));
 				sendQueue.addToSendQueue(new C09PacketHeldItemChange(
 					potionInHotbar - 36));
 				mc.playerController.updateController();
 				sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(
-					mc.thePlayer.inventoryContainer.getSlot(potionInHotbar)
+					mc.player.inventoryContainer.getSlot(potionInHotbar)
 						.getStack()));
 				sendQueue.addToSendQueue(new C09PacketHeldItemChange(oldSlot));
 				sendQueue
 					.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(
-						mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch,
-						mc.thePlayer.onGround));
+						mc.player.rotationYaw, mc.player.rotationPitch,
+						mc.player.onGround));
 				
 				// reset timer
 				updateLastMS();
 			}else
 				// move potion in inventory to hotbar
 				mc.playerController.windowClick(0, potionInInventory, 0, 1,
-					mc.thePlayer);
+					mc.player);
 		
 	}
 	
@@ -119,7 +119,7 @@ public class AutoSplashPotMod extends Mod implements UpdateListener
 		for(int i = startSlot; i < endSlot; i++)
 		{
 			ItemStack stack =
-				mc.thePlayer.inventoryContainer.getSlot(i).getStack();
+				mc.player.inventoryContainer.getSlot(i).getStack();
 			if(stack != null && stack.getItem() == Items.potionitem
 				&& ItemPotion.isSplash(stack.getItemDamage()))
 			{

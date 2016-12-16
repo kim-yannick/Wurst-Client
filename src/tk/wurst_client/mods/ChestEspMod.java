@@ -44,7 +44,7 @@ public class ChestEspMod extends Mod implements RenderListener
 	public void onRender()
 	{
 		int i = 0;
-		for(Object o : mc.theWorld.loadedTileEntityList)
+		for(Object o : mc.world.loadedTileEntityList)
 		{
 			if(i >= maxChests)
 				break;
@@ -58,7 +58,7 @@ public class ChestEspMod extends Mod implements RenderListener
 				RenderUtils.blockESPBox(((TileEntityEnderChest)o).getPos());
 			}
 		}
-		for(Object o : mc.theWorld.loadedEntityList)
+		for(Object o : mc.world.loadedEntityList)
 		{
 			if(i >= maxChests)
 				break;

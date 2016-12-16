@@ -29,10 +29,10 @@ public class TiredMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		mc.thePlayer.sendQueue
+		mc.player.sendQueue
 			.addToSendQueue(new C05PacketPlayerLook(Minecraft
-				.getMinecraft().thePlayer.rotationYaw,
-				mc.thePlayer.ticksExisted % 100, mc.thePlayer.onGround));
+				.getMinecraft().player.rotationYaw,
+				mc.player.ticksExisted % 100, mc.player.onGround));
 	}
 	
 	@Override

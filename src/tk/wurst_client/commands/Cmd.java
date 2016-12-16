@@ -189,9 +189,9 @@ public abstract class Cmd implements NavigatorItem
 		if(args.length == 3)
 		{
 			int[] playerPos =
-				new int[]{(int)Minecraft.getMinecraft().thePlayer.posX,
-					(int)Minecraft.getMinecraft().thePlayer.posY,
-					(int)Minecraft.getMinecraft().thePlayer.posZ};
+				new int[]{(int)Minecraft.getMinecraft().player.posX,
+					(int)Minecraft.getMinecraft().player.posY,
+					(int)Minecraft.getMinecraft().player.posZ};
 			for(int i = 0; i < args.length; i++)
 				if(MiscUtils.isInteger(args[i]))
 					pos[i] = Integer.parseInt(args[i]);

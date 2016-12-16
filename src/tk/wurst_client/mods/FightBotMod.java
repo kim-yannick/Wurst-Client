@@ -39,30 +39,30 @@ public class FightBotMod extends Mod implements UpdateListener
 		if(entity == null)
 			return;
 		if(entity.getHealth() <= 0 || entity.isDead
-			|| mc.thePlayer.getHealth() <= 0)
+			|| mc.player.getHealth() <= 0)
 		{
 			entity = null;
 			mc.gameSettings.keyBindForward.pressed = false;
 			return;
 		}
-		double xDist = Math.abs(mc.thePlayer.posX - entity.posX);
-		double zDist = Math.abs(mc.thePlayer.posZ - entity.posZ);
+		double xDist = Math.abs(mc.player.posX - entity.posX);
+		double zDist = Math.abs(mc.player.posZ - entity.posZ);
 		EntityUtils.faceEntityClient(entity);
 		if(xDist > distance || zDist > distance)
 			mc.gameSettings.keyBindForward.pressed = true;
 		else
 			mc.gameSettings.keyBindForward.pressed = false;
-		if(mc.thePlayer.isCollidedHorizontally && mc.thePlayer.onGround)
-			mc.thePlayer.jump();
-		if(mc.thePlayer.isInWater() && mc.thePlayer.posY < entity.posY)
-			mc.thePlayer.motionY += 0.04;
+		if(mc.player.isCollidedHorizontally && mc.player.onGround)
+			mc.player.jump();
+		if(mc.player.isInWater() && mc.player.posY < entity.posY)
+			mc.player.motionY += 0.04;
 		if(wurst.mods.yesCheatMod.isActive())
 			speed = wurst.mods.killauraMod.yesCheatSpeed;
 		else
 			speed = wurst.mods.killauraMod.normalSpeed;
 		updateMS();
 		if(hasTimePassedS(speed))
-			if(mc.thePlayer.getDistanceToEntity(entity) <= range)
+			if(mc.player.getDistanceToEntity(entity) <= range)
 			{
 				if(wurst.mods.autoSwordMod.isActive())
 					AutoSwordMod.setSlot();
@@ -73,8 +73,8 @@ public class FightBotMod extends Mod implements UpdateListener
 				else
 				{
 					EntityUtils.faceEntityClient(entity);
-					mc.thePlayer.swingItem();
-					mc.playerController.attackEntity(mc.thePlayer, entity);
+					mc.player.swingItem();
+					mc.playerController.attackEntity(mc.player, entity);
 				}
 				updateLastMS();
 			}

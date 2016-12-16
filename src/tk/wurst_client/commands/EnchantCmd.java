@@ -20,11 +20,11 @@ public class EnchantCmd extends Cmd
 	@Override
 	public void execute(String[] args) throws Error
 	{
-		if(!mc.thePlayer.capabilities.isCreativeMode)
+		if(!mc.player.capabilities.isCreativeMode)
 			error("Creative mode only.");
 		if(args.length == 0)
 		{
-			ItemStack currentItem = mc.thePlayer.inventory.getCurrentItem();
+			ItemStack currentItem = mc.player.inventory.getCurrentItem();
 			if(currentItem == null)
 				error("There is no item in your hand.");
 			for(Enchantment enchantment : Enchantment.enchantmentsList)
@@ -43,7 +43,7 @@ public class EnchantCmd extends Cmd
 			for(int i = 0; i < 40; i++)
 			{
 				ItemStack currentItem =
-					mc.thePlayer.inventory.getStackInSlot(i);
+					mc.player.inventory.getStackInSlot(i);
 				if(currentItem == null)
 					continue;
 				items++;

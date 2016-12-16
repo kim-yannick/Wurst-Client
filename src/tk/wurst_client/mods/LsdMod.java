@@ -53,7 +53,7 @@ public class LsdMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		if(!OpenGlHelper.shadersSupported)
-			mc.thePlayer.addPotionEffect(new PotionEffect(Potion.confusion
+			mc.player.addPotionEffect(new PotionEffect(Potion.confusion
 				.getId(), 10801220));
 		mc.gameSettings.smoothCamera = isEnabled();
 	}
@@ -62,7 +62,7 @@ public class LsdMod extends Mod implements UpdateListener
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
-		mc.thePlayer.removePotionEffect(Potion.confusion.getId());
+		mc.player.removePotionEffect(Potion.confusion.getId());
 		if(mc.entityRenderer.theShaderGroup != null)
 		{
 			mc.entityRenderer.theShaderGroup.deleteShaderGroup();

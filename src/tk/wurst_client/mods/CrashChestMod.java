@@ -24,16 +24,16 @@ public class CrashChestMod extends Mod
 	@Override
 	public void onEnable()
 	{
-		if(mc.thePlayer.inventory.getStackInSlot(36) != null)
+		if(mc.player.inventory.getStackInSlot(36) != null)
 		{
-			if(mc.thePlayer.inventory.getStackInSlot(36).getDisplayName()
+			if(mc.player.inventory.getStackInSlot(36).getDisplayName()
 				.equals("§6§lCOPY ME"))
 				wurst.chat.error("You already have a CrashChest.");
 			else
 				wurst.chat.error("Please take off your shoes.");
 			setEnabled(false);
 			return;
-		}else if(!mc.thePlayer.capabilities.isCreativeMode)
+		}else if(!mc.player.capabilities.isCreativeMode)
 		{
 			wurst.chat.error("Creative mode only.");
 			setEnabled(false);
@@ -46,7 +46,7 @@ public class CrashChestMod extends Mod
 			nbtList.appendTag(new NBTTagList());
 		nbtTagCompound.setTag("www.wurst-client.tk", nbtList);
 		stack.setTagInfo("www.wurst-client.tk", nbtTagCompound);
-		mc.thePlayer.getInventory()[0] = stack;
+		mc.player.getInventory()[0] = stack;
 		stack.setStackDisplayName("§6§lCOPY ME");
 		wurst.chat.message("A CrashChest was placed in your shoes slot.");
 		setEnabled(false);

@@ -28,12 +28,12 @@ public class GlideMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(mc.thePlayer.motionY < 0 && mc.thePlayer.isAirBorne
-			&& !mc.thePlayer.isInWater() && !mc.thePlayer.isOnLadder()
-			&& !mc.thePlayer.isInsideOfMaterial(Material.lava))
+		if(mc.player.motionY < 0 && mc.player.isAirBorne
+			&& !mc.player.isInWater() && !mc.player.isOnLadder()
+			&& !mc.player.isInsideOfMaterial(Material.lava))
 		{
-			mc.thePlayer.motionY = -0.125f;
-			mc.thePlayer.jumpMovementFactor *= 1.21337f;
+			mc.player.motionY = -0.125f;
+			mc.player.jumpMovementFactor *= 1.21337f;
 		}
 	}
 	

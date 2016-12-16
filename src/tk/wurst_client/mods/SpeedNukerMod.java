@@ -81,7 +81,7 @@ public class SpeedNukerMod extends Mod implements LeftClickListener,
 			wurst.mods.nukerMod.setEnabled(true);
 			return;
 		}
-		if(mc.thePlayer.capabilities.isCreativeMode)
+		if(mc.player.capabilities.isCreativeMode)
 		{
 			wurst.chat.error(getName() + " doesn't work in creative mode.");
 			setEnabled(false);
@@ -95,19 +95,19 @@ public class SpeedNukerMod extends Mod implements LeftClickListener,
 		{
 			if(oldSlot != -1)
 			{
-				mc.thePlayer.inventory.currentItem = oldSlot;
+				mc.player.inventory.currentItem = oldSlot;
 				oldSlot = -1;
 			}
 			return;
 		}
 		pos = newPos;
-		currentBlock = mc.theWorld.getBlockState(pos).getBlock();
+		currentBlock = mc.world.getBlockState(pos).getBlock();
 		if(wurst.mods.autoToolMod.isActive() && oldSlot == -1)
-			oldSlot = mc.thePlayer.inventory.currentItem;
-		if(!mc.thePlayer.capabilities.isCreativeMode
+			oldSlot = mc.player.inventory.currentItem;
+		if(!mc.player.capabilities.isCreativeMode
 			&& wurst.mods.autoToolMod.isActive()
-			&& currentBlock.getPlayerRelativeBlockHardness(mc.thePlayer,
-				mc.theWorld, pos) < 1)
+			&& currentBlock.getPlayerRelativeBlockHardness(mc.player,
+				mc.world, pos) < 1)
 			AutoToolMod.setSlot(pos);
 		nukeAll();
 	}
@@ -119,7 +119,7 @@ public class SpeedNukerMod extends Mod implements LeftClickListener,
 		wurst.events.remove(UpdateListener.class, this);
 		if(oldSlot != -1)
 		{
-			mc.thePlayer.inventory.currentItem = oldSlot;
+			mc.player.inventory.currentItem = oldSlot;
 			oldSlot = -1;
 		}
 		NukerMod.id = 0;
@@ -133,11 +133,11 @@ public class SpeedNukerMod extends Mod implements LeftClickListener,
 			|| mc.objectMouseOver.getBlockPos() == null)
 			return;
 		if(wurst.mods.nukerMod.getMode() == 1
-			&& mc.theWorld.getBlockState(mc.objectMouseOver.getBlockPos())
+			&& mc.world.getBlockState(mc.objectMouseOver.getBlockPos())
 				.getBlock().getMaterial() != Material.air)
 		{
 			NukerMod.id =
-				Block.getIdFromBlock(mc.theWorld.getBlockState(
+				Block.getIdFromBlock(mc.world.getBlockState(
 					mc.objectMouseOver.getBlockPos()).getBlock());
 			wurst.files.saveOptions();
 		}
@@ -153,19 +153,19 @@ public class SpeedNukerMod extends Mod implements LeftClickListener,
 			for(int x = (int)wurst.mods.nukerMod.yesCheatRange; x >= -wurst.mods.nukerMod.yesCheatRange - 1; x--)
 				for(int z = (int)wurst.mods.nukerMod.yesCheatRange; z >= -wurst.mods.nukerMod.yesCheatRange; z--)
 				{
-					if(mc.thePlayer == null)
+					if(mc.player == null)
 						continue;
 					if(x == 0 && y == -1 && z == 0)
 						continue;
-					int posX = (int)(Math.floor(mc.thePlayer.posX) + x);
-					int posY = (int)(Math.floor(mc.thePlayer.posY) + y);
-					int posZ = (int)(Math.floor(mc.thePlayer.posZ) + z);
+					int posX = (int)(Math.floor(mc.player.posX) + x);
+					int posY = (int)(Math.floor(mc.player.posY) + y);
+					int posZ = (int)(Math.floor(mc.player.posZ) + z);
 					BlockPos blockPos = new BlockPos(posX, posY, posZ);
 					Block block =
-						mc.theWorld.getBlockState(blockPos).getBlock();
-					float xDiff = (float)(mc.thePlayer.posX - posX);
-					float yDiff = (float)(mc.thePlayer.posY - posY);
-					float zDiff = (float)(mc.thePlayer.posZ - posZ);
+						mc.world.getBlockState(blockPos).getBlock();
+					float xDiff = (float)(mc.player.posX - posX);
+					float yDiff = (float)(mc.player.posY - posY);
+					float zDiff = (float)(mc.player.posZ - posZ);
 					float currentDistance =
 						BlockUtils.getBlockDistance(xDiff, yDiff, zDiff);
 					MovingObjectPosition fakeObjectMouseOver =
@@ -181,7 +181,7 @@ public class SpeedNukerMod extends Mod implements LeftClickListener,
 							continue;
 						if(nukerMode == 3
 							&& block.getPlayerRelativeBlockHardness(
-								mc.thePlayer, mc.theWorld, blockPos) < 1)
+								mc.player, mc.world, blockPos) < 1)
 							continue;
 						if(closest == null)
 						{
@@ -205,17 +205,17 @@ public class SpeedNukerMod extends Mod implements LeftClickListener,
 			for(int x = (int)wurst.mods.nukerMod.normalRange; x >= -wurst.mods.nukerMod.normalRange - 1; x--)
 				for(int z = (int)wurst.mods.nukerMod.normalRange; z >= -wurst.mods.nukerMod.normalRange; z--)
 				{
-					int posX = (int)(Math.floor(mc.thePlayer.posX) + x);
-					int posY = (int)(Math.floor(mc.thePlayer.posY) + y);
-					int posZ = (int)(Math.floor(mc.thePlayer.posZ) + z);
+					int posX = (int)(Math.floor(mc.player.posX) + x);
+					int posY = (int)(Math.floor(mc.player.posY) + y);
+					int posZ = (int)(Math.floor(mc.player.posZ) + z);
 					if(x == 0 && y == -1 && z == 0)
 						continue;
 					BlockPos blockPos = new BlockPos(posX, posY, posZ);
 					Block block =
-						mc.theWorld.getBlockState(blockPos).getBlock();
-					float xDiff = (float)(mc.thePlayer.posX - posX);
-					float yDiff = (float)(mc.thePlayer.posY - posY);
-					float zDiff = (float)(mc.thePlayer.posZ - posZ);
+						mc.world.getBlockState(blockPos).getBlock();
+					float xDiff = (float)(mc.player.posX - posX);
+					float yDiff = (float)(mc.player.posY - posY);
+					float zDiff = (float)(mc.player.posZ - posZ);
 					float currentDistance =
 						BlockUtils.getBlockDistance(xDiff, yDiff, zDiff);
 					MovingObjectPosition fakeObjectMouseOver =
@@ -230,15 +230,15 @@ public class SpeedNukerMod extends Mod implements LeftClickListener,
 							continue;
 						if(nukerMode == 3
 							&& block.getPlayerRelativeBlockHardness(
-								mc.thePlayer, mc.theWorld, blockPos) < 1)
+								mc.player, mc.world, blockPos) < 1)
 							continue;
-						if(!mc.thePlayer.onGround)
+						if(!mc.player.onGround)
 							continue;
 						EnumFacing side = fakeObjectMouseOver.sideHit;
-						mc.thePlayer.sendQueue
+						mc.player.sendQueue
 							.addToSendQueue(new C07PacketPlayerDigging(
 								Action.START_DESTROY_BLOCK, blockPos, side));
-						mc.thePlayer.sendQueue
+						mc.player.sendQueue
 							.addToSendQueue(new C07PacketPlayerDigging(
 								Action.STOP_DESTROY_BLOCK, blockPos, side));
 					}

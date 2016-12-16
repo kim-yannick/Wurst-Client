@@ -29,9 +29,9 @@ public class NoSlowdownMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(mc.thePlayer.onGround && mc.thePlayer.isInWater()
+		if(mc.player.onGround && mc.player.isInWater()
 			&& mc.gameSettings.keyBindJump.pressed)
-			mc.thePlayer.jump();
+			mc.player.jump();
 	}
 	
 	@Override

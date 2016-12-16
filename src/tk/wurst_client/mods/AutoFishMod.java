@@ -30,7 +30,7 @@ public class AutoFishMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(mc.thePlayer.fishEntity != null && isHooked(mc.thePlayer.fishEntity)
+		if(mc.player.fishEntity != null && isHooked(mc.player.fishEntity)
 			&& !catching)
 		{
 			catching = true;

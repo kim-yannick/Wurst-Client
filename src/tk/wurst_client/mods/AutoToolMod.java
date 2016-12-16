@@ -48,11 +48,11 @@ public class AutoToolMod extends Mod implements LeftClickListener,
 		if(!mc.gameSettings.keyBindAttack.pressed && isActive)
 		{
 			isActive = false;
-			mc.thePlayer.inventory.currentItem = oldSlot;
+			mc.player.inventory.currentItem = oldSlot;
 		}else if(isActive
 			&& mc.objectMouseOver != null
 			&& mc.objectMouseOver.getBlockPos() != null
-			&& mc.theWorld.getBlockState(mc.objectMouseOver.getBlockPos())
+			&& mc.world.getBlockState(mc.objectMouseOver.getBlockPos())
 				.getBlock().getMaterial() != Material.air)
 			setSlot(mc.objectMouseOver.getBlockPos());
 	}
@@ -63,7 +63,7 @@ public class AutoToolMod extends Mod implements LeftClickListener,
 		wurst.events.remove(LeftClickListener.class, this);
 		wurst.events.remove(UpdateListener.class, this);
 		isActive = false;
-		mc.thePlayer.inventory.currentItem = oldSlot;
+		mc.player.inventory.currentItem = oldSlot;
 	}
 	
 	@Override
@@ -72,11 +72,11 @@ public class AutoToolMod extends Mod implements LeftClickListener,
 		if(mc.objectMouseOver == null
 			|| mc.objectMouseOver.getBlockPos() == null)
 			return;
-		if(mc.theWorld.getBlockState(mc.objectMouseOver.getBlockPos())
+		if(mc.world.getBlockState(mc.objectMouseOver.getBlockPos())
 			.getBlock().getMaterial() != Material.air)
 		{
 			isActive = true;
-			oldSlot = mc.thePlayer.inventory.currentItem;
+			oldSlot = mc.player.inventory.currentItem;
 			setSlot(mc.objectMouseOver.getBlockPos());
 		}
 	}
@@ -85,10 +85,10 @@ public class AutoToolMod extends Mod implements LeftClickListener,
 	{
 		float bestSpeed = 1F;
 		int bestSlot = -1;
-		Block block = mc.theWorld.getBlockState(blockPos).getBlock();
+		Block block = mc.world.getBlockState(blockPos).getBlock();
 		for(int i = 0; i < 9; i++)
 		{
-			ItemStack item = mc.thePlayer.inventory.getStackInSlot(i);
+			ItemStack item = mc.player.inventory.getStackInSlot(i);
 			if(item == null)
 				continue;
 			float speed = item.getStrVsBlock(block);
@@ -99,6 +99,6 @@ public class AutoToolMod extends Mod implements LeftClickListener,
 			}
 		}
 		if(bestSlot != -1)
-			mc.thePlayer.inventory.currentItem = bestSlot;
+			mc.player.inventory.currentItem = bestSlot;
 	}
 }

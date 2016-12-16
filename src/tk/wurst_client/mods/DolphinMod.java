@@ -27,8 +27,8 @@ public class DolphinMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(mc.thePlayer.isInWater() && !mc.gameSettings.keyBindSneak.pressed)
-			mc.thePlayer.motionY += 0.04;
+		if(mc.player.isInWater() && !mc.gameSettings.keyBindSneak.pressed)
+			mc.player.motionY += 0.04;
 	}
 	
 	@Override

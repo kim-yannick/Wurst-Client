@@ -80,7 +80,7 @@ public class PlayerFinderMod extends Mod implements PacketInputListener,
 	@Override
 	public void onReceivedPacket(PacketInputEvent event)
 	{
-		if(mc.thePlayer == null)
+		if(mc.player == null)
 			return;
 		Packet packet = event.getPacket();
 		if(packet instanceof S28PacketEffect)

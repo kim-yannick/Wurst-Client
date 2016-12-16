@@ -31,10 +31,10 @@ public class AntiFireMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(!mc.thePlayer.capabilities.isCreativeMode && mc.thePlayer.onGround
-			&& mc.thePlayer.isBurning())
+		if(!mc.player.capabilities.isCreativeMode && mc.player.onGround
+			&& mc.player.isBurning())
 			for(int i = 0; i < 100; i++)
-				mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer());
+				mc.player.sendQueue.addToSendQueue(new C03PacketPlayer());
 	}
 	
 	@Override

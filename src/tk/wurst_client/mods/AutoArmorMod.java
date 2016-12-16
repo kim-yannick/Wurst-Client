@@ -34,7 +34,7 @@ public class AutoArmorMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(mc.thePlayer.capabilities.isCreativeMode
+		if(mc.player.capabilities.isCreativeMode
 			|| mc.currentScreen instanceof GuiContainer
 			&& !(mc.currentScreen instanceof GuiInventory))
 			return;
@@ -46,7 +46,7 @@ public class AutoArmorMod extends Mod implements UpdateListener
 				bestArmor[i] = -1;
 			for(int i = 0; i < 36; i++)
 			{
-				ItemStack itemstack = mc.thePlayer.inventory.getStackInSlot(i);
+				ItemStack itemstack = mc.player.inventory.getStackInSlot(i);
 				if(itemstack != null
 					&& itemstack.getItem() instanceof ItemArmor)
 				{
@@ -57,7 +57,7 @@ public class AutoArmorMod extends Mod implements UpdateListener
 			}
 			for(int i = 0; i < 4; i++)
 			{
-				ItemStack itemstack = mc.thePlayer.inventory.armorItemInSlot(i);
+				ItemStack itemstack = mc.player.inventory.armorItemInSlot(i);
 				ItemArmor currentArmor;
 				if(itemstack != null
 					&& itemstack.getItem() instanceof ItemArmor)
@@ -68,7 +68,7 @@ public class AutoArmorMod extends Mod implements UpdateListener
 				try
 				{
 					bestArmor =
-						(ItemArmor)mc.thePlayer.inventory.getStackInSlot(
+						(ItemArmor)mc.player.inventory.getStackInSlot(
 							this.bestArmor[i]).getItem();
 				}catch(Exception e)
 				{
@@ -76,15 +76,15 @@ public class AutoArmorMod extends Mod implements UpdateListener
 				}
 				if(bestArmor != null
 					&& (currentArmor == null || bestArmor.damageReduceAmount > currentArmor.damageReduceAmount))
-					if(mc.thePlayer.inventory.getFirstEmptyStack() != -1
+					if(mc.player.inventory.getFirstEmptyStack() != -1
 						|| currentArmor == null)
 					{
 						mc.playerController.windowClick(0, 8 - i, 0, 1,
-							mc.thePlayer);
+							mc.player);
 						mc.playerController.windowClick(0,
 							this.bestArmor[i] < 9 ? 36 + this.bestArmor[i]
 								: this.bestArmor[i], 0, 1, Minecraft
-								.getMinecraft().thePlayer);
+								.getMinecraft().player);
 					}
 			}
 			updateLastMS();

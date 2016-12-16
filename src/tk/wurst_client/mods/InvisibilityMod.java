@@ -31,11 +31,11 @@ public class InvisibilityMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(mc.thePlayer.getHealth() <= 0)
+		if(mc.player.getHealth() <= 0)
 			if(isEnabled())
 			{
 				// Respawning too early for server-side invisibility
-				mc.thePlayer.respawnPlayer();
+				mc.player.respawnPlayer();
 				wurst.chat.message("You should now be invisible.");
 			}else
 			{

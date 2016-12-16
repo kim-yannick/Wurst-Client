@@ -19,7 +19,7 @@ public class FixmeCmd extends Command
 	{
 		if(args.length != 0)
 			syntaxError();
-		if(Minecraft.getMinecraft().thePlayer == null)
+		if(Minecraft.getMinecraft().player == null)
 			error("Not connected to any server.");
 		Minecraft.getMinecraft().displayGuiScreen(null);
 		System.out.println("Closed all open menus.");

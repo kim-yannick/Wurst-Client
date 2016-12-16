@@ -44,22 +44,22 @@ public class RemoteViewMod extends Mod implements UpdateListener
 			setEnabled(false);
 			return;
 		}
-		oldX = mc.thePlayer.posX;
-		oldY = mc.thePlayer.posY;
-		oldZ = mc.thePlayer.posZ;
-		oldYaw = mc.thePlayer.rotationYaw;
-		oldPitch = mc.thePlayer.rotationPitch;
-		mc.thePlayer.noClip = true;
+		oldX = mc.player.posX;
+		oldY = mc.player.posY;
+		oldZ = mc.player.posZ;
+		oldYaw = mc.player.rotationYaw;
+		oldPitch = mc.player.rotationPitch;
+		mc.player.noClip = true;
 		if(otherID == null)
 			otherID = EntityUtils.getClosestEntityRaw(false).getUniqueID();
 		otherView = EntityUtils.searchEntityByIdRaw(otherID);
-		wasInvisible = otherView.isInvisibleToPlayer(mc.thePlayer);
+		wasInvisible = otherView.isInvisibleToPlayer(mc.player);
 		EntityOtherPlayerMP fakePlayer =
-			new EntityOtherPlayerMP(mc.theWorld, mc.thePlayer.getGameProfile());
-		fakePlayer.clonePlayer(mc.thePlayer, true);
-		fakePlayer.copyLocationAndAnglesFrom(mc.thePlayer);
-		fakePlayer.rotationYawHead = mc.thePlayer.rotationYawHead;
-		mc.theWorld.addEntityToWorld(-69, fakePlayer);
+			new EntityOtherPlayerMP(mc.world, mc.player.getGameProfile());
+		fakePlayer.clonePlayer(mc.player, true);
+		fakePlayer.copyLocationAndAnglesFrom(mc.player);
+		fakePlayer.rotationYawHead = mc.player.rotationYawHead;
+		mc.world.addEntityToWorld(-69, fakePlayer);
 		wurst.chat.message("Now viewing " + otherView.getName() + ".");
 		wurst.events.add(UpdateListener.class, this);
 	}
@@ -86,13 +86,13 @@ public class RemoteViewMod extends Mod implements UpdateListener
 			setEnabled(false);
 			return;
 		}
-		newView = mc.thePlayer;
+		newView = mc.player;
 		otherView = EntityUtils.searchEntityByIdRaw(otherID);
 		newView.copyLocationAndAnglesFrom(otherView);
-		mc.thePlayer.motionX = 0;
-		mc.thePlayer.motionY = 0;
-		mc.thePlayer.motionZ = 0;
-		mc.thePlayer = newView;
+		mc.player.motionX = 0;
+		mc.player.motionY = 0;
+		mc.player.motionZ = 0;
+		mc.player = newView;
 		otherView.setInvisible(true);
 	}
 	
@@ -105,10 +105,10 @@ public class RemoteViewMod extends Mod implements UpdateListener
 			wurst.chat
 				.message("No longer viewing " + otherView.getName() + ".");
 			otherView.setInvisible(wasInvisible);
-			mc.thePlayer.noClip = false;
-			mc.thePlayer.setPositionAndRotation(oldX, oldY, oldZ, oldYaw,
+			mc.player.noClip = false;
+			mc.player.setPositionAndRotation(oldX, oldY, oldZ, oldYaw,
 				oldPitch);
-			mc.theWorld.removeEntityFromWorld(-69);
+			mc.world.removeEntityFromWorld(-69);
 		}
 		newView = null;
 		otherView = null;

@@ -28,38 +28,38 @@ public class FreecamMod extends Mod implements UpdateListener
 	@Override
 	public void onEnable()
 	{
-		oldX = mc.thePlayer.posX;
-		oldY = mc.thePlayer.posY;
-		oldZ = mc.thePlayer.posZ;
+		oldX = mc.player.posX;
+		oldY = mc.player.posY;
+		oldZ = mc.player.posZ;
 		fakePlayer =
-			new EntityOtherPlayerMP(mc.theWorld, mc.thePlayer.getGameProfile());
-		fakePlayer.clonePlayer(mc.thePlayer, true);
-		fakePlayer.copyLocationAndAnglesFrom(mc.thePlayer);
-		fakePlayer.rotationYawHead = mc.thePlayer.rotationYawHead;
-		mc.theWorld.addEntityToWorld(-69, fakePlayer);
+			new EntityOtherPlayerMP(mc.world, mc.player.getGameProfile());
+		fakePlayer.clonePlayer(mc.player, true);
+		fakePlayer.copyLocationAndAnglesFrom(mc.player);
+		fakePlayer.rotationYawHead = mc.player.rotationYawHead;
+		mc.world.addEntityToWorld(-69, fakePlayer);
 		wurst.events.add(UpdateListener.class, this);
 	}
 	
 	@Override
 	public void onUpdate()
 	{
-		mc.thePlayer.motionX = 0;
-		mc.thePlayer.motionY = 0;
-		mc.thePlayer.motionZ = 0;
-		mc.thePlayer.jumpMovementFactor = wurst.mods.flightMod.speed / 10;
+		mc.player.motionX = 0;
+		mc.player.motionY = 0;
+		mc.player.motionZ = 0;
+		mc.player.jumpMovementFactor = wurst.mods.flightMod.speed / 10;
 		if(mc.gameSettings.keyBindJump.pressed)
-			mc.thePlayer.motionY += wurst.mods.flightMod.speed;
+			mc.player.motionY += wurst.mods.flightMod.speed;
 		if(mc.gameSettings.keyBindSneak.pressed)
-			mc.thePlayer.motionY -= wurst.mods.flightMod.speed;
+			mc.player.motionY -= wurst.mods.flightMod.speed;
 	}
 	
 	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
-		mc.thePlayer.setPositionAndRotation(oldX, oldY, oldZ,
-			mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch);
-		mc.theWorld.removeEntityFromWorld(-69);
+		mc.player.setPositionAndRotation(oldX, oldY, oldZ,
+			mc.player.rotationYaw, mc.player.rotationPitch);
+		mc.world.removeEntityFromWorld(-69);
 		fakePlayer = null;
 		mc.renderGlobal.loadRenderers();
 	}

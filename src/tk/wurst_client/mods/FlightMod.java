@@ -69,12 +69,12 @@ public class FlightMod extends Mod implements UpdateListener
 	{
 		double h = 1;
 		AxisAlignedBB box =
-			mc.thePlayer.getEntityBoundingBox().expand(0.0625, 0.0625, 0.0625);
-		for(flyHeight = 0; flyHeight < mc.thePlayer.posY; flyHeight += h)
+			mc.player.getEntityBoundingBox().expand(0.0625, 0.0625, 0.0625);
+		for(flyHeight = 0; flyHeight < mc.player.posY; flyHeight += h)
 		{
 			AxisAlignedBB nextBox = box.offset(0, -flyHeight, 0);
 			
-			if(mc.theWorld.checkBlockCollision(nextBox))
+			if(mc.world.checkBlockCollision(nextBox))
 			{
 				if(h < 0.0625)
 					break;
@@ -90,33 +90,33 @@ public class FlightMod extends Mod implements UpdateListener
 		if(flyHeight > 300)
 			return;
 		
-		double minY = mc.thePlayer.posY - flyHeight;
+		double minY = mc.player.posY - flyHeight;
 		
 		if(minY <= 0)
 			return;
 		
-		for(double y = mc.thePlayer.posY; y > minY;)
+		for(double y = mc.player.posY; y > minY;)
 		{
 			y -= 8;
 			if(y < minY)
 				y = minY;
 			
 			C04PacketPlayerPosition packet =
-				new C04PacketPlayerPosition(mc.thePlayer.posX, y,
-					mc.thePlayer.posZ, true);
-			mc.thePlayer.sendQueue.addToSendQueue(packet);
+				new C04PacketPlayerPosition(mc.player.posX, y,
+					mc.player.posZ, true);
+			mc.player.sendQueue.addToSendQueue(packet);
 		}
 		
-		for(double y = minY; y < mc.thePlayer.posY;)
+		for(double y = minY; y < mc.player.posY;)
 		{
 			y += 8;
-			if(y > mc.thePlayer.posY)
-				y = mc.thePlayer.posY;
+			if(y > mc.player.posY)
+				y = mc.player.posY;
 			
 			C04PacketPlayerPosition packet =
-				new C04PacketPlayerPosition(mc.thePlayer.posX, y,
-					mc.thePlayer.posZ, true);
-			mc.thePlayer.sendQueue.addToSendQueue(packet);
+				new C04PacketPlayerPosition(mc.player.posX, y,
+					mc.player.posZ, true);
+			mc.player.sendQueue.addToSendQueue(packet);
 		}
 	}
 	
@@ -136,19 +136,19 @@ public class FlightMod extends Mod implements UpdateListener
 		if(wurst.mods.yesCheatMod.isActive()
 			|| wurst.mods.antiMacMod.isActive())
 		{
-			double startX = mc.thePlayer.posX;
-			startY = mc.thePlayer.posY;
-			double startZ = mc.thePlayer.posZ;
+			double startX = mc.player.posX;
+			startY = mc.player.posY;
+			double startZ = mc.player.posZ;
 			for(int i = 0; i < 4; i++)
 			{
-				mc.thePlayer.sendQueue
+				mc.player.sendQueue
 					.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(
 						startX, startY + 1.01, startZ, false));
-				mc.thePlayer.sendQueue
+				mc.player.sendQueue
 					.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(
 						startX, startY, startZ, false));
 			}
-			mc.thePlayer.jump();
+			mc.player.jump();
 		}
 		wurst.events.add(UpdateListener.class, this);
 	}
@@ -158,45 +158,45 @@ public class FlightMod extends Mod implements UpdateListener
 	{
 		if(wurst.mods.yesCheatMod.isActive())
 		{
-			if(!mc.thePlayer.onGround)
+			if(!mc.player.onGround)
 				if(mc.gameSettings.keyBindJump.pressed
-					&& mc.thePlayer.posY < startY - 1)
-					mc.thePlayer.motionY = 0.2;
+					&& mc.player.posY < startY - 1)
+					mc.player.motionY = 0.2;
 				else
-					mc.thePlayer.motionY = -0.02;
+					mc.player.motionY = -0.02;
 		}else if(wurst.mods.antiMacMod.isActive())
 		{
 			updateMS();
-			if(!mc.thePlayer.onGround)
+			if(!mc.player.onGround)
 				if(mc.gameSettings.keyBindJump.pressed && hasTimePassedS(2))
 				{
-					mc.thePlayer.setPosition(mc.thePlayer.posX,
-						mc.thePlayer.posY + 8, mc.thePlayer.posZ);
+					mc.player.setPosition(mc.player.posX,
+						mc.player.posY + 8, mc.player.posZ);
 					updateLastMS();
 				}else if(mc.gameSettings.keyBindSneak.pressed)
-					mc.thePlayer.motionY = -0.4;
+					mc.player.motionY = -0.4;
 				else
-					mc.thePlayer.motionY = -0.02;
-			mc.thePlayer.jumpMovementFactor = 0.04F;
+					mc.player.motionY = -0.02;
+			mc.player.jumpMovementFactor = 0.04F;
 		}else
 		{
 			updateMS();
 			
-			mc.thePlayer.capabilities.isFlying = false;
-			mc.thePlayer.motionX = 0;
-			mc.thePlayer.motionY = 0;
-			mc.thePlayer.motionZ = 0;
-			mc.thePlayer.jumpMovementFactor = speed;
+			mc.player.capabilities.isFlying = false;
+			mc.player.motionX = 0;
+			mc.player.motionY = 0;
+			mc.player.motionZ = 0;
+			mc.player.jumpMovementFactor = speed;
 			
 			if(mc.gameSettings.keyBindJump.pressed)
-				mc.thePlayer.motionY += speed;
+				mc.player.motionY += speed;
 			if(mc.gameSettings.keyBindSneak.pressed)
-				mc.thePlayer.motionY -= speed;
+				mc.player.motionY -= speed;
 			
 			if(flightKickBypass.isChecked())
 			{
 				updateFlyHeight();
-				mc.thePlayer.sendQueue
+				mc.player.sendQueue
 					.addToSendQueue(new C03PacketPlayer(true));
 				
 				if(flyHeight <= 290 && hasTimePassedM(500) || flyHeight > 290

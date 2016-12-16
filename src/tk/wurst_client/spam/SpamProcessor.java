@@ -102,7 +102,7 @@ public class SpamProcessor
 				}catch(Exception e)
 				{
 					if(e instanceof NullPointerException
-						&& Minecraft.getMinecraft().thePlayer == null)
+						&& Minecraft.getMinecraft().player == null)
 						return;
 					e.printStackTrace();
 					StringWriter tracewriter = new StringWriter();
@@ -135,21 +135,21 @@ public class SpamProcessor
 				return;
 			for(int i = 0; i < spam.split("\n").length; i++)
 			{
-				Minecraft.getMinecraft().thePlayer
+				Minecraft.getMinecraft().player
 					.sendAutomaticChatMessage(spam.split("\n")[i]);
 				Thread.sleep(WurstClient.INSTANCE.options.spamDelay);
 			}
 		}catch(NullPointerException e)
 		{
-			if(Minecraft.getMinecraft().thePlayer != null)
+			if(Minecraft.getMinecraft().player != null)
 				throw e;
 		}
 	}
 	
 	private static boolean canSpam()
 	{
-		return Minecraft.getMinecraft().thePlayer != null
-			&& Minecraft.getMinecraft().theWorld != null;
+		return Minecraft.getMinecraft().player != null
+			&& Minecraft.getMinecraft().world != null;
 	}
 	
 	public static String process(String spam, SpammerMod spammerMod,

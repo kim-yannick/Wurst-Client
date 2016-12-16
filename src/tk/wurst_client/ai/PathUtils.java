@@ -32,7 +32,7 @@ public class PathUtils
 	
 	public static boolean isSolid(BlockPos pos)
 	{
-		return Minecraft.getMinecraft().theWorld.getBlockState(pos).getBlock()
+		return Minecraft.getMinecraft().world.getBlockState(pos).getBlock()
 			.getMaterial().blocksMovement()
 			|| getMaterial(pos) == Material.water
 			&& WurstClient.INSTANCE.mods.jesusMod.isEnabled();
@@ -65,14 +65,14 @@ public class PathUtils
 	public static boolean isCreative()
 	{
 		if(playerCaps == null)
-			playerCaps = Minecraft.getMinecraft().thePlayer.capabilities;
+			playerCaps = Minecraft.getMinecraft().player.capabilities;
 		return playerCaps.isCreativeMode;
 	}
 	
 	public static boolean isFlyable(BlockPos pos)
 	{
 		if(playerCaps == null)
-			playerCaps = Minecraft.getMinecraft().thePlayer.capabilities;
+			playerCaps = Minecraft.getMinecraft().player.capabilities;
 		return WurstClient.INSTANCE.mods.flightMod.isEnabled()
 			|| playerCaps.isFlying
 			|| !WurstClient.INSTANCE.mods.noSlowdownMod.isEnabled()
@@ -96,13 +96,13 @@ public class PathUtils
 	
 	private static Material getMaterial(BlockPos pos)
 	{
-		return Minecraft.getMinecraft().theWorld.getBlockState(pos).getBlock()
+		return Minecraft.getMinecraft().world.getBlockState(pos).getBlock()
 			.getMaterial();
 	}
 	
 	private static int getID(BlockPos pos)
 	{
-		return Block.getIdFromBlock(Minecraft.getMinecraft().theWorld
+		return Block.getIdFromBlock(Minecraft.getMinecraft().world
 			.getBlockState(pos).getBlock());
 	}
 }

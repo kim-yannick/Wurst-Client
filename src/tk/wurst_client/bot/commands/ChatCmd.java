@@ -19,11 +19,11 @@ public class ChatCmd extends Command
 	{
 		if(args.length == 0)
 			syntaxError();
-		if(Minecraft.getMinecraft().thePlayer == null)
+		if(Minecraft.getMinecraft().player == null)
 			error("Not connected to any server.");
 		String message = args[0];
 		for(int i = 1; i < args.length; i++)
 			message += " " + args[i];
-		Minecraft.getMinecraft().thePlayer.sendChatMessage(message);
+		Minecraft.getMinecraft().player.sendChatMessage(message);
 	}
 }

@@ -54,40 +54,40 @@ public class StepMod extends Mod implements UpdateListener
 	{
 		if(wurst.mods.yesCheatMod.isActive())
 		{
-			mc.thePlayer.stepHeight = 0.5F;
-			if(mc.thePlayer.onGround
-				&& !mc.thePlayer.isOnLadder()
-				&& (mc.thePlayer.movementInput.moveForward != 0.0F || mc.thePlayer.movementInput.moveStrafe != 0.0F)
-				&& canStep() && !mc.thePlayer.movementInput.jump
-				&& mc.thePlayer.isCollidedHorizontally)
+			mc.player.stepHeight = 0.5F;
+			if(mc.player.onGround
+				&& !mc.player.isOnLadder()
+				&& (mc.player.movementInput.moveForward != 0.0F || mc.player.movementInput.moveStrafe != 0.0F)
+				&& canStep() && !mc.player.movementInput.jump
+				&& mc.player.isCollidedHorizontally)
 			{
 				mc.getNetHandler().addToSendQueue(
-					new C04PacketPlayerPosition(mc.thePlayer.posX,
-						mc.thePlayer.posY + 0.42D, mc.thePlayer.posZ,
-						mc.thePlayer.onGround));
+					new C04PacketPlayerPosition(mc.player.posX,
+						mc.player.posY + 0.42D, mc.player.posZ,
+						mc.player.onGround));
 				mc.getNetHandler().addToSendQueue(
-					new C04PacketPlayerPosition(mc.thePlayer.posX,
-						mc.thePlayer.posY + 0.753D, mc.thePlayer.posZ,
-						mc.thePlayer.onGround));
-				mc.thePlayer.setPosition(mc.thePlayer.posX,
-					mc.thePlayer.posY + 1D, mc.thePlayer.posZ);
+					new C04PacketPlayerPosition(mc.player.posX,
+						mc.player.posY + 0.753D, mc.player.posZ,
+						mc.player.onGround));
+				mc.player.setPosition(mc.player.posX,
+					mc.player.posY + 1D, mc.player.posZ);
 			}
 		}else
-			mc.thePlayer.stepHeight = isEnabled() ? height : 0.5F;
+			mc.player.stepHeight = isEnabled() ? height : 0.5F;
 	}
 	
 	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
-		mc.thePlayer.stepHeight = 0.5F;
+		mc.player.stepHeight = 0.5F;
 	}
 	
 	private boolean canStep()
 	{
 		ArrayList<BlockPos> collisionBlocks = new ArrayList<>();
 		
-		EntityPlayerSP player = mc.thePlayer;
+		EntityPlayerSP player = mc.player;
 		BlockPos pos1 =
 			new BlockPos(player.getEntityBoundingBox().minX - 0.001D,
 				player.getEntityBoundingBox().minY - 0.001D,
@@ -112,8 +112,8 @@ public class StepMod extends Mod implements UpdateListener
 				if(player.worldObj
 					.getBlockState(collisionBlock.add(0, 1, 0))
 					.getBlock()
-					.getCollisionBoundingBox(mc.theWorld, belowPlayerPos,
-						mc.theWorld.getBlockState(collisionBlock)) != null)
+					.getCollisionBoundingBox(mc.world, belowPlayerPos,
+						mc.world.getBlockState(collisionBlock)) != null)
 					return false;
 		
 		return true;

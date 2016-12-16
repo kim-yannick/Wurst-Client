@@ -30,12 +30,12 @@ public class RegenMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(!mc.thePlayer.capabilities.isCreativeMode
-			&& mc.thePlayer.getFoodStats().getFoodLevel() > 17
-			&& mc.thePlayer.getHealth() < 20 && mc.thePlayer.getHealth() != 0
-			&& mc.thePlayer.onGround)
+		if(!mc.player.capabilities.isCreativeMode
+			&& mc.player.getFoodStats().getFoodLevel() > 17
+			&& mc.player.getHealth() < 20 && mc.player.getHealth() != 0
+			&& mc.player.onGround)
 			for(int i = 0; i < 1000; i++)
-				mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer());
+				mc.player.sendQueue.addToSendQueue(new C03PacketPlayer());
 	}
 	
 	@Override

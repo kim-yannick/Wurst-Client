@@ -28,15 +28,15 @@ public class PhaseMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		mc.thePlayer.noClip = true;
-		mc.thePlayer.fallDistance = 0;
-		mc.thePlayer.onGround = true;
+		mc.player.noClip = true;
+		mc.player.fallDistance = 0;
+		mc.player.onGround = true;
 	}
 	
 	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
-		mc.thePlayer.noClip = false;
+		mc.player.noClip = false;
 	}
 }

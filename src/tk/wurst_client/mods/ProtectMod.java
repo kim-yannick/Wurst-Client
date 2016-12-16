@@ -40,7 +40,7 @@ public class ProtectMod extends Mod implements UpdateListener
 	{
 		friend = null;
 		EntityLivingBase en = EntityUtils.getClosestEntity(false, true);
-		if(en != null && mc.thePlayer.getDistanceToEntity(en) <= range)
+		if(en != null && mc.player.getDistanceToEntity(en) <= range)
 			friend = en;
 		wurst.events.add(UpdateListener.class, this);
 	}
@@ -49,7 +49,7 @@ public class ProtectMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		if(friend == null || friend.isDead || friend.getHealth() <= 0
-			|| mc.thePlayer.getHealth() <= 0)
+			|| mc.player.getHealth() <= 0)
 		{
 			friend = null;
 			enemy = null;
@@ -58,26 +58,26 @@ public class ProtectMod extends Mod implements UpdateListener
 		}
 		if(enemy != null && (enemy.getHealth() <= 0 || enemy.isDead))
 			enemy = null;
-		double xDistF = Math.abs(mc.thePlayer.posX - friend.posX);
-		double zDistF = Math.abs(mc.thePlayer.posZ - friend.posZ);
+		double xDistF = Math.abs(mc.player.posX - friend.posX);
+		double zDistF = Math.abs(mc.player.posZ - friend.posZ);
 		double xDistE = distanceE;
 		double zDistE = distanceE;
-		if(enemy != null && mc.thePlayer.getDistanceToEntity(enemy) <= range)
+		if(enemy != null && mc.player.getDistanceToEntity(enemy) <= range)
 		{
-			xDistE = Math.abs(mc.thePlayer.posX - enemy.posX);
-			zDistE = Math.abs(mc.thePlayer.posZ - enemy.posZ);
+			xDistE = Math.abs(mc.player.posX - enemy.posX);
+			zDistE = Math.abs(mc.player.posZ - enemy.posZ);
 		}else
 			EntityUtils.faceEntityClient(friend);
 		if((xDistF > distanceF || zDistF > distanceF)
-			&& (enemy == null || mc.thePlayer.getDistanceToEntity(enemy) > range)
+			&& (enemy == null || mc.player.getDistanceToEntity(enemy) > range)
 			|| xDistE > distanceE || zDistE > distanceE)
 			mc.gameSettings.keyBindForward.pressed = true;
 		else
 			mc.gameSettings.keyBindForward.pressed = false;
-		if(mc.thePlayer.isCollidedHorizontally && mc.thePlayer.onGround)
-			mc.thePlayer.jump();
-		if(mc.thePlayer.isInWater() && mc.thePlayer.posY < friend.posY)
-			mc.thePlayer.motionY += 0.04;
+		if(mc.player.isCollidedHorizontally && mc.player.onGround)
+			mc.player.jump();
+		if(mc.player.isInWater() && mc.player.posY < friend.posY)
+			mc.player.motionY += 0.04;
 		if(wurst.mods.yesCheatMod.isActive())
 			speed = wurst.mods.killauraMod.yesCheatSpeed;
 		else
@@ -86,15 +86,15 @@ public class ProtectMod extends Mod implements UpdateListener
 		if(hasTimePassedS(speed) && EntityUtils.getClosestEnemy(friend) != null)
 		{
 			enemy = EntityUtils.getClosestEnemy(friend);
-			if(mc.thePlayer.getDistanceToEntity(enemy) <= range)
+			if(mc.player.getDistanceToEntity(enemy) <= range)
 			{
 				if(wurst.mods.autoSwordMod.isActive())
 					AutoSwordMod.setSlot();
 				wurst.mods.criticalsMod.doCritical();
 				wurst.mods.blockHitMod.doBlock();
 				EntityUtils.faceEntityClient(enemy);
-				mc.thePlayer.swingItem();
-				mc.playerController.attackEntity(mc.thePlayer, enemy);
+				mc.player.swingItem();
+				mc.playerController.attackEntity(mc.player, enemy);
 				updateLastMS();
 			}
 		}

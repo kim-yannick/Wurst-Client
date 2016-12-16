@@ -53,7 +53,7 @@ public class ClickAuraMod extends Mod implements UpdateListener
 		updateMS();
 		EntityLivingBase en = EntityUtils.getClosestEntity(true, true);
 		if(en == null
-			|| mc.thePlayer.getDistanceToEntity(en) > wurst.mods.killauraMod.realRange)
+			|| mc.player.getDistanceToEntity(en) > wurst.mods.killauraMod.realRange)
 		{
 			EntityUtils.lookChanged = false;
 			return;
@@ -68,8 +68,8 @@ public class ClickAuraMod extends Mod implements UpdateListener
 			wurst.mods.blockHitMod.doBlock();
 			if(EntityUtils.faceEntityPacket(en))
 			{
-				mc.thePlayer.swingItem();
-				mc.thePlayer.sendQueue.addToSendQueue(new C02PacketUseEntity(
+				mc.player.swingItem();
+				mc.player.sendQueue.addToSendQueue(new C02PacketUseEntity(
 					en, C02PacketUseEntity.Action.ATTACK));
 			}
 			updateLastMS();

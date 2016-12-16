@@ -57,7 +57,7 @@ public class TpAuraMod extends Mod implements UpdateListener
 		updateMS();
 		EntityLivingBase en = EntityUtils.getClosestEntity(true, true);
 		if(en == null
-			|| mc.thePlayer.getDistanceToEntity(en) > wurst.mods.killauraMod.realRange)
+			|| mc.player.getDistanceToEntity(en) > wurst.mods.killauraMod.realRange)
 		{
 			EntityUtils.lookChanged = false;
 			return;
@@ -65,15 +65,15 @@ public class TpAuraMod extends Mod implements UpdateListener
 		EntityUtils.lookChanged = true;
 		if(hasTimePassedS(wurst.mods.killauraMod.realSpeed))
 		{
-			mc.thePlayer.setPosition(en.posX + random.nextInt(3) * 2 - 2,
+			mc.player.setPosition(en.posX + random.nextInt(3) * 2 - 2,
 				en.posY, en.posZ + random.nextInt(3) * 2 - 2);
 			if(wurst.mods.autoSwordMod.isActive())
 				AutoSwordMod.setSlot();
 			wurst.mods.criticalsMod.doCritical();
 			wurst.mods.blockHitMod.doBlock();
 			EntityUtils.faceEntityPacket(en);
-			mc.thePlayer.swingItem();
-			mc.thePlayer.sendQueue.addToSendQueue(new C02PacketUseEntity(en,
+			mc.player.swingItem();
+			mc.player.sendQueue.addToSendQueue(new C02PacketUseEntity(en,
 				C02PacketUseEntity.Action.ATTACK));
 			updateLastMS();
 		}

@@ -28,7 +28,7 @@ public class NoWebMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		mc.thePlayer.isInWeb = false;
+		mc.player.isInWeb = false;
 	}
 	
 	@Override

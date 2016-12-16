@@ -39,7 +39,7 @@ public class ThrowMod extends Mod implements UpdateListener
 			&& mc.gameSettings.keyBindUseItem.pressed)
 		{
 			if(mc.objectMouseOver == null
-				|| mc.thePlayer.inventory.getCurrentItem() == null)
+				|| mc.player.inventory.getCurrentItem() == null)
 				return;
 			for(int i = 0; i < wurst.options.throwAmount - 1; i++)
 				mc.rightClickMouse();

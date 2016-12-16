@@ -111,8 +111,8 @@ public class BowAimbotMod extends Mod implements UpdateListener,
 	public void onUpdate()
 	{
 		target = null;
-		if(mc.thePlayer.inventory.getCurrentItem() != null
-			&& mc.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemBow
+		if(mc.player.inventory.getCurrentItem() != null
+			&& mc.player.inventory.getCurrentItem().getItem() instanceof ItemBow
 			&& mc.gameSettings.keyBindUseItem.pressed)
 		{
 			target = EntityUtils.getClosestEntity(true, true);
@@ -132,7 +132,7 @@ public class BowAimbotMod extends Mod implements UpdateListener,
 	{
 		if(target == null)
 			return;
-		int bowCharge = mc.thePlayer.getItemInUseDuration();
+		int bowCharge = mc.player.getItemInUseDuration();
 		velocity = bowCharge / 20;
 		velocity = (velocity * velocity + velocity * 2) / 3;
 		if(wurst.mods.fastBowMod.isActive())
@@ -147,14 +147,14 @@ public class BowAimbotMod extends Mod implements UpdateListener,
 			velocity = 1;
 		double posX =
 			target.posX + (target.posX - target.prevPosX) * 5
-				- mc.thePlayer.posX;
+				- mc.player.posX;
 		double posY =
 			target.posY + (target.posY - target.prevPosY) * 5
-				+ target.getEyeHeight() - 0.15 - mc.thePlayer.posY
-				- mc.thePlayer.getEyeHeight();
+				+ target.getEyeHeight() - 0.15 - mc.player.posY
+				- mc.player.getEyeHeight();
 		double posZ =
 			target.posZ + (target.posZ - target.prevPosZ) * 5
-				- mc.thePlayer.posZ;
+				- mc.player.posZ;
 		float yaw = (float)(Math.atan2(posZ, posX) * 180 / Math.PI) - 90;
 		double y2 = Math.sqrt(posX * posX + posZ * posZ);
 		float g = 0.006F;
@@ -164,7 +164,7 @@ public class BowAimbotMod extends Mod implements UpdateListener,
 		float pitch =
 			(float)-Math.toDegrees(Math.atan((velocity * velocity - Math
 				.sqrt(tmp)) / (g * y2)));
-		mc.thePlayer.rotationYaw = yaw;
-		mc.thePlayer.rotationPitch = pitch;
+		mc.player.rotationYaw = yaw;
+		mc.player.rotationPitch = pitch;
 	}
 }

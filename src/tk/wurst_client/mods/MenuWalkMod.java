@@ -30,7 +30,7 @@ public class MenuWalkMod extends Mod
 			return false;
 		
 		// check if there is a player to move
-		if(mc.thePlayer == null)
+		if(mc.player == null)
 			return false;
 		
 		// check if player is viewing chat

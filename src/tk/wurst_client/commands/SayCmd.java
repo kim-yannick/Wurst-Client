@@ -25,7 +25,7 @@ public class SayCmd extends Cmd
 			String message = args[0];
 			for(int i = 1; i < args.length; i++)
 				message += " " + args[i];
-			mc.thePlayer.sendQueue.addToSendQueue(new C01PacketChatMessage(
+			mc.player.sendQueue.addToSendQueue(new C01PacketChatMessage(
 				message));
 		}else
 			syntaxError("Message required.");

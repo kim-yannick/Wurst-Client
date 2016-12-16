@@ -32,13 +32,13 @@ public class DamageCmd extends Cmd
 			error("Amount must be at most 20.");
 		
 		// check gamemode
-		if(mc.thePlayer.capabilities.isCreativeMode)
+		if(mc.player.capabilities.isCreativeMode)
 			error("Cannot damage in creative mode.");
 		
-		double posX = mc.thePlayer.posX;
-		double posY = mc.thePlayer.posY;
-		double posZ = mc.thePlayer.posZ;
-		NetHandlerPlayClient sendQueue = mc.thePlayer.sendQueue;
+		double posX = mc.player.posX;
+		double posY = mc.player.posY;
+		double posZ = mc.player.posZ;
+		NetHandlerPlayClient sendQueue = mc.player.sendQueue;
 		
 		// apply damage
 		for(int i = 0; (double)i < 80 + 20 * (dmg - 1D); ++i)

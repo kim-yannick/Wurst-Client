@@ -38,7 +38,7 @@ public class BlockHitMod extends Mod implements LeftClickListener
 	@Override
 	public void onLeftClick()
 	{
-		ItemStack stack = mc.thePlayer.getCurrentEquippedItem();
+		ItemStack stack = mc.player.getCurrentEquippedItem();
 		
 		if(stack != null && stack.getItem() instanceof ItemSword)
 			doBlock();

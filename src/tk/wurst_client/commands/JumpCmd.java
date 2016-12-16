@@ -17,9 +17,9 @@ public class JumpCmd extends Cmd
 	{
 		if(args.length != 0)
 			syntaxError();
-		if(!mc.thePlayer.onGround)
+		if(!mc.player.onGround)
 			error("Can't jump in mid-air.");
-		mc.thePlayer.jump();
+		mc.player.jump();
 	}
 	
 	@Override

@@ -26,7 +26,7 @@ public class PathFinder
 	
 	public PathFinder(BlockPos goal)
 	{
-		this(new BlockPos(Minecraft.getMinecraft().thePlayer), goal);
+		this(new BlockPos(Minecraft.getMinecraft().player), goal);
 	}
 	
 	public PathFinder(BlockPos start, BlockPos goal)

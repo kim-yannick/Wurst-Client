@@ -19,6 +19,6 @@ public class GmCmd extends Cmd
 	{
 		if(args.length != 1)
 			syntaxError();
-		mc.thePlayer.sendChatMessage("/gamemode " + args[0]);
+		mc.player.sendChatMessage("/gamemode " + args[0]);
 	}
 }

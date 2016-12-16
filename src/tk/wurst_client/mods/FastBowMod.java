@@ -43,21 +43,21 @@ public class FastBowMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(mc.thePlayer.getHealth() > 0
-			&& (mc.thePlayer.onGround || Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode)
-			&& mc.thePlayer.inventory.getCurrentItem() != null
-			&& mc.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemBow
+		if(mc.player.getHealth() > 0
+			&& (mc.player.onGround || Minecraft.getMinecraft().player.capabilities.isCreativeMode)
+			&& mc.player.inventory.getCurrentItem() != null
+			&& mc.player.inventory.getCurrentItem().getItem() instanceof ItemBow
 			&& mc.gameSettings.keyBindUseItem.pressed)
 		{
-			mc.playerController.sendUseItem(mc.thePlayer, mc.theWorld,
-				mc.thePlayer.inventory.getCurrentItem());
-			mc.thePlayer.inventory
+			mc.playerController.sendUseItem(mc.player, mc.world,
+				mc.player.inventory.getCurrentItem());
+			mc.player.inventory
 				.getCurrentItem()
 				.getItem()
-				.onItemRightClick(mc.thePlayer.inventory.getCurrentItem(),
-					mc.theWorld, mc.thePlayer);
+				.onItemRightClick(mc.player.inventory.getCurrentItem(),
+					mc.world, mc.player);
 			for(int i = 0; i < 20; i++)
-				mc.thePlayer.sendQueue
+				mc.player.sendQueue
 					.addToSendQueue(new C03PacketPlayer(false));
 			Minecraft
 				.getMinecraft()
@@ -65,11 +65,11 @@ public class FastBowMod extends Mod implements UpdateListener
 				.addToSendQueue(
 					new C07PacketPlayerDigging(Action.RELEASE_USE_ITEM,
 						new BlockPos(0, 0, 0), EnumFacing.DOWN));
-			mc.thePlayer.inventory
+			mc.player.inventory
 				.getCurrentItem()
 				.getItem()
-				.onPlayerStoppedUsing(mc.thePlayer.inventory.getCurrentItem(),
-					mc.theWorld, mc.thePlayer, 10);
+				.onPlayerStoppedUsing(mc.player.inventory.getCurrentItem(),
+					mc.world, mc.player, 10);
 		}
 	}
 	

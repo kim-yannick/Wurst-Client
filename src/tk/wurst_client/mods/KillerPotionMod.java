@@ -24,12 +24,12 @@ public class KillerPotionMod extends Mod
 	@Override
 	public void onEnable()
 	{
-		if(mc.thePlayer.inventory.getStackInSlot(0) != null)
+		if(mc.player.inventory.getStackInSlot(0) != null)
 		{
 			wurst.chat.error("Please clear the first slot in your hotbar.");
 			setEnabled(false);
 			return;
-		}else if(!mc.thePlayer.capabilities.isCreativeMode)
+		}else if(!mc.player.capabilities.isCreativeMode)
 		{
 			wurst.chat.error("Creative mode only.");
 			setEnabled(false);
@@ -47,7 +47,7 @@ public class KillerPotionMod extends Mod
 		stack.setTagInfo("CustomPotionEffects", effects);
 		stack.setStackDisplayName("§c§lKiller§6§lPotion");
 		
-		mc.thePlayer.sendQueue
+		mc.player.sendQueue
 			.addToSendQueue(new C10PacketCreativeInventoryAction(36, stack));
 		wurst.chat.message("Potion created.");
 		setEnabled(false);

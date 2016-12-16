@@ -23,7 +23,7 @@ public class ModifyCmd extends Cmd
 	@Override
 	public void execute(String[] args) throws Error
 	{
-		EntityPlayerSP player = mc.thePlayer;
+		EntityPlayerSP player = mc.player;
 		
 		if(!player.capabilities.isCreativeMode)
 			error("Creative mode only.");

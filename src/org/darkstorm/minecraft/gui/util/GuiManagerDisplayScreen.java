@@ -47,7 +47,7 @@ public class GuiManagerDisplayScreen extends GuiScreen
 						entry.setValue(".t navigator");
 				WurstClient.INSTANCE.files.saveKeybinds();
 				mc.displayGuiScreen(null);
-				mc.thePlayer.sendAutomaticChatMessage(".t navigator");
+				mc.player.sendAutomaticChatMessage(".t navigator");
 				break;
 			case 1:
 				MiscUtils.openLink("https://www.wurst-client.tk/navigator/");

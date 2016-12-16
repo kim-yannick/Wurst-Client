@@ -55,8 +55,8 @@ public class MassTpaMod extends Mod implements UpdateListener,
 		if(hasTimePassedS(speed))
 		{
 			String name = players.get(i);
-			if(!name.equals(mc.thePlayer.getName()))
-				mc.thePlayer.sendChatMessage("/tpa " + name);
+			if(!name.equals(mc.player.getName()))
+				mc.player.sendChatMessage("/tpa " + name);
 			updateLastMS();
 			i++;
 			if(i == players.size())

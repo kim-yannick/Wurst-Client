@@ -71,22 +71,22 @@ public class CriticalsMod extends Mod implements LeftClickListener
 	{
 		if(!wurst.mods.criticalsMod.isActive())
 			return;
-		if(!mc.thePlayer.isInWater()
-			&& !mc.thePlayer.isInsideOfMaterial(Material.lava)
-			&& mc.thePlayer.onGround)
+		if(!mc.player.isInWater()
+			&& !mc.player.isInsideOfMaterial(Material.lava)
+			&& mc.player.onGround)
 		{
 			switch(mode)
 			{
 				case 0:
-					mc.thePlayer.motionY = 0.1F;
-					mc.thePlayer.fallDistance = 0.1F;
-					mc.thePlayer.onGround = false;
+					mc.player.motionY = 0.1F;
+					mc.player.fallDistance = 0.1F;
+					mc.player.onGround = false;
 					break;
 				case 1:
-					double posX = mc.thePlayer.posX;
-					double posY = mc.thePlayer.posY;
-					double posZ = mc.thePlayer.posZ;
-					NetHandlerPlayClient sendQueue = mc.thePlayer.sendQueue;
+					double posX = mc.player.posX;
+					double posY = mc.player.posY;
+					double posZ = mc.player.posZ;
+					NetHandlerPlayClient sendQueue = mc.player.sendQueue;
 					
 					sendQueue.addToSendQueue(new C04PacketPlayerPosition(posX,
 						posY + 0.0625D, posZ, true));
