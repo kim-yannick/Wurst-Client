@@ -9,9 +9,8 @@ package tk.wurst_client.mods;
 
 import net.minecraft.client.gui.GuiScreen;
 import tk.wurst_client.events.listeners.DeathListener;
-import tk.wurst_client.mods.Mod.Info;
 
-@Info(
+@Mod.Info(
 	description = "Automatically respawns you whenever you die.",
 	name = "AutoRespawn",
 	tags = "auto respawn",

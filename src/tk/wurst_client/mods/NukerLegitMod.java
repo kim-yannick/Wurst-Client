@@ -20,12 +20,11 @@ import net.minecraft.util.EnumFacing;
 import tk.wurst_client.events.listeners.LeftClickListener;
 import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.utils.BlockUtils;
 import tk.wurst_client.utils.RenderUtils;
 
-@Info(
+@Mod.Info(
 	description = "Slower Nuker that bypasses any cheat prevention\n"
 		+ "PlugIn. Not required on most NoCheat+ servers!",
 	name = "NukerLegit",

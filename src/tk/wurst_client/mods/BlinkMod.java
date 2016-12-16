@@ -12,9 +12,8 @@ import java.util.ArrayList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.network.Packet;
-import tk.wurst_client.mods.Mod.Info;
 
-@Info(
+@Mod.Info(
 	description = "Suspends all motion updates while enabled.\n"
 		+ "Can be used for teleportation, instant picking up of items and more.",
 	name = "Blink",

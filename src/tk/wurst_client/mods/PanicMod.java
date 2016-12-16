@@ -8,9 +8,8 @@
 package tk.wurst_client.mods;
 
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Info;
 
-@Info(
+@Mod.Info(
 	description = "Instantly turns off all enabled mods.\n"
 		+ "Be careful with this!",
 	name = "Panic",

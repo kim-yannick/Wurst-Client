@@ -9,11 +9,10 @@ package tk.wurst_client.mods;
 
 import net.minecraft.entity.EntityLivingBase;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.utils.EntityUtils;
 
-@Info(
+@Mod.Info(
 	description = "Slower Killaura that bypasses any cheat prevention\n"
 		+ "PlugIn. Not required on most NoCheat+ servers!",
 	name = "KillauraLegit",

@@ -21,7 +21,6 @@ import net.minecraft.util.MovingObjectPosition;
 import tk.wurst_client.events.listeners.LeftClickListener;
 import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.settings.ModeSetting;
 import tk.wurst_client.navigator.settings.SliderSetting;
@@ -29,7 +28,7 @@ import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 import tk.wurst_client.utils.BlockUtils;
 import tk.wurst_client.utils.RenderUtils;
 
-@Info(
+@Mod.Info(
 	description = "Destroys blocks around you.\n"
 		+ "Use .nuker mode <mode> to change the mode.",
 	name = "Nuker",

@@ -8,9 +8,8 @@
 package tk.wurst_client.mods;
 
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Info;
 
-@Info(
+@Mod.Info(
 	description = "Allows you to see in the dark.",
 	name = "Fullbright",
 	tags = "NightVision, full bright, brightness, night vision",

@@ -13,9 +13,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Info;
 
-@Info(
+@Mod.Info(
 	description = "Thousands of colors!",
 	name = "LSD",
 	tutorial = "Mods/LSD")

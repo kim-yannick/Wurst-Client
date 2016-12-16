@@ -9,10 +9,9 @@ package tk.wurst_client.mods;
 
 import net.minecraft.network.play.client.C03PacketPlayer;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.settings.CheckboxSetting;
 
-@Info(
+@Mod.Info(
 	description = "Allows you to jump in mid-air.\n"
 		+ "Looks as if you had a jetpack.",
 	name = "Jetpack",

@@ -9,9 +9,7 @@ package tk.wurst_client.mods;
 
 import java.util.HashSet;
 
-import tk.wurst_client.mods.Mod.Info;
-
-@Info(
+@Mod.Info(
 	description = "Makes other mods bypass Mineplex AntiCheat or blocks them\n"
 		+ "if they can't.",
 	name = "AntiMAC",

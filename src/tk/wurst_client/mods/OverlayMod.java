@@ -12,11 +12,10 @@ import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import tk.wurst_client.events.listeners.RenderListener;
-import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.utils.RenderUtils;
 
-@Info(
+@Mod.Info(
 	description = "Renders the Nuker animation when you mine a block.",
 	name = "Overlay",
 	tutorial = "Mods/Overlay")

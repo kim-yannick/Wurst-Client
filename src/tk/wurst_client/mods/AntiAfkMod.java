@@ -11,10 +11,9 @@ import java.util.Random;
 
 import net.minecraft.util.BlockPos;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.utils.BlockUtils;
 
-@Info(name = "AntiAFK",
+@Mod.Info(name = "AntiAFK",
 	description = "Walks around randomly to hide you from AFK detectors.\n"
 		+ "Needs 3x3 blocks of free space.",
 	tags = "AFKBot,anti afk,afk bot",

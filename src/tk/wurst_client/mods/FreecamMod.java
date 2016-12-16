@@ -9,9 +9,8 @@ package tk.wurst_client.mods;
 
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Info;
 
-@Info(
+@Mod.Info(
 	description = "Allows you to fly out of your body.\n"
 		+ "Looks similar to spectator mode.",
 	name = "Freecam",

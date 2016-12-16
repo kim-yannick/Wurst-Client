@@ -8,10 +8,9 @@
 package tk.wurst_client.mods;
 
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
 
-@Info(
+@Mod.Info(
 	description = "Switches the item in your hand all the time.\n"
 		+ "Tip: Use this in combination with BuildRandom while\n"
 		+ "having a lot of different colored wool blocks in your\n" + "hotbar.",

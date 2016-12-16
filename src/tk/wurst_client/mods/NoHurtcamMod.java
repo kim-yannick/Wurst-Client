@@ -7,9 +7,7 @@
  */
 package tk.wurst_client.mods;
 
-import tk.wurst_client.mods.Mod.Info;
-
-@Info(
+@Mod.Info(
 	description = "Disables the annoying effect when you get hurt.",
 	name = "NoHurtcam",
 	tags = "no hurtcam, no hurt cam",

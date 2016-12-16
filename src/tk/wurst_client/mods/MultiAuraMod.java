@@ -12,11 +12,10 @@ import java.util.ArrayList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.network.play.client.C02PacketUseEntity;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.utils.EntityUtils;
 
-@Info(
+@Mod.Info(
 	description = "Faster Killaura that attacks multiple entities at once.",
 	name = "MultiAura",
 	noCheatCompatible = false,

@@ -10,10 +10,9 @@ package tk.wurst_client.mods;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
 
-@Info(
+@Mod.Info(
 	description = "Automatically eats food when necessary.",
 	name = "AutoEat",
 	tags = "AutoSoup,auto eat,auto soup",

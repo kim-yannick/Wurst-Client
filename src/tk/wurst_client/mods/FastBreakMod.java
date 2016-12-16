@@ -7,12 +7,11 @@
  */
 package tk.wurst_client.mods;
 
-import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.settings.SliderSetting;
 import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 
-@Info(
+@Mod.Info(
 	description = "Allows you to break blocks faster.\n"
 		+ "Tip: This works with Nuker.",
 	name = "FastBreak",

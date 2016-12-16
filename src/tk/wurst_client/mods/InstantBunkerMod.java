@@ -12,11 +12,10 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
 import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.utils.BuildUtils;
 import tk.wurst_client.utils.RenderUtils;
 
-@Info(
+@Mod.Info(
 	description = "Instantly builds a small bunker around you.",
 	name = "InstantBunker",
 	tags = "instant bunker",

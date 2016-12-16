@@ -13,10 +13,9 @@ import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.EntityLivingBase;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.utils.EntityUtils;
 
-@Info(
+@Mod.Info(
 	description = "Allows you to see the world as someone else.\n"
 		+ "Use the .rv command to make it target a specific entity.",
 	name = "RemoteView",

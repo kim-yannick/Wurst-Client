@@ -7,9 +7,7 @@
  */
 package tk.wurst_client.mods;
 
-import tk.wurst_client.mods.Mod.Info;
-
-@Info(
+@Mod.Info(
 	description = "Automatically steals everything from all chests you\n"
 		+ "open.",
 	name = "AutoSteal",

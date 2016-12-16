@@ -9,9 +9,8 @@ package tk.wurst_client.mods;
 
 import net.minecraft.entity.projectile.EntityFishHook;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Info;
 
-@Info(
+@Mod.Info(
 	description = "Automatically catches fish.",
 	name = "AutoFish",
 	tags = "FishBot, auto fish, fish bot, fishing",

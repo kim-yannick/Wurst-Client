@@ -12,9 +12,8 @@ import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.network.play.client.C0BPacketEntityAction;
 import net.minecraft.network.play.client.C0BPacketEntityAction.Action;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Info;
 
-@Info(
+@Mod.Info(
 	description = "Automatically sneaks all the time.",
 	name = "Sneak",
 	tags = "AutoSneaking",

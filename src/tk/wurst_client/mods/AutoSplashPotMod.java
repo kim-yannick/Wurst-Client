@@ -19,11 +19,10 @@ import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.settings.SliderSetting;
 import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 
-@Info(
+@Mod.Info(
 	description = "Automatically throws splash healing potions if your health is below the set value.",
 	name = "AutoSplashPot",
 	tags = "AutoPotion,auto potion,auto splash potion",

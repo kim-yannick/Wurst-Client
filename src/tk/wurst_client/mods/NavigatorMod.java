@@ -7,10 +7,9 @@
  */
 package tk.wurst_client.mods;
 
-import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.gui.NavigatorMainScreen;
 
-@Info(
+@Mod.Info(
 	description = "",
 	name = "Navigator",
 	tags = "ClickGUI",

@@ -10,9 +10,8 @@ package tk.wurst_client.mods;
 import net.minecraft.item.ItemFood;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Info;
 
-@Info(
+@Mod.Info(
 	description = "Allows you to eat food much faster.\n" + "OM! NOM! NOM!",
 	name = "FastEat",
 	noCheatCompatible = false,

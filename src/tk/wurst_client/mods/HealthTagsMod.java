@@ -7,9 +7,7 @@
  */
 package tk.wurst_client.mods;
 
-import tk.wurst_client.mods.Mod.Info;
-
-@Info(
+@Mod.Info(
 	description = "Adds the health of players to their nametags.",
 	name = "HealthTags",
 	tags = "health tags",
