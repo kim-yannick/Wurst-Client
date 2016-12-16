@@ -7,6 +7,9 @@
  */
 package tk.wurst_client.mods;
 
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.RenderGlobal;
@@ -21,17 +24,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
-
 import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.utils.RenderUtils;
 
 @Mod.Info(name = "Trajectories",
 	description = "Predicts the flight path of arrows and throwable items.",
-	category = Mod.Category.RENDER,
+	
 	tags = "AimAssist, ArrowPrediction, aim assist, arrow prediction",
 	tutorial = "Mods/Trajectories")
 public class TrajectoriesMod extends Mod implements RenderListener

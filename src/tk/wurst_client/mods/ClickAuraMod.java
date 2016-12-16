@@ -13,7 +13,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.utils.EntityUtils;
 
-@Mod.Info(category = Mod.Category.COMBAT,
+@Mod.Info(
 	description = "Automatically attacks the closest valid entity whenever you\n"
 		+ "click.\n"
 		+ "Warning: ClickAuras generally look more suspicious than Killauras\n"

@@ -7,7 +7,7 @@
  */
 package tk.wurst_client.mods;
 
-@Mod.Info(category = Mod.Category.RENDER,
+@Mod.Info(
 	description = "Allows you to see caves through walls.",
 	name = "CaveFinder",
 	tags = "cave finder",

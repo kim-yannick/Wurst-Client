@@ -9,10 +9,9 @@ package tk.wurst_client.mods;
 
 import java.util.HashSet;
 
-import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
-@Info(category = Category.MISC,
+@Info(
 	description = "Makes other mods bypass NoCheat+ or blocks them if\n"
 		+ "they can't.",
 	name = "YesCheat+",

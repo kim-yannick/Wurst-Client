@@ -11,10 +11,9 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.potion.Potion;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
-@Info(category = Category.MISC,
+@Info(
 	description = "Blocks bad potion effects.",
 	name = "AntiPotion",
 	noCheatCompatible = false,

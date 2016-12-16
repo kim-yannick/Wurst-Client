@@ -38,8 +38,6 @@ public class UIRenderer
 		LinkedList<String> modList = new LinkedList<String>();
 		for(Mod mod : WurstClient.INSTANCE.mods.getAllMods())
 		{
-			if(mod.getCategory() == Mod.Category.HIDDEN)
-				continue;
 			if(mod.isActive())
 				modList.add(mod.getRenderName());
 		}

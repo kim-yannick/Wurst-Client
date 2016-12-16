@@ -8,11 +8,10 @@
 package tk.wurst_client.mods;
 
 import tk.wurst_client.gui.mods.GuiOpSign;
-import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
 
-@Info(category = Category.EXPLOITS,
+@Info(
 	description = "Enable this mod, place a sign and click it to get OP.\n"
 		+ "Can also be used to run any other command.\n"
 		+ "Only works on servers running Minecraft 1.8 - 1.8.5 without Spigot!\n"

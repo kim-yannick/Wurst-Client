@@ -14,7 +14,7 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
 import tk.wurst_client.gui.mods.GuiCmdBlock;
 
-@Mod.Info(category = Mod.Category.EXPLOITS,
+@Mod.Info(
 	description = "Allows you to make a Command Block without having OP.\n"
 		+ "Appears to be patched on Spigot.",
 	name = "CMD-Block",

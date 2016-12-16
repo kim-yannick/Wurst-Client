@@ -13,10 +13,9 @@ import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
-@Info(category = Category.COMBAT,
+@Info(
 	description = "Manages your armor automatically.",
 	name = "AutoArmor",
 	tags = "auto armor",

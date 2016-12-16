@@ -29,14 +29,13 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.BadLocationException;
 
 import tk.wurst_client.hooks.FrameHook;
-import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.spam.SpamProcessor;
 import tk.wurst_client.spam.exceptions.UnreadableTagException;
 import tk.wurst_client.spam.tag.Tag;
 import tk.wurst_client.utils.MiscUtils;
 
-@Info(category = Category.CHAT,
+@Info(
 	description = "It's called Spammer, but it's a lot more.\n"
 		+ "Special features:\n" + ">ASCII art\n" + ">Run any Wurst command\n"
 		+ ">Variables\n" + ">HTML-like tags & comments\n"

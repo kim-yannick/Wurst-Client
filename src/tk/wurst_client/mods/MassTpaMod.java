@@ -17,10 +17,9 @@ import net.minecraft.util.StringUtils;
 import tk.wurst_client.events.ChatInputEvent;
 import tk.wurst_client.events.listeners.ChatInputListener;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
-@Info(category = Category.CHAT,
+@Info(
 	description = "Sends a TPA request to all players.\n"
 		+ "Stops if someone accepts.",
 	name = "MassTPA",

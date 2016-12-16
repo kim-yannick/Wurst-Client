@@ -10,7 +10,7 @@ package tk.wurst_client.mods;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.item.ItemNameTag;
 
-@Mod.Info(category = Mod.Category.EXPLOITS,
+@Mod.Info(
 	description = "Generates a CrashItem.\n"
 		+ "Right click a mob with it to kick nearby players from the server.",
 	name = "CrashItem",

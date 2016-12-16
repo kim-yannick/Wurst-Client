@@ -12,11 +12,10 @@ import java.util.ArrayList;
 import net.minecraft.util.BlockPos;
 import tk.wurst_client.ai.PathUtils;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.utils.BlockUtils;
 
-@Info(category = Category.HIDDEN, description = "", name = "GoTo")
+@Info( description = "", name = "GoTo")
 public class GoToCmdMod extends Mod implements UpdateListener
 {
 	private static ArrayList<BlockPos> path;

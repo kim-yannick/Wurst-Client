@@ -13,7 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
 
-@Mod.Info(category = Mod.Category.EXPLOITS,
+@Mod.Info(
 	description = "Generates a potion that can kill players in Creative mode.\n"
 		+ "Requires Creative mode.",
 	name = "KillerPotion",

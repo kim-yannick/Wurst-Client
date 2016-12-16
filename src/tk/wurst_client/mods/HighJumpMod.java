@@ -7,13 +7,11 @@
  */
 package tk.wurst_client.mods;
 
-import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
-
-import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.settings.SliderSetting;
+import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 
-@Info(category = Category.MOVEMENT,
+@Info(
 	description = "Makes you jump much higher.",
 	name = "HighJump",
 	noCheatCompatible = false,

@@ -18,16 +18,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.util.BlockPos;
-
-import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
-
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.settings.SliderSetting;
+import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 
-@Info(category = Category.COMBAT,
+@Info(
 	description = "Automatically eats soup if your health is below the set value.",
 	name = "AutoSoup",
 	tags = "auto soup",

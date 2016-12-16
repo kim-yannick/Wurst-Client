@@ -13,7 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
 
-@Mod.Info(category = Mod.Category.FUN,
+@Mod.Info(
 	description = "Generates an incredibly annoying potion.\n"
 		+ "Tip: AntiBlind makes you partially immune to it.",
 	name = "TrollPotion",

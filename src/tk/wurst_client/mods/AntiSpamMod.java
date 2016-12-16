@@ -12,12 +12,12 @@ import java.util.List;
 import net.minecraft.client.gui.ChatLine;
 import tk.wurst_client.events.ChatInputEvent;
 import tk.wurst_client.events.listeners.ChatInputListener;
-import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
-@Info(category = Category.CHAT, description = "Blocks chat spam.\n"
-	+ "Example:\n" + "Spam!\n" + "Spam!\n" + "Spam!\n"
-	+ "Will be changed to:\n" + "Spam! [x3]", name = "AntiSpam",
+@Info(
+	description = "Blocks chat spam.\n" + "Example:\n" + "Spam!\n" + "Spam!\n"
+		+ "Spam!\n" + "Will be changed to:\n" + "Spam! [x3]",
+	name = "AntiSpam",
 	tags = "NoSpam, ChatFilter, anti spam, no spam, chat filter",
 	tutorial = "Mods/AntiSpam")
 public class AntiSpamMod extends Mod implements ChatInputListener
@@ -48,11 +48,8 @@ public class AntiSpamMod extends Mod implements ChatInputListener
 								if(chatLines.size() <= i)
 									continue;
 								
-								if(chatLines
-									.get(i)
-									.getChatComponent()
-									.getUnformattedText()
-									.startsWith(
+								if(chatLines.get(i).getChatComponent()
+									.getUnformattedText().startsWith(
 										chatLines.get(i2).getChatComponent()
 											.getUnformattedText()))
 								{
@@ -68,17 +65,13 @@ public class AntiSpamMod extends Mod implements ChatInputListener
 												.lastIndexOf(" [x") + 3;
 										int numberIndex2 =
 											chatLines.get(i).getChatComponent()
-												.getUnformattedText().length() - 1;
-										int number =
-											Integer.valueOf(chatLines
-												.get(i)
-												.getChatComponent()
-												.getUnformattedText()
-												.substring(numberIndex1,
-													numberIndex2));
-										chatLines
-											.get(i2)
-											.getChatComponent()
+												.getUnformattedText().length()
+												- 1;
+										int number = Integer.valueOf(chatLines
+											.get(i).getChatComponent()
+											.getUnformattedText().substring(
+												numberIndex1, numberIndex2));
+										chatLines.get(i2).getChatComponent()
 											.appendText(
 												" [x" + (number + 1) + "]");
 									}else

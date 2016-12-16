@@ -7,11 +7,10 @@
  */
 package tk.wurst_client.mods;
 
-import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.gui.NavigatorMainScreen;
 
-@Info(category = Category.HIDDEN,
+@Info(
 	description = "",
 	name = "Navigator",
 	tags = "ClickGUI",

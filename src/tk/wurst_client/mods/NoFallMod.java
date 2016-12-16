@@ -9,10 +9,9 @@ package tk.wurst_client.mods;
 
 import net.minecraft.network.play.client.C03PacketPlayer;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
-@Info(category = Category.MOVEMENT,
+@Info(
 	description = "Protects you from fall damage.\n" + "Bypasses AntiCheat.",
 	name = "NoFall",
 	tags = "no fall",

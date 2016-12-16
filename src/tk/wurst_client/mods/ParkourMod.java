@@ -10,7 +10,7 @@ package tk.wurst_client.mods;
 import tk.wurst_client.WurstClient;
 import tk.wurst_client.events.listeners.UpdateListener;
 
-@Mod.Info(category = Mod.Category.MOVEMENT,
+@Mod.Info(
 	description = "Makes you jump automatically when reaching the edge of a block.\n"
 		+ "Useful for parkours, Jump'n'Runs, etc.",
 	name = "Parkour")

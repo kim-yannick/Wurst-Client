@@ -10,17 +10,14 @@ package tk.wurst_client.mods;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C03PacketPlayer.C04PacketPlayerPosition;
 import net.minecraft.util.AxisAlignedBB;
-
-import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
-
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.settings.CheckboxSetting;
 import tk.wurst_client.navigator.settings.SliderSetting;
+import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 
-@Info(category = Category.MOVEMENT,
+@Info(
 	description = "Allows you to you fly.\n"
 		+ "Bypasses NoCheat+ if YesCheat+ is enabled.\n"
 		+ "Bypasses MAC if AntiMAC is enabled.",

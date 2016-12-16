@@ -7,7 +7,7 @@
  */
 package tk.wurst_client.mods;
 
-@Mod.Info(category = Mod.Category.MOVEMENT,
+@Mod.Info(
 	description = "Protects you from falling down as if you were sneaking.",
 	name = "SafeWalk",
 	tags = "safe walk",

@@ -7,7 +7,7 @@
  */
 package tk.wurst_client.mods;
 
-@Mod.Info(category = Mod.Category.BLOCKS,
+@Mod.Info(
 	description = "Allows you to interact with liquid blocks.",
 	name = "Liquids",
 	noCheatCompatible = false,

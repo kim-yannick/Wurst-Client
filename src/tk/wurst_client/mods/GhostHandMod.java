@@ -7,7 +7,7 @@
  */
 package tk.wurst_client.mods;
 
-@Mod.Info(category = Mod.Category.BLOCKS,
+@Mod.Info(
 	description = "Allows you to reach specific blocks through walls.\n"
 		+ "Use .ghosthand id <block id> or .ghosthand name <block name>\n"
 		+ "to specify it.",

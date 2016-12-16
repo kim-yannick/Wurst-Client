@@ -10,10 +10,9 @@ package tk.wurst_client.mods;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
-import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
-@Info(category = Category.RENDER,
+@Info(
 	description = "Allows you to see ores through walls.",
 	name = "X-Ray",
 	tags = "xray, x ray",

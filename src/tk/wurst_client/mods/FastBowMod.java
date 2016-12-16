@@ -15,11 +15,10 @@ import net.minecraft.network.play.client.C07PacketPlayerDigging.Action;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 import tk.wurst_client.navigator.NavigatorItem;
 
-@Info(category = Category.COMBAT,
+@Info(
 	description = "Turns your bow into a machine gun.\n"
 		+ "Tip: This works with BowAimbot.",
 	name = "FastBow",

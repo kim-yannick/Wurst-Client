@@ -15,7 +15,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.utils.EntityUtils;
 
-@Mod.Info(category = Mod.Category.COMBAT,
+@Mod.Info(
 	description = "Automatically attacks the closest valid entity while teleporting around it.",
 	name = "TP-Aura",
 	noCheatCompatible = false,

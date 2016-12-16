@@ -10,10 +10,9 @@ package tk.wurst_client.mods;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.client.C03PacketPlayer.C05PacketPlayerLook;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.mods.Mod.Category;
 import tk.wurst_client.mods.Mod.Info;
 
-@Info(category = Category.FUN,
+@Info(
 	description = "While this is active, other people will think you are\n"
 		+ "extremely tired and about to fall asleep!",
 	name = "Tired",
