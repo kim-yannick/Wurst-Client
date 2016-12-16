@@ -13,8 +13,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.TreeSet;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 
@@ -22,6 +24,7 @@ import com.google.common.collect.Sets;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -185,12 +188,15 @@ public class FileManager
 		try
 		{
 			JsonObject json = new JsonObject();
-			Iterator<Entry<String, String>> itr =
+			Iterator<Entry<String, TreeSet<String>>> itr =
 				WurstClient.INSTANCE.keybinds.entrySet().iterator();
 			while(itr.hasNext())
 			{
-				Entry<String, String> entry = itr.next();
-				json.addProperty(entry.getKey(), entry.getValue());
+				Entry<String, TreeSet<String>> entry = itr.next();
+				JsonArray jsonCmds = new JsonArray();
+				entry.getValue()
+					.forEach((cmd) -> jsonCmds.add(new JsonPrimitive(cmd)));
+				json.add(entry.getKey(), jsonCmds);
 			}
 			PrintWriter save = new PrintWriter(new FileWriter(keybinds));
 			save.println(JsonUtils.prettyGson.toJson(json));
@@ -205,21 +211,54 @@ public class FileManager
 	{
 		try
 		{
+			// load file
 			BufferedReader load = new BufferedReader(new FileReader(keybinds));
 			JsonObject json = (JsonObject)JsonUtils.jsonParser.parse(load);
 			load.close();
+			
+			// clear keybinds
 			WurstClient.INSTANCE.keybinds.clear();
+			
+			// add keybinds
 			Iterator<Entry<String, JsonElement>> itr =
 				json.entrySet().iterator();
+			boolean needsUpdate = false;
 			while(itr.hasNext())
 			{
 				Entry<String, JsonElement> entry = itr.next();
-				WurstClient.INSTANCE.keybinds.put(entry.getKey(),
-					entry.getValue().getAsString());
+				
+				if(entry.getValue().isJsonArray())
+				{
+					TreeSet<String> commmands = new TreeSet<>();
+					entry.getValue().getAsJsonArray()
+						.forEach((cmd) -> commmands.add(cmd.getAsString()));
+					WurstClient.INSTANCE.keybinds.put(entry.getKey(),
+						commmands);
+					
+				}else
+				{
+					String command = entry.getValue().getAsString();
+					if(command.equalsIgnoreCase(".t clickgui"))
+					{
+						command = ".t navigator";
+						needsUpdate = true;
+					}
+					
+					WurstClient.INSTANCE.keybinds.put(entry.getKey(), command);
+				}
 			}
 			
-			if(!WurstClient.INSTANCE.keybinds.containsValue(".t navigator"))
+			// force-add GUI keybind if missing
+			if(!WurstClient.INSTANCE.keybinds.containsValue(
+				new TreeSet<String>(Arrays.asList(".t navigator"))))
+			{
 				WurstClient.INSTANCE.keybinds.put("LCONTROL", ".t navigator");
+				needsUpdate = true;
+			}
+			
+			// update file
+			if(needsUpdate)
+				WurstClient.INSTANCE.files.saveKeybinds();
 		}catch(Exception e)
 		{
 			e.printStackTrace();
