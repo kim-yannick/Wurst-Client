@@ -12,7 +12,7 @@ import tk.wurst_client.mods.NukerMod;
 import tk.wurst_client.utils.ChatUtils;
 import tk.wurst_client.utils.MiscUtils;
 
-@Cmd.Info(help = "Changes the settings of Nuker.", name = "nuker", syntax = {
+@Cmd.Info(description = "Changes the settings of Nuker.", name = "nuker", syntax = {
 	"mode (normal|id|flat|smash)", "id <block_id>", "name <block_name>"})
 public class NukerCmd extends Cmd
 {

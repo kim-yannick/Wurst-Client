@@ -12,7 +12,7 @@ import net.minecraft.client.gui.inventory.GuiInventory;
 import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.utils.ChatUtils;
 
-@Cmd.Info(help = "Allows you to see parts of another player's inventory.",
+@Cmd.Info(description = "Allows you to see parts of another player's inventory.",
 	name = "invsee",
 	syntax = {"<player>"})
 public class InvseeCmd extends Cmd implements RenderListener

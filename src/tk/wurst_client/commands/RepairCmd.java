@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
 import tk.wurst_client.events.ChatOutputEvent;
 
-@Cmd.Info(help = "Repairs the held item. Requires creative mode.",
+@Cmd.Info(description = "Repairs the held item. Requires creative mode.",
 	name = "repair",
 	syntax = {})
 public class RepairCmd extends Cmd

@@ -14,7 +14,7 @@ import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.utils.ChatUtils;
 import tk.wurst_client.utils.RenderUtils;
 
-@Cmd.Info(help = "Shows the shortest path to a specific point. Useful for labyrinths and caves.",
+@Cmd.Info(description = "Shows the shortest path to a specific point. Useful for labyrinths and caves.",
 	name = "path",
 	syntax = {"<x> <y> <z>", "<entity>"})
 public class PathCmd extends Cmd implements RenderListener

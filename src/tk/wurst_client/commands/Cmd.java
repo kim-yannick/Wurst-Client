@@ -25,10 +25,13 @@ import tk.wurst_client.utils.MiscUtils;
 public abstract class Cmd implements NavigatorItem
 {
 	private String name = getClass().getAnnotation(Info.class).name();
-	private String help = getClass().getAnnotation(Info.class).help();
+	private String description =
+		getClass().getAnnotation(Info.class).description();
 	private String[] syntax = getClass().getAnnotation(Info.class).syntax();
 	private String tags = getClass().getAnnotation(Info.class).tags();
-	private String tutorial = getClass().getAnnotation(Info.class).tutorial();
+	private String help = getClass().getAnnotation(Info.class).help();
+	protected ArrayList<NavigatorSetting> settings =
+		new ArrayList<NavigatorSetting>();
 	
 	protected static final WurstClient wurst = WurstClient.INSTANCE;
 	protected static final Minecraft mc = Minecraft.getMinecraft();
@@ -38,13 +41,13 @@ public abstract class Cmd implements NavigatorItem
 	{
 		String name();
 		
-		String help();
+		String description();
 		
 		String[] syntax();
 		
 		String tags() default "";
 		
-		String tutorial() default "";
+		String help() default "";
 	}
 	
 	public class SyntaxError extends Error
@@ -78,11 +81,6 @@ public abstract class Cmd implements NavigatorItem
 		return name;
 	}
 	
-	public final String getHelp()
-	{
-		return help;
-	}
-	
 	public final String[] getSyntax()
 	{
 		return syntax;
@@ -103,7 +101,7 @@ public abstract class Cmd implements NavigatorItem
 	@Override
 	public final String getDescription()
 	{
-		String description = help;
+		String description = this.description;
 		if(syntax.length > 0)
 			description += "\n\nSyntax:";
 		for(String element : syntax)
@@ -132,7 +130,7 @@ public abstract class Cmd implements NavigatorItem
 	@Override
 	public final ArrayList<NavigatorSetting> getSettings()
 	{
-		return new ArrayList<NavigatorSetting>();
+		return settings;
 	}
 	
 	@Override
@@ -149,14 +147,14 @@ public abstract class Cmd implements NavigatorItem
 	
 	@Override
 	public void doPrimaryAction()
-	{	
+	{
 		
 	}
 	
 	@Override
 	public final String getHelpPage()
 	{
-		return tutorial;
+		return help;
 	}
 	
 	@Override
@@ -167,7 +165,7 @@ public abstract class Cmd implements NavigatorItem
 	
 	public final void printHelp()
 	{
-		for(String line : help.split("\n"))
+		for(String line : description.split("\n"))
 			ChatUtils.message(line);
 	}
 	

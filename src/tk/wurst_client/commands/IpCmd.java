@@ -14,7 +14,7 @@ import tk.wurst_client.events.ChatOutputEvent;
 import tk.wurst_client.hooks.ServerHook;
 import tk.wurst_client.utils.ChatUtils;
 
-@Cmd.Info(help = "Shows the IP of the server you are currently playing on or copies it to the clipboard.",
+@Cmd.Info(description = "Shows the IP of the server you are currently playing on or copies it to the clipboard.",
 	name = "ip",
 	syntax = {"[copy]"})
 public class IpCmd extends Cmd

@@ -18,7 +18,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import tk.wurst_client.utils.MiscUtils;
 
-@Cmd.Info(help = "Changes the effects of the held potion.",
+@Cmd.Info(description = "Changes the effects of the held potion.",
 	name = "potion",
 	syntax = {"add (<effect> <amplifier> <duration>)...",
 		"set (<effect> <amplifier> <duration>)...", "remove <effect>"})

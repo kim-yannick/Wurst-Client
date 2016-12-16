@@ -9,7 +9,7 @@ package tk.wurst_client.commands;
 
 import tk.wurst_client.events.ChatOutputEvent;
 
-@Cmd.Info(help = "Does nothing. Useful for scripting.",
+@Cmd.Info(description = "Does nothing. Useful for scripting.",
 	name = "nothing",
 	syntax = {})
 public class NothingCmd extends Cmd

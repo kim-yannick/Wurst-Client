@@ -10,7 +10,7 @@ package tk.wurst_client.commands;
 import tk.wurst_client.utils.ChatUtils;
 import tk.wurst_client.utils.MiscUtils;
 
-@Cmd.Info(help = "Changes the amount of Throw or toggles it.",
+@Cmd.Info(description = "Changes the amount of Throw or toggles it.",
 	name = "throw",
 	syntax = {"[amount <amount>]"})
 public class ThrowCmd extends Cmd

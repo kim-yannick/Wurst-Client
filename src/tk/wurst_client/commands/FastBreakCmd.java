@@ -9,7 +9,7 @@ package tk.wurst_client.commands;
 
 import tk.wurst_client.utils.ChatUtils;
 
-@Cmd.Info(help = "Changes the settings of FastBreak.",
+@Cmd.Info(description = "Changes the settings of FastBreak.",
 	name = "fastbreak",
 	syntax = {"mode (normal|instant)"})
 public class FastBreakCmd extends Cmd

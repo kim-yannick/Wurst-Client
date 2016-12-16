@@ -11,7 +11,7 @@ import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.network.play.client.C03PacketPlayer.C04PacketPlayerPosition;
 import tk.wurst_client.utils.MiscUtils;
 
-@Cmd.Info(help = "Applies the given amount of damage.",
+@Cmd.Info(description = "Applies the given amount of damage.",
 	name = "damage",
 	syntax = {"<amount>"})
 public class DamageCmd extends Cmd

@@ -7,7 +7,7 @@
  */
 package tk.wurst_client.commands;
 
-@Cmd.Info(help = "Teleports you up to 100 blocks away.\nOnly works on vanilla servers!",
+@Cmd.Info(description = "Teleports you up to 100 blocks away.\nOnly works on vanilla servers!",
 	name = "tp",
 	syntax = {"<x> <y> <z>", "<entity>"})
 public class TpCmd extends Cmd

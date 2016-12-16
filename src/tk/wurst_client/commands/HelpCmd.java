@@ -12,7 +12,7 @@ import java.util.Iterator;
 import tk.wurst_client.utils.ChatUtils;
 import tk.wurst_client.utils.MiscUtils;
 
-@Cmd.Info(help = "Shows the command list or the help for a command.",
+@Cmd.Info(description = "Shows the command list or the help for a command.",
 	name = "help",
 	syntax = {"[<page>]", "[<command>]"})
 public class HelpCmd extends Cmd

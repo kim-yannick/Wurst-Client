@@ -12,7 +12,7 @@ import tk.wurst_client.spam.SpamProcessor;
 import tk.wurst_client.utils.ChatUtils;
 import tk.wurst_client.utils.MiscUtils;
 
-@Cmd.Info(help = "Changes the delay of Spammer or spams spam from a file.",
+@Cmd.Info(description = "Changes the delay of Spammer or spams spam from a file.",
 	name = "spammer",
 	syntax = {"delay <delay_in_ms>", "spam <file>"})
 public class SpammerCmd extends Cmd

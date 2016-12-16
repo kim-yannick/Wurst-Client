@@ -11,7 +11,7 @@ import net.minecraft.util.BlockPos;
 import tk.wurst_client.ai.PathFinder;
 import tk.wurst_client.utils.ChatUtils;
 
-@Cmd.Info(help = "Walks or flies you to a specific location.",
+@Cmd.Info(description = "Walks or flies you to a specific location.",
 	name = "goto",
 	syntax = {"<x> <y> <z>", "<entity>"})
 public class GoToCmd extends Cmd

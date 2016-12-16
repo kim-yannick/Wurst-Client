@@ -14,7 +14,7 @@ import net.minecraft.util.BlockPos;
 import tk.wurst_client.events.ChatOutputEvent;
 import tk.wurst_client.utils.ChatUtils;
 
-@Cmd.Info(help = "Shows your current position or copies it to the clipboard.",
+@Cmd.Info(description = "Shows your current position or copies it to the clipboard.",
 	name = "getpos",
 	syntax = {"[copy]"})
 public class GetPosCmd extends Cmd

@@ -13,7 +13,7 @@ import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.settings.CheckboxSetting;
 import tk.wurst_client.navigator.settings.NavigatorSetting;
 
-@Cmd.Info(help = "Changes a checkbox setting of a feature. Allows you\n"
+@Cmd.Info(description = "Changes a checkbox setting of a feature. Allows you\n"
 	+ "to toggle checkboxes through keybinds.",
 	name = "setcheckbox",
 	syntax = {"<feature> <checkbox_setting> (on|off|toggle)"})

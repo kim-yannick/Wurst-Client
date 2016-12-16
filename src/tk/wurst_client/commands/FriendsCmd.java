@@ -12,7 +12,7 @@ import java.util.Iterator;
 import tk.wurst_client.utils.ChatUtils;
 import tk.wurst_client.utils.MiscUtils;
 
-@Cmd.Info(help = "Manages your friends list.", name = "friends", syntax = {
+@Cmd.Info(description = "Manages your friends list.", name = "friends", syntax = {
 	"(add | remove) <player>", "list [<page>]"})
 public class FriendsCmd extends Cmd
 {

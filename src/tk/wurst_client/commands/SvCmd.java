@@ -11,7 +11,7 @@ import tk.wurst_client.events.ChatOutputEvent;
 import tk.wurst_client.hooks.ServerHook;
 import tk.wurst_client.utils.ChatUtils;
 
-@Cmd.Info(help = "Shows the version of the server you are currently playing on.",
+@Cmd.Info(description = "Shows the version of the server you are currently playing on.",
 	name = "sv",
 	syntax = {})
 public class SvCmd extends Cmd

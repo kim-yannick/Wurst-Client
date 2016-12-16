@@ -16,7 +16,7 @@ import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
 import tk.wurst_client.utils.ChatUtils;
 import tk.wurst_client.utils.MiscUtils;
 
-@Cmd.Info(help = "Modifies items in creative mode.", name = "modify", syntax = {
+@Cmd.Info(description = "Modifies items in creative mode.", name = "modify", syntax = {
 	"add <nbt>", "remove <nbt_path>", "set <nbt>", "metadata <value>"})
 public class ModifyCmd extends Cmd
 {

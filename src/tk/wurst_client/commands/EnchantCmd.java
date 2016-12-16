@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import tk.wurst_client.events.ChatOutputEvent;
 import tk.wurst_client.utils.ChatUtils;
 
-@Cmd.Info(help = "Enchants items with everything.",
+@Cmd.Info(description = "Enchants items with everything.",
 	name = "enchant",
 	syntax = {"[all]"})
 public class EnchantCmd extends Cmd

@@ -15,7 +15,7 @@ import tk.wurst_client.alts.Alt;
 import tk.wurst_client.gui.alts.GuiAltList;
 import tk.wurst_client.utils.ChatUtils;
 
-@Cmd.Info(help = "Adds a player or all players on a server to your alt list.",
+@Cmd.Info(description = "Adds a player or all players on a server to your alt list.",
 	name = "addalt",
 	syntax = {"<player>", "all"})
 public class AddAltCmd extends Cmd

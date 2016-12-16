@@ -11,7 +11,7 @@ import tk.wurst_client.events.ChatInputEvent;
 import tk.wurst_client.events.listeners.ChatInputListener;
 import tk.wurst_client.utils.ChatUtils;
 
-@Cmd.Info(help = "Annoys a player by repeating everything he says.",
+@Cmd.Info(description = "Annoys a player by repeating everything he says.",
 	name = "annoy",
 	syntax = {"[<player>]"})
 public class AnnoyCmd extends Cmd implements ChatInputListener

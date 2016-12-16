@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
 import tk.wurst_client.events.listeners.UpdateListener;
 
-@Cmd.Info(help = "Drops all your items on the ground.",
+@Cmd.Info(description = "Drops all your items on the ground.",
 	name = "drop",
 	syntax = {"[infinite]"})
 public class DropCmd extends Cmd implements UpdateListener

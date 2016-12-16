@@ -19,7 +19,7 @@ import tk.wurst_client.events.ChatOutputEvent;
 import tk.wurst_client.events.listeners.GUIRenderListener;
 import tk.wurst_client.events.listeners.UpdateListener;
 
-@Cmd.Info(help = "Spawns a dancing taco on your hotbar.\n"
+@Cmd.Info(description = "Spawns a dancing taco on your hotbar.\n"
 	+ "\"I love that little guy. So cute!\" -WiZARD",
 	name = "taco",
 	syntax = {})

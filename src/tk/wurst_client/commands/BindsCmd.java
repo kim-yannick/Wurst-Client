@@ -14,7 +14,7 @@ import java.util.TreeSet;
 import tk.wurst_client.utils.ChatUtils;
 import tk.wurst_client.utils.MiscUtils;
 
-@Cmd.Info(help = "Lists all keybinds.", name = "binds", syntax = {"[<page>]"})
+@Cmd.Info(description = "Lists all keybinds.", name = "binds", syntax = {"[<page>]"})
 public class BindsCmd extends Cmd
 {
 	@Override

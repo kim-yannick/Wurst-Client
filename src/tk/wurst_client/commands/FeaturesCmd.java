@@ -12,7 +12,7 @@ import tk.wurst_client.mods.Mod;
 import tk.wurst_client.special.Spf;
 import tk.wurst_client.utils.ChatUtils;
 
-@Cmd.Info(help = "Shows the feature count and some over statistics.",
+@Cmd.Info(description = "Shows the feature count and some over statistics.",
 	name = "features",
 	syntax = {})
 public class FeaturesCmd extends Cmd

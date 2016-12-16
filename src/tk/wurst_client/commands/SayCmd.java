@@ -9,11 +9,11 @@ package tk.wurst_client.commands;
 
 import net.minecraft.network.play.client.C01PacketChatMessage;
 
-@Cmd.Info(help = "Sends a chat message, even if the message starts with a dot.",
+@Cmd.Info(description = "Sends a chat message, even if the message starts with a dot.",
 	name = "say",
 	syntax = {"<message>"},
 	tags = ".legit,dots in chat,command bypass,prefix",
-	tutorial = "Commands/say")
+	help = "Commands/say")
 public class SayCmd extends Cmd
 {
 	@Override

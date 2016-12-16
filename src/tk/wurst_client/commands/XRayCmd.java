@@ -16,7 +16,7 @@ import tk.wurst_client.mods.XRayMod;
 import tk.wurst_client.utils.ChatUtils;
 import tk.wurst_client.utils.MiscUtils;
 
-@Cmd.Info(help = "Manages or toggles X-Ray.", name = "xray", syntax = {
+@Cmd.Info(description = "Manages or toggles X-Ray.", name = "xray", syntax = {
 	"add (id <block_id>|name <block_name>)",
 	"remove (id <block_id>|name <block_name>)", "list [<page>]"})
 public class XRayCmd extends Cmd

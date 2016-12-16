@@ -9,7 +9,7 @@ package tk.wurst_client.commands;
 
 import tk.wurst_client.mods.RemoteViewMod;
 
-@Cmd.Info(help = "Toggles RemoteView or makes it target a specific entity.",
+@Cmd.Info(description = "Toggles RemoteView or makes it target a specific entity.",
 	name = "rv",
 	syntax = {"[<Player>]"})
 public class RvCmd extends Cmd
