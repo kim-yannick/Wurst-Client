@@ -19,7 +19,7 @@ import tk.wurst_client.utils.ChatUtils;
 		+ "Requires Creative mode.",
 	name = "KillerPotion",
 	tags = "killer potion",
-	tutorial = "Mods/KillerPotion")
+	help = "Mods/KillerPotion")
 public class KillerPotionMod extends Mod
 {
 	@Override

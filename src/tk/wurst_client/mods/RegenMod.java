@@ -16,7 +16,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	name = "Regen",
 	noCheatCompatible = false,
 	tags = "GodMode, god mode",
-	tutorial = "Mods/Regen")
+	help = "Mods/Regen")
 public class RegenMod extends Mod implements UpdateListener
 {
 	@Override

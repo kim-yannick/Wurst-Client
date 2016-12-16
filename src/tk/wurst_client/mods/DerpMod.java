@@ -16,7 +16,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	name = "Derp",
 	noCheatCompatible = false,
 	tags = "Retarded",
-	tutorial = "Mods/Derp")
+	help = "Mods/Derp")
 public class DerpMod extends Mod implements UpdateListener
 {
 	@Override

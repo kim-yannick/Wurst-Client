@@ -13,7 +13,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	description = "Automatically swims like a dolphin.",
 	name = "Dolphin",
 	tags = "AutoSwim, auto swim",
-	tutorial = "Mods/Dolphin")
+	help = "Mods/Dolphin")
 public class DolphinMod extends Mod implements UpdateListener
 {
 	@Override

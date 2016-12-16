@@ -19,7 +19,7 @@ import tk.wurst_client.utils.RenderUtils;
 	description = "Instantly builds a small bunker around you.",
 	name = "InstantBunker",
 	tags = "instant bunker",
-	tutorial = "Mods/InstantBunker")
+	help = "Mods/InstantBunker")
 public class InstantBunkerMod extends Mod implements UpdateListener,
 	RenderListener
 {

@@ -13,7 +13,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	description = "Makes you twerk like Miley Cyrus!",
 	name = "MileyCyrus",
 	tags = "miley cyrus, twerk",
-	tutorial = "Mods/MileyCyrus")
+	help = "Mods/MileyCyrus")
 public class MileyCyrusMod extends Mod implements UpdateListener
 {
 	private int timer;

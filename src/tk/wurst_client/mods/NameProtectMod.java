@@ -12,7 +12,7 @@ package tk.wurst_client.mods;
 		+ "Some YouTubers like to censor out all names in their\n" + "videos.",
 	name = "NameProtect",
 	tags = "name protect",
-	tutorial = "Mods/NameProtect")
+	help = "Mods/NameProtect")
 public class NameProtectMod extends Mod
 {	
 	

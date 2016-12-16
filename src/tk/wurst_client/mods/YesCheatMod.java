@@ -14,7 +14,7 @@ import java.util.HashSet;
 		+ "they can't.",
 	name = "YesCheat+",
 	tags = "YesCheatPlus, NoCheat+, NoCheatPlus, yes cheat plus, no cheat plus, ncp bypasses",
-	tutorial = "Mods/YesCheat")
+	help = "Mods/YesCheat")
 public class YesCheatMod extends Mod
 {
 	private HashSet<Mod> blockedMods;

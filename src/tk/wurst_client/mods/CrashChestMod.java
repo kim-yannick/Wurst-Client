@@ -19,7 +19,7 @@ import tk.wurst_client.utils.ChatUtils;
 		+ "ever again!",
 	name = "CrashChest",
 	tags = "crash chest",
-	tutorial = "Mods/CrashChest")
+	help = "Mods/CrashChest")
 public class CrashChestMod extends Mod
 {
 	@Override

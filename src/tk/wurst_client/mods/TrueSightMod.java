@@ -11,7 +11,7 @@ package tk.wurst_client.mods;
 	description = "Allows you to see invisible entities.",
 	name = "TrueSight",
 	tags = "true sight",
-	tutorial = "Mods/TrueSight")
+	help = "Mods/TrueSight")
 public class TrueSightMod extends Mod
 {	
 	

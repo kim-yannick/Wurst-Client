@@ -15,7 +15,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	description = "While this is active, other people will think you are\n"
 		+ "extremely tired and about to fall asleep!",
 	name = "Tired",
-	tutorial = "Mods/Tired")
+	help = "Mods/Tired")
 public class TiredMod extends Mod implements UpdateListener
 {
 	@Override

@@ -16,7 +16,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 		+ "headless. Looks hilarious!",
 	name = "Headless",
 	tags = "head less",
-	tutorial = "Mods/Headless")
+	help = "Mods/Headless")
 public class HeadlessMod extends Mod implements UpdateListener
 {
 	@Override

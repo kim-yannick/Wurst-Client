@@ -17,7 +17,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	description = "Automatically sneaks all the time.",
 	name = "Sneak",
 	tags = "AutoSneaking",
-	tutorial = "Mods/Sneak")
+	help = "Mods/Sneak")
 public class SneakMod extends Mod implements UpdateListener
 {
 	@Override

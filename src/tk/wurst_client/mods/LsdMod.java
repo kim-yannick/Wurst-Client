@@ -17,7 +17,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 @Mod.Info(
 	description = "Thousands of colors!",
 	name = "LSD",
-	tutorial = "Mods/LSD")
+	help = "Mods/LSD")
 public class LsdMod extends Mod implements UpdateListener
 {
 	@Override

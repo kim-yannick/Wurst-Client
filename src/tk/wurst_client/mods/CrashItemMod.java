@@ -16,7 +16,7 @@ import tk.wurst_client.utils.ChatUtils;
 		+ "Right click a mob with it to kick nearby players from the server.",
 	name = "CrashItem",
 	tags = "CrashNametag, CrashTag, crash item, crash nametag, crash tag",
-	tutorial = "Mods/CrashItem")
+	help = "Mods/CrashItem")
 public class CrashItemMod extends Mod
 {
 	@Override

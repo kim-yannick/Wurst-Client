@@ -24,7 +24,7 @@ import tk.wurst_client.utils.ChatUtils;
 	description = "Faster Nuker that cannot bypass NoCheat+.",
 	name = "SpeedNuker",
 	tags = "FastNuker, speed nuker, fast nuker",
-	tutorial = "Mods/SpeedNuker")
+	help = "Mods/SpeedNuker")
 public class SpeedNukerMod extends Mod implements LeftClickListener,
 	UpdateListener
 {
@@ -73,7 +73,6 @@ public class SpeedNukerMod extends Mod implements LeftClickListener,
 	{
 		if(wurst.mods.yesCheatMod.isActive())
 		{
-			noCheatMessage();
 			setEnabled(false);
 			ChatUtils.message("Switching to " + wurst.mods.nukerMod.getName()
 				+ ".");

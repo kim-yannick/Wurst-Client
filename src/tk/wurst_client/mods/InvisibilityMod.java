@@ -18,7 +18,7 @@ import tk.wurst_client.utils.ChatUtils;
 	name = "Invisibility",
 	noCheatCompatible = false,
 	tags = "Invisible, GodMode, god mode",
-	tutorial = "Mods/Invisibility")
+	help = "Mods/Invisibility")
 public class InvisibilityMod extends Mod implements UpdateListener
 {
 	@Override

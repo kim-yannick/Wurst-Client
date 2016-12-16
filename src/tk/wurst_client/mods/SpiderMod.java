@@ -13,7 +13,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	description = "Allows you to climb up walls like a spider.",
 	name = "Spider",
 	noCheatCompatible = false,
-	tutorial = "Mods/Spider")
+	help = "Mods/Spider")
 public class SpiderMod extends Mod implements UpdateListener
 {
 	@Override

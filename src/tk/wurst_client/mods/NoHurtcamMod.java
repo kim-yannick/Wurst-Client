@@ -11,7 +11,7 @@ package tk.wurst_client.mods;
 	description = "Disables the annoying effect when you get hurt.",
 	name = "NoHurtcam",
 	tags = "no hurtcam, no hurt cam",
-	tutorial = "Mods/NoHurtcam")
+	help = "Mods/NoHurtcam")
 public class NoHurtcamMod extends Mod
 {	
 	

@@ -20,7 +20,7 @@ import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 @Mod.Info(
 	description = "Allows you to step up full blocks.",
 	name = "Step",
-	tutorial = "Mods/Step")
+	help = "Mods/Step")
 public class StepMod extends Mod implements UpdateListener
 {
 	public float height = 1F;

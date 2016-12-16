@@ -21,16 +21,15 @@ import tk.wurst_client.WurstClient;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.PossibleKeybind;
 import tk.wurst_client.navigator.settings.NavigatorSetting;
-import tk.wurst_client.utils.ChatUtils;
 
 public class Mod implements NavigatorItem
 {
 	private final String name = getClass().getAnnotation(Info.class).name();
-	private final String description = getClass().getAnnotation(Info.class)
-		.description();
+	private final String description =
+		getClass().getAnnotation(Info.class).description();
 	private final String tags = getClass().getAnnotation(Info.class).tags();
-	private final String tutorial = getClass().getAnnotation(Info.class)
-		.tutorial();
+	private final String help = getClass().getAnnotation(Info.class).help();
+	private final Bypasses bypasses = getClass().getAnnotation(Bypasses.class);
 	private boolean enabled;
 	private boolean blocked;
 	private boolean active;
@@ -52,7 +51,21 @@ public class Mod implements NavigatorItem
 		
 		String tags() default "";
 		
-		String tutorial() default "";
+		String help() default "";
+	}
+	
+	@Retention(RetentionPolicy.RUNTIME)
+	public @interface Bypasses
+	{
+		boolean mineplexAntiCheat() default true;
+		
+		boolean antiCheat() default true;
+		
+		boolean olderNCP() default true;
+		
+		boolean latestNCP() default true;
+		
+		boolean ghostMode() default true;
 	}
 	
 	@Override
@@ -95,9 +108,9 @@ public class Mod implements NavigatorItem
 	{
 		// mod keybinds
 		String dotT = ".t " + name.toLowerCase();
-		ArrayList<PossibleKeybind> possibleKeybinds =
-			new ArrayList<>(Arrays.asList(new PossibleKeybind(dotT, "Toggle "
-				+ name), new PossibleKeybind(dotT + " on", "Enable " + name),
+		ArrayList<PossibleKeybind> possibleKeybinds = new ArrayList<>(
+			Arrays.asList(new PossibleKeybind(dotT, "Toggle " + name),
+				new PossibleKeybind(dotT + " on", "Enable " + name),
 				new PossibleKeybind(dotT + " off", "Disable " + name)));
 		
 		// settings keybinds
@@ -122,7 +135,12 @@ public class Mod implements NavigatorItem
 	@Override
 	public final String getHelpPage()
 	{
-		return tutorial;
+		return help;
+	}
+	
+	public Bypasses getBypasses()
+	{
+		return bypasses;
 	}
 	
 	@Override
@@ -148,6 +166,7 @@ public class Mod implements NavigatorItem
 		active = enabled && !blocked;
 		if(blocked && enabled)
 			return;
+		
 		try
 		{
 			onToggle();
@@ -274,11 +293,6 @@ public class Mod implements NavigatorItem
 				throw new ReportedException(crashReport);
 			}
 		}
-	}
-	
-	public final void noCheatMessage()
-	{
-		ChatUtils.warning(name + " cannot bypass NoCheat+.");
 	}
 	
 	public final void updateMS()

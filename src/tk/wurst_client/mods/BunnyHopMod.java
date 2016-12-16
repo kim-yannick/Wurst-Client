@@ -15,7 +15,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 		+ "Tip: Jumping while sprinting is a faster way to move.",
 	name = "BunnyHop",
 	tags = "AutoJump, BHop, bunny hop, auto jump",
-	tutorial = "Mods/BunnyHop")
+	help = "Mods/BunnyHop")
 public class BunnyHopMod extends Mod implements UpdateListener
 {
 	@Override

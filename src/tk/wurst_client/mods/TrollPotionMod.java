@@ -19,7 +19,7 @@ import tk.wurst_client.utils.ChatUtils;
 		+ "Tip: AntiBlind makes you partially immune to it.",
 	name = "TrollPotion",
 	tags = "troll potion",
-	tutorial = "Mods/TrollPotion")
+	help = "Mods/TrollPotion")
 public class TrollPotionMod extends Mod
 {
 	@Override

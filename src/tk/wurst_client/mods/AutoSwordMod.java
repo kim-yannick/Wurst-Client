@@ -21,7 +21,7 @@ import tk.wurst_client.navigator.NavigatorItem;
 	name = "AutoSword",
 	noCheatCompatible = false,
 	tags = "auto sword",
-	tutorial = "Mods/AutoSword")
+	help = "Mods/AutoSword")
 public class AutoSwordMod extends Mod implements LeftClickListener,
 	UpdateListener
 {
@@ -64,7 +64,6 @@ public class AutoSwordMod extends Mod implements LeftClickListener,
 	{
 		if(wurst.mods.yesCheatMod.isActive())
 		{
-			noCheatMessage();
 			setEnabled(false);
 			return;
 		}

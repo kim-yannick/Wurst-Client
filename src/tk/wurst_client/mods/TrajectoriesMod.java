@@ -32,7 +32,7 @@ import tk.wurst_client.utils.RenderUtils;
 	description = "Predicts the flight path of arrows and throwable items.",
 	
 	tags = "AimAssist, ArrowPrediction, aim assist, arrow prediction",
-	tutorial = "Mods/Trajectories")
+	help = "Mods/Trajectories")
 public class TrajectoriesMod extends Mod implements RenderListener
 {
 	@Override

@@ -18,7 +18,7 @@ import tk.wurst_client.utils.ChatUtils;
 		+ "Type .sv to check the server version.",
 	name = "OP-Sign",
 	tags = "Force OP,OP Sign,Sign OP,sign hack,admin hack,OpSign",
-	tutorial = "Mods/OP-Sign_(Force_OP)")
+	help = "Mods/OP-Sign_(Force_OP)")
 public class OpSignMod extends Mod
 {
 	public String command;

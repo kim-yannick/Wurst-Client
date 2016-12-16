@@ -20,7 +20,7 @@ import tk.wurst_client.utils.ChatUtils;
 		+ "Appears to be patched on Spigot.",
 	name = "CMD-Block",
 	tags = "CmdBlock, CommandBlock, cmd block, command block",
-	tutorial = "Mods/CMD-Block")
+	help = "Mods/CMD-Block")
 public class CmdBlockMod extends Mod
 {
 	@Override

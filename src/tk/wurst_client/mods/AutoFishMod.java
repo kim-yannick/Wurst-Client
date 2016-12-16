@@ -14,7 +14,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	description = "Automatically catches fish.",
 	name = "AutoFish",
 	tags = "FishBot, auto fish, fish bot, fishing",
-	tutorial = "Mods/AutoFish")
+	help = "Mods/AutoFish")
 public class AutoFishMod extends Mod implements UpdateListener
 {
 	private boolean catching = false;

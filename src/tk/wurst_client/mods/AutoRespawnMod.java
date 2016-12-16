@@ -14,7 +14,7 @@ import tk.wurst_client.events.listeners.DeathListener;
 	description = "Automatically respawns you whenever you die.",
 	name = "AutoRespawn",
 	tags = "auto respawn",
-	tutorial = "Mods/AutoRespawn")
+	help = "Mods/AutoRespawn")
 public class AutoRespawnMod extends Mod implements DeathListener
 {
 	@Override

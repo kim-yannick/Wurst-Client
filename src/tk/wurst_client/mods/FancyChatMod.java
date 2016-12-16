@@ -16,7 +16,7 @@ import tk.wurst_client.events.listeners.ChatOutputListener;
 		+ "unicode characters.",
 	name = "FancyChat",
 	tags = "fancy chat",
-	tutorial = "Mods/FancyChat")
+	help = "Mods/FancyChat")
 public class FancyChatMod extends Mod implements ChatOutputListener
 {
 	private final String blacklist = "(){}[]|";

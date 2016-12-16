@@ -15,7 +15,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 		+ "Looks similar to spectator mode.",
 	name = "Freecam",
 	tags = "free cam, spectator",
-	tutorial = "Mods/Freecam")
+	help = "Mods/Freecam")
 public class FreecamMod extends Mod implements UpdateListener
 {
 	private EntityOtherPlayerMP fakePlayer = null;

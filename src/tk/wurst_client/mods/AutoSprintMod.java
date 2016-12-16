@@ -13,7 +13,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	description = "Makes you sprint whenever you walk.",
 	name = "AutoSprint",
 	tags = "auto sprint",
-	tutorial = "Mods/AutoSprint")
+	help = "Mods/AutoSprint")
 public class AutoSprintMod extends Mod implements UpdateListener
 {
 	@Override

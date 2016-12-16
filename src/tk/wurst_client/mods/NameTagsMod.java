@@ -12,7 +12,7 @@ package tk.wurst_client.mods;
 		+ "read them.",
 	name = "NameTags",
 	tags = "name tags",
-	tutorial = "Mods/NameTags")
+	help = "Mods/NameTags")
 public class NameTagsMod extends Mod
 {	
 	

@@ -42,7 +42,7 @@ import tk.wurst_client.utils.ChatUtils;
 	name = "ForceOP",
 	tags = "Force OP,AuthMe Cracker,AuthMeCracker,auth me cracker,admin hack,"
 		+ "AuthMe password cracker",
-	tutorial = "Mods/Force_OP_(AuthMeCracker)")
+	help = "Mods/Force_OP_(AuthMeCracker)")
 public class ForceOpMod extends Mod implements ChatInputListener
 {
 	private String[] defaultList = {"password", "passwort", "password1",

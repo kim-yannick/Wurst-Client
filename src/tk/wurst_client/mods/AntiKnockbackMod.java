@@ -15,7 +15,7 @@ import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
 		+ "fluids.",
 	name = "AntiKnockback",
 	tags = "AntiVelocity, NoKnockback, AntiKB, anti knockback, anti velocity, no knockback, anti kb",
-	tutorial = "Mods/AntiKnockback")
+	help = "Mods/AntiKnockback")
 public class AntiKnockbackMod extends Mod
 {
 	public float strength = 1F;

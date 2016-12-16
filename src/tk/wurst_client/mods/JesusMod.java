@@ -20,7 +20,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 		+ "The real Jesus used this hack ~2000 years ago.\n"
 		+ "Bypasses NoCheat+ if YesCheat+ is enabled.",
 	name = "Jesus",
-	tutorial = "Mods/Jesus")
+	help = "Mods/Jesus")
 public class JesusMod extends Mod implements UpdateListener
 {
 	private int ticksOutOfWater = 10;
