@@ -22,8 +22,8 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.util.ResourceLocation;
 import tk.wurst_client.WurstClient;
 import tk.wurst_client.events.GUIRenderEvent;
+import tk.wurst_client.features.mods.Mod;
 import tk.wurst_client.font.Fonts;
-import tk.wurst_client.mods.Mod;
 import tk.wurst_client.utils.RenderUtils;
 
 public class UIRenderer

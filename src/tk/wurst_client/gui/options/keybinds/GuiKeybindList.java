@@ -14,8 +14,8 @@ import java.util.Map.Entry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import tk.wurst_client.WurstClient;
+import tk.wurst_client.features.mods.Mod;
 import tk.wurst_client.gui.GuiWurstSlot;
-import tk.wurst_client.mods.Mod;
 
 public class GuiKeybindList extends GuiWurstSlot
 {

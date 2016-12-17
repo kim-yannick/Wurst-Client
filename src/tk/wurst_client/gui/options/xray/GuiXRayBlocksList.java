@@ -21,8 +21,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import tk.wurst_client.features.mods.XRayMod;
 import tk.wurst_client.gui.GuiWurstSlot;
-import tk.wurst_client.mods.XRayMod;
 
 public class GuiXRayBlocksList extends GuiWurstSlot
 {

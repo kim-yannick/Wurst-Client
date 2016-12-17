@@ -1,6 +1,6 @@
-From 7e89433826b675376f79a4ecb86b01fc9092f5f1 Mon Sep 17 00:00:00 2001
+From c583863873ca64fb71fdd5ac3da184ae69091edc Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 16 Dec 2016 22:36:24 +0100
+Date: Sat, 17 Dec 2016 09:17:35 +0100
 Subject: [PATCH] mod
 
 ---
@@ -369,7 +369,7 @@ Subject: [PATCH] mod
  362 files changed, 3703 insertions(+), 2264 deletions(-)
 
 diff --git a/net/minecraft/block/Block.java b/net/minecraft/block/Block.java
-index d8fe39f..d0fccbd 100644
+index d8fe39f..a7af6d8 100644
 --- a/net/minecraft/block/Block.java
 +++ b/net/minecraft/block/Block.java
 @@ -3,6 +3,7 @@ package net.minecraft.block;
@@ -399,10 +399,10 @@ index d8fe39f..d0fccbd 100644
  import net.minecraft.world.IBlockAccess;
  import net.minecraft.world.World;
 +import tk.wurst_client.WurstClient;
-+import tk.wurst_client.mods.FreecamMod;
-+import tk.wurst_client.mods.GhostHandMod;
-+import tk.wurst_client.mods.NoClipMod;
-+import tk.wurst_client.mods.XRayMod;
++import tk.wurst_client.features.mods.FreecamMod;
++import tk.wurst_client.features.mods.GhostHandMod;
++import tk.wurst_client.features.mods.NoClipMod;
++import tk.wurst_client.features.mods.XRayMod;
 +import tk.wurst_client.utils.XRayUtils;
  
  public class Block
@@ -559,7 +559,7 @@ index a2a0116..a515b2f 100644
  
      public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
 diff --git a/net/minecraft/block/BlockCactus.java b/net/minecraft/block/BlockCactus.java
-index fbdcfb5..6098565 100644
+index fbdcfb5..88683a8 100644
 --- a/net/minecraft/block/BlockCactus.java
 +++ b/net/minecraft/block/BlockCactus.java
 @@ -2,6 +2,7 @@ package net.minecraft.block;
@@ -575,7 +575,7 @@ index fbdcfb5..6098565 100644
  import net.minecraft.util.EnumWorldBlockLayer;
  import net.minecraft.world.World;
 +import tk.wurst_client.WurstClient;
-+import tk.wurst_client.mods.AntiCactusMod;
++import tk.wurst_client.features.mods.AntiCactusMod;
  
  public class BlockCactus extends Block
  {
@@ -1635,7 +1635,7 @@ index 8156a1e..05ad8de 100644
          }
          else
 diff --git a/net/minecraft/block/BlockLiquid.java b/net/minecraft/block/BlockLiquid.java
-index be12b92..f5503b2 100644
+index be12b92..13e3ec1 100644
 --- a/net/minecraft/block/BlockLiquid.java
 +++ b/net/minecraft/block/BlockLiquid.java
 @@ -2,6 +2,7 @@ package net.minecraft.block;
@@ -1651,9 +1651,9 @@ index be12b92..f5503b2 100644
  import net.minecraft.world.World;
  import net.minecraft.world.biome.BiomeColorHelper;
 +import tk.wurst_client.WurstClient;
-+import tk.wurst_client.mods.JesusMod;
-+import tk.wurst_client.mods.LiquidsMod;
-+import tk.wurst_client.mods.XRayMod;
++import tk.wurst_client.features.mods.JesusMod;
++import tk.wurst_client.features.mods.LiquidsMod;
++import tk.wurst_client.features.mods.XRayMod;
  
  public abstract class BlockLiquid extends Block
  {
@@ -2462,7 +2462,7 @@ index cba1d61..fb8e3ed 100644
                  this.func_176478_d(worldIn, pos, state, rand);
              }
 diff --git a/net/minecraft/block/BlockSlab.java b/net/minecraft/block/BlockSlab.java
-index 5f3a260..e68868e 100644
+index 5f3a260..d573269 100644
 --- a/net/minecraft/block/BlockSlab.java
 +++ b/net/minecraft/block/BlockSlab.java
 @@ -2,6 +2,7 @@ package net.minecraft.block;
@@ -2478,7 +2478,7 @@ index 5f3a260..e68868e 100644
  import net.minecraft.world.IBlockAccess;
  import net.minecraft.world.World;
 +import tk.wurst_client.WurstClient;
-+import tk.wurst_client.mods.FreecamMod;
++import tk.wurst_client.features.mods.FreecamMod;
  
  public abstract class BlockSlab extends Block
  {
@@ -2507,14 +2507,14 @@ index 310a569..6badaac 100644
          return var4 != Blocks.ice && var4 != Blocks.packed_ice ? (var4.getMaterial() == Material.leaves ? true : (var4 == this && ((Integer)var3.getValue(LAYERS_PROP)).intValue() == 7 ? true : var4.isOpaqueCube() && var4.blockMaterial.blocksMovement())) : false;
      }
 diff --git a/net/minecraft/block/BlockSoulSand.java b/net/minecraft/block/BlockSoulSand.java
-index 973d27c..7a08741 100644
+index 973d27c..514d455 100644
 --- a/net/minecraft/block/BlockSoulSand.java
 +++ b/net/minecraft/block/BlockSoulSand.java
 @@ -1,5 +1,7 @@
  package net.minecraft.block;
  
 +import tk.wurst_client.WurstClient;
-+import tk.wurst_client.mods.NoSlowdownMod;
++import tk.wurst_client.features.mods.NoSlowdownMod;
  import net.minecraft.block.material.Material;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.creativetab.CreativeTabs;
@@ -4424,7 +4424,7 @@ index 387c172..4bd9472 100644
              try
              {
 diff --git a/net/minecraft/client/entity/AbstractClientPlayer.java b/net/minecraft/client/entity/AbstractClientPlayer.java
-index a073d5e..042182a 100644
+index a073d5e..9ebe058 100644
 --- a/net/minecraft/client/entity/AbstractClientPlayer.java
 +++ b/net/minecraft/client/entity/AbstractClientPlayer.java
 @@ -1,7 +1,7 @@
@@ -4441,7 +4441,7 @@ index a073d5e..042182a 100644
  import net.minecraft.world.World;
  import net.minecraft.world.WorldSettings;
 +import tk.wurst_client.WurstClient;
-+import tk.wurst_client.mods.FreecamMod;
++import tk.wurst_client.features.mods.FreecamMod;
 +
 +import com.mojang.authlib.GameProfile;
  
@@ -4491,7 +4491,7 @@ index a073d5e..042182a 100644
  
      public float func_175156_o()
 diff --git a/net/minecraft/client/entity/EntityPlayerSP.java b/net/minecraft/client/entity/EntityPlayerSP.java
-index 58f696b..864a244 100644
+index 58f696b..1f82018 100644
 --- a/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/net/minecraft/client/entity/EntityPlayerSP.java
 @@ -1,5 +1,6 @@
@@ -4542,8 +4542,8 @@ index 58f696b..864a244 100644
 +import tk.wurst_client.WurstClient;
 +import tk.wurst_client.events.ChatOutputEvent;
 +import tk.wurst_client.events.UpdateEvent;
-+import tk.wurst_client.mods.BlinkMod;
-+import tk.wurst_client.mods.JesusMod;
++import tk.wurst_client.features.mods.BlinkMod;
++import tk.wurst_client.features.mods.JesusMod;
 +import tk.wurst_client.utils.EntityUtils;
  
  public class EntityPlayerSP extends AbstractClientPlayer
@@ -4907,7 +4907,7 @@ index 58f696b..864a244 100644
              this.movementInput.moveStrafe *= 0.2F;
              this.movementInput.moveForward *= 0.2F;
 diff --git a/net/minecraft/client/gui/FontRenderer.java b/net/minecraft/client/gui/FontRenderer.java
-index de97013..e9509ac 100644
+index de97013..566d4bb 100644
 --- a/net/minecraft/client/gui/FontRenderer.java
 +++ b/net/minecraft/client/gui/FontRenderer.java
 @@ -1,8 +1,5 @@
@@ -4938,7 +4938,7 @@ index de97013..e9509ac 100644
  import org.lwjgl.opengl.GL11;
  
 +import tk.wurst_client.WurstClient;
-+import tk.wurst_client.mods.NameProtectMod;
++import tk.wurst_client.features.mods.NameProtectMod;
 +
 +import com.ibm.icu.text.ArabicShaping;
 +import com.ibm.icu.text.ArabicShapingException;
@@ -8555,7 +8555,7 @@ index 3dc2b1e..c8f0447 100644
          }
          else if (button instanceof GuiBeacon.PowerButton)
 diff --git a/net/minecraft/client/gui/inventory/GuiChest.java b/net/minecraft/client/gui/inventory/GuiChest.java
-index 15a710a..94e4fc4 100644
+index 15a710a..b6fb2d0 100644
 --- a/net/minecraft/client/gui/inventory/GuiChest.java
 +++ b/net/minecraft/client/gui/inventory/GuiChest.java
 @@ -1,54 +1,136 @@
@@ -8569,7 +8569,7 @@ index 15a710a..94e4fc4 100644
 +import net.minecraft.inventory.Slot;
  import net.minecraft.util.ResourceLocation;
 +import tk.wurst_client.WurstClient;
-+import tk.wurst_client.special.YesCheatSpf.BypassLevel;
++import tk.wurst_client.features.special_features.YesCheatSpf.BypassLevel;
  
  public class GuiChest extends GuiContainer
  {
@@ -9188,7 +9188,7 @@ index c538022..f0c8f57 100644
  
          public ItemStack decrStackSize(int p_75209_1_)
 diff --git a/net/minecraft/client/gui/inventory/GuiEditSign.java b/net/minecraft/client/gui/inventory/GuiEditSign.java
-index c3c8bf5..349eea6 100644
+index c3c8bf5..c8a47fc 100644
 --- a/net/minecraft/client/gui/inventory/GuiEditSign.java
 +++ b/net/minecraft/client/gui/inventory/GuiEditSign.java
 @@ -1,6 +1,7 @@
@@ -9216,8 +9216,8 @@ index c3c8bf5..349eea6 100644
  import org.lwjgl.input.Keyboard;
  
 +import tk.wurst_client.WurstClient;
-+import tk.wurst_client.mods.AutoSignMod;
-+import tk.wurst_client.mods.OpSignMod;
++import tk.wurst_client.features.mods.AutoSignMod;
++import tk.wurst_client.features.mods.OpSignMod;
 +
  public class GuiEditSign extends GuiScreen
  {
@@ -9569,7 +9569,7 @@ index 1aa77b6..81c53e6 100644
  import org.apache.logging.log4j.Logger;
  
 diff --git a/net/minecraft/client/multiplayer/PlayerControllerMP.java b/net/minecraft/client/multiplayer/PlayerControllerMP.java
-index ca6ffd5..a1a003a 100644
+index ca6ffd5..7e8e580 100644
 --- a/net/minecraft/client/multiplayer/PlayerControllerMP.java
 +++ b/net/minecraft/client/multiplayer/PlayerControllerMP.java
 @@ -28,6 +28,8 @@ import net.minecraft.util.ResourceLocation;
@@ -9577,7 +9577,7 @@ index ca6ffd5..a1a003a 100644
  import net.minecraft.world.World;
  import net.minecraft.world.WorldSettings;
 +import tk.wurst_client.WurstClient;
-+import tk.wurst_client.mods.FastBreakMod;
++import tk.wurst_client.features.mods.FastBreakMod;
  
  public class PlayerControllerMP
  {
@@ -11208,7 +11208,7 @@ index 69db7af..3354e41 100644
                  return 1.0F;
              }
 diff --git a/net/minecraft/client/renderer/BlockModelRenderer.java b/net/minecraft/client/renderer/BlockModelRenderer.java
-index 21be134..0d57e4a 100644
+index 21be134..4884931 100644
 --- a/net/minecraft/client/renderer/BlockModelRenderer.java
 +++ b/net/minecraft/client/renderer/BlockModelRenderer.java
 @@ -3,6 +3,7 @@ package net.minecraft.client.renderer;
@@ -11224,7 +11224,7 @@ index 21be134..0d57e4a 100644
  import net.minecraft.util.Vec3i;
  import net.minecraft.world.IBlockAccess;
 +import tk.wurst_client.WurstClient;
-+import tk.wurst_client.mods.XRayMod;
++import tk.wurst_client.features.mods.XRayMod;
 +import tk.wurst_client.utils.XRayUtils;
  
  public class BlockModelRenderer
@@ -12422,7 +12422,7 @@ index 7508484..e2f3260 100644
      }
  
 diff --git a/net/minecraft/client/renderer/entity/Render.java b/net/minecraft/client/renderer/entity/Render.java
-index e756669..7611673 100644
+index e756669..95895e8 100644
 --- a/net/minecraft/client/renderer/entity/Render.java
 +++ b/net/minecraft/client/renderer/entity/Render.java
 @@ -1,6 +1,7 @@
@@ -12448,8 +12448,8 @@ index e756669..7611673 100644
  import org.lwjgl.opengl.GL11;
  
 +import tk.wurst_client.WurstClient;
-+import tk.wurst_client.mods.HealthTagsMod;
-+import tk.wurst_client.mods.NameTagsMod;
++import tk.wurst_client.features.mods.HealthTagsMod;
++import tk.wurst_client.features.mods.NameTagsMod;
 +
  public abstract class Render
  {
@@ -12561,14 +12561,14 @@ index 689b2cc..bba85f9 100644
          }
  
 diff --git a/net/minecraft/client/renderer/entity/RenderFallingBlock.java b/net/minecraft/client/renderer/entity/RenderFallingBlock.java
-index b6569da..de78ceb 100644
+index b6569da..fae5416 100644
 --- a/net/minecraft/client/renderer/entity/RenderFallingBlock.java
 +++ b/net/minecraft/client/renderer/entity/RenderFallingBlock.java
 @@ -1,5 +1,7 @@
  package net.minecraft.client.renderer.entity;
  
 +import tk.wurst_client.WurstClient;
-+import tk.wurst_client.mods.ProphuntEspMod;
++import tk.wurst_client.features.mods.ProphuntEspMod;
  import net.minecraft.block.Block;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.client.Minecraft;
@@ -12873,14 +12873,14 @@ index aec2cc5..7a7e5d1 100644
          var14.addVertex(p_85094_2_ + var15.xCoord * 2.0D, p_85094_4_ + (double)p_85094_1_.getEyeHeight() + var15.yCoord * 2.0D, p_85094_6_ + var15.zCoord * 2.0D);
          var16.draw();
 diff --git a/net/minecraft/client/renderer/entity/RenderPlayer.java b/net/minecraft/client/renderer/entity/RenderPlayer.java
-index 1311949..56da02b 100644
+index 1311949..b5233e6 100644
 --- a/net/minecraft/client/renderer/entity/RenderPlayer.java
 +++ b/net/minecraft/client/renderer/entity/RenderPlayer.java
 @@ -1,5 +1,7 @@
  package net.minecraft.client.renderer.entity;
  
 +import tk.wurst_client.WurstClient;
-+import tk.wurst_client.mods.FreecamMod;
++import tk.wurst_client.features.mods.FreecamMod;
  import net.minecraft.client.entity.AbstractClientPlayer;
  import net.minecraft.client.entity.EntityPlayerSP;
  import net.minecraft.client.model.ModelBase;
@@ -12911,7 +12911,7 @@ index 31fd670..9aeef16 100644
          var26.addVertexWithUV((double)(0.0F - var16), (double)(0.0F - var17), 0.0D, (double)var11, (double)var14);
          var26.addVertexWithUV((double)(var15 - var16), (double)(0.0F - var17), 0.0D, (double)var12, (double)var14);
 diff --git a/net/minecraft/client/renderer/entity/RendererLivingEntity.java b/net/minecraft/client/renderer/entity/RendererLivingEntity.java
-index 0bd5f10..57e52ee 100644
+index 0bd5f10..f421e35 100644
 --- a/net/minecraft/client/renderer/entity/RendererLivingEntity.java
 +++ b/net/minecraft/client/renderer/entity/RendererLivingEntity.java
 @@ -1,9 +1,11 @@
@@ -12936,7 +12936,7 @@ index 0bd5f10..57e52ee 100644
  import org.lwjgl.opengl.GL11;
  
 +import tk.wurst_client.WurstClient;
-+import tk.wurst_client.mods.TrueSightMod;
++import tk.wurst_client.features.mods.TrueSightMod;
 +
  public abstract class RendererLivingEntity extends Render
  {
@@ -13784,7 +13784,7 @@ index 6bd900a..cdf03c7 100644
  
      /**
 diff --git a/net/minecraft/entity/Entity.java b/net/minecraft/entity/Entity.java
-index 7865119..95b0e9d 100644
+index 7865119..e7c58e0 100644
 --- a/net/minecraft/entity/Entity.java
 +++ b/net/minecraft/entity/Entity.java
 @@ -5,6 +5,7 @@ import java.util.List;
@@ -13808,11 +13808,11 @@ index 7865119..95b0e9d 100644
  import net.minecraft.world.World;
  import net.minecraft.world.WorldServer;
 +import tk.wurst_client.WurstClient;
-+import tk.wurst_client.mods.AntiKnockbackMod;
-+import tk.wurst_client.mods.FreecamMod;
-+import tk.wurst_client.mods.NoClipMod;
-+import tk.wurst_client.mods.PhaseMod;
-+import tk.wurst_client.mods.SafeWalkMod;
++import tk.wurst_client.features.mods.AntiKnockbackMod;
++import tk.wurst_client.features.mods.FreecamMod;
++import tk.wurst_client.features.mods.NoClipMod;
++import tk.wurst_client.features.mods.PhaseMod;
++import tk.wurst_client.features.mods.SafeWalkMod;
  
  public abstract class Entity implements ICommandSender
  {
@@ -14004,7 +14004,7 @@ index da1efce..5ca151d 100644
  
                      if (!var8.getMaterial().isSolid() && !BlockRedstoneDiode.isRedstoneRepeaterBlockID(var8))
 diff --git a/net/minecraft/entity/EntityLivingBase.java b/net/minecraft/entity/EntityLivingBase.java
-index 80f1f20..55e4e1f 100644
+index 80f1f20..b96ec69 100644
 --- a/net/minecraft/entity/EntityLivingBase.java
 +++ b/net/minecraft/entity/EntityLivingBase.java
 @@ -1,12 +1,18 @@
@@ -14020,9 +14020,9 @@ index 80f1f20..55e4e1f 100644
  import java.util.UUID;
 +
 +import tk.wurst_client.WurstClient;
-+import tk.wurst_client.mods.HighJumpMod;
-+import tk.wurst_client.mods.Mod;
-+import tk.wurst_client.mods.NoSlowdownMod;
++import tk.wurst_client.features.mods.HighJumpMod;
++import tk.wurst_client.features.mods.Mod;
++import tk.wurst_client.features.mods.NoSlowdownMod;
  import net.minecraft.block.Block;
  import net.minecraft.block.material.Material;
  import net.minecraft.block.state.IBlockState;
@@ -14478,7 +14478,7 @@ index b1345a2..9026ae0 100644
              if (this.timeWolfIsShaking == 0.0F)
              {
 diff --git a/net/minecraft/entity/player/EntityPlayer.java b/net/minecraft/entity/player/EntityPlayer.java
-index 04f22d7..639d001 100644
+index 04f22d7..79d220c 100644
 --- a/net/minecraft/entity/player/EntityPlayer.java
 +++ b/net/minecraft/entity/player/EntityPlayer.java
 @@ -1,17 +1,19 @@
@@ -14494,7 +14494,7 @@ index 04f22d7..639d001 100644
 +
 +import tk.wurst_client.WurstClient;
 +import tk.wurst_client.bot.WurstBot;
-+import tk.wurst_client.mods.AntiKnockbackMod;
++import tk.wurst_client.features.mods.AntiKnockbackMod;
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockBed;
  import net.minecraft.block.BlockDirectional;
@@ -15964,7 +15964,7 @@ index be16317..1190f08 100644
                      this.theEntity.getMoveHelper().setMoveTo((double)this.field_179696_f.getX(), (double)this.field_179696_f.getY(), (double)this.field_179696_f.getZ(), this.speed);
                  }
 diff --git a/net/minecraft/potion/PotionEffect.java b/net/minecraft/potion/PotionEffect.java
-index 9853f33..fde8825 100644
+index 9853f33..2868847 100644
 --- a/net/minecraft/potion/PotionEffect.java
 +++ b/net/minecraft/potion/PotionEffect.java
 @@ -1,10 +1,16 @@
@@ -15979,7 +15979,7 @@ index 9853f33..fde8825 100644
  import org.apache.logging.log4j.Logger;
  
 +import tk.wurst_client.WurstClient;
-+import tk.wurst_client.mods.PotionSaverMod;
++import tk.wurst_client.features.mods.PotionSaverMod;
 +
  public class PotionEffect
  {
@@ -16961,7 +16961,7 @@ index 8169170..beba6b8 100644
  
          while (true)
 diff --git a/net/minecraft/util/Timer.java b/net/minecraft/util/Timer.java
-index 7ec66f4..c956127 100644
+index 7ec66f4..0791805 100644
 --- a/net/minecraft/util/Timer.java
 +++ b/net/minecraft/util/Timer.java
 @@ -1,6 +1,8 @@
@@ -16969,7 +16969,7 @@ index 7ec66f4..c956127 100644
  
  import net.minecraft.client.Minecraft;
 +import tk.wurst_client.WurstClient;
-+import tk.wurst_client.mods.TimerMod;
++import tk.wurst_client.features.mods.TimerMod;
  
  public class Timer
  {

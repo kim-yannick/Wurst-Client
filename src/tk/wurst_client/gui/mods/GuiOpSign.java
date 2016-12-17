@@ -16,7 +16,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import tk.wurst_client.WurstClient;
-import tk.wurst_client.mods.OpSignMod;
+import tk.wurst_client.features.mods.OpSignMod;
 import tk.wurst_client.utils.MiscUtils;
 
 public class GuiOpSign extends GuiScreen
