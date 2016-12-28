@@ -13,7 +13,7 @@ import net.minecraft.network.play.client.C02PacketUseEntity;
 import net.minecraft.network.play.client.C02PacketUseEntity.Action;
 import net.minecraft.network.play.client.CPacketPlayer;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.navigator.settings.ModeSetting;
+import tk.wurst_client.settings.ModeSetting;
 
 @Mod.Info(
 	description = "Automatically leaves the server when your health is low.\n"

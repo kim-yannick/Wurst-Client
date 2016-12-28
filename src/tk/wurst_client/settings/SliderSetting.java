@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package tk.wurst_client.navigator.settings;
+package tk.wurst_client.settings;
 
 import java.util.ArrayList;
 
@@ -14,7 +14,7 @@ import com.google.gson.JsonObject;
 import tk.wurst_client.navigator.PossibleKeybind;
 import tk.wurst_client.navigator.gui.NavigatorFeatureScreen;
 
-public class SliderSetting implements NavigatorSetting
+public class SliderSetting implements Setting
 {
 	private final String name;
 	private double value;

@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package tk.wurst_client.navigator.settings;
+package tk.wurst_client.settings;
 
 import java.util.ArrayList;
 
@@ -15,7 +15,7 @@ import tk.wurst_client.WurstClient;
 import tk.wurst_client.navigator.PossibleKeybind;
 import tk.wurst_client.navigator.gui.NavigatorFeatureScreen;
 
-public class CheckboxSetting implements NavigatorSetting
+public class CheckboxSetting implements Setting
 {
 	private final String name;
 	private boolean checked;

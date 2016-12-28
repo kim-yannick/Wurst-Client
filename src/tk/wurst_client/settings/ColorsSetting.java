@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package tk.wurst_client.navigator.settings;
+package tk.wurst_client.settings;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import tk.wurst_client.navigator.PossibleKeybind;
 import tk.wurst_client.navigator.gui.NavigatorFeatureScreen;
 import tk.wurst_client.utils.JsonUtils;
 
-public class ColorsSetting implements NavigatorSetting
+public class ColorsSetting implements Setting
 {
 	private String name;
 	private boolean[] selected;

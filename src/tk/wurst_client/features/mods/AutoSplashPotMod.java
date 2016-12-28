@@ -19,8 +19,8 @@ import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.navigator.settings.SliderSetting;
-import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
+import tk.wurst_client.settings.SliderSetting;
+import tk.wurst_client.settings.SliderSetting.ValueDisplay;
 
 @Mod.Info(
 	description = "Automatically throws splash healing potions if your health is below the set value.",

@@ -9,7 +9,7 @@ package tk.wurst_client.navigator;
 
 import java.util.ArrayList;
 
-import tk.wurst_client.navigator.settings.NavigatorSetting;
+import tk.wurst_client.settings.Setting;
 
 public interface NavigatorItem
 {
@@ -25,7 +25,7 @@ public interface NavigatorItem
 	
 	public String getTags();
 	
-	public ArrayList<NavigatorSetting> getSettings();
+	public ArrayList<Setting> getSettings();
 	
 	public ArrayList<PossibleKeybind> getPossibleKeybinds();
 	

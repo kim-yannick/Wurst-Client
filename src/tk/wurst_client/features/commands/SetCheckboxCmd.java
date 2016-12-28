@@ -10,8 +10,8 @@ package tk.wurst_client.features.commands;
 import java.util.Iterator;
 
 import tk.wurst_client.navigator.NavigatorItem;
-import tk.wurst_client.navigator.settings.CheckboxSetting;
-import tk.wurst_client.navigator.settings.NavigatorSetting;
+import tk.wurst_client.settings.CheckboxSetting;
+import tk.wurst_client.settings.Setting;
 
 @Cmd.Info(description = "Changes a checkbox setting of a feature. Allows you\n"
 	+ "to toggle checkboxes through keybinds.",
@@ -41,9 +41,9 @@ public class SetCheckboxCmd extends Cmd
 			error("A feature named \"" + featureName + "\" could not be found.");
 		
 		// find setting
-		NavigatorSetting setting = null;
+		Setting setting = null;
 		String settingName = args[1].replace("_", " ");
-		for(NavigatorSetting featureSetting : feature.getSettings())
+		for(Setting featureSetting : feature.getSettings())
 		{
 			if(featureSetting.getName().equalsIgnoreCase(settingName))
 			{

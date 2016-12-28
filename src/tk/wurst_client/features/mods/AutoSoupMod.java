@@ -20,8 +20,8 @@ import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.util.BlockPos;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.navigator.NavigatorItem;
-import tk.wurst_client.navigator.settings.SliderSetting;
-import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
+import tk.wurst_client.settings.SliderSetting;
+import tk.wurst_client.settings.SliderSetting.ValueDisplay;
 
 @Mod.Info(
 	description = "Automatically eats soup if your health is below the set value.",

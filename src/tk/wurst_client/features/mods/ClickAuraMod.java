@@ -12,9 +12,9 @@ import net.minecraft.network.play.client.C02PacketUseEntity;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.features.special_features.YesCheatSpf.BypassLevel;
 import tk.wurst_client.navigator.NavigatorItem;
-import tk.wurst_client.navigator.settings.CheckboxSetting;
-import tk.wurst_client.navigator.settings.SliderSetting;
-import tk.wurst_client.navigator.settings.SliderSetting.ValueDisplay;
+import tk.wurst_client.settings.CheckboxSetting;
+import tk.wurst_client.settings.SliderSetting;
+import tk.wurst_client.settings.SliderSetting.ValueDisplay;
 import tk.wurst_client.utils.EntityUtils;
 import tk.wurst_client.utils.EntityUtils.TargetSettings;
 

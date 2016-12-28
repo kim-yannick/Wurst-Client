@@ -17,7 +17,7 @@ import net.minecraft.util.BlockPos;
 import tk.wurst_client.WurstClient;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.PossibleKeybind;
-import tk.wurst_client.navigator.settings.NavigatorSetting;
+import tk.wurst_client.settings.Setting;
 import tk.wurst_client.utils.ChatUtils;
 import tk.wurst_client.utils.EntityUtils;
 import tk.wurst_client.utils.EntityUtils.TargetSettings;
@@ -31,8 +31,8 @@ public abstract class Cmd implements NavigatorItem
 	private String[] syntax = getClass().getAnnotation(Info.class).syntax();
 	private String tags = getClass().getAnnotation(Info.class).tags();
 	private String help = getClass().getAnnotation(Info.class).help();
-	protected ArrayList<NavigatorSetting> settings =
-		new ArrayList<NavigatorSetting>();
+	protected ArrayList<Setting> settings =
+		new ArrayList<Setting>();
 	
 	protected static final WurstClient wurst = WurstClient.INSTANCE;
 	protected static final Minecraft mc = Minecraft.getMinecraft();
@@ -129,7 +129,7 @@ public abstract class Cmd implements NavigatorItem
 	}
 	
 	@Override
-	public final ArrayList<NavigatorSetting> getSettings()
+	public final ArrayList<Setting> getSettings()
 	{
 		return settings;
 	}

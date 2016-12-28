@@ -25,9 +25,9 @@ import tk.wurst_client.WurstClient;
 import tk.wurst_client.font.Fonts;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.PossibleKeybind;
-import tk.wurst_client.navigator.settings.CheckboxSetting;
-import tk.wurst_client.navigator.settings.NavigatorSetting;
-import tk.wurst_client.navigator.settings.SliderSetting;
+import tk.wurst_client.settings.CheckboxSetting;
+import tk.wurst_client.settings.Setting;
+import tk.wurst_client.settings.SliderSetting;
 import tk.wurst_client.utils.MiscUtils;
 import tk.wurst_client.utils.RenderUtils;
 
@@ -110,13 +110,13 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		Rectangle area = new Rectangle(middleX - 154, 60, 308, height - 103);
 		
 		// settings
-		ArrayList<NavigatorSetting> settings = item.getSettings();
+		ArrayList<Setting> settings = item.getSettings();
 		if(!settings.isEmpty())
 		{
 			text += "\n\nSettings:";
 			sliders.clear();
 			checkboxes.clear();
-			for(NavigatorSetting setting : settings)
+			for(Setting setting : settings)
 				setting.addToFeatureScreen(this);
 		}
 		

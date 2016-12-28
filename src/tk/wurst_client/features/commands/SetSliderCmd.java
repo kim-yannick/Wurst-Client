@@ -10,8 +10,8 @@ package tk.wurst_client.features.commands;
 import java.util.Iterator;
 
 import tk.wurst_client.navigator.NavigatorItem;
-import tk.wurst_client.navigator.settings.NavigatorSetting;
-import tk.wurst_client.navigator.settings.SliderSetting;
+import tk.wurst_client.settings.Setting;
+import tk.wurst_client.settings.SliderSetting;
 import tk.wurst_client.utils.MiscUtils;
 
 @Cmd.Info(description = "Changes a slider setting of a feature. Allows you to\n"
@@ -42,9 +42,9 @@ public class SetSliderCmd extends Cmd
 			error("A feature named \"" + featureName + "\" could not be found.");
 		
 		// find setting
-		NavigatorSetting setting = null;
+		Setting setting = null;
 		String settingName = args[1].replace("_", " ");
-		for(NavigatorSetting featureSetting : feature.getSettings())
+		for(Setting featureSetting : feature.getSettings())
 		{
 			if(featureSetting.getName().equalsIgnoreCase(settingName))
 			{

@@ -14,7 +14,7 @@ import net.minecraft.network.play.client.CPacketPlayer.C04PacketPlayerPosition;
 import tk.wurst_client.events.LeftClickEvent;
 import tk.wurst_client.events.listeners.LeftClickListener;
 import tk.wurst_client.navigator.NavigatorItem;
-import tk.wurst_client.navigator.settings.ModeSetting;
+import tk.wurst_client.settings.ModeSetting;
 
 @Mod.Info(description = "Changes all your hits to critical hits.",
 	name = "Criticals",

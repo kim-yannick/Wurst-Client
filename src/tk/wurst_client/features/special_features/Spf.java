@@ -15,7 +15,7 @@ import net.minecraft.client.Minecraft;
 import tk.wurst_client.WurstClient;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.PossibleKeybind;
-import tk.wurst_client.navigator.settings.NavigatorSetting;
+import tk.wurst_client.settings.Setting;
 
 public class Spf implements NavigatorItem
 {
@@ -25,7 +25,7 @@ public class Spf implements NavigatorItem
 	private final String tags = getClass().getAnnotation(Info.class).tags();
 	private final String help = getClass().getAnnotation(Info.class)
 		.help();
-	protected ArrayList<NavigatorSetting> settings = new ArrayList<>();
+	protected ArrayList<Setting> settings = new ArrayList<>();
 	
 	protected static final WurstClient wurst = WurstClient.INSTANCE;
 	protected static final Minecraft mc = Minecraft.getMinecraft();
@@ -79,7 +79,7 @@ public class Spf implements NavigatorItem
 	}
 	
 	@Override
-	public final ArrayList<NavigatorSetting> getSettings()
+	public final ArrayList<Setting> getSettings()
 	{
 		return settings;
 	}
@@ -90,7 +90,7 @@ public class Spf implements NavigatorItem
 		ArrayList<PossibleKeybind> possibleKeybinds = new ArrayList<>();
 		
 		// settings keybinds
-		for(NavigatorSetting setting : settings)
+		for(Setting setting : settings)
 			possibleKeybinds.addAll(setting.getPossibleKeybinds(name));
 		
 		return possibleKeybinds;

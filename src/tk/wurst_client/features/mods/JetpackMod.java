@@ -9,7 +9,7 @@ package tk.wurst_client.features.mods;
 
 import net.minecraft.network.play.client.CPacketPlayer;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.navigator.settings.CheckboxSetting;
+import tk.wurst_client.settings.CheckboxSetting;
 
 @Mod.Info(
 	description = "Allows you to jump in mid-air.\n"
