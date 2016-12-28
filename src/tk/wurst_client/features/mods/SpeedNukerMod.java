@@ -17,8 +17,8 @@ import net.minecraft.util.MovingObjectPosition;
 import tk.wurst_client.events.LeftClickEvent;
 import tk.wurst_client.events.listeners.LeftClickListener;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.features.Feature;
 import tk.wurst_client.features.special_features.YesCheatSpf.BypassLevel;
-import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.utils.BlockUtils;
 import tk.wurst_client.utils.ChatUtils;
 
@@ -50,9 +50,9 @@ public class SpeedNukerMod extends Mod
 	}
 	
 	@Override
-	public NavigatorItem[] getSeeAlso()
+	public Feature[] getSeeAlso()
 	{
-		return new NavigatorItem[]{wurst.mods.nukerMod,
+		return new Feature[]{wurst.mods.nukerMod,
 			wurst.mods.nukerLegitMod, wurst.mods.tunnellerMod,
 			wurst.mods.fastBreakMod, wurst.mods.autoMineMod};
 	}

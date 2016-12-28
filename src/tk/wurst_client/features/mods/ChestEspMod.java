@@ -11,7 +11,7 @@ import net.minecraft.entity.item.EntityMinecartChest;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityEnderChest;
 import tk.wurst_client.events.listeners.RenderListener;
-import tk.wurst_client.navigator.NavigatorItem;
+import tk.wurst_client.features.Feature;
 import tk.wurst_client.utils.ChatUtils;
 import tk.wurst_client.utils.RenderUtils;
 
@@ -26,9 +26,9 @@ public class ChestEspMod extends Mod implements RenderListener
 	public boolean shouldInform = true;
 	
 	@Override
-	public NavigatorItem[] getSeeAlso()
+	public Feature[] getSeeAlso()
 	{
-		return new NavigatorItem[]{wurst.mods.itemEspMod, wurst.mods.searchMod,
+		return new Feature[]{wurst.mods.itemEspMod, wurst.mods.searchMod,
 			wurst.mods.xRayMod};
 	}
 	

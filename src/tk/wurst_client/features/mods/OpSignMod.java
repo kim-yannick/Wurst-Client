@@ -7,8 +7,8 @@
  */
 package tk.wurst_client.features.mods;
 
+import tk.wurst_client.features.Feature;
 import tk.wurst_client.gui.mods.GuiOpSign;
-import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.utils.ChatUtils;
 
 @Mod.Info(
@@ -25,9 +25,9 @@ public class OpSignMod extends Mod
 	public String command;
 	
 	@Override
-	public NavigatorItem[] getSeeAlso()
+	public Feature[] getSeeAlso()
 	{
-		return new NavigatorItem[]{wurst.special.bookHackSpf,
+		return new Feature[]{wurst.special.bookHackSpf,
 			wurst.mods.forceOpMod, wurst.special.sessionStealerSpf};
 	}
 	

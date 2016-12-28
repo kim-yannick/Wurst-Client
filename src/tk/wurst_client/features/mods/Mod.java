@@ -18,13 +18,13 @@ import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.util.ReportedException;
 import tk.wurst_client.WurstClient;
+import tk.wurst_client.features.Feature;
 import tk.wurst_client.features.special_features.YesCheatSpf.BypassLevel;
-import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.PossibleKeybind;
 import tk.wurst_client.settings.Setting;
 
 @Mod.Bypasses
-public class Mod implements NavigatorItem
+public class Mod extends Feature
 {
 	private final String name = getClass().getAnnotation(Info.class).name();
 	private final String description =
@@ -146,9 +146,9 @@ public class Mod implements NavigatorItem
 	}
 	
 	@Override
-	public NavigatorItem[] getSeeAlso()
+	public Feature[] getSeeAlso()
 	{
-		return new NavigatorItem[0];
+		return new Feature[0];
 	}
 	
 	@Override

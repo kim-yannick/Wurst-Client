@@ -10,9 +10,9 @@ package tk.wurst_client.features.mods;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.play.client.C02PacketUseEntity;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.features.Feature;
 import tk.wurst_client.features.special_features.TargetSpf;
 import tk.wurst_client.features.special_features.YesCheatSpf.BypassLevel;
-import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.settings.CheckboxSetting;
 import tk.wurst_client.settings.ColorsSetting;
 import tk.wurst_client.settings.SliderSetting;
@@ -186,9 +186,9 @@ public class KillauraMod extends Mod implements UpdateListener
 	}
 	
 	@Override
-	public NavigatorItem[] getSeeAlso()
+	public Feature[] getSeeAlso()
 	{
-		return new NavigatorItem[]{wurst.special.targetSpf,
+		return new Feature[]{wurst.special.targetSpf,
 			wurst.mods.killauraLegitMod, wurst.mods.multiAuraMod,
 			wurst.mods.clickAuraMod, wurst.mods.tpAuraMod,
 			wurst.mods.triggerBotMod, wurst.mods.criticalsMod};

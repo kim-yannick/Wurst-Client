@@ -21,7 +21,7 @@ import tk.wurst_client.events.LeftClickEvent;
 import tk.wurst_client.events.listeners.LeftClickListener;
 import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.navigator.NavigatorItem;
+import tk.wurst_client.features.Feature;
 import tk.wurst_client.utils.BlockUtils;
 import tk.wurst_client.utils.RenderUtils;
 
@@ -50,9 +50,9 @@ public class NukerLegitMod extends Mod
 	}
 	
 	@Override
-	public NavigatorItem[] getSeeAlso()
+	public Feature[] getSeeAlso()
 	{
-		return new NavigatorItem[]{wurst.mods.nukerMod,
+		return new Feature[]{wurst.mods.nukerMod,
 			wurst.mods.speedNukerMod, wurst.mods.tunnellerMod,
 			wurst.mods.fastBreakMod, wurst.mods.autoMineMod};
 	}

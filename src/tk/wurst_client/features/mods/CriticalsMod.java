@@ -13,7 +13,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.network.play.client.CPacketPlayer.C04PacketPlayerPosition;
 import tk.wurst_client.events.LeftClickEvent;
 import tk.wurst_client.events.listeners.LeftClickListener;
-import tk.wurst_client.navigator.NavigatorItem;
+import tk.wurst_client.features.Feature;
 import tk.wurst_client.settings.ModeSetting;
 
 @Mod.Info(description = "Changes all your hits to critical hits.",
@@ -40,9 +40,9 @@ public class CriticalsMod extends Mod implements LeftClickListener
 	}
 	
 	@Override
-	public NavigatorItem[] getSeeAlso()
+	public Feature[] getSeeAlso()
 	{
-		return new NavigatorItem[]{wurst.mods.killauraMod,
+		return new Feature[]{wurst.mods.killauraMod,
 			wurst.mods.triggerBotMod};
 	}
 	

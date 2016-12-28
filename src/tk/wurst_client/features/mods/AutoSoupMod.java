@@ -19,7 +19,7 @@ import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.util.BlockPos;
 import tk.wurst_client.events.listeners.UpdateListener;
-import tk.wurst_client.navigator.NavigatorItem;
+import tk.wurst_client.features.Feature;
 import tk.wurst_client.settings.SliderSetting;
 import tk.wurst_client.settings.SliderSetting.ValueDisplay;
 
@@ -48,9 +48,9 @@ public class AutoSoupMod extends Mod implements UpdateListener
 	}
 	
 	@Override
-	public NavigatorItem[] getSeeAlso()
+	public Feature[] getSeeAlso()
 	{
-		return new NavigatorItem[]{wurst.mods.autoEatMod};
+		return new Feature[]{wurst.mods.autoEatMod};
 	}
 	
 	@Override

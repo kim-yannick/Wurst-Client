@@ -22,8 +22,8 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
 import tk.wurst_client.WurstClient;
+import tk.wurst_client.features.Feature;
 import tk.wurst_client.font.Fonts;
-import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.navigator.PossibleKeybind;
 import tk.wurst_client.settings.CheckboxSetting;
 import tk.wurst_client.settings.Setting;
@@ -33,7 +33,7 @@ import tk.wurst_client.utils.RenderUtils;
 
 public class NavigatorFeatureScreen extends NavigatorScreen
 {
-	private NavigatorItem item;
+	private Feature item;
 	private NavigatorMainScreen parent;
 	private ButtonData activeButton;
 	private GuiButton primaryButton;
@@ -43,7 +43,7 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 	private ArrayList<SliderSetting> sliders = new ArrayList<>();
 	private ArrayList<CheckboxSetting> checkboxes = new ArrayList<>();
 	
-	public NavigatorFeatureScreen(NavigatorItem item,
+	public NavigatorFeatureScreen(Feature item,
 		NavigatorMainScreen parent)
 	{
 		this.item = item;
@@ -191,14 +191,14 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		}
 		
 		// see also
-		NavigatorItem[] seeAlso = item.getSeeAlso();
+		Feature[] seeAlso = item.getSeeAlso();
 		if(seeAlso.length != 0)
 		{
 			text += "\n\nSee also:";
 			for(int i = 0; i < seeAlso.length; i++)
 			{
 				int y = 60 + getTextHeight() + 2;
-				NavigatorItem seeAlsoItem = seeAlso[i];
+				Feature seeAlsoItem = seeAlso[i];
 				String name = seeAlsoItem.getName();
 				text += "\n- " + name;
 				buttonDatas.add(new ButtonData(middleX - 148, y,
@@ -522,7 +522,7 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		glDisable(GL_BLEND);
 	}
 	
-	public NavigatorItem getItem()
+	public Feature getItem()
 	{
 		return item;
 	}
