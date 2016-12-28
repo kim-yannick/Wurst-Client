@@ -13,7 +13,7 @@ import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C07PacketPlayerDigging.Action;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.RayTraceResult;
 import tk.wurst_client.events.LeftClickEvent;
 import tk.wurst_client.events.listeners.LeftClickListener;
 import tk.wurst_client.events.listeners.UpdateListener;
@@ -134,7 +134,7 @@ public class SpeedNukerMod extends Mod
 			return;
 		if(wurst.mods.nukerMod.getMode() == 1
 			&& mc.world.getBlockState(mc.objectMouseOver.getBlockPos())
-				.getBlock().getMaterial() != Material.air)
+				.getBlock().getMaterial() != Material.AIR)
 		{
 			NukerMod.id = Block.getIdFromBlock(mc.world
 				.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock());
@@ -169,7 +169,7 @@ public class SpeedNukerMod extends Mod
 					float zDiff = (float)(mc.player.posZ - posZ);
 					float currentDistance =
 						BlockUtils.getBlockDistance(xDiff, yDiff, zDiff);
-					MovingObjectPosition fakeObjectMouseOver =
+					RayTraceResult fakeObjectMouseOver =
 						mc.objectMouseOver;
 					if(fakeObjectMouseOver == null)
 						continue;
@@ -221,7 +221,7 @@ public class SpeedNukerMod extends Mod
 					float zDiff = (float)(mc.player.posZ - posZ);
 					float currentDistance =
 						BlockUtils.getBlockDistance(xDiff, yDiff, zDiff);
-					MovingObjectPosition fakeObjectMouseOver =
+					RayTraceResult fakeObjectMouseOver =
 						mc.objectMouseOver;
 					fakeObjectMouseOver
 						.setBlockPos(new BlockPos(posX, posY, posZ));

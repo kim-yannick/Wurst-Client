@@ -79,7 +79,7 @@ public class JesusMod extends Mod implements UpdateListener
 			if(block.getMaterial() == Material.water
 				|| block.getMaterial() == Material.lava)
 				isOnWater = true;
-			else if(block.getMaterial() != Material.air)
+			else if(block.getMaterial() != Material.AIR)
 				isOnSolid = true;
 		}
 		

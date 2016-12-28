@@ -17,7 +17,7 @@ import net.minecraft.network.play.client.C07PacketPlayerDigging.Action;
 import net.minecraft.network.play.client.C0APacketAnimation;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.RayTraceResult;
 import tk.wurst_client.events.LeftClickEvent;
 import tk.wurst_client.events.listeners.LeftClickListener;
 import tk.wurst_client.events.listeners.RenderListener;
@@ -225,7 +225,7 @@ public class NukerMod extends Mod
 			|| mc.objectMouseOver.getBlockPos() == null)
 			return;
 		if(mode == 1 && mc.world.getBlockState(mc.objectMouseOver.getBlockPos())
-			.getBlock().getMaterial() != Material.air)
+			.getBlock().getMaterial() != Material.AIR)
 		{
 			id = Block.getIdFromBlock(mc.world
 				.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock());
@@ -300,7 +300,7 @@ public class NukerMod extends Mod
 					float zDiff = (float)(mc.player.posZ - posZ);
 					float currentDistance =
 						BlockUtils.getBlockDistance(xDiff, yDiff, zDiff);
-					MovingObjectPosition fakeObjectMouseOver =
+					RayTraceResult fakeObjectMouseOver =
 						mc.objectMouseOver;
 					if(fakeObjectMouseOver == null)
 						return;

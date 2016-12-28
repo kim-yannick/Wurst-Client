@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2016 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.Consumer;
 
@@ -24,6 +25,7 @@ import com.google.common.collect.Sets;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 
 import net.minecraft.block.Block;
@@ -53,7 +55,6 @@ public class FileManager
 	
 	public final File alts = new File(wurstDir, "alts.json");
 	public final File friends = new File(wurstDir, "friends.json");
-	public final File gui = new File(wurstDir, "gui.json");
 	public final File modules = new File(wurstDir, "modules.json");
 	public final File navigatorData = new File(wurstDir, "navigator.json");
 	public final File keybinds = new File(wurstDir, "keybinds.json");
@@ -106,17 +107,8 @@ public class FileManager
 			saveXRayBlocks();
 		}else
 			loadXRayBlocks();
-		File[] autobuildFiles = autobuildDir.listFiles();
-		if(autobuildFiles != null && autobuildFiles.length == 0)
-			createDefaultAutoBuildTemplates();
+		
 		loadAutoBuildTemplates();
-		AutoBuildMod autoBuildMod = WurstClient.INSTANCE.mods.autoBuildMod;
-		autoBuildMod.initTemplateSetting();
-		if(autoBuildMod.getTemplate() >= AutoBuildMod.names.size())
-		{
-			autoBuildMod.setTemplate(0);
-			saveNavigatorData();
-		}
 	}
 	
 	public void saveMods()
@@ -145,7 +137,7 @@ public class FileManager
 			FightBotMod.class.getName(), FollowMod.class.getName(),
 			ForceOpMod.class.getName(), FreecamMod.class.getName(),
 			InvisibilityMod.class.getName(), LsdMod.class.getName(),
-			MassTpaMod.class.getName(), OpSignMod.class.getName(),
+			MassTpaMod.class.getName(), NavigatorMod.class.getName(),
 			ProtectMod.class.getName(), RemoteViewMod.class.getName(),
 			SpammerMod.class.getName());
 	
@@ -249,8 +241,8 @@ public class FileManager
 			}
 			
 			// force-add GUI keybind if missing
-			if(!WurstClient.INSTANCE.keybinds.containsValue(
-				new TreeSet<String>(Arrays.asList(".t navigator"))))
+			if(!WurstClient.INSTANCE.keybinds
+				.containsValue(new TreeSet<>(Arrays.asList(".t navigator"))))
 			{
 				WurstClient.INSTANCE.keybinds.put("LCONTROL", ".t navigator");
 				needsUpdate = true;
@@ -395,7 +387,7 @@ public class FileManager
 			BufferedReader load =
 				new BufferedReader(new FileReader(autoMaximize));
 			autoMaximizeEnabled = JsonUtils.gson.fromJson(load, Boolean.class)
-				&& !Minecraft.isRunningOnMac;
+				&& !Minecraft.IS_RUNNING_ON_MAC;
 			load.close();
 		}catch(Exception e)
 		{
@@ -575,24 +567,54 @@ public class FileManager
 	
 	public void loadAutoBuildTemplates()
 	{
-		try
-		{
-			File[] files = autobuildDir.listFiles();
-			if(files == null)
-				return;
-			for(File file : files)
+		File[] files = autobuildDir.listFiles();
+		
+		boolean foundOldTemplates = false;
+		TreeMap<String, int[][]> templates = new TreeMap<>();
+		for(File file : files)
+			try
 			{
-				BufferedReader load = new BufferedReader(new FileReader(file));
-				JsonObject json = (JsonObject)JsonUtils.jsonParser.parse(load);
-				load.close();
-				AutoBuildMod.templates.add(
-					JsonUtils.gson.fromJson(json.get("blocks"), int[][].class));
-				AutoBuildMod.names.add(file.getName().substring(0,
-					file.getName().indexOf(".json")));
+				// read file
+				FileReader reader = new FileReader(file);
+				JsonObject json =
+					JsonUtils.jsonParser.parse(reader).getAsJsonObject();
+				reader.close();
+				
+				// get blocks
+				int[][] blocks =
+					JsonUtils.gson.fromJson(json.get("blocks"), int[][].class);
+				
+				// delete file if old template is found
+				if(blocks[0].length == 4)
+				{
+					foundOldTemplates = true;
+					file.delete();
+					continue;
+				}
+				
+				// add template
+				templates.put(file.getName().substring(0,
+					file.getName().lastIndexOf(".json")), blocks);
+			}catch(Exception e)
+			{
+				System.err
+					.println("Failed to load template: " + file.getName());
+				e.printStackTrace();
 			}
-		}catch(Exception e)
+			
+		// if directory is empty or contains old templates,
+		// add default templates and try again
+		if(foundOldTemplates || autobuildDir.listFiles().length == 0)
 		{
-			e.printStackTrace();
+			createDefaultAutoBuildTemplates();
+			loadAutoBuildTemplates();
+			return;
 		}
+		
+		if(templates.isEmpty())
+			throw new JsonParseException(
+				"Couldn't load any AutoBuild templates.");
+		
+		WurstClient.INSTANCE.mods.autoBuildMod.setTemplates(templates);
 	}
 }

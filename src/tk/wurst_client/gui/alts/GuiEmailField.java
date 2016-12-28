@@ -293,7 +293,7 @@ public class GuiEmailField extends Gui
 	{
 		cursorPosition = p_146190_1_;
 		int var2 = text.length();
-		cursorPosition = MathHelper.clamp_int(cursorPosition, 0, var2);
+		cursorPosition = MathHelper.clamp(cursorPosition, 0, var2);
 		setSelectionPos(cursorPosition);
 	}
 	
@@ -707,7 +707,7 @@ public class GuiEmailField extends Gui
 			else if(p_146199_1_ <= lineScrollOffset)
 				lineScrollOffset -= lineScrollOffset - p_146199_1_;
 			
-			lineScrollOffset = MathHelper.clamp_int(lineScrollOffset, 0, var2);
+			lineScrollOffset = MathHelper.clamp(lineScrollOffset, 0, var2);
 		}
 	}
 	

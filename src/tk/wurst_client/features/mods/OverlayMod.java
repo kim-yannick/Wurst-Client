@@ -10,7 +10,7 @@ package tk.wurst_client.features.mods;
 import net.minecraft.block.Block;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.util.RayTraceResult.Type;
 import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.features.Feature;
 import tk.wurst_client.utils.RenderUtils;
@@ -37,7 +37,7 @@ public class OverlayMod extends Mod implements RenderListener
 	public void onRender()
 	{
 		if(mc.objectMouseOver == null
-			|| mc.objectMouseOver.typeOfHit != MovingObjectType.BLOCK)
+			|| mc.objectMouseOver.typeOfHit != Type.BLOCK)
 			return;
 		BlockPos pos = mc.objectMouseOver.getBlockPos();
 		Block mouseOverBlock =

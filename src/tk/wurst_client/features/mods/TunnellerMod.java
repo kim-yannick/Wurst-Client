@@ -13,7 +13,7 @@ import net.minecraft.network.play.client.C07PacketPlayerDigging.Action;
 import net.minecraft.network.play.client.C0APacketAnimation;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.RayTraceResult;
 import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.features.Feature;
@@ -172,7 +172,7 @@ public class TunnellerMod extends Mod implements RenderListener, UpdateListener
 					float yDiff = (float)(mc.player.posY - posY);
 					float zDiff = (float)(mc.player.posZ - posZ);
 					float currentDistance = xDiff + yDiff + zDiff;
-					MovingObjectPosition fakeObjectMouseOver =
+					RayTraceResult fakeObjectMouseOver =
 						mc.objectMouseOver;
 					if(fakeObjectMouseOver == null)
 						continue;
@@ -209,7 +209,7 @@ public class TunnellerMod extends Mod implements RenderListener, UpdateListener
 					int posZ = (int)(Math.floor(mc.player.posZ) + z);
 					BlockPos blockPos = new BlockPos(posX, posY, posZ);
 					Block block = mc.world.getBlockState(blockPos).getBlock();
-					MovingObjectPosition fakeObjectMouseOver =
+					RayTraceResult fakeObjectMouseOver =
 						mc.objectMouseOver;
 					fakeObjectMouseOver.setBlockPos(blockPos);
 					if(Block.getIdFromBlock(block) != 0 && posY >= 0)

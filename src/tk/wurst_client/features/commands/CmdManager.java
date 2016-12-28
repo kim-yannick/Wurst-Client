@@ -17,7 +17,7 @@ import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.ClickEvent.Action;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.TextComponentString;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ReportedException;
 import tk.wurst_client.WurstClient;
@@ -157,16 +157,16 @@ public class CmdManager implements ChatOutputListener
 				{
 					case "...":
 					case ".legit":
-						ChatComponentText link =
-							new ChatComponentText("more info");
-						link.getChatStyle()
+						TextComponentString link =
+							new TextComponentString("more info");
+						link.getStyle()
 							.setColor(EnumChatFormatting.AQUA)
-							.setChatClickEvent(
+							.setClickEvent(
 								new ClickEvent(Action.OPEN_URL,
 									"https://www.wurst-client.tk/wiki/Commands/say/"));
 						
 						ChatUtils
-							.component(new ChatComponentText("Try using .say (")
+							.component(new TextComponentString("Try using .say (")
 								.appendSibling(link).appendText(")"));
 						break;
 					default:

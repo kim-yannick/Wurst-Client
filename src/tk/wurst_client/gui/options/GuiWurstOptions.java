@@ -102,7 +102,7 @@ public class GuiWurstOptions extends GuiScreen
 		buttonList.add(new GuiButton(15, width / 2 + 54, height / 4 + 120 - 16,
 			100, 20, "Bug Tracker"));
 		
-		((GuiButton)buttonList.get(3)).enabled = !Minecraft.isRunningOnMac;
+		((GuiButton)buttonList.get(3)).enabled = !Minecraft.IS_RUNNING_ON_MAC;
 	}
 	
 	@Override

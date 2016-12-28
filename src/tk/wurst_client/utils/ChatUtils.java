@@ -8,7 +8,7 @@
 package tk.wurst_client.utils;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.TextComponentString;
 import net.minecraft.util.IChatComponent;
 
 public class ChatUtils
@@ -24,13 +24,13 @@ public class ChatUtils
 	{
 		if(enabled)
 			Minecraft.getMinecraft().ingameGUI.getChatGUI()
-				.printChatMessage(new ChatComponentText("§c[§6Wurst§c]§f ")
+				.printChatMessage(new TextComponentString("§c[§6Wurst§c]§f ")
 					.appendSibling(component));
 	}
 	
 	public static void message(String message)
 	{
-		component(new ChatComponentText(message));
+		component(new TextComponentString(message));
 	}
 	
 	public static void warning(String message)
@@ -56,7 +56,7 @@ public class ChatUtils
 	public static void cmd(String message)
 	{
 		Minecraft.getMinecraft().ingameGUI.getChatGUI()
-			.printChatMessage(new ChatComponentText(
+			.printChatMessage(new TextComponentString(
 				"§c[§6Wurst§c]§f §0§l<§aCMD§0§l>§f " + message));
 	}
 }

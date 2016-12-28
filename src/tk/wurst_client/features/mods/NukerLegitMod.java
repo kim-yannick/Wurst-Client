@@ -166,7 +166,7 @@ public class NukerLegitMod extends Mod
 			return;
 		if(wurst.mods.nukerMod.getMode() == 1
 			&& mc.world.getBlockState(mc.objectMouseOver.getBlockPos())
-				.getBlock().getMaterial() != Material.air)
+				.getBlock().getMaterial() != Material.AIR)
 		{
 			NukerMod.id = Block.getIdFromBlock(mc.world
 				.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock());

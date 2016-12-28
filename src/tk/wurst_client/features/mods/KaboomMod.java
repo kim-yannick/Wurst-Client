@@ -14,7 +14,7 @@ import net.minecraft.network.play.client.C07PacketPlayerDigging.Action;
 import net.minecraft.network.play.client.C0APacketAnimation;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.RayTraceResult;
 import net.minecraft.world.Explosion;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.settings.SliderSetting;
@@ -91,7 +91,7 @@ public class KaboomMod extends Mod implements UpdateListener
 							float zDiff = (float)(mc.player.posZ - posZ);
 							float currentDistance = BlockUtils
 								.getBlockDistance(xDiff, yDiff, zDiff);
-							MovingObjectPosition fakeObjectMouseOver =
+							RayTraceResult fakeObjectMouseOver =
 								mc.objectMouseOver;
 							fakeObjectMouseOver
 								.setBlockPos(new BlockPos(posX, posY, posZ));

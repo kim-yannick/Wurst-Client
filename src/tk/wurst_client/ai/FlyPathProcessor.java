@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2016 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -10,6 +10,7 @@ package tk.wurst_client.ai;
 import java.util.ArrayList;
 
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.MathHelper;
 import tk.wurst_client.utils.BlockUtils;
 
 public class FlyPathProcessor extends PathProcessor
@@ -43,7 +44,6 @@ public class FlyPathProcessor extends PathProcessor
 					BlockPos prevPos = path.get(index - 1);
 					if(!path.get(index).subtract(prevPos)
 						.equals(prevPos.subtract(path.get(index - 2))))
-					{
 						if(!stopped)
 						{
 							mc.player.motionX /=
@@ -54,7 +54,6 @@ public class FlyPathProcessor extends PathProcessor
 								Math.max(Math.abs(mc.player.motionZ) * 50, 1);
 							stopped = true;
 						}
-					}
 				}
 				
 				// disable when done
@@ -83,15 +82,20 @@ public class FlyPathProcessor extends PathProcessor
 		// move
 		BlockUtils.faceBlockClientHorizontally(nextPos);
 		
+		// limit vertical speed
+		mc.player.motionY = MathHelper.clamp(mc.player.motionY, -0.25, 0.25);
+		
 		// horizontal movement
 		if(pos.getX() != nextPos.getX() || pos.getZ() != nextPos.getZ())
 		{
 			mc.gameSettings.keyBindForward.pressed = true;
 			
-			if(mc.player.isCollidedHorizontally
-				&& mc.player.posY > nextPos.getY() + 0.2)
-				mc.gameSettings.keyBindSneak.pressed = true;
-			
+			if(mc.player.isCollidedHorizontally)
+				if(mc.player.posY > nextPos.getY() + 0.2)
+					mc.gameSettings.keyBindSneak.pressed = true;
+				else if(mc.player.posY < nextPos.getY())
+					mc.gameSettings.keyBindJump.pressed = true;
+				
 			// vertical movement
 		}else if(pos.getY() != nextPos.getY())
 		{
@@ -99,6 +103,12 @@ public class FlyPathProcessor extends PathProcessor
 				mc.gameSettings.keyBindJump.pressed = true;
 			else
 				mc.gameSettings.keyBindSneak.pressed = true;
+			
+			if(mc.player.isCollidedVertically)
+			{
+				mc.gameSettings.keyBindSneak.pressed = false;
+				mc.gameSettings.keyBindForward.pressed = true;
+			}
 		}
 	}
 	
