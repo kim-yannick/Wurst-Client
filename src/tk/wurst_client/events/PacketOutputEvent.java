@@ -10,13 +10,13 @@ package tk.wurst_client.events;
 import java.util.ArrayList;
 
 import net.minecraft.network.Packet;
-import tk.wurst_client.events.listeners.PacketInputListener;
+import tk.wurst_client.events.listeners.PacketOutputListener;
 
-public class PacketInputEvent extends CancellableEvent<PacketInputListener>
+public class PacketOutputEvent extends CancellableEvent<PacketOutputListener>
 {
 	private Packet packet;
 	
-	public PacketInputEvent(Packet packet)
+	public PacketOutputEvent(Packet packet)
 	{
 		this.packet = packet;
 	}
@@ -32,19 +32,19 @@ public class PacketInputEvent extends CancellableEvent<PacketInputListener>
 	}
 	
 	@Override
-	public void fire(ArrayList<PacketInputListener> listeners)
+	public void fire(ArrayList<PacketOutputListener> listeners)
 	{
 		for(int i = 0; i < listeners.size(); i++)
 		{
-			listeners.get(i).onReceivedPacket(this);
+			listeners.get(i).onSentPacket(this);
 			if(isCancelled())
 				break;
 		}
 	}
 	
 	@Override
-	public Class<PacketInputListener> getListenerType()
+	public Class<PacketOutputListener> getListenerType()
 	{
-		return PacketInputListener.class;
+		return PacketOutputListener.class;
 	}
 }

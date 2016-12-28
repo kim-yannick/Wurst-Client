@@ -7,9 +7,9 @@
  */
 package tk.wurst_client.events.listeners;
 
-import tk.wurst_client.events.LeftClickEvent;
+import tk.wurst_client.events.PacketOutputEvent;
 
-public interface LeftClickListener extends Listener
+public interface PacketOutputListener extends Listener
 {
-	public void onLeftClick(LeftClickEvent event);
+	public void onSentPacket(PacketOutputEvent event);
 }

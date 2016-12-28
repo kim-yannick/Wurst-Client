@@ -1,6 +1,6 @@
-From bcf4d62d54c1fe86c4532bd6ca78240a2c91bb9e Mon Sep 17 00:00:00 2001
+From 369901a5d9bcb6ee52888f3c2c5240a7f2382350 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 28 Dec 2016 19:05:19 +0100
+Date: Wed, 28 Dec 2016 19:14:23 +0100
 Subject: [PATCH] mod
 
 ---
@@ -13,7 +13,7 @@ Subject: [PATCH] mod
  net/minecraft/block/BlockCactus.java               |  14 +-
  net/minecraft/block/BlockCake.java                 |   2 +-
  net/minecraft/block/BlockCarpet.java               |   2 +-
- net/minecraft/block/BlockChest.java                |  46 +--
+ net/minecraft/block/BlockChest.java                |  46 +-
  net/minecraft/block/BlockCrops.java                |  16 +-
  net/minecraft/block/BlockDirt.java                 |   2 +-
  net/minecraft/block/BlockDispenser.java            |  10 +-
@@ -43,7 +43,7 @@ Subject: [PATCH] mod
  net/minecraft/block/BlockPistonBase.java           |   2 +-
  net/minecraft/block/BlockPortal.java               |  24 +-
  net/minecraft/block/BlockPumpkin.java              |   2 +-
- net/minecraft/block/BlockRailBase.java             |  94 ++---
+ net/minecraft/block/BlockRailBase.java             |  94 ++--
  net/minecraft/block/BlockRailDetector.java         |   4 +-
  net/minecraft/block/BlockRailPowered.java          |   4 +-
  net/minecraft/block/BlockRedstoneDiode.java        |   4 +-
@@ -54,7 +54,7 @@ Subject: [PATCH] mod
  net/minecraft/block/BlockSlab.java                 |   7 +-
  net/minecraft/block/BlockSnow.java                 |   2 +-
  net/minecraft/block/BlockSoulSand.java             |   6 +
- net/minecraft/block/BlockStairs.java               |  96 ++---
+ net/minecraft/block/BlockStairs.java               |  96 ++--
  net/minecraft/block/BlockStandingSign.java         |   2 +-
  net/minecraft/block/BlockStaticLiquid.java         |   4 +-
  net/minecraft/block/BlockStem.java                 |   4 +-
@@ -64,13 +64,13 @@ Subject: [PATCH] mod
  net/minecraft/block/BlockVine.java                 |  18 +-
  net/minecraft/block/BlockWall.java                 |  10 +-
  net/minecraft/client/LoadingScreenRenderer.java    |  10 +-
- net/minecraft/client/Minecraft.java                | 450 ++++++++++-----------
+ net/minecraft/client/Minecraft.java                | 485 +++++++++++----------
  net/minecraft/client/audio/SoundManager.java       |   8 +-
  .../client/entity/AbstractClientPlayer.java        |  19 +-
  net/minecraft/client/entity/EntityPlayerSP.java    | 222 +++++++---
  net/minecraft/client/gui/FontRenderer.java         |  53 ++-
  net/minecraft/client/gui/Gui.java                  |   8 +-
- net/minecraft/client/gui/GuiButton.java            |  96 +++--
+ net/minecraft/client/gui/GuiButton.java            |  96 ++--
  net/minecraft/client/gui/GuiButtonLanguage.java    |   1 +
  net/minecraft/client/gui/GuiButtonRealmsProxy.java |   1 +
  net/minecraft/client/gui/GuiChat.java              |   4 +-
@@ -95,11 +95,11 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/GuiListButton.java        |   1 +
  net/minecraft/client/gui/GuiListExtended.java      |   4 +
  net/minecraft/client/gui/GuiLockIconButton.java    |   1 +
- net/minecraft/client/gui/GuiMainMenu.java          |  70 +++-
+ net/minecraft/client/gui/GuiMainMenu.java          |  70 ++-
  net/minecraft/client/gui/GuiMemoryErrorScreen.java |   4 +-
  net/minecraft/client/gui/GuiMerchant.java          |  16 +-
- net/minecraft/client/gui/GuiMultiplayer.java       | 145 +++++--
- net/minecraft/client/gui/GuiNewChat.java           |  48 ++-
+ net/minecraft/client/gui/GuiMultiplayer.java       | 145 ++++--
+ net/minecraft/client/gui/GuiNewChat.java           |  48 +-
  net/minecraft/client/gui/GuiOptionButton.java      |   1 +
  net/minecraft/client/gui/GuiOptionSlider.java      |   1 +
  net/minecraft/client/gui/GuiOptions.java           |  20 +-
@@ -138,7 +138,7 @@ Subject: [PATCH] mod
  .../client/gui/achievement/GuiAchievements.java    |   8 +-
  net/minecraft/client/gui/achievement/GuiStats.java |  26 +-
  net/minecraft/client/gui/inventory/GuiBeacon.java  |   5 +-
- net/minecraft/client/gui/inventory/GuiChest.java   | 114 +++++-
+ net/minecraft/client/gui/inventory/GuiChest.java   | 114 ++++-
  .../client/gui/inventory/GuiContainer.java         |  76 ++--
  .../client/gui/inventory/GuiContainerCreative.java |  65 +--
  .../client/gui/inventory/GuiEditSign.java          |  34 +-
@@ -153,15 +153,15 @@ Subject: [PATCH] mod
  .../client/gui/stream/GuiTwitchUserMode.java       |   2 +
  net/minecraft/client/main/Main.java                |  21 +-
  .../client/multiplayer/GuiConnecting.java          |   2 +
- .../client/multiplayer/PlayerControllerMP.java     | 158 +++++---
+ .../client/multiplayer/PlayerControllerMP.java     | 158 ++++---
  net/minecraft/client/multiplayer/ServerList.java   |  16 +-
- net/minecraft/client/multiplayer/WorldClient.java  |  16 +-
+ net/minecraft/client/multiplayer/WorldClient.java  |  24 +-
  .../client/network/NetHandlerLoginClient.java      |   5 +
- .../client/network/NetHandlerPlayClient.java       | 284 ++++---------
- .../client/network/NetworkPlayerInfo.java          |  53 +--
+ .../client/network/NetHandlerPlayClient.java       | 284 ++++--------
+ .../client/network/NetworkPlayerInfo.java          |  53 ++-
  net/minecraft/client/network/OldServerPinger.java  |   4 +
  net/minecraft/client/particle/Barrier.java         |   2 +-
- net/minecraft/client/particle/EffectRenderer.java  |   2 +
+ net/minecraft/client/particle/EffectRenderer.java  |  10 +-
  .../client/particle/EntityBreakingFX.java          |   2 +-
  net/minecraft/client/particle/EntityDiggingFX.java |   2 +-
  net/minecraft/client/particle/EntityFX.java        |   2 +-
@@ -171,12 +171,12 @@ Subject: [PATCH] mod
  .../client/renderer/ActiveRenderInfo.java          |   2 +-
  .../client/renderer/BlockFluidRenderer.java        |  24 +-
  .../client/renderer/BlockModelRenderer.java        |  10 +-
- net/minecraft/client/renderer/EntityRenderer.java  | 153 ++++---
+ net/minecraft/client/renderer/EntityRenderer.java  | 159 ++++---
  .../client/renderer/ImageBufferDownload.java       |   6 +-
  .../client/renderer/InventoryEffectRenderer.java   |  10 +-
  net/minecraft/client/renderer/ItemModelMesher.java |  15 +-
  net/minecraft/client/renderer/ItemRenderer.java    |  38 +-
- net/minecraft/client/renderer/RenderGlobal.java    |  60 +--
+ net/minecraft/client/renderer/RenderGlobal.java    |  62 +--
  .../client/renderer/ThreadDownloadImageData.java   |   8 +-
  net/minecraft/client/renderer/WorldRenderer.java   |  80 ++--
  .../client/renderer/chunk/ChunkRenderWorker.java   |   3 +
@@ -186,7 +186,7 @@ Subject: [PATCH] mod
  .../client/renderer/entity/RenderFallingBlock.java |   7 +-
  .../client/renderer/entity/RenderFish.java         |   4 +-
  .../client/renderer/entity/RenderGuardian.java     |   2 +-
- .../client/renderer/entity/RenderItem.java         |  44 +-
+ .../client/renderer/entity/RenderItem.java         |  52 +--
  .../renderer/entity/RenderLightningBolt.java       |   2 +-
  .../client/renderer/entity/RenderLiving.java       |   8 +-
  .../client/renderer/entity/RenderManager.java      |  21 +-
@@ -194,11 +194,11 @@ Subject: [PATCH] mod
  .../client/renderer/entity/RenderXPOrb.java        |   2 +-
  .../renderer/entity/RendererLivingEntity.java      |  22 +-
  .../entity/layers/LayerEnderDragonDeath.java       |   4 +-
- .../renderer/texture/TextureAtlasSprite.java       |   2 +
+ .../renderer/texture/TextureAtlasSprite.java       |   4 +-
  .../client/renderer/texture/TextureClock.java      |   6 +-
  .../client/renderer/texture/TextureCompass.java    |   4 +-
- .../client/renderer/texture/TextureManager.java    |  11 +
- .../client/renderer/texture/TextureMap.java        |   3 +
+ .../client/renderer/texture/TextureManager.java    |  13 +-
+ .../client/renderer/texture/TextureMap.java        |   9 +-
  .../client/renderer/texture/TextureUtil.java       |   2 +-
  .../renderer/tileentity/RenderItemFrame.java       |   2 +-
  .../tileentity/TileEntityBeaconRenderer.java       |   4 +-
@@ -226,19 +226,19 @@ Subject: [PATCH] mod
  net/minecraft/command/IEntitySelector.java         |   2 +-
  net/minecraft/command/PlayerSelector.java          |   2 +-
  .../command/common/CommandReplaceItem.java         |   2 +-
- .../command/server/CommandBlockLogic.java          |  10 +-
+ .../command/server/CommandBlockLogic.java          |  14 +-
  .../command/server/CommandScoreboard.java          |   2 +-
  net/minecraft/command/server/CommandSetBlock.java  |   2 +-
  net/minecraft/command/server/CommandSummon.java    |   2 +-
  net/minecraft/command/server/CommandTestFor.java   |   2 +-
  .../command/server/CommandTestForBlock.java        |   2 +-
- net/minecraft/crash/CrashReport.java               |  19 +-
- net/minecraft/crash/CrashReportCategory.java       |   3 +
+ net/minecraft/crash/CrashReport.java               |  33 +-
+ net/minecraft/crash/CrashReportCategory.java       |  15 +-
  net/minecraft/entity/DataWatcher.java              |  10 +
- net/minecraft/entity/Entity.java                   |  73 +++-
+ net/minecraft/entity/Entity.java                   |  81 +++-
  net/minecraft/entity/EntityHanging.java            |   2 +-
  net/minecraft/entity/EntityLivingBase.java         |  22 +-
- net/minecraft/entity/EntityTracker.java            |   3 +
+ net/minecraft/entity/EntityTracker.java            |   5 +-
  net/minecraft/entity/ai/EntityAIDoorInteract.java  |   2 +-
  net/minecraft/entity/ai/EntityAIEatGrass.java      |   4 +-
  .../entity/ai/EntityAIHarvestFarmland.java         |   4 +-
@@ -261,9 +261,9 @@ Subject: [PATCH] mod
  net/minecraft/entity/passive/EntityOcelot.java     |   2 +-
  net/minecraft/entity/passive/EntityRabbit.java     |   4 +-
  net/minecraft/entity/passive/EntityWolf.java       |   2 +-
- net/minecraft/entity/player/EntityPlayer.java      |  46 ++-
+ net/minecraft/entity/player/EntityPlayer.java      |  46 +-
  net/minecraft/entity/player/EntityPlayerMP.java    |  16 +-
- net/minecraft/entity/player/InventoryPlayer.java   |   3 +-
+ net/minecraft/entity/player/InventoryPlayer.java   |   5 +-
  net/minecraft/entity/projectile/EntityArrow.java   |   2 +-
  .../entity/projectile/EntityFishHook.java          |   2 +-
  .../entity/projectile/EntitySmallFireball.java     |   2 +-
@@ -287,10 +287,10 @@ Subject: [PATCH] mod
  net/minecraft/item/ItemSeeds.java                  |   4 +-
  net/minecraft/nbt/CompressedStreamTools.java       |   1 +
  net/minecraft/nbt/JsonToNBT.java                   |   2 +-
- net/minecraft/nbt/NBTTagCompound.java              |   3 +
- net/minecraft/network/NetHandlerPlayServer.java    |  17 +-
- net/minecraft/network/NetworkManager.java          | 327 +++++++--------
- net/minecraft/network/NetworkSystem.java           |   5 +
+ net/minecraft/nbt/NBTTagCompound.java              |   7 +-
+ net/minecraft/network/NetHandlerPlayServer.java    |  19 +-
+ net/minecraft/network/NetworkManager.java          | 327 +++++++-------
+ net/minecraft/network/NetworkSystem.java           |   7 +-
  net/minecraft/network/PacketBuffer.java            |   6 +-
  net/minecraft/pathfinding/PathNavigate.java        |   2 +-
  net/minecraft/pathfinding/PathNavigateClimber.java |   2 +-
@@ -300,14 +300,15 @@ Subject: [PATCH] mod
  net/minecraft/realms/RealmsServerStatusPinger.java |   3 +
  net/minecraft/realms/Tezzelator.java               |  14 +-
  net/minecraft/scoreboard/Scoreboard.java           |   2 +-
- net/minecraft/server/MinecraftServer.java          |   5 +
- .../server/integrated/IntegratedServer.java        |  13 +-
+ net/minecraft/server/MinecraftServer.java          |   9 +-
+ .../server/integrated/IntegratedServer.java        |  17 +-
  net/minecraft/server/management/BanEntry.java      |  25 +-
  .../server/management/ItemInWorldManager.java      |   2 +-
  .../server/management/LowerStringMap.java          |   4 +-
  .../server/management/PlayerProfileCache.java      |   6 +-
  .../management/ServerConfigurationManager.java     |  18 +-
  .../server/network/NetHandlerLoginServer.java      |  12 +-
+ net/minecraft/tileentity/TileEntity.java           |   6 +-
  net/minecraft/tileentity/TileEntityChest.java      |  10 +-
  net/minecraft/tileentity/TileEntityDispenser.java  |   2 +-
  net/minecraft/tileentity/TileEntityNote.java       |   4 +-
@@ -328,12 +329,12 @@ Subject: [PATCH] mod
  net/minecraft/world/Explosion.java                 |   2 +-
  net/minecraft/world/SpawnerAnimals.java            |  17 +-
  net/minecraft/world/Teleporter.java                |  14 +-
- net/minecraft/world/World.java                     |  95 ++---
+ net/minecraft/world/World.java                     | 103 ++---
  net/minecraft/world/WorldServer.java               |  15 +-
  net/minecraft/world/biome/BiomeDecorator.java      |   2 +-
  net/minecraft/world/biome/BiomeGenDesert.java      |   2 +-
  net/minecraft/world/biome/WorldChunkManager.java   |   2 +
- net/minecraft/world/chunk/Chunk.java               |   5 +-
+ net/minecraft/world/chunk/Chunk.java               |  11 +-
  .../world/chunk/storage/AnvilChunkLoader.java      |   3 -
  net/minecraft/world/chunk/storage/RegionFile.java  |   4 +
  net/minecraft/world/gen/ChunkProviderEnd.java      |   7 -
@@ -373,12 +374,13 @@ Subject: [PATCH] mod
  net/minecraft/world/gen/feature/WorldGenTrees.java |  20 +-
  net/minecraft/world/gen/feature/WorldGenVines.java |   2 +-
  .../gen/feature/WorldGeneratorBonusChest.java      |  22 +-
- net/minecraft/world/gen/layer/GenLayer.java        |   1 +
- .../world/gen/structure/MapGenStructure.java       |   2 +
+ net/minecraft/world/gen/layer/GenLayer.java        |   5 +-
+ .../world/gen/structure/MapGenStructure.java       |   8 +-
  .../world/gen/structure/StructureComponent.java    |   2 +-
  .../gen/structure/StructureVillagePieces.java      |   4 +-
  .../world/pathfinder/WalkNodeProcessor.java        |   2 +-
- 374 files changed, 3536 insertions(+), 2263 deletions(-)
+ net/minecraft/world/storage/WorldInfo.java         |  18 +-
+ 376 files changed, 3633 insertions(+), 2349 deletions(-)
 
 diff --git a/net/minecraft/block/Block.java b/net/minecraft/block/Block.java
 index d8fe39f..a7af6d8 100644
@@ -3176,7 +3178,7 @@ index 0875566..d98e274 100644
  
                  if (OpenGlHelper.isFramebufferEnabled())
 diff --git a/net/minecraft/client/Minecraft.java b/net/minecraft/client/Minecraft.java
-index a9a0567..3529de8 100644
+index a9a0567..5a31a4a 100644
 --- a/net/minecraft/client/Minecraft.java
 +++ b/net/minecraft/client/Minecraft.java
 @@ -1,17 +1,15 @@
@@ -3326,7 +3328,7 @@ index a9a0567..3529de8 100644
  import org.apache.commons.io.IOUtils;
  import org.apache.commons.lang3.Validate;
  import org.apache.logging.log4j.LogManager;
-@@ -174,20 +116,35 @@ import org.lwjgl.LWJGLException;
+@@ -174,20 +116,36 @@ import org.lwjgl.LWJGLException;
  import org.lwjgl.Sys;
  import org.lwjgl.input.Keyboard;
  import org.lwjgl.input.Mouse;
@@ -3344,6 +3346,7 @@ index a9a0567..3529de8 100644
 +import tk.wurst_client.WurstClient;
 +import tk.wurst_client.bot.WurstBot;
 +import tk.wurst_client.events.LeftClickEvent;
++import tk.wurst_client.events.RightClickEvent;
 +import tk.wurst_client.gui.main.GuiWurstMainMenu;
 +import tk.wurst_client.hooks.FrameHook;
 +import tk.wurst_client.spam.SpamProcessor;
@@ -3371,7 +3374,7 @@ index a9a0567..3529de8 100644
      public static final boolean isRunningOnMac = Util.getOSType() == Util.EnumOS.OSX;
  
      /** A 10MiB preallocation to ensure the heap is reasonably sized. */
-@@ -213,20 +170,21 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -213,20 +171,21 @@ public class Minecraft implements IThreadListener, IPlayerUsage
      private CrashReport crashReporter;
      public int displayWidth;
      public int displayHeight;
@@ -3397,7 +3400,7 @@ index a9a0567..3529de8 100644
      private boolean isGamePaused;
  
      /** The font renderer used for displaying and measuring text */
-@@ -280,7 +238,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -280,7 +239,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
      /**
       * When you place a block, it's set to 6, decremented once per tick, when it's 0, you can place another block.
       */
@@ -3406,7 +3409,7 @@ index a9a0567..3529de8 100644
      private String serverName;
      private int serverPort;
  
-@@ -345,6 +303,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -345,6 +304,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
  
      /** Profiler currently displayed in the debug screen pie chart */
      private String debugProfilerName = "root";
@@ -3414,7 +3417,7 @@ index a9a0567..3529de8 100644
      private static final String __OBFID = "CL_00000631";
  
      public Minecraft(GameConfiguration p_i45547_1_)
-@@ -466,9 +425,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -466,9 +426,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
          }
  
          logger.info("LWJGL Version: " + Sys.getVersion());
@@ -3427,7 +3430,7 @@ index a9a0567..3529de8 100644
          OpenGlHelper.initializeTextures();
          this.framebufferMc = new Framebuffer(this.displayWidth, this.displayHeight, true);
          this.framebufferMc.setFramebufferColor(0.0F, 0.0F, 0.0F, 0.0F);
-@@ -548,17 +507,20 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -548,17 +508,20 @@ public class Minecraft implements IThreadListener, IPlayerUsage
          this.mcResourceManager.registerReloadListener(this.renderGlobal);
          this.guiAchievement = new GuiAchievement(this);
          GlStateManager.viewport(0, 0, this.displayWidth, this.displayHeight);
@@ -3451,7 +3454,7 @@ index a9a0567..3529de8 100644
          }
  
          this.renderEngine.deleteTexture(this.mojangLogo);
-@@ -581,6 +543,10 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -581,6 +544,10 @@ public class Minecraft implements IThreadListener, IPlayerUsage
          }
  
          this.renderGlobal.func_174966_b();
@@ -3462,7 +3465,7 @@ index a9a0567..3529de8 100644
      }
  
      private void func_175608_ak()
-@@ -605,7 +571,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -605,7 +572,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
          }
      }
  
@@ -3471,7 +3474,7 @@ index a9a0567..3529de8 100644
      {
          Display.setResizable(true);
          Display.setTitle("Minecraft 1.8");
-@@ -636,22 +602,24 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -636,22 +603,24 @@ public class Minecraft implements IThreadListener, IPlayerUsage
          }
      }
  
@@ -3501,7 +3504,7 @@ index a9a0567..3529de8 100644
      {
          Util.EnumOS var1 = Util.getOSType();
  
-@@ -751,17 +719,15 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -751,17 +720,15 @@ public class Minecraft implements IThreadListener, IPlayerUsage
          File var3 = new File(var2, "crash-" + (new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss")).format(new Date()) + "-client.txt");
          Bootstrap.func_179870_a(crashReportIn.getCompleteReport());
  
@@ -3522,7 +3525,7 @@ index a9a0567..3529de8 100644
          {
              Bootstrap.func_179870_a("#@?@# Game crashed! Crash report could not be saved. #@?@#");
              System.exit(-2);
-@@ -917,14 +883,14 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -917,14 +884,14 @@ public class Minecraft implements IThreadListener, IPlayerUsage
          Tessellator var6 = Tessellator.getInstance();
          WorldRenderer var7 = var6.getWorldRenderer();
          var7.startDrawingQuads();
@@ -3539,7 +3542,7 @@ index a9a0567..3529de8 100644
          short var8 = 256;
          short var9 = 256;
          this.scaledTessellator((var2.getScaledWidth() - var8) / 2, (var2.getScaledHeight() - var9) / 2, 0, 0, var8, var9);
-@@ -971,11 +937,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -971,11 +938,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
              this.currentScreen.onGuiClosed();
          }
  
@@ -3554,7 +3557,7 @@ index a9a0567..3529de8 100644
          {
              guiScreenIn = new GuiGameOver();
          }
-@@ -1070,7 +1036,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1070,7 +1037,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
              this.shutdown();
          }
  
@@ -3563,7 +3566,7 @@ index a9a0567..3529de8 100644
          {
              float var1 = this.timer.renderPartialTicks;
              this.timer.updateTimer();
-@@ -1105,7 +1071,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1105,7 +1072,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
          long var8 = System.nanoTime() - var7;
          this.checkGLError("Pre render");
          this.mcProfiler.endStartSection("sound");
@@ -3572,7 +3575,7 @@ index a9a0567..3529de8 100644
          this.mcProfiler.endSection();
          this.mcProfiler.startSection("render");
          GlStateManager.pushMatrix();
-@@ -1114,7 +1080,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1114,7 +1081,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
          this.mcProfiler.startSection("display");
          GlStateManager.func_179098_w();
  
@@ -3581,7 +3584,7 @@ index a9a0567..3529de8 100644
          {
              this.gameSettings.thirdPersonView = 0;
          }
-@@ -1197,6 +1163,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1197,6 +1164,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
      public void func_175601_h()
      {
          this.mcProfiler.startSection("display_update");
@@ -3589,7 +3592,7 @@ index a9a0567..3529de8 100644
          Display.update();
          this.mcProfiler.endSection();
          this.func_175604_i();
-@@ -1230,7 +1197,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1230,7 +1198,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
  
      public int getLimitFramerate()
      {
@@ -3598,7 +3601,7 @@ index a9a0567..3529de8 100644
      }
  
      public boolean isFramerateLimitBelowMax()
-@@ -1329,7 +1296,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1329,7 +1297,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
              int var9 = this.displayHeight - var7 * 2;
              GlStateManager.enableBlend();
              var6.startDrawingQuads();
@@ -3607,7 +3610,7 @@ index a9a0567..3529de8 100644
              var6.addVertex((double)((float)var8 - (float)var7 * 1.1F), (double)((float)var9 - (float)var7 * 0.6F - 16.0F), 0.0D);
              var6.addVertex((double)((float)var8 - (float)var7 * 1.1F), (double)(var9 + var7 * 2), 0.0D);
              var6.addVertex((double)((float)var8 + (float)var7 * 1.1F), (double)(var9 + var7 * 2), 0.0D);
-@@ -1344,7 +1311,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1344,7 +1312,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                  Profiler.Result var13 = (Profiler.Result)var3.get(var12);
                  var14 = MathHelper.floor_double(var13.field_76332_a / 4.0D) + 1;
                  var6.startDrawing(6);
@@ -3616,7 +3619,7 @@ index a9a0567..3529de8 100644
                  var6.addVertex((double)var8, (double)var9, 0.0D);
                  int var15;
                  float var16;
-@@ -1361,7 +1328,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1361,7 +1329,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
  
                  var5.draw();
                  var6.startDrawing(5);
@@ -3625,7 +3628,7 @@ index a9a0567..3529de8 100644
  
                  for (var15 = var14; var15 >= 0; --var15)
                  {
-@@ -1395,8 +1362,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1395,8 +1363,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
              }
  
              var14 = 16777215;
@@ -3636,7 +3639,7 @@ index a9a0567..3529de8 100644
  
              for (int var21 = 0; var21 < var3.size(); ++var21)
              {
-@@ -1413,9 +1380,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1413,9 +1381,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                  }
  
                  var23 = var23 + var22.field_76331_c;
@@ -3649,7 +3652,7 @@ index a9a0567..3529de8 100644
              }
          }
      }
-@@ -1482,16 +1449,16 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1482,16 +1450,16 @@ public class Minecraft implements IThreadListener, IPlayerUsage
              this.leftClickCounter = 0;
          }
  
@@ -3671,18 +3674,22 @@ index a9a0567..3529de8 100644
                  }
              }
              else
-@@ -1505,7 +1472,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1505,7 +1473,13 @@ public class Minecraft implements IThreadListener, IPlayerUsage
      {
          if (this.leftClickCounter <= 0)
          {
 -            this.thePlayer.swingItem();
-+            //TODO: Client
-+        	WurstClient.INSTANCE.events.fire(new LeftClickEvent());
++			// TODO: Client
++			LeftClickEvent event = new LeftClickEvent();
++			WurstClient.INSTANCE.events.fire(event);
++			if(event.isCancelled())
++				return;
++			
 +            this.player.swingItem();
  
              if (this.objectMouseOver == null)
              {
-@@ -1521,15 +1490,15 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1521,15 +1495,15 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                  switch (Minecraft.SwitchEnumMinecartType.field_152390_a[this.objectMouseOver.typeOfHit.ordinal()])
                  {
                      case 1:
@@ -3702,13 +3709,19 @@ index a9a0567..3529de8 100644
                              break;
                          }
  
-@@ -1547,11 +1516,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1547,11 +1521,17 @@ public class Minecraft implements IThreadListener, IPlayerUsage
      /**
       * Called when user clicked he's mouse right button (place)
       */
 -    private void rightClickMouse()
 +    public void rightClickMouse()
      {
++		// TODO: Client
++		RightClickEvent event = new RightClickEvent();
++		WurstClient.INSTANCE.events.fire(event);
++		if(event.isCancelled())
++			return;
++		
          this.rightClickDelayTimer = 4;
          boolean var1 = true;
 -        ItemStack var2 = this.thePlayer.inventory.getCurrentItem();
@@ -3716,7 +3729,7 @@ index a9a0567..3529de8 100644
  
          if (this.objectMouseOver == null)
          {
-@@ -1562,11 +1531,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1562,11 +1542,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
              switch (Minecraft.SwitchEnumMinecartType.field_152390_a[this.objectMouseOver.typeOfHit.ordinal()])
              {
                  case 1:
@@ -3730,7 +3743,7 @@ index a9a0567..3529de8 100644
                      {
                          var1 = false;
                      }
-@@ -1574,16 +1543,16 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1574,16 +1554,16 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                      break;
  
                  case 2:
@@ -3751,7 +3764,7 @@ index a9a0567..3529de8 100644
                          }
  
                          if (var2 == null)
-@@ -1593,7 +1562,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1593,7 +1573,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
  
                          if (var2.stackSize == 0)
                          {
@@ -3760,7 +3773,7 @@ index a9a0567..3529de8 100644
                          }
                          else if (var2.stackSize != var4 || this.playerController.isInCreativeMode())
                          {
-@@ -1605,9 +1574,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1605,9 +1585,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
  
          if (var1)
          {
@@ -3772,7 +3785,7 @@ index a9a0567..3529de8 100644
              {
                  this.entityRenderer.itemRenderer.resetEquippedProgress2();
              }
-@@ -1725,7 +1694,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1725,7 +1705,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
          this.entityRenderer.getMouseOver(1.0F);
          this.mcProfiler.startSection("gameMode");
  
@@ -3781,7 +3794,7 @@ index a9a0567..3529de8 100644
          {
              this.playerController.updateController();
          }
-@@ -1737,18 +1706,18 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1737,18 +1717,18 @@ public class Minecraft implements IThreadListener, IPlayerUsage
              this.renderEngine.tick();
          }
  
@@ -3804,7 +3817,7 @@ index a9a0567..3529de8 100644
          {
              this.displayGuiScreen((GuiScreen)null);
          }
-@@ -1761,8 +1730,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1761,8 +1741,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
          CrashReport var2;
          CrashReportCategory var3;
  
@@ -3817,7 +3830,25 @@ index a9a0567..3529de8 100644
              try
              {
                  this.currentScreen.handleInput();
-@@ -1805,8 +1777,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1771,7 +1754,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+             {
+                 var2 = CrashReport.makeCrashReport(var7, "Updating screen events");
+                 var3 = var2.makeCategory("Affected screen");
+-                var3.addCrashSectionCallable("Screen name", new Callable()
++                var3.setDetail("Screen name", new Callable()
+                 {
+                     private static final String __OBFID = "CL_00000640";
+                     public String call()
+@@ -1792,7 +1775,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+                 {
+                     var2 = CrashReport.makeCrashReport(var6, "Ticking screen");
+                     var3 = var2.makeCategory("Affected screen");
+-                    var3.addCrashSectionCallable("Screen name", new Callable()
++                    var3.setDetail("Screen name", new Callable()
+                     {
+                         private static final String __OBFID = "CL_00000642";
+                         public String call()
+@@ -1805,8 +1788,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
              }
          }
  
@@ -3830,7 +3861,7 @@ index a9a0567..3529de8 100644
              this.mcProfiler.endStartSection("mouse");
              int var1;
  
-@@ -1817,7 +1792,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1817,7 +1803,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
  
                  if (Mouse.getEventButtonState())
                  {
@@ -3839,7 +3870,7 @@ index a9a0567..3529de8 100644
                      {
                          this.ingameGUI.func_175187_g().func_175261_b();
                      }
-@@ -1835,7 +1810,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1835,7 +1821,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
  
                      if (var4 != 0)
                      {
@@ -3848,7 +3879,7 @@ index a9a0567..3529de8 100644
                          {
                              var4 = var4 < 0 ? -1 : 1;
  
-@@ -1845,13 +1820,13 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1845,13 +1831,13 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                              }
                              else
                              {
@@ -3865,7 +3896,7 @@ index a9a0567..3529de8 100644
                          }
                      }
  
-@@ -1918,6 +1893,18 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1918,6 +1904,18 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                      }
                      else
                      {
@@ -3884,7 +3915,7 @@ index a9a0567..3529de8 100644
                          if (var1 == 1)
                          {
                              this.displayInGameMenu();
-@@ -2049,13 +2036,13 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2049,13 +2047,13 @@ public class Minecraft implements IThreadListener, IPlayerUsage
              {
                  if (this.gameSettings.keyBindsHotbar[var1].isPressed())
                  {
@@ -3900,7 +3931,7 @@ index a9a0567..3529de8 100644
                      }
                  }
              }
-@@ -2066,20 +2053,20 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2066,20 +2064,20 @@ public class Minecraft implements IThreadListener, IPlayerUsage
              {
                  if (this.playerController.isRidingHorse())
                  {
@@ -3926,7 +3957,7 @@ index a9a0567..3529de8 100644
                  }
              }
  
-@@ -2093,11 +2080,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2093,11 +2091,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                  this.displayGuiScreen(new GuiChat("/"));
              }
  
@@ -3940,7 +3971,7 @@ index a9a0567..3529de8 100644
                  }
  
                  label435:
-@@ -2141,7 +2128,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2141,7 +2139,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                  }
              }
  
@@ -3949,7 +3980,7 @@ index a9a0567..3529de8 100644
              {
                  this.rightClickMouse();
              }
-@@ -2149,16 +2136,16 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2149,16 +2147,16 @@ public class Minecraft implements IThreadListener, IPlayerUsage
              this.sendClickBlockToController(this.currentScreen == null && this.gameSettings.keyBindAttack.getIsKeyPressed() && this.inGameHasFocus);
          }
  
@@ -3969,7 +4000,7 @@ index a9a0567..3529de8 100644
                  }
              }
  
-@@ -2180,12 +2167,12 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2180,12 +2178,12 @@ public class Minecraft implements IThreadListener, IPlayerUsage
  
              if (!this.isGamePaused)
              {
@@ -3985,7 +4016,7 @@ index a9a0567..3529de8 100644
              }
          }
  
-@@ -2195,28 +2182,28 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2195,28 +2193,28 @@ public class Minecraft implements IThreadListener, IPlayerUsage
              this.mcSoundHandler.update();
          }
  
@@ -4019,7 +4050,7 @@ index a9a0567..3529de8 100644
                      }
  
                      throw new ReportedException(var2);
-@@ -2225,9 +2212,12 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2225,9 +2223,12 @@ public class Minecraft implements IThreadListener, IPlayerUsage
  
              this.mcProfiler.endStartSection("animateTick");
  
@@ -4034,7 +4065,7 @@ index a9a0567..3529de8 100644
              }
  
              this.mcProfiler.endStartSection("particles");
-@@ -2315,6 +2305,10 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2315,6 +2316,10 @@ public class Minecraft implements IThreadListener, IPlayerUsage
          var12.sendPacket(new C00Handshake(47, var11.toString(), 0, EnumConnectionState.LOGIN));
          var12.sendPacket(new C00PacketLoginStart(this.getSession().getProfile()));
          this.myNetworkManager = var12;
@@ -4045,7 +4076,7 @@ index a9a0567..3529de8 100644
      }
  
      /**
-@@ -2359,7 +2353,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2359,7 +2364,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
              this.loadingScreen.displayLoadingString("");
          }
  
@@ -4054,7 +4085,7 @@ index a9a0567..3529de8 100644
          {
              if (this.mcResourcePackRepository.getResourcePackInstance() != null)
              {
-@@ -2372,7 +2366,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2372,7 +2377,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
          }
  
          this.mcSoundHandler.stopSounds();
@@ -4063,7 +4094,7 @@ index a9a0567..3529de8 100644
  
          if (worldClientIn != null)
          {
-@@ -2386,22 +2380,22 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2386,22 +2391,22 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                  this.effectRenderer.clearEffects(worldClientIn);
              }
  
@@ -4095,7 +4126,7 @@ index a9a0567..3529de8 100644
          }
  
          System.gc();
-@@ -2410,32 +2404,32 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2410,32 +2415,32 @@ public class Minecraft implements IThreadListener, IPlayerUsage
  
      public void setDimensionAndSpawnPlayer(int dimension)
      {
@@ -4148,7 +4179,7 @@ index a9a0567..3529de8 100644
  
          if (this.currentScreen instanceof GuiGameOver)
          {
-@@ -2453,7 +2447,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2453,7 +2458,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
  
      public NetHandlerPlayClient getNetHandler()
      {
@@ -4157,7 +4188,7 @@ index a9a0567..3529de8 100644
      }
  
      public static boolean isGuiEnabled()
-@@ -2481,7 +2475,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2481,7 +2486,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
      {
          if (this.objectMouseOver != null)
          {
@@ -4166,7 +4197,7 @@ index a9a0567..3529de8 100644
              int var3 = 0;
              boolean var4 = false;
              TileEntity var5 = null;
-@@ -2489,15 +2483,15 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2489,15 +2494,15 @@ public class Minecraft implements IThreadListener, IPlayerUsage
  
              if (this.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
              {
@@ -4185,7 +4216,7 @@ index a9a0567..3529de8 100644
  
                  if (var2 == null)
                  {
-@@ -2506,15 +2500,19 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2506,15 +2511,19 @@ public class Minecraft implements IThreadListener, IPlayerUsage
  
                  if (var1 && GuiScreen.isCtrlKeyDown())
                  {
@@ -4207,7 +4238,7 @@ index a9a0567..3529de8 100644
                  if (this.objectMouseOver.typeOfHit != MovingObjectPosition.MovingObjectType.ENTITY || this.objectMouseOver.entityHit == null || !var1)
                  {
                      return;
-@@ -2595,7 +2593,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2595,7 +2604,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                  }
              }
  
@@ -4216,7 +4247,7 @@ index a9a0567..3529de8 100644
  
              if (var5 == null)
              {
-@@ -2617,7 +2615,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2617,7 +2626,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
  
              if (var1)
              {
@@ -4225,7 +4256,97 @@ index a9a0567..3529de8 100644
                  this.playerController.sendSlotPacket(var13.getStackInSlot(var13.currentItem), var16);
              }
          }
-@@ -2710,9 +2708,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2628,7 +2637,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+      */
+     public CrashReport addGraphicsAndWorldToCrashReport(CrashReport theCrash)
+     {
+-        theCrash.getCategory().addCrashSectionCallable("Launched Version", new Callable()
++        theCrash.getCategory().setDetail("Launched Version", new Callable()
+         {
+             private static final String __OBFID = "CL_00000643";
+             public String call()
+@@ -2636,7 +2645,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+                 return Minecraft.this.launchedVersion;
+             }
+         });
+-        theCrash.getCategory().addCrashSectionCallable("LWJGL", new Callable()
++        theCrash.getCategory().setDetail("LWJGL", new Callable()
+         {
+             private static final String __OBFID = "CL_00000644";
+             public String call()
+@@ -2644,7 +2653,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+                 return Sys.getVersion();
+             }
+         });
+-        theCrash.getCategory().addCrashSectionCallable("OpenGL", new Callable()
++        theCrash.getCategory().setDetail("OpenGL", new Callable()
+         {
+             private static final String __OBFID = "CL_00000645";
+             public String call()
+@@ -2652,7 +2661,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+                 return GL11.glGetString(GL11.GL_RENDERER) + " GL version " + GL11.glGetString(GL11.GL_VERSION) + ", " + GL11.glGetString(GL11.GL_VENDOR);
+             }
+         });
+-        theCrash.getCategory().addCrashSectionCallable("GL Caps", new Callable()
++        theCrash.getCategory().setDetail("GL Caps", new Callable()
+         {
+             private static final String __OBFID = "CL_00000646";
+             public String call()
+@@ -2660,7 +2669,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+                 return OpenGlHelper.func_153172_c();
+             }
+         });
+-        theCrash.getCategory().addCrashSectionCallable("Using VBOs", new Callable()
++        theCrash.getCategory().setDetail("Using VBOs", new Callable()
+         {
+             private static final String __OBFID = "CL_00000647";
+             public String call()
+@@ -2668,7 +2677,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+                 return Minecraft.this.gameSettings.field_178881_t ? "Yes" : "No";
+             }
+         });
+-        theCrash.getCategory().addCrashSectionCallable("Is Modded", new Callable()
++        theCrash.getCategory().setDetail("Is Modded", new Callable()
+         {
+             private static final String __OBFID = "CL_00000633";
+             public String call()
+@@ -2677,7 +2686,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+                 return !var1.equals("vanilla") ? "Definitely; Client brand changed to \'" + var1 + "\'" : (Minecraft.class.getSigners() == null ? "Very likely; Jar signature invalidated" : "Probably not. Jar signature remains and client brand is untouched.");
+             }
+         });
+-        theCrash.getCategory().addCrashSectionCallable("Type", new Callable()
++        theCrash.getCategory().setDetail("Type", new Callable()
+         {
+             private static final String __OBFID = "CL_00000634";
+             public String call()
+@@ -2685,7 +2694,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+                 return "Client (map_client.txt)";
+             }
+         });
+-        theCrash.getCategory().addCrashSectionCallable("Resource Packs", new Callable()
++        theCrash.getCategory().setDetail("Resource Packs", new Callable()
+         {
+             private static final String __OBFID = "CL_00000635";
+             public String call()
+@@ -2693,7 +2702,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+                 return Minecraft.this.gameSettings.resourcePacks.toString();
+             }
+         });
+-        theCrash.getCategory().addCrashSectionCallable("Current Language", new Callable()
++        theCrash.getCategory().setDetail("Current Language", new Callable()
+         {
+             private static final String __OBFID = "CL_00000636";
+             public String call()
+@@ -2701,7 +2710,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+                 return Minecraft.this.mcLanguageManager.getCurrentLanguage().toString();
+             }
+         });
+-        theCrash.getCategory().addCrashSectionCallable("Profiler Position", new Callable()
++        theCrash.getCategory().setDetail("Profiler Position", new Callable()
+         {
+             private static final String __OBFID = "CL_00000637";
+             public String call()
+@@ -2710,9 +2719,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
              }
          });
  
@@ -4237,7 +4358,7 @@ index a9a0567..3529de8 100644
          }
  
          return theCrash;
-@@ -3031,7 +3029,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -3031,7 +3040,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
  
      public MusicTicker.MusicType getAmbientMusicType()
      {
@@ -4246,7 +4367,7 @@ index a9a0567..3529de8 100644
      }
  
      public IStream getTwitchStream()
-@@ -3073,7 +3071,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -3073,7 +3082,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                          }
                          else if (this.getTwitchStream().func_152928_D() && this.getTwitchStream().func_152936_l())
                          {
@@ -9883,7 +10004,7 @@ index 3931254..a5d71ef 100644
              }
          }
 diff --git a/net/minecraft/client/multiplayer/WorldClient.java b/net/minecraft/client/multiplayer/WorldClient.java
-index a637637..3b687ca 100644
+index a637637..147f502 100644
 --- a/net/minecraft/client/multiplayer/WorldClient.java
 +++ b/net/minecraft/client/multiplayer/WorldClient.java
 @@ -1,10 +1,12 @@
@@ -9932,7 +10053,31 @@ index a637637..3b687ca 100644
              IBlockState var13 = this.getBlockState(var12);
              var13.getBlock().randomDisplayTick(this, var12, var13, var5);
  
-@@ -410,7 +418,7 @@ public class WorldClient extends World
+@@ -389,7 +397,7 @@ public class WorldClient extends World
+     public CrashReportCategory addWorldInfoToCrashReport(CrashReport report)
+     {
+         CrashReportCategory var2 = super.addWorldInfoToCrashReport(report);
+-        var2.addCrashSectionCallable("Forced entities", new Callable()
++        var2.setDetail("Forced entities", new Callable()
+         {
+             private static final String __OBFID = "CL_00000883";
+             public String call()
+@@ -397,7 +405,7 @@ public class WorldClient extends World
+                 return WorldClient.this.entityList.size() + " total; " + WorldClient.this.entityList.toString();
+             }
+         });
+-        var2.addCrashSectionCallable("Retry entities", new Callable()
++        var2.setDetail("Retry entities", new Callable()
+         {
+             private static final String __OBFID = "CL_00000884";
+             public String call()
+@@ -405,15 +413,15 @@ public class WorldClient extends World
+                 return WorldClient.this.entitySpawnQueue.size() + " total; " + WorldClient.this.entitySpawnQueue.toString();
+             }
+         });
+-        var2.addCrashSectionCallable("Server brand", new Callable()
++        var2.setDetail("Server brand", new Callable()
+         {
              private static final String __OBFID = "CL_00000885";
              public String call()
              {
@@ -9940,7 +10085,11 @@ index a637637..3b687ca 100644
 +                return WorldClient.this.mc.player.getClientBrand();
              }
          });
-         var2.addCrashSectionCallable("Server type", new Callable()
+-        var2.addCrashSectionCallable("Server type", new Callable()
++        var2.setDetail("Server type", new Callable()
+         {
+             private static final String __OBFID = "CL_00000886";
+             public String call()
 diff --git a/net/minecraft/client/network/NetHandlerLoginClient.java b/net/minecraft/client/network/NetHandlerLoginClient.java
 index d6a17db..7506221 100644
 --- a/net/minecraft/client/network/NetHandlerLoginClient.java
@@ -10845,7 +10994,7 @@ index 20b65bb..ca743ea 100644
          p_180434_1_.addVertexWithUV((double)(var13 - p_180434_4_ * var16 - p_180434_7_ * var16), (double)(var14 - p_180434_5_ * var16), (double)(var15 - p_180434_6_ * var16 - p_180434_8_ * var16), (double)var10, (double)var12);
          p_180434_1_.addVertexWithUV((double)(var13 - p_180434_4_ * var16 + p_180434_7_ * var16), (double)(var14 + p_180434_5_ * var16), (double)(var15 - p_180434_6_ * var16 + p_180434_8_ * var16), (double)var10, (double)var11);
 diff --git a/net/minecraft/client/particle/EffectRenderer.java b/net/minecraft/client/particle/EffectRenderer.java
-index a523713..5f42136 100644
+index a523713..7e9677a 100644
 --- a/net/minecraft/client/particle/EffectRenderer.java
 +++ b/net/minecraft/client/particle/EffectRenderer.java
 @@ -2,12 +2,14 @@ package net.minecraft.client.particle;
@@ -10863,6 +11012,42 @@ index a523713..5f42136 100644
  import net.minecraft.block.Block;
  import net.minecraft.block.material.Material;
  import net.minecraft.block.state.IBlockState;
+@@ -208,7 +210,7 @@ public class EffectRenderer
+             CrashReport var3 = CrashReport.makeCrashReport(var6, "Ticking Particle");
+             CrashReportCategory var4 = var3.makeCategory("Particle being ticked");
+             final int var5 = p_178923_1_.getFXLayer();
+-            var4.addCrashSectionCallable("Particle", new Callable()
++            var4.setDetail("Particle", new Callable()
+             {
+                 private static final String __OBFID = "CL_00000916";
+                 public String call()
+@@ -216,7 +218,7 @@ public class EffectRenderer
+                     return p_178923_1_.toString();
+                 }
+             });
+-            var4.addCrashSectionCallable("Particle Type", new Callable()
++            var4.setDetail("Particle Type", new Callable()
+             {
+                 private static final String __OBFID = "CL_00000917";
+                 public String call()
+@@ -292,7 +294,7 @@ public class EffectRenderer
+                         {
+                             CrashReport var15 = CrashReport.makeCrashReport(var18, "Rendering Particle");
+                             CrashReportCategory var16 = var15.makeCategory("Particle being rendered");
+-                            var16.addCrashSectionCallable("Particle", new Callable()
++                            var16.setDetail("Particle", new Callable()
+                             {
+                                 private static final String __OBFID = "CL_00000918";
+                                 public String call()
+@@ -300,7 +302,7 @@ public class EffectRenderer
+                                     return var13.toString();
+                                 }
+                             });
+-                            var16.addCrashSectionCallable("Particle Type", new Callable()
++                            var16.setDetail("Particle Type", new Callable()
+                             {
+                                 private static final String __OBFID = "CL_00000919";
+                                 public String call()
 diff --git a/net/minecraft/client/particle/EntityBreakingFX.java b/net/minecraft/client/particle/EntityBreakingFX.java
 index a5b95d5..039a5e6 100644
 --- a/net/minecraft/client/particle/EntityBreakingFX.java
@@ -11066,7 +11251,7 @@ index 21be134..4884931 100644
              var7 = true;
          }
 diff --git a/net/minecraft/client/renderer/EntityRenderer.java b/net/minecraft/client/renderer/EntityRenderer.java
-index 9f404dc..fce47f5 100644
+index 9f404dc..fdbac0a 100644
 --- a/net/minecraft/client/renderer/EntityRenderer.java
 +++ b/net/minecraft/client/renderer/EntityRenderer.java
 @@ -1,11 +1,11 @@
@@ -11297,6 +11482,33 @@ index 9f404dc..fce47f5 100644
              {
                  this.mc.mcProfiler.startSection("level");
                  int var9 = Math.max(Minecraft.func_175610_ah(), 30);
+@@ -1170,7 +1188,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
+                 {
+                     CrashReport var10 = CrashReport.makeCrashReport(var12, "Rendering screen");
+                     CrashReportCategory var11 = var10.makeCategory("Screen render details");
+-                    var11.addCrashSectionCallable("Screen name", new Callable()
++                    var11.setDetail("Screen name", new Callable()
+                     {
+                         private static final String __OBFID = "CL_00000948";
+                         public String call()
+@@ -1178,7 +1196,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
+                             return EntityRenderer.this.mc.currentScreen.getClass().getCanonicalName();
+                         }
+                     });
+-                    var11.addCrashSectionCallable("Mouse location", new Callable()
++                    var11.setDetail("Mouse location", new Callable()
+                     {
+                         private static final String __OBFID = "CL_00000950";
+                         public String call()
+@@ -1186,7 +1204,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
+                             return String.format("Scaled: (%d, %d). Absolute: (%d, %d)", new Object[] {Integer.valueOf(var16), Integer.valueOf(var17), Integer.valueOf(Mouse.getX()), Integer.valueOf(Mouse.getY())});
+                         }
+                     });
+-                    var11.addCrashSectionCallable("Screen size", new Callable()
++                    var11.setDetail("Screen size", new Callable()
+                     {
+                         private static final String __OBFID = "CL_00000951";
+                         public String call()
 @@ -1223,12 +1241,12 @@ public class EntityRenderer implements IResourceManagerReloadListener
  
                  if (this.mc.objectMouseOver != null && this.mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
@@ -11773,7 +11985,7 @@ index 255b3ae..d5962b7 100644
          boolean var3 = false;
  
 diff --git a/net/minecraft/client/renderer/RenderGlobal.java b/net/minecraft/client/renderer/RenderGlobal.java
-index db09dad..181cbba 100644
+index db09dad..62588fe 100644
 --- a/net/minecraft/client/renderer/RenderGlobal.java
 +++ b/net/minecraft/client/renderer/RenderGlobal.java
 @@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
@@ -12006,6 +12218,15 @@ index db09dad..181cbba 100644
          }
  
          var3.addVertex(p_147590_0_.minX, p_147590_0_.minY, p_147590_0_.minZ);
+@@ -2047,7 +2059,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
+                 var18.addCrashSection("Parameters", p_180442_15_);
+             }
+ 
+-            var18.addCrashSectionCallable("Position", new Callable()
++            var18.setDetail("Position", new Callable()
+             {
+                 private static final String __OBFID = "CL_00000955";
+                 public String call()
 diff --git a/net/minecraft/client/renderer/ThreadDownloadImageData.java b/net/minecraft/client/renderer/ThreadDownloadImageData.java
 index 2183c8e..9d3d3f8 100644
 --- a/net/minecraft/client/renderer/ThreadDownloadImageData.java
@@ -12443,7 +12664,7 @@ index ef1550c..c103f1d 100644
              double var31 = var29 * 1.41D;
              double var33 = 0.0D + Math.cos(var26 + 2.356194490192345D) * var31;
 diff --git a/net/minecraft/client/renderer/entity/RenderItem.java b/net/minecraft/client/renderer/entity/RenderItem.java
-index 3da61f1..270ffed 100644
+index 3da61f1..d388267 100644
 --- a/net/minecraft/client/renderer/entity/RenderItem.java
 +++ b/net/minecraft/client/renderer/entity/RenderItem.java
 @@ -3,6 +3,7 @@ package net.minecraft.client.renderer.entity;
@@ -12554,7 +12775,7 @@ index 3da61f1..270ffed 100644
      {
          if (p_180450_1_ != null)
          {
-@@ -417,7 +419,7 @@ public class RenderItem implements IResourceManagerReloadListener
+@@ -417,13 +419,13 @@ public class RenderItem implements IResourceManagerReloadListener
  
              try
              {
@@ -12563,6 +12784,40 @@ index 3da61f1..270ffed 100644
              }
              catch (Throwable var7)
              {
+                 CrashReport var5 = CrashReport.makeCrashReport(var7, "Rendering item");
+                 CrashReportCategory var6 = var5.makeCategory("Item being rendered");
+-                var6.addCrashSectionCallable("Item Type", new Callable()
++                var6.setDetail("Item Type", new Callable()
+                 {
+                     private static final String __OBFID = "CL_00001004";
+                     public String call()
+@@ -431,7 +433,7 @@ public class RenderItem implements IResourceManagerReloadListener
+                         return String.valueOf(p_180450_1_.getItem());
+                     }
+                 });
+-                var6.addCrashSectionCallable("Item Aux", new Callable()
++                var6.setDetail("Item Aux", new Callable()
+                 {
+                     private static final String __OBFID = "CL_00001005";
+                     public String call()
+@@ -439,7 +441,7 @@ public class RenderItem implements IResourceManagerReloadListener
+                         return String.valueOf(p_180450_1_.getMetadata());
+                     }
+                 });
+-                var6.addCrashSectionCallable("Item NBT", new Callable()
++                var6.setDetail("Item NBT", new Callable()
+                 {
+                     private static final String __OBFID = "CL_00001006";
+                     public String call()
+@@ -447,7 +449,7 @@ public class RenderItem implements IResourceManagerReloadListener
+                         return String.valueOf(p_180450_1_.getTagCompound());
+                     }
+                 });
+-                var6.addCrashSectionCallable("Item Foil", new Callable()
++                var6.setDetail("Item Foil", new Callable()
+                 {
+                     private static final String __OBFID = "CL_00001007";
+                     public String call()
 @@ -483,7 +485,7 @@ public class RenderItem implements IResourceManagerReloadListener
                  GlStateManager.disableLighting();
                  GlStateManager.disableDepth();
@@ -12831,7 +13086,7 @@ index d4e344e..7d13e05 100644
                  var10.addVertex(0.866D * (double)var16, (double)var15, (double)(-0.5F * var16));
                  var10.addVertex(0.0D, (double)var15, (double)(1.0F * var16));
 diff --git a/net/minecraft/client/renderer/texture/TextureAtlasSprite.java b/net/minecraft/client/renderer/texture/TextureAtlasSprite.java
-index 3355d8a..4270ef4 100644
+index 3355d8a..8c20dba 100644
 --- a/net/minecraft/client/renderer/texture/TextureAtlasSprite.java
 +++ b/net/minecraft/client/renderer/texture/TextureAtlasSprite.java
 @@ -1,11 +1,13 @@
@@ -12848,6 +13103,15 @@ index 3355d8a..4270ef4 100644
  import net.minecraft.client.resources.data.AnimationFrame;
  import net.minecraft.client.resources.data.AnimationMetadataSection;
  import net.minecraft.crash.CrashReport;
+@@ -349,7 +351,7 @@ public class TextureAtlasSprite
+                     CrashReport var6 = CrashReport.makeCrashReport(var8, "Generating mipmaps for frame");
+                     CrashReportCategory var7 = var6.makeCategory("Frame being iterated");
+                     var7.addCrashSection("Frame index", Integer.valueOf(var3));
+-                    var7.addCrashSectionCallable("Frame sizes", new Callable()
++                    var7.setDetail("Frame sizes", new Callable()
+                     {
+                         private static final String __OBFID = "CL_00001063";
+                         public String call()
 diff --git a/net/minecraft/client/renderer/texture/TextureClock.java b/net/minecraft/client/renderer/texture/TextureClock.java
 index a9f7114..bbdedfe 100644
 --- a/net/minecraft/client/renderer/texture/TextureClock.java
@@ -12885,7 +13149,7 @@ index 91aded9..9b179e2 100644
          else
          {
 diff --git a/net/minecraft/client/renderer/texture/TextureManager.java b/net/minecraft/client/renderer/texture/TextureManager.java
-index 483b69c..8c03e9e 100644
+index 483b69c..4f8340c 100644
 --- a/net/minecraft/client/renderer/texture/TextureManager.java
 +++ b/net/minecraft/client/renderer/texture/TextureManager.java
 @@ -2,21 +2,26 @@ package net.minecraft.client.renderer.texture;
@@ -12928,8 +13192,17 @@ index 483b69c..8c03e9e 100644
          boolean var3 = true;
          ITextureObject p_110579_2_2 = p_110579_2_;
  
+@@ -78,7 +89,7 @@ public class TextureManager implements ITickable, IResourceManagerReloadListener
+             CrashReport var5 = CrashReport.makeCrashReport(var9, "Registering texture");
+             CrashReportCategory var6 = var5.makeCategory("Resource location being registered");
+             var6.addCrashSection("Resource location", p_110579_1_);
+-            var6.addCrashSectionCallable("Texture object class", new Callable()
++            var6.setDetail("Texture object class", new Callable()
+             {
+                 private static final String __OBFID = "CL_00001065";
+                 public String call()
 diff --git a/net/minecraft/client/renderer/texture/TextureMap.java b/net/minecraft/client/renderer/texture/TextureMap.java
-index a7aaeab..8247a11 100644
+index a7aaeab..41612be 100644
 --- a/net/minecraft/client/renderer/texture/TextureMap.java
 +++ b/net/minecraft/client/renderer/texture/TextureMap.java
 @@ -2,6 +2,7 @@ package net.minecraft.client.renderer.texture;
@@ -12956,6 +13229,33 @@ index a7aaeab..8247a11 100644
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
  
+@@ -191,7 +194,7 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
+             {
+                 CrashReport var33 = CrashReport.makeCrashReport(var21, "Applying mipmap");
+                 CrashReportCategory var35 = var33.makeCategory("Sprite being mipmapped");
+-                var35.addCrashSectionCallable("Sprite name", new Callable()
++                var35.setDetail("Sprite name", new Callable()
+                 {
+                     private static final String __OBFID = "CL_00001059";
+                     public String call()
+@@ -199,7 +202,7 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
+                         return var29.getIconName();
+                     }
+                 });
+-                var35.addCrashSectionCallable("Sprite size", new Callable()
++                var35.setDetail("Sprite size", new Callable()
+                 {
+                     private static final String __OBFID = "CL_00001060";
+                     public String call()
+@@ -207,7 +210,7 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
+                         return var29.getIconWidth() + " x " + var29.getIconHeight();
+                     }
+                 });
+-                var35.addCrashSectionCallable("Sprite frames", new Callable()
++                var35.setDetail("Sprite frames", new Callable()
+                 {
+                     private static final String __OBFID = "CL_00001061";
+                     public String call()
 diff --git a/net/minecraft/client/renderer/texture/TextureUtil.java b/net/minecraft/client/renderer/texture/TextureUtil.java
 index 63001b8..a3d54f2 100644
 --- a/net/minecraft/client/renderer/texture/TextureUtil.java
@@ -13521,7 +13821,7 @@ index 01906b6..6695304 100644
                  catch (NBTException var14)
                  {
 diff --git a/net/minecraft/command/server/CommandBlockLogic.java b/net/minecraft/command/server/CommandBlockLogic.java
-index d01df20..778d707 100644
+index d01df20..5a05f48 100644
 --- a/net/minecraft/command/server/CommandBlockLogic.java
 +++ b/net/minecraft/command/server/CommandBlockLogic.java
 @@ -1,9 +1,11 @@
@@ -13536,6 +13836,24 @@ index d01df20..778d707 100644
  import net.minecraft.command.CommandResultStats;
  import net.minecraft.command.ICommandManager;
  import net.minecraft.command.ICommandSender;
+@@ -144,7 +146,7 @@ public abstract class CommandBlockLogic implements ICommandSender
+             {
+                 CrashReport var5 = CrashReport.makeCrashReport(var7, "Executing command block");
+                 CrashReportCategory var6 = var5.makeCategory("Command to be executed");
+-                var6.addCrashSectionCallable("Command", new Callable()
++                var6.setDetail("Command", new Callable()
+                 {
+                     private static final String __OBFID = "CL_00002154";
+                     public String func_180324_a()
+@@ -156,7 +158,7 @@ public abstract class CommandBlockLogic implements ICommandSender
+                         return this.func_180324_a();
+                     }
+                 });
+-                var6.addCrashSectionCallable("Name", new Callable()
++                var6.setDetail("Name", new Callable()
+                 {
+                     private static final String __OBFID = "CL_00002153";
+                     public String func_180326_a()
 @@ -205,7 +207,13 @@ public abstract class CommandBlockLogic implements ICommandSender
      {
          if (this.trackOutput && this.getEntityWorld() != null && !this.getEntityWorld().isRemote)
@@ -13617,7 +13935,7 @@ index 19f3f05..be21691 100644
                          }
                          catch (NBTException var13)
 diff --git a/net/minecraft/crash/CrashReport.java b/net/minecraft/crash/CrashReport.java
-index 0a4366d..892f197 100644
+index 0a4366d..25894ff 100644
 --- a/net/minecraft/crash/CrashReport.java
 +++ b/net/minecraft/crash/CrashReport.java
 @@ -1,6 +1,7 @@
@@ -13647,17 +13965,73 @@ index 0a4366d..892f197 100644
  public class CrashReport
  {
      private static final Logger logger = LogManager.getLogger();
-@@ -62,6 +68,10 @@ public class CrashReport
+@@ -54,7 +60,7 @@ public class CrashReport
+      */
+     private void populateEnvironment()
+     {
+-        this.theReportCategory.addCrashSectionCallable("Minecraft Version", new Callable()
++        this.theReportCategory.setDetail("Minecraft Version", new Callable()
+         {
+             private static final String __OBFID = "CL_00001197";
+             public String call()
+@@ -62,7 +68,11 @@ public class CrashReport
                  return "1.8";
              }
          });
+-        this.theReportCategory.addCrashSectionCallable("Operating System", new Callable()
 +        
 +        //TODO: Client
-+        this.theReportCategory.addCrashSectionCallable("Wurst Client Version", new CrashSectionWurstVersion());
++        this.theReportCategory.setDetail("Wurst Client Version", new CrashSectionWurstVersion());
 +        
-         this.theReportCategory.addCrashSectionCallable("Operating System", new Callable()
++        this.theReportCategory.setDetail("Operating System", new Callable()
          {
              private static final String __OBFID = "CL_00001222";
+             public String call()
+@@ -70,7 +80,7 @@ public class CrashReport
+                 return System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ") version " + System.getProperty("os.version");
+             }
+         });
+-        this.theReportCategory.addCrashSectionCallable("Java Version", new Callable()
++        this.theReportCategory.setDetail("Java Version", new Callable()
+         {
+             private static final String __OBFID = "CL_00001248";
+             public String call()
+@@ -78,7 +88,7 @@ public class CrashReport
+                 return System.getProperty("java.version") + ", " + System.getProperty("java.vendor");
+             }
+         });
+-        this.theReportCategory.addCrashSectionCallable("Java VM Version", new Callable()
++        this.theReportCategory.setDetail("Java VM Version", new Callable()
+         {
+             private static final String __OBFID = "CL_00001275";
+             public String call()
+@@ -86,7 +96,7 @@ public class CrashReport
+                 return System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor");
+             }
+         });
+-        this.theReportCategory.addCrashSectionCallable("Memory", new Callable()
++        this.theReportCategory.setDetail("Memory", new Callable()
+         {
+             private static final String __OBFID = "CL_00001302";
+             public String call()
+@@ -101,7 +111,7 @@ public class CrashReport
+                 return var6 + " bytes (" + var12 + " MB) / " + var4 + " bytes (" + var10 + " MB) up to " + var2 + " bytes (" + var8 + " MB)";
+             }
+         });
+-        this.theReportCategory.addCrashSectionCallable("JVM Flags", new Callable()
++        this.theReportCategory.setDetail("JVM Flags", new Callable()
+         {
+             private static final String __OBFID = "CL_00001329";
+             public String call()
+@@ -130,7 +140,7 @@ public class CrashReport
+                 return String.format("%d total; %s", new Object[] {Integer.valueOf(var3), var4.toString()});
+             }
+         });
+-        this.theReportCategory.addCrashSectionCallable("IntCache", new Callable()
++        this.theReportCategory.setDetail("IntCache", new Callable()
+         {
+             private static final String __OBFID = "CL_00001355";
+             public String call()
 @@ -246,7 +256,10 @@ public class CrashReport
      public String getCompleteReport()
      {
@@ -13682,7 +14056,7 @@ index 0a4366d..892f197 100644
          try
          {
 diff --git a/net/minecraft/crash/CrashReportCategory.java b/net/minecraft/crash/CrashReportCategory.java
-index 386cfae..6cc2c1f 100644
+index 386cfae..bc17a45 100644
 --- a/net/minecraft/crash/CrashReportCategory.java
 +++ b/net/minecraft/crash/CrashReportCategory.java
 @@ -1,11 +1,14 @@
@@ -13700,6 +14074,60 @@ index 386cfae..6cc2c1f 100644
  import net.minecraft.util.BlockPos;
  
  public class CrashReportCategory
+@@ -99,7 +102,7 @@ public class CrashReportCategory
+     /**
+      * Adds a Crashreport section with the given name with the value set to the result of the given Callable;
+      */
+-    public void addCrashSectionCallable(String sectionName, Callable callable)
++    public void setDetail(String sectionName, Callable callable)
+     {
+         try
+         {
+@@ -231,7 +234,7 @@ public class CrashReportCategory
+     public static void addBlockInfo(CrashReportCategory category, final BlockPos pos, final Block blockIn, final int blockData)
+     {
+         final int var4 = Block.getIdFromBlock(blockIn);
+-        category.addCrashSectionCallable("Block type", new Callable()
++        category.setDetail("Block type", new Callable()
+         {
+             private static final String __OBFID = "CL_00001426";
+             public String call()
+@@ -246,7 +249,7 @@ public class CrashReportCategory
+                 }
+             }
+         });
+-        category.addCrashSectionCallable("Block data value", new Callable()
++        category.setDetail("Block data value", new Callable()
+         {
+             private static final String __OBFID = "CL_00001441";
+             public String call()
+@@ -262,7 +265,7 @@ public class CrashReportCategory
+                 }
+             }
+         });
+-        category.addCrashSectionCallable("Block location", new Callable()
++        category.setDetail("Block location", new Callable()
+         {
+             private static final String __OBFID = "CL_00001465";
+             public String call()
+@@ -274,7 +277,7 @@ public class CrashReportCategory
+ 
+     public static void addBlockInfo(CrashReportCategory category, final BlockPos pos, final IBlockState state)
+     {
+-        category.addCrashSectionCallable("Block", new Callable()
++        category.setDetail("Block", new Callable()
+         {
+             private static final String __OBFID = "CL_00002617";
+             public String func_175753_a()
+@@ -286,7 +289,7 @@ public class CrashReportCategory
+                 return this.func_175753_a();
+             }
+         });
+-        category.addCrashSectionCallable("Block location", new Callable()
++        category.setDetail("Block location", new Callable()
+         {
+             private static final String __OBFID = "CL_00002616";
+             public String func_175751_a()
 diff --git a/net/minecraft/entity/DataWatcher.java b/net/minecraft/entity/DataWatcher.java
 index 6bd900a..cdf03c7 100644
 --- a/net/minecraft/entity/DataWatcher.java
@@ -13749,7 +14177,7 @@ index 6bd900a..cdf03c7 100644
  
      /**
 diff --git a/net/minecraft/entity/Entity.java b/net/minecraft/entity/Entity.java
-index 7865119..e7c58e0 100644
+index 7865119..1c12c1f 100644
 --- a/net/minecraft/entity/Entity.java
 +++ b/net/minecraft/entity/Entity.java
 @@ -5,6 +5,7 @@ import java.util.List;
@@ -13955,6 +14383,42 @@ index 7865119..e7c58e0 100644
              {
                  var16 = 1.0D - var12;
                  var15 = 5;
+@@ -2505,7 +2538,7 @@ public abstract class Entity implements ICommandSender
+ 
+     public void addEntityCrashInfo(CrashReportCategory category)
+     {
+-        category.addCrashSectionCallable("Entity Type", new Callable()
++        category.setDetail("Entity Type", new Callable()
+         {
+             private static final String __OBFID = "CL_00001534";
+             public String call()
+@@ -2514,7 +2547,7 @@ public abstract class Entity implements ICommandSender
+             }
+         });
+         category.addCrashSection("Entity ID", Integer.valueOf(this.entityId));
+-        category.addCrashSectionCallable("Entity Name", new Callable()
++        category.setDetail("Entity Name", new Callable()
+         {
+             private static final String __OBFID = "CL_00001535";
+             public String call()
+@@ -2525,7 +2558,7 @@ public abstract class Entity implements ICommandSender
+         category.addCrashSection("Entity\'s Exact location", String.format("%.2f, %.2f, %.2f", new Object[] {Double.valueOf(this.posX), Double.valueOf(this.posY), Double.valueOf(this.posZ)}));
+         category.addCrashSection("Entity\'s Block location", CrashReportCategory.getCoordinateInfo((double)MathHelper.floor_double(this.posX), (double)MathHelper.floor_double(this.posY), (double)MathHelper.floor_double(this.posZ)));
+         category.addCrashSection("Entity\'s Momentum", String.format("%.2f, %.2f, %.2f", new Object[] {Double.valueOf(this.motionX), Double.valueOf(this.motionY), Double.valueOf(this.motionZ)}));
+-        category.addCrashSectionCallable("Entity\'s Rider", new Callable()
++        category.setDetail("Entity\'s Rider", new Callable()
+         {
+             private static final String __OBFID = "CL_00002259";
+             public String func_180118_a()
+@@ -2537,7 +2570,7 @@ public abstract class Entity implements ICommandSender
+                 return this.func_180118_a();
+             }
+         });
+-        category.addCrashSectionCallable("Entity\'s Vehicle", new Callable()
++        category.setDetail("Entity\'s Vehicle", new Callable()
+         {
+             private static final String __OBFID = "CL_00002258";
+             public String func_180116_a()
 diff --git a/net/minecraft/entity/EntityHanging.java b/net/minecraft/entity/EntityHanging.java
 index da1efce..5ca151d 100644
 --- a/net/minecraft/entity/EntityHanging.java
@@ -14030,7 +14494,7 @@ index 80f1f20..b96ec69 100644
                  var5 = 0.8F;
                  var6 = 0.02F;
 diff --git a/net/minecraft/entity/EntityTracker.java b/net/minecraft/entity/EntityTracker.java
-index 14079cc..f2ac739 100644
+index 14079cc..2cb4fd4 100644
 --- a/net/minecraft/entity/EntityTracker.java
 +++ b/net/minecraft/entity/EntityTracker.java
 @@ -2,10 +2,12 @@ package net.minecraft.entity;
@@ -14054,6 +14518,15 @@ index 14079cc..f2ac739 100644
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
  
+@@ -214,7 +217,7 @@ public class EntityTracker
+             CrashReport var6 = CrashReport.makeCrashReport(var11, "Adding entity to track");
+             CrashReportCategory var7 = var6.makeCategory("Entity To Track");
+             var7.addCrashSection("Tracking range", p_72785_2_ + " blocks");
+-            var7.addCrashSectionCallable("Update interval", new Callable()
++            var7.setDetail("Update interval", new Callable()
+             {
+                 private static final String __OBFID = "CL_00001432";
+                 public String call()
 diff --git a/net/minecraft/entity/ai/EntityAIDoorInteract.java b/net/minecraft/entity/ai/EntityAIDoorInteract.java
 index 86793ed..b6f7e86 100644
 --- a/net/minecraft/entity/ai/EntityAIDoorInteract.java
@@ -14680,7 +15153,7 @@ index 385fbff..c7cdf08 100644
              this.func_175133_bi();
              this.setInvisible(true);
 diff --git a/net/minecraft/entity/player/InventoryPlayer.java b/net/minecraft/entity/player/InventoryPlayer.java
-index 634f3d1..68212ad 100644
+index 634f3d1..f5daf24 100644
 --- a/net/minecraft/entity/player/InventoryPlayer.java
 +++ b/net/minecraft/entity/player/InventoryPlayer.java
 @@ -1,6 +1,7 @@
@@ -14691,6 +15164,15 @@ index 634f3d1..68212ad 100644
  import net.minecraft.block.Block;
  import net.minecraft.command.server.CommandTestForBlock;
  import net.minecraft.crash.CrashReport;
+@@ -442,7 +443,7 @@ public class InventoryPlayer implements IInventory
+                 CrashReportCategory var4 = var3.makeCategory("Item being added");
+                 var4.addCrashSection("Item ID", Integer.valueOf(Item.getIdFromItem(p_70441_1_.getItem())));
+                 var4.addCrashSection("Item data", Integer.valueOf(p_70441_1_.getMetadata()));
+-                var4.addCrashSectionCallable("Item name", new Callable()
++                var4.setDetail("Item name", new Callable()
+                 {
+                     private static final String __OBFID = "CL_00001710";
+                     public String call()
 @@ -605,7 +606,7 @@ public class InventoryPlayer implements IInventory
  
              if (var5 != null)
@@ -15096,7 +15578,7 @@ index 537dc24..1bff09c 100644
          p_180713_0_ = p_180713_0_.trim();
  
 diff --git a/net/minecraft/nbt/NBTTagCompound.java b/net/minecraft/nbt/NBTTagCompound.java
-index 6fcada4..1cdd1ef 100644
+index 6fcada4..8dd41b5 100644
 --- a/net/minecraft/nbt/NBTTagCompound.java
 +++ b/net/minecraft/nbt/NBTTagCompound.java
 @@ -1,6 +1,7 @@
@@ -15119,8 +15601,26 @@ index 6fcada4..1cdd1ef 100644
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
  
+@@ -433,7 +436,7 @@ public class NBTTagCompound extends NBTBase
+     {
+         CrashReport var4 = CrashReport.makeCrashReport(ex, "Reading NBT data");
+         CrashReportCategory var5 = var4.makeCategoryDepth("Corrupt NBT tag", 1);
+-        var5.addCrashSectionCallable("Tag type found", new Callable()
++        var5.setDetail("Tag type found", new Callable()
+         {
+             private static final String __OBFID = "CL_00001216";
+             public String call()
+@@ -441,7 +444,7 @@ public class NBTTagCompound extends NBTBase
+                 return NBTBase.NBT_TYPES[((NBTBase)NBTTagCompound.this.tagMap.get(key)).getId()];
+             }
+         });
+-        var5.addCrashSectionCallable("Tag type expected", new Callable()
++        var5.setDetail("Tag type expected", new Callable()
+         {
+             private static final String __OBFID = "CL_00001217";
+             public String call()
 diff --git a/net/minecraft/network/NetHandlerPlayServer.java b/net/minecraft/network/NetHandlerPlayServer.java
-index 3301ef8..65aa056 100644
+index 3301ef8..85698a2 100644
 --- a/net/minecraft/network/NetHandlerPlayServer.java
 +++ b/net/minecraft/network/NetHandlerPlayServer.java
 @@ -2,9 +2,11 @@ package net.minecraft.network;
@@ -15186,6 +15686,15 @@ index 3301ef8..65aa056 100644
          {
              Entity var2 = null;
              WorldServer[] var3 = this.serverController.worldServers;
+@@ -744,7 +749,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
+         {
+             CrashReport var6 = CrashReport.makeCrashReport(var5, "Sending packet");
+             CrashReportCategory var4 = var6.makeCategory("Packet being sent");
+-            var4.addCrashSectionCallable("Packet class", new Callable()
++            var4.setDetail("Packet class", new Callable()
+             {
+                 private static final String __OBFID = "CL_00002270";
+                 public String func_180225_a()
 @@ -1012,7 +1017,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
  
          if (this.playerEntity.openContainer.windowId == packetIn.getWindowId() && this.playerEntity.openContainer.getCanCraft(this.playerEntity))
@@ -15839,7 +16348,7 @@ index ee166ff..0d87e5b 100644
      }
  }
 diff --git a/net/minecraft/network/NetworkSystem.java b/net/minecraft/network/NetworkSystem.java
-index 93defcf..3ac4a53 100644
+index 93defcf..508d727 100644
 --- a/net/minecraft/network/NetworkSystem.java
 +++ b/net/minecraft/network/NetworkSystem.java
 @@ -2,6 +2,7 @@ package net.minecraft.network;
@@ -15878,6 +16387,15 @@ index 93defcf..3ac4a53 100644
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
  
+@@ -214,7 +219,7 @@ public class NetworkSystem
+                             {
+                                 CrashReport var10 = CrashReport.makeCrashReport(var8, "Ticking memory connection");
+                                 CrashReportCategory var6 = var10.makeCategory("Ticking connection");
+-                                var6.addCrashSectionCallable("Connection", new Callable()
++                                var6.setDetail("Connection", new Callable()
+                                 {
+                                     private static final String __OBFID = "CL_00002272";
+                                     public String func_180229_a()
 diff --git a/net/minecraft/network/PacketBuffer.java b/net/minecraft/network/PacketBuffer.java
 index c695f6f..8dcd696 100644
 --- a/net/minecraft/network/PacketBuffer.java
@@ -16108,7 +16626,7 @@ index 0172d14..e292906 100644
          if (field_178823_g == null)
          {
 diff --git a/net/minecraft/server/MinecraftServer.java b/net/minecraft/server/MinecraftServer.java
-index 50c5920..c095dad 100644
+index 50c5920..cd8d742 100644
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
 @@ -10,10 +10,12 @@ import com.mojang.authlib.GameProfile;
@@ -16142,8 +16660,26 @@ index 50c5920..c095dad 100644
  import org.apache.commons.lang3.Validate;
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
+@@ -893,7 +898,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
+      */
+     public CrashReport addServerInfoToCrashReport(CrashReport report)
+     {
+-        report.getCategory().addCrashSectionCallable("Profiler Position", new Callable()
++        report.getCategory().setDetail("Profiler Position", new Callable()
+         {
+             private static final String __OBFID = "CL_00001418";
+             public String func_179879_a()
+@@ -908,7 +913,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IThre
+ 
+         if (this.serverConfigManager != null)
+         {
+-            report.getCategory().addCrashSectionCallable("Player Count", new Callable()
++            report.getCategory().setDetail("Player Count", new Callable()
+             {
+                 private static final String __OBFID = "CL_00001419";
+                 public String call()
 diff --git a/net/minecraft/server/integrated/IntegratedServer.java b/net/minecraft/server/integrated/IntegratedServer.java
-index 4dd53d1..0386152 100644
+index 4dd53d1..c38937b 100644
 --- a/net/minecraft/server/integrated/IntegratedServer.java
 +++ b/net/minecraft/server/integrated/IntegratedServer.java
 @@ -2,6 +2,7 @@ package net.minecraft.server.integrated;
@@ -16192,6 +16728,24 @@ index 4dd53d1..0386152 100644
      }
  
      /**
+@@ -275,7 +278,7 @@ public class IntegratedServer extends MinecraftServer
+     public CrashReport addServerInfoToCrashReport(CrashReport report)
+     {
+         report = super.addServerInfoToCrashReport(report);
+-        report.getCategory().addCrashSectionCallable("Type", new Callable()
++        report.getCategory().setDetail("Type", new Callable()
+         {
+             private static final String __OBFID = "CL_00001130";
+             public String call()
+@@ -283,7 +286,7 @@ public class IntegratedServer extends MinecraftServer
+                 return "Integrated Server (map_client.txt)";
+             }
+         });
+-        report.getCategory().addCrashSectionCallable("Is Modded", new Callable()
++        report.getCategory().setDetail("Is Modded", new Callable()
+         {
+             private static final String __OBFID = "CL_00001131";
+             public String call()
 @@ -308,9 +311,9 @@ public class IntegratedServer extends MinecraftServer
      {
          super.setDifficultyForAllWorlds(difficulty);
@@ -16422,6 +16976,37 @@ index 409902e..a0998eb 100644
  public class NetHandlerLoginServer implements INetHandlerLoginServer, IUpdatePlayerListBox
  {
      private static final AtomicInteger AUTHENTICATOR_THREAD_ID = new AtomicInteger(0);
+diff --git a/net/minecraft/tileentity/TileEntity.java b/net/minecraft/tileentity/TileEntity.java
+index 0a42413..fc49f35 100644
+--- a/net/minecraft/tileentity/TileEntity.java
++++ b/net/minecraft/tileentity/TileEntity.java
+@@ -246,7 +246,7 @@ public abstract class TileEntity
+ 
+     public void addInfoToCrashReport(CrashReportCategory reportCategory)
+     {
+-        reportCategory.addCrashSectionCallable("Name", new Callable()
++        reportCategory.setDetail("Name", new Callable()
+         {
+             private static final String __OBFID = "CL_00000341";
+             public String call()
+@@ -258,7 +258,7 @@ public abstract class TileEntity
+         if (this.worldObj != null)
+         {
+             CrashReportCategory.addBlockInfo(reportCategory, this.pos, this.getBlockType(), this.getBlockMetadata());
+-            reportCategory.addCrashSectionCallable("Actual block type", new Callable()
++            reportCategory.setDetail("Actual block type", new Callable()
+             {
+                 private static final String __OBFID = "CL_00000343";
+                 public String call()
+@@ -275,7 +275,7 @@ public abstract class TileEntity
+                     }
+                 }
+             });
+-            reportCategory.addCrashSectionCallable("Actual block data value", new Callable()
++            reportCategory.setDetail("Actual block data value", new Callable()
+             {
+                 private static final String __OBFID = "CL_00000344";
+                 public String call()
 diff --git a/net/minecraft/tileentity/TileEntityChest.java b/net/minecraft/tileentity/TileEntityChest.java
 index 1ad9b03..1b3d95e 100644
 --- a/net/minecraft/tileentity/TileEntityChest.java
@@ -17155,7 +17740,7 @@ index fc9a24e..1401834 100644
  
      public boolean makePortal(Entity p_85188_1_)
 diff --git a/net/minecraft/world/World.java b/net/minecraft/world/World.java
-index 18e9ecf..d1e4f35 100644
+index 18e9ecf..913f084 100644
 --- a/net/minecraft/world/World.java
 +++ b/net/minecraft/world/World.java
 @@ -3,6 +3,7 @@ package net.minecraft.world;
@@ -17201,6 +17786,15 @@ index 18e9ecf..d1e4f35 100644
      /** The WorldProvider instance that World uses. */
      public final WorldProvider provider;
      protected List worldAccesses = Lists.newArrayList();
+@@ -190,7 +192,7 @@ public abstract class World implements IBlockAccess
+             {
+                 CrashReport var4 = CrashReport.makeCrashReport(var6, "Getting biome");
+                 CrashReportCategory var5 = var4.makeCategory("Coordinates of biome request");
+-                var5.addCrashSectionCallable("Location", new Callable()
++                var5.setDetail("Location", new Callable()
+                 {
+                     private static final String __OBFID = "CL_00000141";
+                     public String call()
 @@ -234,7 +236,7 @@ public abstract class World implements IBlockAccess
      {
          BlockPos var2;
@@ -17267,6 +17861,15 @@ index 18e9ecf..d1e4f35 100644
          }
      }
  
+@@ -541,7 +543,7 @@ public abstract class World implements IBlockAccess
+             {
+                 CrashReport var5 = CrashReport.makeCrashReport(var7, "Exception while updating neighbours");
+                 CrashReportCategory var6 = var5.makeCategory("Block being updated");
+-                var6.addCrashSectionCallable("Source block type", new Callable()
++                var6.setDetail("Source block type", new Callable()
+                 {
+                     private static final String __OBFID = "CL_00000142";
+                     public String call()
 @@ -588,7 +590,7 @@ public abstract class World implements IBlockAccess
              }
              else
@@ -17447,6 +18050,24 @@ index 18e9ecf..d1e4f35 100644
      }
  
      public int func_175687_A(BlockPos p_175687_1_)
+@@ -3706,7 +3705,7 @@ public abstract class World implements IBlockAccess
+     {
+         CrashReportCategory var2 = report.makeCategoryDepth("Affected level", 1);
+         var2.addCrashSection("Level name", this.worldInfo == null ? "????" : this.worldInfo.getWorldName());
+-        var2.addCrashSectionCallable("All players", new Callable()
++        var2.setDetail("All players", new Callable()
+         {
+             private static final String __OBFID = "CL_00000143";
+             public String call()
+@@ -3714,7 +3713,7 @@ public abstract class World implements IBlockAccess
+                 return World.this.playerEntities.size() + " total; " + World.this.playerEntities.toString();
+             }
+         });
+-        var2.addCrashSectionCallable("Chunk stats", new Callable()
++        var2.setDetail("Chunk stats", new Callable()
+         {
+             private static final String __OBFID = "CL_00000144";
+             public String call()
 @@ -3727,6 +3726,10 @@ public abstract class World implements IBlockAccess
          {
              this.worldInfo.addToCrashReport(var2);
@@ -17578,7 +18199,7 @@ index 366413e..0e962a9 100644
  import net.minecraft.crash.CrashReportCategory;
  import net.minecraft.util.BlockPos;
 diff --git a/net/minecraft/world/chunk/Chunk.java b/net/minecraft/world/chunk/Chunk.java
-index 4b4d8b9..c73dd67 100644
+index 4b4d8b9..b40271c 100644
 --- a/net/minecraft/world/chunk/Chunk.java
 +++ b/net/minecraft/world/chunk/Chunk.java
 @@ -3,6 +3,7 @@ package net.minecraft.world.chunk;
@@ -17605,6 +18226,33 @@ index 4b4d8b9..c73dd67 100644
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
  
+@@ -587,7 +590,7 @@ public class Chunk
+         catch (ReportedException var6)
+         {
+             CrashReportCategory var5 = var6.getCrashReport().makeCategory("Block being got");
+-            var5.addCrashSectionCallable("Location", new Callable()
++            var5.setDetail("Location", new Callable()
+             {
+                 private static final String __OBFID = "CL_00000374";
+                 public String call()
+@@ -608,7 +611,7 @@ public class Chunk
+         catch (ReportedException var4)
+         {
+             CrashReportCategory var3 = var4.getCrashReport().makeCategory("Block being got");
+-            var3.addCrashSectionCallable("Location", new Callable()
++            var3.setDetail("Location", new Callable()
+             {
+                 private static final String __OBFID = "CL_00002011";
+                 public String func_177455_a()
+@@ -665,7 +668,7 @@ public class Chunk
+             {
+                 CrashReport var3 = CrashReport.makeCrashReport(var6, "Getting block state");
+                 CrashReportCategory var4 = var3.makeCategory("Block being got");
+-                var4.addCrashSectionCallable("Location", new Callable()
++                var4.setDetail("Location", new Callable()
+                 {
+                     private static final String __OBFID = "CL_00002010";
+                     public String func_177448_a()
 @@ -1256,7 +1259,7 @@ public class Chunk
  
                  if (!var9.blocksMovement() && !var9.isLiquid())
@@ -18837,7 +19485,7 @@ index 9f60ff0..a5b85bd 100644
                          worldIn.setBlockState(var11, Blocks.torch.getDefaultState(), 2);
                      }
 diff --git a/net/minecraft/world/gen/layer/GenLayer.java b/net/minecraft/world/gen/layer/GenLayer.java
-index 1d31674..186c3bd 100644
+index 1d31674..d13ce74 100644
 --- a/net/minecraft/world/gen/layer/GenLayer.java
 +++ b/net/minecraft/world/gen/layer/GenLayer.java
 @@ -1,6 +1,7 @@
@@ -18848,8 +19496,26 @@ index 1d31674..186c3bd 100644
  import net.minecraft.crash.CrashReport;
  import net.minecraft.crash.CrashReportCategory;
  import net.minecraft.util.ReportedException;
+@@ -191,7 +192,7 @@ public abstract class GenLayer
+                 CrashReportCategory var6 = var5.makeCategory("Biomes being compared");
+                 var6.addCrashSection("Biome A ID", Integer.valueOf(biomeIDA));
+                 var6.addCrashSection("Biome B ID", Integer.valueOf(biomeIDB));
+-                var6.addCrashSectionCallable("Biome A", new Callable()
++                var6.setDetail("Biome A", new Callable()
+                 {
+                     private static final String __OBFID = "CL_00000560";
+                     public String call()
+@@ -199,7 +200,7 @@ public abstract class GenLayer
+                         return String.valueOf(var2);
+                     }
+                 });
+-                var6.addCrashSectionCallable("Biome B", new Callable()
++                var6.setDetail("Biome B", new Callable()
+                 {
+                     private static final String __OBFID = "CL_00000561";
+                     public String call()
 diff --git a/net/minecraft/world/gen/structure/MapGenStructure.java b/net/minecraft/world/gen/structure/MapGenStructure.java
-index e39a8f2..9f3a45e 100644
+index e39a8f2..9a18d6c 100644
 --- a/net/minecraft/world/gen/structure/MapGenStructure.java
 +++ b/net/minecraft/world/gen/structure/MapGenStructure.java
 @@ -1,11 +1,13 @@
@@ -18866,6 +19532,33 @@ index e39a8f2..9f3a45e 100644
  import net.minecraft.crash.CrashReport;
  import net.minecraft.crash.CrashReportCategory;
  import net.minecraft.nbt.NBTBase;
+@@ -52,7 +54,7 @@ public abstract class MapGenStructure extends MapGenBase
+             {
+                 CrashReport var8 = CrashReport.makeCrashReport(var10, "Exception preparing structure feature");
+                 CrashReportCategory var9 = var8.makeCategory("Feature being prepared");
+-                var9.addCrashSectionCallable("Is feature chunk", new Callable()
++                var9.setDetail("Is feature chunk", new Callable()
+                 {
+                     private static final String __OBFID = "CL_00000506";
+                     public String call()
+@@ -61,7 +63,7 @@ public abstract class MapGenStructure extends MapGenBase
+                     }
+                 });
+                 var9.addCrashSection("Chunk location", String.format("%d,%d", new Object[] {Integer.valueOf(p_180701_2_), Integer.valueOf(p_180701_3_)}));
+-                var9.addCrashSectionCallable("Chunk pos hash", new Callable()
++                var9.setDetail("Chunk pos hash", new Callable()
+                 {
+                     private static final String __OBFID = "CL_00000507";
+                     public String call()
+@@ -69,7 +71,7 @@ public abstract class MapGenStructure extends MapGenBase
+                         return String.valueOf(ChunkCoordIntPair.chunkXZ2Int(p_180701_2_, p_180701_3_));
+                     }
+                 });
+-                var9.addCrashSectionCallable("Structure type", new Callable()
++                var9.setDetail("Structure type", new Callable()
+                 {
+                     private static final String __OBFID = "CL_00000508";
+                     public String call()
 diff --git a/net/minecraft/world/gen/structure/StructureComponent.java b/net/minecraft/world/gen/structure/StructureComponent.java
 index 3792db0..ab8aed1 100644
 --- a/net/minecraft/world/gen/structure/StructureComponent.java
@@ -18908,6 +19601,91 @@ index abb7761..f0b3fc2 100644
                              {
                                  return -3;
                              }
+diff --git a/net/minecraft/world/storage/WorldInfo.java b/net/minecraft/world/storage/WorldInfo.java
+index 61d290e..2d007ab 100644
+--- a/net/minecraft/world/storage/WorldInfo.java
++++ b/net/minecraft/world/storage/WorldInfo.java
+@@ -840,7 +840,7 @@ public class WorldInfo
+      */
+     public void addToCrashReport(CrashReportCategory category)
+     {
+-        category.addCrashSectionCallable("Level seed", new Callable()
++        category.setDetail("Level seed", new Callable()
+         {
+             private static final String __OBFID = "CL_00000588";
+             public String call()
+@@ -848,7 +848,7 @@ public class WorldInfo
+                 return String.valueOf(WorldInfo.this.getSeed());
+             }
+         });
+-        category.addCrashSectionCallable("Level generator", new Callable()
++        category.setDetail("Level generator", new Callable()
+         {
+             private static final String __OBFID = "CL_00000589";
+             public String call()
+@@ -856,7 +856,7 @@ public class WorldInfo
+                 return String.format("ID %02d - %s, ver %d. Features enabled: %b", new Object[] {Integer.valueOf(WorldInfo.this.terrainType.getWorldTypeID()), WorldInfo.this.terrainType.getWorldTypeName(), Integer.valueOf(WorldInfo.this.terrainType.getGeneratorVersion()), Boolean.valueOf(WorldInfo.this.mapFeaturesEnabled)});
+             }
+         });
+-        category.addCrashSectionCallable("Level generator options", new Callable()
++        category.setDetail("Level generator options", new Callable()
+         {
+             private static final String __OBFID = "CL_00000590";
+             public String call()
+@@ -864,7 +864,7 @@ public class WorldInfo
+                 return WorldInfo.this.generatorOptions;
+             }
+         });
+-        category.addCrashSectionCallable("Level spawn location", new Callable()
++        category.setDetail("Level spawn location", new Callable()
+         {
+             private static final String __OBFID = "CL_00000591";
+             public String call()
+@@ -872,7 +872,7 @@ public class WorldInfo
+                 return CrashReportCategory.getCoordinateInfo((double)WorldInfo.this.spawnX, (double)WorldInfo.this.spawnY, (double)WorldInfo.this.spawnZ);
+             }
+         });
+-        category.addCrashSectionCallable("Level time", new Callable()
++        category.setDetail("Level time", new Callable()
+         {
+             private static final String __OBFID = "CL_00000592";
+             public String call()
+@@ -880,7 +880,7 @@ public class WorldInfo
+                 return String.format("%d game time, %d day time", new Object[] {Long.valueOf(WorldInfo.this.totalTime), Long.valueOf(WorldInfo.this.worldTime)});
+             }
+         });
+-        category.addCrashSectionCallable("Level dimension", new Callable()
++        category.setDetail("Level dimension", new Callable()
+         {
+             private static final String __OBFID = "CL_00000593";
+             public String call()
+@@ -888,7 +888,7 @@ public class WorldInfo
+                 return String.valueOf(WorldInfo.this.dimension);
+             }
+         });
+-        category.addCrashSectionCallable("Level storage version", new Callable()
++        category.setDetail("Level storage version", new Callable()
+         {
+             private static final String __OBFID = "CL_00000594";
+             public String call()
+@@ -915,7 +915,7 @@ public class WorldInfo
+                 return String.format("0x%05X - %s", new Object[] {Integer.valueOf(WorldInfo.this.saveVersion), var1});
+             }
+         });
+-        category.addCrashSectionCallable("Level weather", new Callable()
++        category.setDetail("Level weather", new Callable()
+         {
+             private static final String __OBFID = "CL_00000595";
+             public String call()
+@@ -923,7 +923,7 @@ public class WorldInfo
+                 return String.format("Rain time: %d (now: %b), thunder time: %d (now: %b)", new Object[] {Integer.valueOf(WorldInfo.this.rainTime), Boolean.valueOf(WorldInfo.this.raining), Integer.valueOf(WorldInfo.this.thunderTime), Boolean.valueOf(WorldInfo.this.thundering)});
+             }
+         });
+-        category.addCrashSectionCallable("Level game mode", new Callable()
++        category.setDetail("Level game mode", new Callable()
+         {
+             private static final String __OBFID = "CL_00000597";
+             public String call()
 -- 
 2.0.0
 

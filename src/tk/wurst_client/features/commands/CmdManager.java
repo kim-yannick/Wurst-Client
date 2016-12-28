@@ -141,7 +141,7 @@ public class CmdManager implements ChatOutputListener
 						CrashReport.makeCrashReport(e, "Running Wurst command");
 					CrashReportCategory crashReportCategory =
 						crashReport.makeCategory("Affected command");
-					crashReportCategory.addCrashSectionCallable(
+					crashReportCategory.setDetail(
 						"Command input", new Callable()
 						{
 							@Override

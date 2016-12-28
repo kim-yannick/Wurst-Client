@@ -9,22 +9,24 @@ package tk.wurst_client.events;
 
 import java.util.ArrayList;
 
-import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.events.listeners.RightClickListener;
 
-public class UpdateEvent extends Event<UpdateListener>
+public class RightClickEvent extends CancellableEvent<RightClickListener>
 {
-	public static final UpdateEvent INSTANCE = new UpdateEvent();
-	
 	@Override
-	public void fire(ArrayList<UpdateListener> listeners)
+	public void fire(ArrayList<RightClickListener> listeners)
 	{
 		for(int i = 0; i < listeners.size(); i++)
-			listeners.get(i).onUpdate();
+		{
+			listeners.get(i).onRightClick(this);
+			if(isCancelled())
+				break;
+		}
 	}
 	
 	@Override
-	public Class<UpdateListener> getListenerType()
+	public Class<RightClickListener> getListenerType()
 	{
-		return UpdateListener.class;
+		return RightClickListener.class;
 	}
 }

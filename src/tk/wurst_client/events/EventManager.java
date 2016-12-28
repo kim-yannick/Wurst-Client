@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2016 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -32,8 +32,12 @@ public final class EventManager
 			new ArrayList<GUIRenderListener>());
 		listenerMap.put(LeftClickListener.class,
 			new ArrayList<LeftClickListener>());
+		listenerMap.put(RightClickListener.class,
+			new ArrayList<RightClickListener>());
 		listenerMap.put(PacketInputListener.class,
 			new ArrayList<PacketInputListener>());
+		listenerMap.put(PacketOutputListener.class,
+			new ArrayList<PacketOutputListener>());
 		listenerMap.put(RenderListener.class, new ArrayList<RenderListener>());
 		listenerMap.put(UpdateListener.class, new ArrayList<UpdateListener>());
 	}
@@ -54,7 +58,7 @@ public final class EventManager
 				CrashReport.makeCrashReport(e, "Firing Wurst event");
 			CrashReportCategory crashreportcategory =
 				crashReport.makeCategory("Affected event");
-			crashreportcategory.addCrashSectionCallable("Event class", () -> {
+			crashreportcategory.setDetail("Event class", () -> {
 				return event.getClass().getName();
 			});
 			throw new ReportedException(crashReport);
@@ -74,13 +78,12 @@ public final class EventManager
 				CrashReport.makeCrashReport(e, "Adding Wurst event listener");
 			CrashReportCategory crashreportcategory =
 				crashReport.makeCategory("Affected listener");
-			crashreportcategory.addCrashSectionCallable("Listener type", () -> {
+			crashreportcategory.setDetail("Listener type", () -> {
 				return type.getName();
 			});
-			crashreportcategory.addCrashSectionCallable("Listener class",
-				() -> {
-					return listener.getClass().getName();
-				});
+			crashreportcategory.setDetail("Listener class", () -> {
+				return listener.getClass().getName();
+			});
 			throw new ReportedException(crashReport);
 		}
 	}
@@ -98,13 +101,12 @@ public final class EventManager
 				CrashReport.makeCrashReport(e, "Removing Wurst event listener");
 			CrashReportCategory crashreportcategory =
 				crashReport.makeCategory("Affected listener");
-			crashreportcategory.addCrashSectionCallable("Listener type", () -> {
+			crashreportcategory.setDetail("Listener type", () -> {
 				return type.getName();
 			});
-			crashreportcategory.addCrashSectionCallable("Listener class",
-				() -> {
-					return listener.getClass().getName();
-				});
+			crashreportcategory.setDetail("Listener class", () -> {
+				return listener.getClass().getName();
+			});
 			throw new ReportedException(crashReport);
 		}
 	}

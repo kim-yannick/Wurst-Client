@@ -182,7 +182,7 @@ public class Mod implements NavigatorItem
 				CrashReport.makeCrashReport(e, "Toggling Wurst mod");
 			CrashReportCategory crashreportcategory =
 				crashReport.makeCategory("Affected mod");
-			crashreportcategory.addCrashSectionCallable("Mod name",
+			crashreportcategory.setDetail("Mod name",
 				new Callable()
 				{
 					@Override
@@ -191,7 +191,7 @@ public class Mod implements NavigatorItem
 						return name;
 					}
 				});
-			crashreportcategory.addCrashSectionCallable("Attempted action",
+			crashreportcategory.setDetail("Attempted action",
 				new Callable()
 				{
 					@Override
@@ -222,7 +222,7 @@ public class Mod implements NavigatorItem
 				CrashReport.makeCrashReport(e, "Toggling Wurst mod");
 			CrashReportCategory crashreportcategory =
 				crashReport.makeCategory("Affected mod");
-			crashreportcategory.addCrashSectionCallable("Mod name",
+			crashreportcategory.setDetail("Mod name",
 				new Callable()
 				{
 					@Override
@@ -231,7 +231,7 @@ public class Mod implements NavigatorItem
 						return name;
 					}
 				});
-			crashreportcategory.addCrashSectionCallable("Attempted action",
+			crashreportcategory.setDetail("Attempted action",
 				new Callable()
 				{
 					@Override
@@ -274,7 +274,7 @@ public class Mod implements NavigatorItem
 					CrashReport.makeCrashReport(e, "Toggling Wurst mod");
 				CrashReportCategory crashreportcategory =
 					crashReport.makeCategory("Affected mod");
-				crashreportcategory.addCrashSectionCallable("Mod name",
+				crashreportcategory.setDetail("Mod name",
 					new Callable()
 					{
 						@Override
@@ -283,7 +283,7 @@ public class Mod implements NavigatorItem
 							return name;
 						}
 					});
-				crashreportcategory.addCrashSectionCallable("Attempted action",
+				crashreportcategory.setDetail("Attempted action",
 					new Callable()
 					{
 						@Override
