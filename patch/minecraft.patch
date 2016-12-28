@@ -1,6 +1,6 @@
-From a9927a0039623ace6f4a1f47bee33ada768bfc73 Mon Sep 17 00:00:00 2001
+From 020d00d18ef674869046cdfa65fdb6809c58fb85 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 28 Dec 2016 16:30:23 +0100
+Date: Wed, 28 Dec 2016 17:37:08 +0100
 Subject: [PATCH] mod
 
 ---
@@ -95,7 +95,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/GuiListButton.java        |   1 +
  net/minecraft/client/gui/GuiListExtended.java      |   4 +
  net/minecraft/client/gui/GuiLockIconButton.java    |   1 +
- net/minecraft/client/gui/GuiMainMenu.java          | 184 +++++--
+ net/minecraft/client/gui/GuiMainMenu.java          |  71 ++-
  net/minecraft/client/gui/GuiMemoryErrorScreen.java |   4 +-
  net/minecraft/client/gui/GuiMerchant.java          |  16 +-
  net/minecraft/client/gui/GuiMultiplayer.java       | 136 +++--
@@ -378,7 +378,7 @@ Subject: [PATCH] mod
  .../world/gen/structure/StructureComponent.java    |   2 +-
  .../gen/structure/StructureVillagePieces.java      |   4 +-
  .../world/pathfinder/WalkNodeProcessor.java        |   2 +-
- 374 files changed, 3723 insertions(+), 2278 deletions(-)
+ 374 files changed, 3623 insertions(+), 2265 deletions(-)
 
 diff --git a/net/minecraft/block/Block.java b/net/minecraft/block/Block.java
 index d8fe39f..a7af6d8 100644
@@ -6261,7 +6261,7 @@ index 7c69b95..e44dc02 100644
  
  public class GuiLockIconButton extends GuiButton
 diff --git a/net/minecraft/client/gui/GuiMainMenu.java b/net/minecraft/client/gui/GuiMainMenu.java
-index 9fd9e99..0667609 100644
+index 9fd9e99..a3de015 100644
 --- a/net/minecraft/client/gui/GuiMainMenu.java
 +++ b/net/minecraft/client/gui/GuiMainMenu.java
 @@ -1,15 +1,31 @@
@@ -6313,30 +6313,39 @@ index 9fd9e99..0667609 100644
  
  public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
  {
-@@ -40,8 +53,8 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
-     /** Counts the number of screen updates. */
+@@ -41,7 +54,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
      private float updateCounter;
  
--    /** The splash message. */
+     /** The splash message. */
 -    private String splashText;
-+    /** The splash message. *///TODO: Client
 +    public static String splashText;
      private GuiButton buttonResetDemo;
  
      /** Timer used to rotate the panorama, increases every tick. */
-@@ -57,7 +70,10 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -57,11 +70,12 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
      private String field_146972_A;
      private String field_104024_v;
      private static final ResourceLocation splashTexts = new ResourceLocation("texts/splashes.txt");
--    private static final ResourceLocation minecraftTitleTextures = new ResourceLocation("textures/gui/title/minecraft.png");
 +    
-+    //TODO: Client
-+    private static final ResourceLocation minecraftTitleTextures = new ResourceLocation("wurst/wurst_380.png");
-+    private ArrayList<String> newsItems = new ArrayList<String>();
+     private static final ResourceLocation minecraftTitleTextures = new ResourceLocation("textures/gui/title/minecraft.png");
  
      /** An array of all the paths to the panorama pictures. */
      private static final ResourceLocation[] titlePanoramaPaths = new ResourceLocation[] {new ResourceLocation("textures/gui/title/background/panorama_0.png"), new ResourceLocation("textures/gui/title/background/panorama_1.png"), new ResourceLocation("textures/gui/title/background/panorama_2.png"), new ResourceLocation("textures/gui/title/background/panorama_3.png"), new ResourceLocation("textures/gui/title/background/panorama_4.png"), new ResourceLocation("textures/gui/title/background/panorama_5.png")};
-@@ -184,7 +200,13 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+-    public static final String field_96138_a = "Please click " + EnumChatFormatting.UNDERLINE + "here" + EnumChatFormatting.RESET + " for more information.";
++    public static final String MORE_INFO_TEXT = "Please click " + EnumChatFormatting.UNDERLINE + "here" + EnumChatFormatting.RESET + " for more information.";
+     private int field_92024_r;
+     private int field_92023_s;
+     private int field_92022_t;
+@@ -74,7 +88,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+ 
+     public GuiMainMenu()
+     {
+-        this.field_146972_A = field_96138_a;
++        this.field_146972_A = MORE_INFO_TEXT;
+         this.splashText = "missingno";
+         BufferedReader var1 = null;
+ 
+@@ -184,7 +198,13 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
          else if (var1.get(2) + 1 == 10 && var1.get(5) == 31)
          {
              this.splashText = "OOoooOOOoooo! Spooky!";
@@ -6350,7 +6359,7 @@ index 9fd9e99..0667609 100644
  
          boolean var2 = true;
          int var3 = this.height / 4 + 48;
-@@ -198,9 +220,9 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -198,9 +218,9 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
              this.addSingleplayerMultiplayerButtons(var3, 24);
          }
  
@@ -6363,18 +6372,22 @@ index 9fd9e99..0667609 100644
          Object var4 = this.field_104025_t;
  
          synchronized (this.field_104025_t)
-@@ -222,7 +244,9 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -222,7 +242,13 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
      {
          this.buttonList.add(new GuiButton(1, this.width / 2 - 100, p_73969_1_, I18n.format("menu.singleplayer", new Object[0])));
          this.buttonList.add(new GuiButton(2, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 1, I18n.format("menu.multiplayer", new Object[0])));
 -        this.buttonList.add(this.field_175372_K = new GuiButton(14, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2, I18n.format("menu.online", new Object[0])));
-+        //TODO: Client
-+        this.buttonList.add(new GuiButton(3, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2, "Alt Manager"));
-+        //this.buttonList.add(this.field_175372_K = new GuiButton(14, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2, I18n.format("menu.online", new Object[0])));
++        
++		// TODO: Client
++		this.buttonList.add(new GuiButton(3, this.width / 2 - 100,
++			p_73969_1_ + p_73969_2_ * 2, "Alt Manager"));
++		// this.buttonList.add(this.field_175372_K = new GuiButton(14,
++		// this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2,
++		// I18n.format("menu.online", new Object[0])));
      }
  
      /**
-@@ -263,10 +287,10 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -263,10 +289,10 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
              this.mc.displayGuiScreen(new GuiMultiplayer(this));
          }
  
@@ -6387,31 +6400,7 @@ index 9fd9e99..0667609 100644
  
          if (button.id == 4)
          {
-@@ -324,6 +348,23 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
- 
-             this.mc.displayGuiScreen(this);
-         }
-+        //TODO: Client
-+        if(id == 1)
-+		{
-+			if(result)
-+			{
-+				MiscUtils
-+					.openLink("https://www.youtube.com/watch?v=_Gf8oaC9QKM");
-+				WurstClient.INSTANCE.analytics.trackEvent("christmas easter egg",
-+					"play christmas song");
-+				this.mc.shutdown();
-+			}else
-+			{
-+				this.mc.displayGuiScreen(this);
-+				WurstClient.INSTANCE.analytics.trackEvent("christmas easter egg",
-+					"grief on christmas");
-+			}
-+		}
-     }
- 
-     /**
-@@ -391,7 +432,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -391,7 +417,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
  
                  this.mc.getTextureManager().bindTexture(titlePanoramaPaths[var11]);
                  var5.startDrawingQuads();
@@ -6420,7 +6409,7 @@ index 9fd9e99..0667609 100644
                  float var12 = 0.0F;
                  var5.addVertexWithUV(-1.0D, -1.0D, 1.0D, (double)(0.0F + var12), (double)(0.0F + var12));
                  var5.addVertexWithUV(1.0D, -1.0D, 1.0D, (double)(1.0F - var12), (double)(0.0F + var12));
-@@ -436,7 +477,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -436,7 +462,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
  
          for (int var5 = 0; var5 < var4; ++var5)
          {
@@ -6429,7 +6418,7 @@ index 9fd9e99..0667609 100644
              int var6 = this.width;
              int var7 = this.height;
              float var8 = (float)(var5 - var4 / 2) / 256.0F;
-@@ -454,7 +495,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -454,7 +480,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
      /**
       * Renders the skybox in the main menu
       */
@@ -6438,7 +6427,7 @@ index 9fd9e99..0667609 100644
      {
          this.mc.getFramebuffer().unbindFramebuffer();
          GlStateManager.viewport(0, 0, 256, 256);
-@@ -474,7 +515,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -474,7 +500,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
          float var6 = this.width > this.height ? 120.0F / (float)this.width : 120.0F / (float)this.height;
          float var7 = (float)this.height * var6 / 256.0F;
          float var8 = (float)this.width * var6 / 256.0F;
@@ -6447,83 +6436,16 @@ index 9fd9e99..0667609 100644
          int var9 = this.width;
          int var10 = this.height;
          var5.addVertexWithUV(0.0D, (double)var10, (double)this.zLevel, (double)(0.5F - var7), (double)(0.5F + var8));
-@@ -494,47 +535,121 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -494,6 +520,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
          GlStateManager.enableAlpha();
          Tessellator var4 = Tessellator.getInstance();
          WorldRenderer var5 = var4.getWorldRenderer();
--        short var6 = 274;
 +        
-+        //TODO: Client
-+        short var6 = 256;
+         short var6 = 274;
          int var7 = this.width / 2 - var6 / 2;
          byte var8 = 30;
-         this.drawGradientRect(0, 0, this.width, this.height, -2130706433, 16777215);
-         this.drawGradientRect(0, 0, this.width, this.height, 0, Integer.MIN_VALUE);
-         this.mc.getTextureManager().bindTexture(minecraftTitleTextures);
-         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
--
-+        glEnable(GL_BLEND);
-+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-+        double x = var7;
-+        double y = var8;
-+        double h = 64;
-+        double w = 256;
-+        double fw = 256;
-+        double fh = 256;
-+        double u = 0;
-+        double v = 0;
-+        if(GuiMainMenu.splashText.equals("umop-apisdn!"))
-+        {
-+        	GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
-+        	GL11.glTranslatef((float)(-this.width), (float) (-h - 60), 0.0F);
-+        }
-         if ((double)this.updateCounter < 1.0E-4D)
-         {
--            this.drawTexturedModalRect(var7 + 0, var8 + 0, 0, 0, 99, 44);
--            this.drawTexturedModalRect(var7 + 99, var8 + 0, 129, 0, 27, 44);
--            this.drawTexturedModalRect(var7 + 99 + 26, var8 + 0, 126, 0, 3, 44);
--            this.drawTexturedModalRect(var7 + 99 + 26 + 3, var8 + 0, 99, 0, 26, 44);
--            this.drawTexturedModalRect(var7 + 155, var8 + 0, 0, 45, 155, 44);
-+        	var5.startDrawingQuads();
-+            var5.addVertexWithUV((double)x + 0, (double)y + h, (double)this.zLevel, (double)((float)(u + 0) * 0.00390625F), (double)((float)(v + fh) * 0.00390625F));
-+            var5.addVertexWithUV((double)x + 120, (double)y + h, (double)this.zLevel, (double)((float)(u + 120) * 0.00390625F), (double)((float)(v + fh) * 0.00390625F));
-+            var5.addVertexWithUV((double)x + 120, (double)y + 0, (double)this.zLevel, (double)((float)(u + 120) * 0.00390625F), (double)((float)(v + 0) * 0.00390625F));
-+            var5.addVertexWithUV((double)x + 0, (double)y + 0, (double)this.zLevel, (double)((float)(u + 0) * 0.00390625F), (double)((float)(v + 0) * 0.00390625F));
-+            var4.draw();
-+            var5.startDrawingQuads();
-+            var5.addVertexWithUV((double)x + 120, (double)y + h, (double)this.zLevel, (double)((float)(160 + 0) * 0.00390625F), (double)((float)(v + fh) * 0.00390625F));
-+            var5.addVertexWithUV((double)x + 120 + 38, (double)y + h, (double)this.zLevel, (double)((float)(160 + 38) * 0.00390625F), (double)((float)(v + fh) * 0.00390625F));
-+            var5.addVertexWithUV((double)x + 120 + 38, (double)y + 0, (double)this.zLevel, (double)((float)(160 + 38) * 0.00390625F), (double)((float)(v + 0) * 0.00390625F));
-+            var5.addVertexWithUV((double)x + 120 + 0, (double)y + 0, (double)this.zLevel, (double)((float)(160 + 0) * 0.00390625F), (double)((float)(v + 0) * 0.00390625F));
-+            var4.draw();
-+            var5.startDrawingQuads();
-+            var5.addVertexWithUV((double)x + 158 + 0, (double)y + h, (double)this.zLevel, (double)((float)(120 + 0) * 0.00390625F), (double)((float)(v + fh) * 0.00390625F));
-+            var5.addVertexWithUV((double)x + 158 + 40, (double)y + h, (double)this.zLevel, (double)((float)(120 + 40) * 0.00390625F), (double)((float)(v + fh) * 0.00390625F));
-+            var5.addVertexWithUV((double)x + 158 + 40, (double)y + 0, (double)this.zLevel, (double)((float)(120 + 40) * 0.00390625F), (double)((float)(v + 0) * 0.00390625F));
-+            var5.addVertexWithUV((double)x + 158 + 0, (double)y + 0, (double)this.zLevel, (double)((float)(120 + 0) * 0.00390625F), (double)((float)(v + 0) * 0.00390625F));
-+            var4.draw();
-+            var5.startDrawingQuads();
-+            var5.addVertexWithUV((double)x + 198 + 0, (double)y + h, (double)this.zLevel, (double)((float)(198 + 0) * 0.00390625F), (double)((float)(v + fh) * 0.00390625F));
-+            var5.addVertexWithUV((double)x + 198 + 58, (double)y + h, (double)this.zLevel, (double)((float)(198 + 58) * 0.00390625F), (double)((float)(v + fh) * 0.00390625F));
-+            var5.addVertexWithUV((double)x + 198 + 58, (double)y + 0, (double)this.zLevel, (double)((float)(198 + 58) * 0.00390625F), (double)((float)(v + 0) * 0.00390625F));
-+            var5.addVertexWithUV((double)x + 198 + 0, (double)y + 0, (double)this.zLevel, (double)((float)(198 + 0) * 0.00390625F), (double)((float)(v + 0) * 0.00390625F));
-+            var4.draw();
-         }
-         else
-         {
--            this.drawTexturedModalRect(var7 + 0, var8 + 0, 0, 0, 155, 44);
--            this.drawTexturedModalRect(var7 + 155, var8 + 0, 0, 45, 155, 44);
-+            var5.startDrawingQuads();
-+            var5.addVertexWithUV((double)x + 0, (double)y + h, (double)this.zLevel, (double)((float)(u + 0) * 0.00390625F), (double)((float)(v + fh) * 0.00390625F));
-+            var5.addVertexWithUV((double)x + w, (double)y + h, (double)this.zLevel, (double)((float)(u + fw) * 0.00390625F), (double)((float)(v + fh) * 0.00390625F));
-+            var5.addVertexWithUV((double)x + w, (double)y + 0, (double)this.zLevel, (double)((float)(u + fw) * 0.00390625F), (double)((float)(v + 0) * 0.00390625F));
-+            var5.addVertexWithUV((double)x + 0, (double)y + 0, (double)this.zLevel, (double)((float)(u + 0) * 0.00390625F), (double)((float)(v + 0) * 0.00390625F));
-+            var4.draw();
-+        }
-+        if(GuiMainMenu.splashText.equals("umop-apisdn!"))
-+        {
-+        	GL11.glRotatef(-180.0F, 0.0F, 0.0F, 1.0F);
-+        	GL11.glTranslatef((float)(-this.width), (float) (-h - 60), 0.0F);
+@@ -516,13 +543,14 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+             this.drawTexturedModalRect(var7 + 155, var8 + 0, 0, 45, 155, 44);
          }
  
 -        var5.func_178991_c(-1);
@@ -6534,56 +6456,11 @@ index 9fd9e99..0667609 100644
          float var9 = 1.8F - MathHelper.abs(MathHelper.sin((float)(Minecraft.getSystemTime() % 1000L) / 1000.0F * (float)Math.PI * 2.0F) * 0.1F);
          var9 = var9 * 100.0F / (float)(this.fontRendererObj.getStringWidth(this.splashText) + 32);
          GlStateManager.scale(var9, var9, var9);
--        this.drawCenteredString(this.fontRendererObj, this.splashText, 0, -8, -256);
 +        
-+        //TODO: Client
-+        this.drawCenteredString(this.fontRendererObj, this.splashText, 0, 0, -256);
+         this.drawCenteredString(this.fontRendererObj, this.splashText, 0, -8, -256);
          GlStateManager.popMatrix();
          String var10 = "Minecraft 1.8";
-+        String wurst10 = "Wurst v" + WurstClient.INSTANCE.VERSION;
- 
-         if (this.mc.isDemo())
-         {
-             var10 = var10 + " Demo";
-         }
- 
--        this.drawString(this.fontRendererObj, var10, 2, this.height - 10, -1);
--        String var11 = "Copyright Mojang AB. Do not distribute!";
--        this.drawString(this.fontRendererObj, var11, this.width - this.fontRendererObj.getStringWidth(var11) - 2, this.height - 10, -1);
-+        //TODO: Client
-+        this.drawString(this.fontRendererObj, var10, this.width - this.fontRendererObj.getStringWidth(var10) - 2, 2, -1);
-+        this.drawString(this.fontRendererObj, wurst10, 2, 2, -1);
-+        String var11 = "Copyright Mojang AB";
-+        String wurst11 = "Copyright Alexander01998";
-+        this.drawString(this.fontRendererObj, wurst11, 2, 12, -1);
-+        this.drawString(this.fontRendererObj, var11, this.width - this.fontRendererObj.getStringWidth(var11) - 2, 12, -1);
-+        String var12 = "Do not distribute!";
-+        String wurst12 = "All rights reserved.";
-+        this.drawString(this.fontRendererObj, wurst12, 2, 22, -1);
-+        this.drawString(this.fontRendererObj, var12, this.width - this.fontRendererObj.getStringWidth(var12) - 2, 22, -1);
-+        String news = "";
-+        try
-+		{
-+			for(String item : newsItems)
-+			{
-+				news += item + "§e+++§r";
-+			}
-+		}catch(ConcurrentModificationException e)
-+		{
-+			
-+		}
-+        int newsWidth = fontRendererObj.getStringWidth(news);
-+        while(fontRendererObj.getStringWidth(news) < Math.max(width * 2, newsWidth * 2) && !news.isEmpty())
-+        	news += news;
-+        if(!news.isEmpty())
-+        {
-+        	this.drawCenteredString(fontRendererObj, "§nWurst News", this.width / 2, this.height - 20, -1);
-+        	this.drawString(this.fontRendererObj, news, -(int)(mc.getSystemTime() / 50 % newsWidth), this.height - 10, -1);
-+        }
- 
-         if (this.field_92025_p != null && this.field_92025_p.length() > 0)
-         {
-@@ -542,7 +657,6 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -542,7 +570,6 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
              this.drawString(this.fontRendererObj, this.field_92025_p, this.field_92022_t, this.field_92021_u, -1);
              this.drawString(this.fontRendererObj, this.field_146972_A, (this.width - this.field_92024_r) / 2, ((GuiButton)this.buttonList.get(0)).yPosition - 12, -1);
          }

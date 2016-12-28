@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2016 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -31,11 +31,8 @@ import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiYesNo;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import tk.wurst_client.WurstClient;
@@ -52,9 +49,10 @@ public class GuiWurstMainMenu extends GuiMainMenu
 	private JsonObject news;
 	private String newsTicker;
 	private int newsWidth;
+	private static boolean startupMessageDisabled = false;
 	
 	private String noticeText = "Wurst for Minecraft 1.9 is now available.";
-	private String noticeLink = "https://www.wurst-client.tk/minecraft-1-9/";
+	private String noticeLink = "https://www.wurst-client.tk/download/minecraft-1-9-x/";
 	
 	private int noticeWidth2;
 	private int noticeWidth1;
@@ -109,15 +107,14 @@ public class GuiWurstMainMenu extends GuiMainMenu
 				Math.min(((GuiButton)buttonList.get(i)).yPosition, height - 56);
 		
 		// notice
-		this.noticeWidth1 =
-			this.fontRendererObj.getStringWidth(this.noticeText);
-		this.noticeWidth2 =
-			this.fontRendererObj.getStringWidth(GuiMainMenu.field_96138_a);
-		int noticeWidth = Math.max(this.noticeWidth1, this.noticeWidth2);
-		this.noticeX1 = (this.width - noticeWidth) / 2;
-		this.noticeY1 = ((GuiButton)this.buttonList.get(0)).yPosition - 24;
-		this.noticeX2 = this.noticeX1 + noticeWidth;
-		this.noticeY2 = this.noticeY1 + 24;
+		noticeWidth1 = fontRendererObj.getStringWidth(noticeText);
+		noticeWidth2 =
+			fontRendererObj.getStringWidth(GuiMainMenu.MORE_INFO_TEXT);
+		int noticeWidth = Math.max(noticeWidth1, noticeWidth2);
+		noticeX1 = (width - noticeWidth) / 2;
+		noticeY1 = ((GuiButton)buttonList.get(0)).yPosition - 24;
+		noticeX2 = noticeX1 + noticeWidth;
+		noticeY2 = noticeY1 + 24;
 		
 		// news
 		newsTicker = "";
@@ -196,7 +193,7 @@ public class GuiWurstMainMenu extends GuiMainMenu
 		super.updateScreen();
 		
 		// updater
-		if(WurstClient.INSTANCE.startupMessageDisabled)
+		if(startupMessageDisabled)
 			return;
 		if(WurstClient.INSTANCE.updater.isOutdated())
 		{
@@ -204,11 +201,11 @@ public class GuiWurstMainMenu extends GuiMainMenu
 				"update to v" + WurstClient.INSTANCE.updater.getLatestVersion(),
 				"from " + WurstClient.INSTANCE.updater.getCurrentVersion());
 			WurstClient.INSTANCE.updater.update();
-			WurstClient.INSTANCE.startupMessageDisabled = true;
+			startupMessageDisabled = true;
 		}
 		
 		// emergency message
-		if(WurstClient.INSTANCE.startupMessageDisabled)
+		if(startupMessageDisabled)
 			return;
 		try
 		{
@@ -227,7 +224,7 @@ public class GuiWurstMainMenu extends GuiMainMenu
 				System.out.println("Emergency message found!");
 				mc.displayGuiScreen(new GuiMessage(
 					json.get(WurstClient.VERSION).getAsJsonObject()));
-				WurstClient.INSTANCE.startupMessageDisabled = true;
+				startupMessageDisabled = true;
 			}
 		}catch(Exception e)
 		{
@@ -235,7 +232,7 @@ public class GuiWurstMainMenu extends GuiMainMenu
 		}
 		
 		// changelog
-		if(WurstClient.INSTANCE.startupMessageDisabled)
+		if(startupMessageDisabled)
 			return;
 		if(!WurstClient.VERSION
 			.equals(WurstClient.INSTANCE.options.lastLaunchedVersion))
@@ -248,12 +245,19 @@ public class GuiWurstMainMenu extends GuiMainMenu
 			WurstClient.INSTANCE.files.saveOptions();
 		}
 		
-		WurstClient.INSTANCE.startupMessageDisabled = true;
+		startupMessageDisabled = true;
 	}
 	
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks)
 	{
+		// TODO
+		// if(!WurstClient.INSTANCE.isEnabled())
+		// {
+		// super.drawScreen(mouseX, mouseY, partialTicks);
+		// return;
+		// }
+		
 		// panorama
 		GlStateManager.disableAlpha();
 		renderSkybox(mouseX, mouseY, partialTicks);
@@ -261,37 +265,25 @@ public class GuiWurstMainMenu extends GuiMainMenu
 		drawGradientRect(0, 0, width, height, -2130706433, 16777215);
 		drawGradientRect(0, 0, width, height, 0, Integer.MIN_VALUE);
 		
-		Tessellator tessellator = Tessellator.getInstance();
-		WorldRenderer worldRenderer = tessellator.getWorldRenderer();
-		
 		// title image
-		GuiScreen.mc.getTextureManager().bindTexture(title);
+		mc.getTextureManager().bindTexture(title);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		double x = width / 2 - 256 / 2;
-		double y = 36;
-		double h = 64;
-		double w = 256;
-		double fw = 256;
-		double fh = 256;
-		double u = 0;
-		double v = 0;
+		int x = width / 2 - 256 / 2;
+		int y = 36;
+		int w = 256;
+		int h = 64;
+		float fw = 256;
+		float fh = 64;
+		float u = 0;
+		float v = 0;
 		if(GuiMainMenu.splashText.equals("umop-apisdn!"))
 		{
 			GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
-			GL11.glTranslatef(-width, (float)(-h - 60), 0.0F);
+			GL11.glTranslatef(-width, -h - 60, 0.0F);
 		}
-		worldRenderer.startDrawingQuads();
-		worldRenderer.addVertexWithUV(x + 0, y + h, zLevel, (u + 0) / 256D,
-			(v + fh) / 256D);
-		worldRenderer.addVertexWithUV(x + w, y + h, zLevel, (u + fw) / 256D,
-			(v + fh) / 256F);
-		worldRenderer.addVertexWithUV(x + w, y + 0, zLevel, (u + fw) / 256D,
-			(v + 0) / 256D);
-		worldRenderer.addVertexWithUV(x + 0, y + 0, zLevel, (u + 0) / 256D,
-			(v + 0) / 256D);
-		tessellator.draw();
+		drawModalRectWithCustomSizedTexture(x, y, u, v, w, h, fw, fh);
 		if(Calendar.getInstance().get(Calendar.MONTH) == Calendar.DECEMBER)
 		{
 			mc.getTextureManager().bindTexture(santaHat);
@@ -299,29 +291,19 @@ public class GuiWurstMainMenu extends GuiMainMenu
 			y = y - 36;
 			h = 48;
 			w = 48;
-			fw = 256;
-			fh = 256;
+			fw = 48;
+			fh = 48;
 			u = 0;
 			v = 0;
-			worldRenderer.startDrawingQuads();
-			worldRenderer.addVertexWithUV(x + 0, y + h, 0,
-				(float)(u + 0) * 0.00390625F, (float)(v + fh) * 0.00390625F);
-			worldRenderer.addVertexWithUV(x + w, y + h, 0,
-				(float)(u + fw) * 0.00390625F, (float)(v + fh) * 0.00390625F);
-			worldRenderer.addVertexWithUV(x + w, y + 0, 0,
-				(float)(u + fw) * 0.00390625F, (float)(v + 0) * 0.00390625F);
-			worldRenderer.addVertexWithUV(x + 0, y + 0, 0,
-				(float)(u + 0) * 0.00390625F, (float)(v + 0) * 0.00390625F);
-			tessellator.draw();
+			drawModalRectWithCustomSizedTexture(x, y, u, v, w, h, fw, fh);
 		}
 		if(GuiMainMenu.splashText.equals("umop-apisdn!"))
 		{
 			GL11.glRotatef(-180.0F, 0.0F, 0.0F, 1.0F);
-			GL11.glTranslatef(-width, (float)(-h - 60), 0.0F);
+			GL11.glTranslatef(-width, -h - 60, 0.0F);
 		}
 		
 		// splash text
-		worldRenderer.setColorOpaque_I(0xffffff);
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(width / 2 + 90, 72.0F, 0.0F);
 		GlStateManager.rotate(-20.0F, 0.0F, 0.0F, 1.0F);
@@ -336,7 +318,7 @@ public class GuiWurstMainMenu extends GuiMainMenu
 		GlStateManager.popMatrix();
 		
 		// text
-		String vMinecraft = "Minecraft 1.8";
+		String vMinecraft = "Minecraft " + WurstClient.MINECRAFT_VERSION;
 		String cMinecraft1 = "Copyright Mojang AB";
 		String cMinecraft2 = "Do not distribute!";
 		drawString(fontRendererObj, vMinecraft,
@@ -401,15 +383,14 @@ public class GuiWurstMainMenu extends GuiMainMenu
 		}
 		
 		// notice
-		if(this.noticeText != null && this.noticeText.length() > 0)
+		if(noticeText != null && noticeText.length() > 0)
 		{
-			drawRect(this.noticeX1 - 2, this.noticeY1 - 2, this.noticeX2 + 2,
-				this.noticeY2 - 1, 1428160512);
-			this.drawString(this.fontRendererObj, this.noticeText,
-				this.noticeX1, this.noticeY1, -1);
-			this.drawString(this.fontRendererObj, GuiMainMenu.field_96138_a,
-				(this.width - this.noticeWidth2) / 2,
-				((GuiButton)this.buttonList.get(0)).yPosition - 12, -1);
+			drawRect(noticeX1 - 2, noticeY1 - 2, noticeX2 + 2, noticeY2 - 1,
+				1428160512);
+			drawString(fontRendererObj, noticeText, noticeX1, noticeY1, -1);
+			drawString(fontRendererObj, GuiMainMenu.MORE_INFO_TEXT,
+				(width - noticeWidth2) / 2,
+				((GuiButton)buttonList.get(0)).yPosition - 12, -1);
 		}
 	}
 	
@@ -436,9 +417,8 @@ public class GuiWurstMainMenu extends GuiMainMenu
 		}
 		
 		// notice
-		if(this.noticeText.length() > 0 && mouseX >= this.noticeX1
-			&& mouseX <= this.noticeX2 && mouseY >= this.noticeY1
-			&& mouseY <= this.noticeY2)
+		if(noticeText.length() > 0 && mouseX >= noticeX1 && mouseX <= noticeX2
+			&& mouseY >= noticeY1 && mouseY <= noticeY2)
 			MiscUtils.openLink(noticeLink);
 	}
 }
