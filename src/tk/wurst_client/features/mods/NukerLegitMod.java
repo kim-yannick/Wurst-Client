@@ -117,7 +117,7 @@ public class NukerLegitMod extends Mod
 			{
 				currentDamage = 0;
 				shouldRenderESP = true;
-				mc.player.swingItem();
+				mc.player.swingArm();
 				mc.playerController.onPlayerDestroyBlock(pos, side);
 				blockHitDelay = (byte)4;
 				return;

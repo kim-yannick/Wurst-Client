@@ -108,7 +108,7 @@ public class TunnellerMod extends Mod implements RenderListener, UpdateListener
 				else
 				{
 					shouldRenderESP = true;
-					mc.player.swingItem();
+					mc.player.swingArm();
 					mc.playerController.onPlayerDestroyBlock(pos, side);
 				}
 				return;

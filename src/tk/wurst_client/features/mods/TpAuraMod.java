@@ -164,7 +164,7 @@ public class TpAuraMod extends Mod implements UpdateListener
 		EntityUtils.faceEntityPacket(entity);
 		
 		// attack entity
-		mc.player.swingItem();
+		mc.player.swingArm();
 		mc.player.connection.sendPacket(
 			new C02PacketUseEntity(entity, C02PacketUseEntity.Action.ATTACK));
 		

@@ -131,7 +131,7 @@ public class BuildUtils
 				.getX() + building[i][0], mouseOver.getBlockPos().getY()
 				+ building[i][1], mouseOver.getBlockPos().getZ()
 				+ building[i][2]));
-			Minecraft.getMinecraft().player.swingItem();
+			Minecraft.getMinecraft().player.swingArm();
 			Minecraft.getMinecraft().player.connection
 				.sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(
 					mouseOver.getBlockPos().getX() + building[i][0], mouseOver
@@ -151,7 +151,7 @@ public class BuildUtils
 				.getX() - building[i][2], mouseOver.getBlockPos().getY()
 				+ building[i][1], mouseOver.getBlockPos().getZ()
 				+ building[i][0]));
-			Minecraft.getMinecraft().player.swingItem();
+			Minecraft.getMinecraft().player.swingArm();
 			Minecraft.getMinecraft().player.connection
 				.sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(
 					mouseOver.getBlockPos().getX() - building[i][2], mouseOver
@@ -171,7 +171,7 @@ public class BuildUtils
 				.getX() - building[i][0], mouseOver.getBlockPos().getY()
 				+ building[i][1], mouseOver.getBlockPos().getZ()
 				- building[i][2]));
-			Minecraft.getMinecraft().player.swingItem();
+			Minecraft.getMinecraft().player.swingArm();
 			Minecraft.getMinecraft().player.connection
 				.sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(
 					mouseOver.getBlockPos().getX() - building[i][0], mouseOver
@@ -191,7 +191,7 @@ public class BuildUtils
 				.getX() + building[i][2], mouseOver.getBlockPos().getY()
 				+ building[i][1], mouseOver.getBlockPos().getZ()
 				- building[i][0]));
-			Minecraft.getMinecraft().player.swingItem();
+			Minecraft.getMinecraft().player.swingArm();
 			Minecraft.getMinecraft().player.connection
 				.sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(
 					mouseOver.getBlockPos().getX() + building[i][2], mouseOver
@@ -322,7 +322,7 @@ public class BuildUtils
 				convertPosNext(1, mouseOver) + building[i][0], convertPosNext(
 					2, mouseOver) + building[i][1],
 				convertPosNext(3, mouseOver) + building[i][2]));
-			Minecraft.getMinecraft().player.swingItem();
+			Minecraft.getMinecraft().player.swingArm();
 			Minecraft.getMinecraft().player.connection
 				.sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(
 					convertPosNext(1, mouseOver) + building[i][0],
@@ -342,7 +342,7 @@ public class BuildUtils
 				convertPosNext(1, mouseOver) - building[i][2], convertPosNext(
 					2, mouseOver) + building[i][1],
 				convertPosNext(3, mouseOver) + building[i][0]));
-			Minecraft.getMinecraft().player.swingItem();
+			Minecraft.getMinecraft().player.swingArm();
 			Minecraft.getMinecraft().player.connection
 				.sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(
 					convertPosNext(1, mouseOver) - building[i][2],
@@ -362,7 +362,7 @@ public class BuildUtils
 				convertPosNext(1, mouseOver) - building[i][0], convertPosNext(
 					2, mouseOver) + building[i][1],
 				convertPosNext(3, mouseOver) - building[i][2]));
-			Minecraft.getMinecraft().player.swingItem();
+			Minecraft.getMinecraft().player.swingArm();
 			Minecraft.getMinecraft().player.connection
 				.sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(
 					convertPosNext(1, mouseOver) - building[i][0],
@@ -382,7 +382,7 @@ public class BuildUtils
 				convertPosNext(1, mouseOver) + building[i][2], convertPosNext(
 					2, mouseOver) + building[i][1],
 				convertPosNext(3, mouseOver) - building[i][0]));
-			Minecraft.getMinecraft().player.swingItem();
+			Minecraft.getMinecraft().player.swingArm();
 			Minecraft.getMinecraft().player.connection
 				.sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(
 					convertPosNext(1, mouseOver) + building[i][2],
@@ -801,7 +801,7 @@ public class BuildUtils
 			BlockUtils.faceBlockPacket(new BlockPos((int)posX - 1
 				+ building[i][0], (int)posY - 2 + building[i][1], (int)posZ
 				+ building[i][2]));
-			Minecraft.getMinecraft().player.swingItem();
+			Minecraft.getMinecraft().player.swingArm();
 			Minecraft.getMinecraft().player.connection
 				.sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(
 					(int)posX - 1 + building[i][0], (int)posY - 2
@@ -819,7 +819,7 @@ public class BuildUtils
 			BlockUtils.faceBlockPacket(new BlockPos(
 				(int)(posX - 1 - building[i][2]), (int)posY - 2
 					+ building[i][1], (int)posZ + building[i][0]));
-			Minecraft.getMinecraft().player.swingItem();
+			Minecraft.getMinecraft().player.swingArm();
 			Minecraft.getMinecraft().player.connection
 				.sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(
 					(int)(posX - 1 - building[i][2]), (int)posY - 2
@@ -837,7 +837,7 @@ public class BuildUtils
 			BlockUtils.faceBlockPacket(new BlockPos((int)posX - 1
 				- building[i][0], (int)posY - 2 + building[i][1], (int)posZ
 				- building[i][2]));
-			Minecraft.getMinecraft().player.swingItem();
+			Minecraft.getMinecraft().player.swingArm();
 			Minecraft.getMinecraft().player.connection
 				.sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(
 					(int)posX - 1 - building[i][0], (int)posY - 2
@@ -855,7 +855,7 @@ public class BuildUtils
 			BlockUtils.faceBlockPacket(new BlockPos((int)posX - 1
 				+ building[i][2], (int)posY - 2 + building[i][1], (int)posZ
 				- building[i][0]));
-			Minecraft.getMinecraft().player.swingItem();
+			Minecraft.getMinecraft().player.swingArm();
 			Minecraft.getMinecraft().player.connection
 				.sendPacket(new C08PacketPlayerBlockPlacement(new BlockPos(
 					(int)posX - 1 + building[i][2], (int)posY - 2

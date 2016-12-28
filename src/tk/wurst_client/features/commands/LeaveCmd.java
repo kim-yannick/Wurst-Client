@@ -10,7 +10,7 @@ package tk.wurst_client.features.commands;
 import net.minecraft.network.play.client.C01PacketChatMessage;
 import net.minecraft.network.play.client.C02PacketUseEntity;
 import net.minecraft.network.play.client.C02PacketUseEntity.Action;
-import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.CPacketPlayer;
 import tk.wurst_client.events.ChatOutputEvent;
 import tk.wurst_client.utils.ChatUtils;
 
@@ -75,7 +75,7 @@ public class LeaveCmd extends Cmd
 				break;
 			case 2:
 				mc.player.connection
-					.sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(
+					.sendPacket(new CPacketPlayer.C04PacketPlayerPosition(
 						3.1e7d, 100, 3.1e7d, false));
 			case 3:
 				mc.player.connection.sendPacket(new C02PacketUseEntity(

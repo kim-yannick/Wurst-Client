@@ -158,7 +158,7 @@ public class ClickAuraMod extends Mod implements UpdateListener
 			return;
 		
 		// attack entity
-		mc.player.swingItem();
+		mc.player.swingArm();
 		mc.player.connection.sendPacket(
 			new C02PacketUseEntity(entity, C02PacketUseEntity.Action.ATTACK));
 		

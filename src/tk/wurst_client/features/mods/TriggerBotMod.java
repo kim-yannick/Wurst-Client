@@ -122,7 +122,7 @@ public class TriggerBotMod extends Mod implements UpdateListener
 		wurst.mods.blockHitMod.doBlock();
 		
 		// attack entity
-		mc.player.swingItem();
+		mc.player.swingArm();
 		mc.player.connection.sendPacket(new C02PacketUseEntity(
 			mc.objectMouseOver.entityHit, C02PacketUseEntity.Action.ATTACK));
 		

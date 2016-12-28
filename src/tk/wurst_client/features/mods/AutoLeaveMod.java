@@ -11,7 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.client.C01PacketChatMessage;
 import net.minecraft.network.play.client.C02PacketUseEntity;
 import net.minecraft.network.play.client.C02PacketUseEntity.Action;
-import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.CPacketPlayer;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.navigator.settings.ModeSetting;
 
@@ -73,7 +73,7 @@ public class AutoLeaveMod extends Mod implements UpdateListener
 					break;
 				case 2:
 					mc.player.connection.sendPacket(
-						new C03PacketPlayer.C04PacketPlayerPosition(3.1e7d, 100,
+						new CPacketPlayer.C04PacketPlayerPosition(3.1e7d, 100,
 							3.1e7d, false));
 					break;
 				case 3:

@@ -158,7 +158,7 @@ public class MultiAuraMod extends Mod implements UpdateListener
 		for(Entity entity : entities)
 		{
 			EntityUtils.faceEntityPacket(entity);
-			mc.player.swingItem();
+			mc.player.swingArm();
 			mc.player.connection.sendPacket(new C02PacketUseEntity(entity,
 				C02PacketUseEntity.Action.ATTACK));
 		}

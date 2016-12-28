@@ -170,7 +170,7 @@ public class NukerMod extends Mod
 				else
 				{
 					shouldRenderESP = true;
-					mc.player.swingItem();
+					mc.player.swingArm();
 					mc.playerController.onPlayerDestroyBlock(pos, side);
 				}
 				return;

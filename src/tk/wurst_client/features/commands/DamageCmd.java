@@ -8,7 +8,7 @@
 package tk.wurst_client.features.commands;
 
 import net.minecraft.client.network.NetHandlerPlayClient;
-import net.minecraft.network.play.client.C03PacketPlayer.C04PacketPlayerPosition;
+import net.minecraft.network.play.client.CPacketPlayer.C04PacketPlayerPosition;
 import tk.wurst_client.utils.MiscUtils;
 
 @Cmd.Info(description = "Applies the given amount of damage.",

@@ -7,7 +7,7 @@
  */
 package tk.wurst_client.features.mods;
 
-import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.CPacketPlayer;
 import tk.wurst_client.events.listeners.UpdateListener;
 
 @Mod.Info(
@@ -38,6 +38,6 @@ public class AntiFireMod extends Mod implements UpdateListener
 		if(!mc.player.capabilities.isCreativeMode && mc.player.onGround
 			&& mc.player.isBurning())
 			for(int i = 0; i < 100; i++)
-				mc.player.connection.sendPacket(new C03PacketPlayer());
+				mc.player.connection.sendPacket(new CPacketPlayer());
 	}
 }

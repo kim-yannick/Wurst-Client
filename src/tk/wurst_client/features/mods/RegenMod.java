@@ -7,7 +7,7 @@
  */
 package tk.wurst_client.features.mods;
 
-import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.CPacketPlayer;
 import tk.wurst_client.events.listeners.UpdateListener;
 
 @Mod.Info(
@@ -34,7 +34,7 @@ public class RegenMod extends Mod implements UpdateListener
 			&& mc.player.getHealth() < 20 && mc.player.getHealth() != 0
 			&& mc.player.onGround)
 			for(int i = 0; i < 1000; i++)
-				mc.player.connection.sendPacket(new C03PacketPlayer());
+				mc.player.connection.sendPacket(new CPacketPlayer());
 	}
 	
 	@Override

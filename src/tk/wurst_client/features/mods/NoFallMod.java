@@ -7,7 +7,7 @@
  */
 package tk.wurst_client.features.mods;
 
-import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.CPacketPlayer;
 import tk.wurst_client.events.listeners.UpdateListener;
 
 @Mod.Info(
@@ -28,7 +28,7 @@ public class NoFallMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		if(mc.player.fallDistance > 2)
-			mc.player.connection.sendPacket(new C03PacketPlayer(true));
+			mc.player.connection.sendPacket(new CPacketPlayer(true));
 	}
 	
 	@Override

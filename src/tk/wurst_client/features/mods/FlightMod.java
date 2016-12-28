@@ -7,8 +7,8 @@
  */
 package tk.wurst_client.features.mods;
 
-import net.minecraft.network.play.client.C03PacketPlayer;
-import net.minecraft.network.play.client.C03PacketPlayer.C04PacketPlayerPosition;
+import net.minecraft.network.play.client.CPacketPlayer;
+import net.minecraft.network.play.client.CPacketPlayer.C04PacketPlayerPosition;
 import net.minecraft.util.AxisAlignedBB;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.features.special_features.YesCheatSpf.BypassLevel;
@@ -138,10 +138,10 @@ public class FlightMod extends Mod implements UpdateListener
 			for(int i = 0; i < 4; i++)
 			{
 				mc.player.connection.sendPacket(
-					new C03PacketPlayer.C04PacketPlayerPosition(startX,
+					new CPacketPlayer.C04PacketPlayerPosition(startX,
 						startY + 1.01, startZ, false));
 				mc.player.connection.sendPacket(
-					new C03PacketPlayer.C04PacketPlayerPosition(startX, startY,
+					new CPacketPlayer.C04PacketPlayerPosition(startX, startY,
 						startZ, false));
 			}
 			mc.player.jump();
@@ -194,7 +194,7 @@ public class FlightMod extends Mod implements UpdateListener
 			if(flightKickBypass.isChecked())
 			{
 				updateFlyHeight();
-				mc.player.connection.sendPacket(new C03PacketPlayer(true));
+				mc.player.connection.sendPacket(new CPacketPlayer(true));
 				
 				if(flyHeight <= 290 && hasTimePassedM(500)
 					|| flyHeight > 290 && hasTimePassedM(100))

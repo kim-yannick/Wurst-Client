@@ -13,7 +13,7 @@ import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.potion.Potion;
@@ -81,7 +81,7 @@ public class AutoSplashPotMod extends Mod implements UpdateListener
 				// throw potion in hotbar
 				int oldSlot = mc.player.inventory.currentItem;
 				NetHandlerPlayClient sendQueue = mc.player.connection;
-				sendQueue.sendPacket(new C03PacketPlayer.C05PacketPlayerLook(
+				sendQueue.sendPacket(new CPacketPlayer.Rotation(
 					mc.player.rotationYaw, 90.0F, mc.player.onGround));
 				sendQueue.sendPacket(
 					new C09PacketHeldItemChange(potionInHotbar - 36));
@@ -90,7 +90,7 @@ public class AutoSplashPotMod extends Mod implements UpdateListener
 					mc.player.inventoryContainer.getSlot(potionInHotbar)
 						.getStack()));
 				sendQueue.sendPacket(new C09PacketHeldItemChange(oldSlot));
-				sendQueue.sendPacket(new C03PacketPlayer.C05PacketPlayerLook(
+				sendQueue.sendPacket(new CPacketPlayer.Rotation(
 					mc.player.rotationYaw, mc.player.rotationPitch,
 					mc.player.onGround));
 				

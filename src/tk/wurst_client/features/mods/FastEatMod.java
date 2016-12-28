@@ -8,7 +8,7 @@
 package tk.wurst_client.features.mods;
 
 import net.minecraft.item.ItemFood;
-import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.CPacketPlayer;
 import tk.wurst_client.events.listeners.UpdateListener;
 
 @Mod.Info(
@@ -36,7 +36,7 @@ public class FastEatMod extends Mod implements UpdateListener
 			&& mc.player.getFoodStats().needFood()
 			&& mc.gameSettings.keyBindUseItem.pressed)
 			for(int i = 0; i < 100; i++)
-				mc.player.connection.sendPacket(new C03PacketPlayer(false));
+				mc.player.connection.sendPacket(new CPacketPlayer(false));
 	}
 	
 	@Override

@@ -7,7 +7,7 @@
  */
 package tk.wurst_client.features.mods;
 
-import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.CPacketPlayer;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.utils.EntityUtils;
 import tk.wurst_client.utils.EntityUtils.TargetSettings;
@@ -54,6 +54,6 @@ public class ForcePushMod extends Mod implements UpdateListener
 		if(mc.player.onGround
 			&& EntityUtils.getClosestEntity(targetSettings) != null)
 			for(int i = 0; i < 1000; i++)
-				mc.player.connection.sendPacket(new C03PacketPlayer(true));
+				mc.player.connection.sendPacket(new CPacketPlayer(true));
 	}
 }

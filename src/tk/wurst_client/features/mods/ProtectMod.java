@@ -196,7 +196,7 @@ public class ProtectMod extends Mod implements UpdateListener
 			wurst.mods.blockHitMod.doBlock();
 			
 			// attack enemy
-			mc.player.swingItem();
+			mc.player.swingArm();
 			mc.player.connection.sendPacket(new C02PacketUseEntity(enemy,
 				C02PacketUseEntity.Action.ATTACK));
 			

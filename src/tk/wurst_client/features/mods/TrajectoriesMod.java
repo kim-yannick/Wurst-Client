@@ -23,7 +23,7 @@ import net.minecraft.item.ItemSnowball;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.Vec3d;
 import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.navigator.NavigatorItem;
 import tk.wurst_client.utils.RenderUtils;
@@ -135,7 +135,7 @@ public class TrajectoriesMod extends Mod implements RenderListener
 		// draw trajectory line
 		double gravity =
 			usingBow ? 0.05D : item instanceof ItemPotion ? 0.4D : 0.03D;
-		Vec3 playerVector = new Vec3(player.posX,
+		Vec3d playerVector = new Vec3d(player.posX,
 			player.posY + player.getEyeHeight(), player.posZ);
 		GL11.glColor3d(0, 1, 0);
 		GL11.glBegin(GL11.GL_LINE_STRIP);
@@ -154,7 +154,7 @@ public class TrajectoriesMod extends Mod implements RenderListener
 			arrowMotionY -= gravity;
 			
 			if(mc.world.rayTraceBlocks(playerVector,
-				new Vec3(arrowPosX, arrowPosY, arrowPosZ)) != null)
+				new Vec3d(arrowPosX, arrowPosY, arrowPosZ)) != null)
 				break;
 		}
 		GL11.glEnd();

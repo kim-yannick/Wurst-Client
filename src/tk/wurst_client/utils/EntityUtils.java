@@ -78,16 +78,16 @@ public class EntityUtils
 				- (Minecraft.getMinecraft().player.posY
 					+ Minecraft.getMinecraft().player.getEyeHeight());
 		double diffZ = entity.posZ - Minecraft.getMinecraft().player.posZ;
-		double dist = MathHelper.sqrt_double(diffX * diffX + diffZ * diffZ);
+		double dist = MathHelper.sqrt(diffX * diffX + diffZ * diffZ);
 		float yaw =
 			(float)(Math.atan2(diffZ, diffX) * 180.0D / Math.PI) - 90.0F;
 		float pitch = (float)-(Math.atan2(diffY, dist) * 180.0D / Math.PI);
 		return new float[]{
 			Minecraft.getMinecraft().player.rotationYaw
-				+ MathHelper.wrapAngleTo180_float(
+				+ MathHelper.wrapDegrees(
 					yaw - Minecraft.getMinecraft().player.rotationYaw),
 			Minecraft.getMinecraft().player.rotationPitch
-				+ MathHelper.wrapAngleTo180_float(
+				+ MathHelper.wrapDegrees(
 					pitch - Minecraft.getMinecraft().player.rotationPitch)};
 		
 	}
@@ -114,7 +114,7 @@ public class EntityUtils
 				neededPitch = Minecraft.getMinecraft().player.rotationPitch
 					- neededRotations[1];
 			float distanceFromMouse = MathHelper
-				.sqrt_float(neededYaw * neededYaw + neededPitch * neededPitch);
+				.sqrt(neededYaw * neededYaw + neededPitch * neededPitch);
 			return (int)distanceFromMouse;
 		}
 		return -1;
