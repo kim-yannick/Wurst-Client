@@ -50,7 +50,7 @@ public class ModifyCmd extends Cmd
 			
 			try
 			{
-				NBTTagCompound value = JsonToNBT.func_180713_a(v);
+				NBTTagCompound value = JsonToNBT.getTagFromJson(v);
 				item.getTagCompound().merge(value);
 			}catch(NBTException e)
 			{
@@ -68,7 +68,7 @@ public class ModifyCmd extends Cmd
 			
 			try
 			{
-				NBTTagCompound value = JsonToNBT.func_180713_a(v);
+				NBTTagCompound value = JsonToNBT.getTagFromJson(v);
 				item.setTagCompound(value);
 			}catch(NBTException e)
 			{

@@ -1,6 +1,6 @@
-From 73227a13b38d5e9fe4595968f6b8fb35248e77bf Mon Sep 17 00:00:00 2001
+From a9927a0039623ace6f4a1f47bee33ada768bfc73 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 28 Dec 2016 16:20:14 +0100
+Date: Wed, 28 Dec 2016 16:30:23 +0100
 Subject: [PATCH] mod
 
 ---
@@ -109,7 +109,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/GuiPlayerTabOverlay.java  |  34 +-
  net/minecraft/client/gui/GuiRenameWorld.java       |   3 +
  net/minecraft/client/gui/GuiRepair.java            |   6 +-
- net/minecraft/client/gui/GuiScreen.java            |  18 +-
+ net/minecraft/client/gui/GuiScreen.java            |  22 +-
  net/minecraft/client/gui/GuiScreenAddServer.java   |   3 +
  net/minecraft/client/gui/GuiScreenBook.java        |  76 ++-
  .../client/gui/GuiScreenCustomizePresets.java      |   4 +
@@ -217,10 +217,21 @@ Subject: [PATCH] mod
  net/minecraft/client/shader/Framebuffer.java       |   2 +-
  net/minecraft/client/shader/Shader.java            |   2 +-
  .../client/stream/BroadcastController.java         |   4 +
+ net/minecraft/command/CommandBlockData.java        |   2 +-
+ net/minecraft/command/CommandClearInventory.java   |   2 +-
+ net/minecraft/command/CommandEntityData.java       |   2 +-
+ net/minecraft/command/CommandFill.java             |   2 +-
+ net/minecraft/command/CommandGive.java             |   2 +-
  net/minecraft/command/CommandSpreadPlayers.java    |   4 +-
  net/minecraft/command/IEntitySelector.java         |   2 +-
  net/minecraft/command/PlayerSelector.java          |   2 +-
+ .../command/common/CommandReplaceItem.java         |   2 +-
  .../command/server/CommandBlockLogic.java          |  10 +-
+ .../command/server/CommandScoreboard.java          |   2 +-
+ net/minecraft/command/server/CommandSetBlock.java  |   2 +-
+ net/minecraft/command/server/CommandSummon.java    |   2 +-
+ net/minecraft/command/server/CommandTestFor.java   |   2 +-
+ .../command/server/CommandTestForBlock.java        |   2 +-
  net/minecraft/crash/CrashReport.java               |  19 +-
  net/minecraft/crash/CrashReportCategory.java       |   3 +
  net/minecraft/entity/DataWatcher.java              |  10 +
@@ -275,6 +286,7 @@ Subject: [PATCH] mod
  net/minecraft/item/ItemSeedFood.java               |   4 +-
  net/minecraft/item/ItemSeeds.java                  |   4 +-
  net/minecraft/nbt/CompressedStreamTools.java       |   1 +
+ net/minecraft/nbt/JsonToNBT.java                   |   2 +-
  net/minecraft/nbt/NBTTagCompound.java              |   3 +
  net/minecraft/network/NetHandlerPlayServer.java    |  17 +-
  net/minecraft/network/NetworkManager.java          | 327 ++++++------
@@ -366,7 +378,7 @@ Subject: [PATCH] mod
  .../world/gen/structure/StructureComponent.java    |   2 +-
  .../gen/structure/StructureVillagePieces.java      |   4 +-
  .../world/pathfinder/WalkNodeProcessor.java        |   2 +-
- 362 files changed, 3709 insertions(+), 2264 deletions(-)
+ 374 files changed, 3723 insertions(+), 2278 deletions(-)
 
 diff --git a/net/minecraft/block/Block.java b/net/minecraft/block/Block.java
 index d8fe39f..a7af6d8 100644
@@ -7489,7 +7501,7 @@ index 063634b..8f407cf 100644
  
      /**
 diff --git a/net/minecraft/client/gui/GuiScreen.java b/net/minecraft/client/gui/GuiScreen.java
-index 6cafae5..a65a29e 100644
+index 6cafae5..fbf1c41 100644
 --- a/net/minecraft/client/gui/GuiScreen.java
 +++ b/net/minecraft/client/gui/GuiScreen.java
 @@ -3,6 +3,7 @@ package net.minecraft.client.gui;
@@ -7552,6 +7564,24 @@ index 6cafae5..a65a29e 100644
  
                  if (var12 == 0)
                  {
+@@ -281,7 +287,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
+ 
+                 try
+                 {
+-                    NBTTagCompound var6 = JsonToNBT.func_180713_a(var4.getValue().getUnformattedText());
++                    NBTTagCompound var6 = JsonToNBT.getTagFromJson(var4.getValue().getUnformattedText());
+ 
+                     if (var6 instanceof NBTTagCompound)
+                     {
+@@ -312,7 +318,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
+                     {
+                         try
+                         {
+-                            NBTTagCompound var12 = JsonToNBT.func_180713_a(var4.getValue().getUnformattedText());
++                            NBTTagCompound var12 = JsonToNBT.getTagFromJson(var4.getValue().getUnformattedText());
+ 
+                             if (var12 instanceof NBTTagCompound)
+                             {
 @@ -478,7 +484,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
              this.mc.ingameGUI.getChatGUI().addToSentMessages(p_175281_1_);
          }
@@ -13585,6 +13615,71 @@ index 3cfbb4d..d57e0d8 100644
  import tv.twitch.AuthToken;
  import tv.twitch.Core;
  import tv.twitch.ErrorCode;
+diff --git a/net/minecraft/command/CommandBlockData.java b/net/minecraft/command/CommandBlockData.java
+index b2aa535..4450c3a 100644
+--- a/net/minecraft/command/CommandBlockData.java
++++ b/net/minecraft/command/CommandBlockData.java
+@@ -63,7 +63,7 @@ public class CommandBlockData extends CommandBase
+ 
+                     try
+                     {
+-                        var8 = JsonToNBT.func_180713_a(getChatComponentFromNthArg(sender, args, 3).getUnformattedText());
++                        var8 = JsonToNBT.getTagFromJson(getChatComponentFromNthArg(sender, args, 3).getUnformattedText());
+                     }
+                     catch (NBTException var10)
+                     {
+diff --git a/net/minecraft/command/CommandClearInventory.java b/net/minecraft/command/CommandClearInventory.java
+index 473e3db..de840ff 100644
+--- a/net/minecraft/command/CommandClearInventory.java
++++ b/net/minecraft/command/CommandClearInventory.java
+@@ -44,7 +44,7 @@ public class CommandClearInventory extends CommandBase
+         {
+             try
+             {
+-                var7 = JsonToNBT.func_180713_a(func_180529_a(args, 4));
++                var7 = JsonToNBT.getTagFromJson(func_180529_a(args, 4));
+             }
+             catch (NBTException var9)
+             {
+diff --git a/net/minecraft/command/CommandEntityData.java b/net/minecraft/command/CommandEntityData.java
+index dfb03b9..93f4c25 100644
+--- a/net/minecraft/command/CommandEntityData.java
++++ b/net/minecraft/command/CommandEntityData.java
+@@ -54,7 +54,7 @@ public class CommandEntityData extends CommandBase
+ 
+                 try
+                 {
+-                    var6 = JsonToNBT.func_180713_a(getChatComponentFromNthArg(sender, args, 1).getUnformattedText());
++                    var6 = JsonToNBT.getTagFromJson(getChatComponentFromNthArg(sender, args, 1).getUnformattedText());
+                 }
+                 catch (NBTException var8)
+                 {
+diff --git a/net/minecraft/command/CommandFill.java b/net/minecraft/command/CommandFill.java
+index 0999eaf..fb48656 100644
+--- a/net/minecraft/command/CommandFill.java
++++ b/net/minecraft/command/CommandFill.java
+@@ -88,7 +88,7 @@ public class CommandFill extends CommandBase
+ 
+                     try
+                     {
+-                        var22 = JsonToNBT.func_180713_a(var13);
++                        var22 = JsonToNBT.getTagFromJson(var13);
+                         var23 = true;
+                     }
+                     catch (NBTException var21)
+diff --git a/net/minecraft/command/CommandGive.java b/net/minecraft/command/CommandGive.java
+index f33de3d..6b626da 100644
+--- a/net/minecraft/command/CommandGive.java
++++ b/net/minecraft/command/CommandGive.java
+@@ -52,7 +52,7 @@ public class CommandGive extends CommandBase
+ 
+                 try
+                 {
+-                    var7.setTagCompound(JsonToNBT.func_180713_a(var8));
++                    var7.setTagCompound(JsonToNBT.getTagFromJson(var8));
+                 }
+                 catch (NBTException var10)
+                 {
 diff --git a/net/minecraft/command/CommandSpreadPlayers.java b/net/minecraft/command/CommandSpreadPlayers.java
 index 92d5a1d..3fa8655 100644
 --- a/net/minecraft/command/CommandSpreadPlayers.java
@@ -13633,6 +13728,19 @@ index 036fd0a..9ee4b46 100644
                      return (var3 < 0 || var2 >= var5) && (var4 < 0 || var2 <= var6);
                  }
                  public boolean apply(Object p_apply_1_)
+diff --git a/net/minecraft/command/common/CommandReplaceItem.java b/net/minecraft/command/common/CommandReplaceItem.java
+index 01906b6..6695304 100644
+--- a/net/minecraft/command/common/CommandReplaceItem.java
++++ b/net/minecraft/command/common/CommandReplaceItem.java
+@@ -120,7 +120,7 @@ public class CommandReplaceItem extends CommandBase
+ 
+                 try
+                 {
+-                    var9.setTagCompound(JsonToNBT.func_180713_a(var10));
++                    var9.setTagCompound(JsonToNBT.getTagFromJson(var10));
+                 }
+                 catch (NBTException var14)
+                 {
 diff --git a/net/minecraft/command/server/CommandBlockLogic.java b/net/minecraft/command/server/CommandBlockLogic.java
 index d01df20..778d707 100644
 --- a/net/minecraft/command/server/CommandBlockLogic.java
@@ -13664,6 +13772,71 @@ index d01df20..778d707 100644
              this.func_145756_e();
          }
      }
+diff --git a/net/minecraft/command/server/CommandScoreboard.java b/net/minecraft/command/server/CommandScoreboard.java
+index c0809c2..f5f4e60 100644
+--- a/net/minecraft/command/server/CommandScoreboard.java
++++ b/net/minecraft/command/server/CommandScoreboard.java
+@@ -932,7 +932,7 @@ public class CommandScoreboard extends CommandBase
+ 
+             try
+             {
+-                NBTTagCompound var10 = JsonToNBT.func_180713_a(func_180529_a(p_147197_2_, p_147197_3_));
++                NBTTagCompound var10 = JsonToNBT.getTagFromJson(func_180529_a(p_147197_2_, p_147197_3_));
+                 NBTTagCompound var11 = new NBTTagCompound();
+                 var9.writeToNBT(var11);
+ 
+diff --git a/net/minecraft/command/server/CommandSetBlock.java b/net/minecraft/command/server/CommandSetBlock.java
+index b12bc66..e8cfbdc 100644
+--- a/net/minecraft/command/server/CommandSetBlock.java
++++ b/net/minecraft/command/server/CommandSetBlock.java
+@@ -74,7 +74,7 @@ public class CommandSetBlock extends CommandBase
+ 
+                     try
+                     {
+-                        var7 = JsonToNBT.func_180713_a(var9);
++                        var7 = JsonToNBT.getTagFromJson(var9);
+                         var8 = true;
+                     }
+                     catch (NBTException var12)
+diff --git a/net/minecraft/command/server/CommandSummon.java b/net/minecraft/command/server/CommandSummon.java
+index ff12725..0e8f367 100644
+--- a/net/minecraft/command/server/CommandSummon.java
++++ b/net/minecraft/command/server/CommandSummon.java
+@@ -85,7 +85,7 @@ public class CommandSummon extends CommandBase
+ 
+                     try
+                     {
+-                        var13 = JsonToNBT.func_180713_a(var15.getUnformattedText());
++                        var13 = JsonToNBT.getTagFromJson(var15.getUnformattedText());
+                         var14 = true;
+                     }
+                     catch (NBTException var20)
+diff --git a/net/minecraft/command/server/CommandTestFor.java b/net/minecraft/command/server/CommandTestFor.java
+index d84c739..3065a2c 100644
+--- a/net/minecraft/command/server/CommandTestFor.java
++++ b/net/minecraft/command/server/CommandTestFor.java
+@@ -49,7 +49,7 @@ public class CommandTestFor extends CommandBase
+             {
+                 try
+                 {
+-                    var4 = JsonToNBT.func_180713_a(func_180529_a(args, 1));
++                    var4 = JsonToNBT.getTagFromJson(func_180529_a(args, 1));
+                 }
+                 catch (NBTException var6)
+                 {
+diff --git a/net/minecraft/command/server/CommandTestForBlock.java b/net/minecraft/command/server/CommandTestForBlock.java
+index 19f3f05..be21691 100644
+--- a/net/minecraft/command/server/CommandTestForBlock.java
++++ b/net/minecraft/command/server/CommandTestForBlock.java
+@@ -83,7 +83,7 @@ public class CommandTestForBlock extends CommandBase
+ 
+                         try
+                         {
+-                            var7 = JsonToNBT.func_180713_a(var9);
++                            var7 = JsonToNBT.getTagFromJson(var9);
+                             var8 = true;
+                         }
+                         catch (NBTException var13)
 diff --git a/net/minecraft/crash/CrashReport.java b/net/minecraft/crash/CrashReport.java
 index 0a4366d..892f197 100644
 --- a/net/minecraft/crash/CrashReport.java
@@ -15130,6 +15303,19 @@ index 94da7fe..8169124 100644
  import net.minecraft.crash.CrashReport;
  import net.minecraft.crash.CrashReportCategory;
  import net.minecraft.util.ReportedException;
+diff --git a/net/minecraft/nbt/JsonToNBT.java b/net/minecraft/nbt/JsonToNBT.java
+index 537dc24..1bff09c 100644
+--- a/net/minecraft/nbt/JsonToNBT.java
++++ b/net/minecraft/nbt/JsonToNBT.java
+@@ -15,7 +15,7 @@ public class JsonToNBT
+     private static final Pattern field_179273_b = Pattern.compile("\\[[-+\\d|,\\s]+\\]");
+     private static final String __OBFID = "CL_00001232";
+ 
+-    public static NBTTagCompound func_180713_a(String p_180713_0_) throws NBTException
++    public static NBTTagCompound getTagFromJson(String p_180713_0_) throws NBTException
+     {
+         p_180713_0_ = p_180713_0_.trim();
+ 
 diff --git a/net/minecraft/nbt/NBTTagCompound.java b/net/minecraft/nbt/NBTTagCompound.java
 index 6fcada4..1cdd1ef 100644
 --- a/net/minecraft/nbt/NBTTagCompound.java

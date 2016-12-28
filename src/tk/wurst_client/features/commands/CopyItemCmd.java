@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2016 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -9,13 +9,15 @@ package tk.wurst_client.features.commands;
 
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
 import tk.wurst_client.utils.ChatUtils;
+import tk.wurst_client.utils.InventoryUtils;
 
-@Cmd.Info(description = "Allows you to copy items that other people are holding\n"
-	+ "or wearing. Requires creative mode.",
+@Cmd.Info(
+	description = "Allows you to copy items that other people are holding\n"
+		+ "or wearing. Requires creative mode.",
 	name = "copyitem",
-	syntax = {"<player> (hand|head|chest|legs|feet)"})
+	syntax = {"<player> (hand|head|chest|legs|feet)"},
+	help = "Commands/copyitem")
 public class CopyItemCmd extends Cmd
 {
 	@Override
@@ -61,16 +63,10 @@ public class CopyItemCmd extends Cmd
 		if(item == null)
 			error("Player \"" + args[0] + "\" could not be found.");
 		
-		// copy item
-		for(int i = 0; i < 9; i++)
-			if(mc.player.inventory.getStackInSlot(i) == null)
-			{
-				mc.player.connection
-					.sendPacket(new C10PacketCreativeInventoryAction(
-						36 + i, item));
-				ChatUtils.message("Item copied.");
-				return;
-			}
-		error("Please clear a slot in your hotbar.");
+		// give item
+		if(InventoryUtils.placeStackInHotbar(item))
+			ChatUtils.message("Item copied.");
+		else
+			error("Please clear a slot in your hotbar.");
 	}
 }
