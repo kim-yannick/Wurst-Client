@@ -27,6 +27,7 @@ public enum WurstClient
 	
 	public static final String VERSION = "2.23";
 	public static final String MINECRAFT_VERSION = "1.8";
+	public static final int PROTOCOL_VERSION = 47;
 	public boolean startupMessageDisabled = false;
 	
 	public AnalyticsManager analytics;
