@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2016 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -15,37 +15,48 @@ import java.util.LinkedList;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.util.ResourceLocation;
 import tk.wurst_client.WurstClient;
 import tk.wurst_client.events.GUIRenderEvent;
 import tk.wurst_client.features.mods.Mod;
+import tk.wurst_client.features.mods.NavigatorMod;
 import tk.wurst_client.font.Fonts;
 import tk.wurst_client.utils.RenderUtils;
 
 public class UIRenderer
 {
-	private static final ResourceLocation wurstLogo = new ResourceLocation(
-		"wurst/wurst_128.png");
+	private static final ResourceLocation wurstLogo =
+		new ResourceLocation("wurst/wurst_128.png");
 	
 	private static void renderModList()
 	{
 		if(WurstClient.INSTANCE.options.modListMode == 2)
 			return;
-		LinkedList<String> modList = new LinkedList<String>();
+		
+		int yCount = 19;
+		if(WurstClient.INSTANCE.special.yesCheatSpf.modeIndicator.isChecked())
+		{
+			String name =
+				"YesCheat+: " + WurstClient.INSTANCE.special.yesCheatSpf
+					.getBypassLevel().getName();
+			Fonts.segoe18.drawString(name, 3, yCount + 1, 0xFF000000);
+			Fonts.segoe18.drawString(name, 2, yCount, 0xFFFFFFFF);
+			yCount += 9;
+		}
+		
+		LinkedList<String> modList = new LinkedList<>();
 		for(Mod mod : WurstClient.INSTANCE.mods.getAllMods())
 		{
+			if(mod instanceof NavigatorMod)
+				continue;
 			if(mod.isActive())
 				modList.add(mod.getRenderName());
 		}
-		ScaledResolution sr =
-			new ScaledResolution(Minecraft.getMinecraft(),
-				Minecraft.getMinecraft().displayWidth,
-				Minecraft.getMinecraft().displayHeight);
-		int yCount = 19;
+		
+		ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
 		if(yCount + modList.size() * 9 > sr.getScaledHeight()
 			|| WurstClient.INSTANCE.options.modListMode == 1)
 		{
@@ -69,6 +80,10 @@ public class UIRenderer
 	
 	public static void renderUI(float zLevel)
 	{
+		// TODO
+		// if(!WurstClient.INSTANCE.isEnabled())
+		// return;
+		
 		// GL settings
 		glEnable(GL_BLEND);
 		glDisable(GL_CULL_FACE);
@@ -77,11 +92,8 @@ public class UIRenderer
 		RenderUtils.setColor(new Color(255, 255, 255, 128));
 		
 		// get version string
-		String version =
-			"v"
-				+ WurstClient.VERSION
-				+ (WurstClient.INSTANCE.updater.isOutdated() ? " (outdated)"
-					: "");
+		String version = "v" + WurstClient.VERSION
+			+ (WurstClient.INSTANCE.updater.isOutdated() ? " (outdated)" : "");
 		
 		// draw version background
 		glBegin(GL_QUADS);
@@ -107,29 +119,18 @@ public class UIRenderer
 		OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(wurstLogo);
-		Tessellator ts = Tessellator.getInstance();
-		WorldRenderer wr = ts.getWorldRenderer();
-		double x = 0;
-		double y = 3;
-		double h = 18;
-		double w = 72;
-		double fw = 256;
-		double fh = 256;
-		double u1 = 0;
-		double v1 = 0;
-		wr.startDrawingQuads();
-		wr.addVertexWithUV(x + 0, y + h, zLevel, (float)(u1 + 0) / 256D,
-			(float)(v1 + fh) / 256D);
-		wr.addVertexWithUV(x + w, y + h, zLevel, (float)(u1 + fw) / 256D,
-			(float)(v1 + fh) / 256D);
-		wr.addVertexWithUV(x + w, y + 0, zLevel, (float)(u1 + fw) / 256D,
-			(float)(v1 + 0) / 256D);
-		wr.addVertexWithUV(x + 0, y + 0, zLevel, (float)(u1 + 0) / 256D,
-			(float)(v1 + 0) / 256D);
-		ts.draw();
+		int x = 0;
+		int y = 3;
+		int w = 72;
+		int h = 18;
+		float fw = 72;
+		float fh = 18;
+		float u = 0;
+		float v = 0;
+		Gui.drawModalRectWithCustomSizedTexture(x, y, u, v, w, h, fw, fh);
 		
 		// GUI render event
-		WurstClient.INSTANCE.events.fire(new GUIRenderEvent());
+		WurstClient.INSTANCE.events.fire(GUIRenderEvent.INSTANCE);
 		
 		// GL resets
 		GL11.glDepthMask(true);

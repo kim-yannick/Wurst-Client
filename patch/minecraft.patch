@@ -1,6 +1,6 @@
-From c583863873ca64fb71fdd5ac3da184ae69091edc Mon Sep 17 00:00:00 2001
+From 73227a13b38d5e9fe4595968f6b8fb35248e77bf Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Sat, 17 Dec 2016 09:17:35 +0100
+Date: Wed, 28 Dec 2016 16:20:14 +0100
 Subject: [PATCH] mod
 
 ---
@@ -130,7 +130,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/GuiVideoSettings.java     |   2 +
  net/minecraft/client/gui/GuiWinGame.java           |  14 +-
  net/minecraft/client/gui/GuiYesNo.java             |   3 +
- net/minecraft/client/gui/ScaledResolution.java     |   2 +-
+ net/minecraft/client/gui/ScaledResolution.java     |   8 +-
  net/minecraft/client/gui/ScreenChatOptions.java    |   2 +
  .../client/gui/ServerListEntryNormal.java          |  10 +-
  net/minecraft/client/gui/ServerSelectionList.java  |  13 +-
@@ -366,7 +366,7 @@ Subject: [PATCH] mod
  .../world/gen/structure/StructureComponent.java    |   2 +-
  .../gen/structure/StructureVillagePieces.java      |   4 +-
  .../world/pathfinder/WalkNodeProcessor.java        |   2 +-
- 362 files changed, 3703 insertions(+), 2264 deletions(-)
+ 362 files changed, 3709 insertions(+), 2264 deletions(-)
 
 diff --git a/net/minecraft/block/Block.java b/net/minecraft/block/Block.java
 index d8fe39f..a7af6d8 100644
@@ -8305,10 +8305,23 @@ index b3ca3f4..0554c69 100644
  
  public class GuiYesNo extends GuiScreen
 diff --git a/net/minecraft/client/gui/ScaledResolution.java b/net/minecraft/client/gui/ScaledResolution.java
-index fce8057..7579cb2 100644
+index fce8057..3cdb76e 100644
 --- a/net/minecraft/client/gui/ScaledResolution.java
 +++ b/net/minecraft/client/gui/ScaledResolution.java
-@@ -22,7 +22,7 @@ public class ScaledResolution
+@@ -12,6 +12,12 @@ public class ScaledResolution
+     private int scaleFactor;
+     private static final String __OBFID = "CL_00000666";
+     
++    // TODO: Client
++	public ScaledResolution(Minecraft mc)
++	{
++		this(mc, mc.displayWidth, mc.displayHeight);
++	}
++	
+ 	public ScaledResolution(Minecraft mcIn, int p_i46324_2_, int p_i46324_3_)
+     {
+         this.scaledWidth = p_i46324_2_;
+@@ -22,7 +28,7 @@ public class ScaledResolution
  
          if (var5 == 0)
          {
