@@ -14,6 +14,7 @@ import java.util.HashMap;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.util.ReportedException;
+import tk.wurst_client.WurstClient;
 import tk.wurst_client.events.listeners.*;
 
 public final class EventManager
@@ -40,6 +41,9 @@ public final class EventManager
 	@SuppressWarnings("unchecked")
 	public <T extends Event> void fire(T event)
 	{
+		if(!WurstClient.INSTANCE.isEnabled())
+			return;
+		
 		try
 		{
 			event.fire(listenerMap.get(event.getListenerType()));
@@ -70,10 +74,9 @@ public final class EventManager
 				CrashReport.makeCrashReport(e, "Adding Wurst event listener");
 			CrashReportCategory crashreportcategory =
 				crashReport.makeCategory("Affected listener");
-			crashreportcategory.addCrashSectionCallable("Listener type",
-				() -> {
-					return type.getName();
-				});
+			crashreportcategory.addCrashSectionCallable("Listener type", () -> {
+				return type.getName();
+			});
 			crashreportcategory.addCrashSectionCallable("Listener class",
 				() -> {
 					return listener.getClass().getName();
@@ -95,10 +98,9 @@ public final class EventManager
 				CrashReport.makeCrashReport(e, "Removing Wurst event listener");
 			CrashReportCategory crashreportcategory =
 				crashReport.makeCategory("Affected listener");
-			crashreportcategory.addCrashSectionCallable("Listener type",
-				() -> {
-					return type.getName();
-				});
+			crashreportcategory.addCrashSectionCallable("Listener type", () -> {
+				return type.getName();
+			});
 			crashreportcategory.addCrashSectionCallable("Listener class",
 				() -> {
 					return listener.getClass().getName();

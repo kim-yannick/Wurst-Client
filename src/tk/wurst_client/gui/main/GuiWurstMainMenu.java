@@ -52,7 +52,8 @@ public class GuiWurstMainMenu extends GuiMainMenu
 	private static boolean startupMessageDisabled = false;
 	
 	private String noticeText = "Wurst for Minecraft 1.9 is now available.";
-	private String noticeLink = "https://www.wurst-client.tk/download/minecraft-1-9-x/";
+	private String noticeLink =
+		"https://www.wurst-client.tk/download/minecraft-1-9-x/";
 	
 	private int noticeWidth2;
 	private int noticeWidth1;
@@ -251,12 +252,11 @@ public class GuiWurstMainMenu extends GuiMainMenu
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks)
 	{
-		// TODO
-		// if(!WurstClient.INSTANCE.isEnabled())
-		// {
-		// super.drawScreen(mouseX, mouseY, partialTicks);
-		// return;
-		// }
+		if(!WurstClient.INSTANCE.isEnabled())
+		{
+			super.drawScreen(mouseX, mouseY, partialTicks);
+			return;
+		}
 		
 		// panorama
 		GlStateManager.disableAlpha();

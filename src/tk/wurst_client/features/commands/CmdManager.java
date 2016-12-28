@@ -20,6 +20,7 @@ import net.minecraft.event.ClickEvent.Action;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ReportedException;
+import tk.wurst_client.WurstClient;
 import tk.wurst_client.events.ChatOutputEvent;
 import tk.wurst_client.events.listeners.ChatOutputListener;
 import tk.wurst_client.features.commands.Cmd.SyntaxError;
@@ -104,6 +105,9 @@ public class CmdManager implements ChatOutputListener
 	@Override
 	public void onSentMessage(ChatOutputEvent event)
 	{
+		if(!WurstClient.INSTANCE.isEnabled())
+			return;
+		
 		String message = event.getMessage();
 		if(message.startsWith("."))
 		{

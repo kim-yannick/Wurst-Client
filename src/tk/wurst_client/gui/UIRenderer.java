@@ -80,9 +80,8 @@ public class UIRenderer
 	
 	public static void renderUI(float zLevel)
 	{
-		// TODO
-		// if(!WurstClient.INSTANCE.isEnabled())
-		// return;
+		if(!WurstClient.INSTANCE.isEnabled())
+			return;
 		
 		// GL settings
 		glEnable(GL_BLEND);
