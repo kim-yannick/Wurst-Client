@@ -1,6 +1,6 @@
-From f6f7b4debb5c8cbabd35ffd2146aa934c5d25b55 Mon Sep 17 00:00:00 2001
+From 50e689e177e6d4419313a285c077fe285ca4221b Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 30 Dec 2016 15:15:01 +0100
+Date: Fri, 30 Dec 2016 16:43:37 +0100
 Subject: [PATCH] mod
 
 ---
@@ -177,7 +177,7 @@ Subject: [PATCH] mod
  .../client/model/PositionTextureVertex.java        |   8 +-
  net/minecraft/client/model/TexturedQuad.java       |   8 +-
  .../client/multiplayer/GuiConnecting.java          |  14 +-
- .../client/multiplayer/PlayerControllerMP.java     | 176 ++++---
+ .../client/multiplayer/PlayerControllerMP.java     | 182 +++++---
  net/minecraft/client/multiplayer/ServerList.java   |  16 +-
  net/minecraft/client/multiplayer/WorldClient.java  |  28 +-
  .../client/network/NetHandlerLoginClient.java      |   5 +
@@ -550,7 +550,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |   4 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 546 files changed, 5558 insertions(+), 4241 deletions(-)
+ 546 files changed, 5564 insertions(+), 4241 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -11427,7 +11427,7 @@ index 1aa77b6..dc1b750 100644
  
              this.mc.displayGuiScreen(this.previousGuiScreen);
 diff --git a/net/minecraft/client/multiplayer/PlayerControllerMP.java b/net/minecraft/client/multiplayer/PlayerControllerMP.java
-index ca6ffd5..fd8f0ba 100644
+index ca6ffd5..2843006 100644
 --- a/net/minecraft/client/multiplayer/PlayerControllerMP.java
 +++ b/net/minecraft/client/multiplayer/PlayerControllerMP.java
 @@ -13,7 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
@@ -11465,14 +11465,20 @@ index ca6ffd5..fd8f0ba 100644
  
      /**
       * Tick counter, when it hits 4 it resets back to 0 and plays the step sound
-@@ -69,11 +72,11 @@ public class PlayerControllerMP
+@@ -69,11 +72,17 @@ public class PlayerControllerMP
          this.netClientHandler = p_i45062_2_;
      }
- 
+     
 -    public static void func_178891_a(Minecraft mcIn, PlayerControllerMP p_178891_1_, BlockPos p_178891_2_, EnumFacing p_178891_3_)
-+    public static void clickBlockCreative(Minecraft mcIn, PlayerControllerMP p_178891_1_, BlockPos p_178891_2_, EnumFacing p_178891_3_)
-     {
++	// TODO: Client
++	public boolean getIsHittingBlock()
+ 	{
 -        if (!mcIn.theWorld.func_175719_a(mcIn.thePlayer, p_178891_2_, p_178891_3_))
++		return this.isHittingBlock;
++	}
++
++    public static void clickBlockCreative(Minecraft mcIn, PlayerControllerMP p_178891_1_, BlockPos p_178891_2_, EnumFacing p_178891_3_)
++    {
 +        if (!mcIn.world.func_175719_a(mcIn.player, p_178891_2_, p_178891_3_))
          {
 -            p_178891_1_.func_178888_a(p_178891_2_, p_178891_3_);
@@ -11480,7 +11486,7 @@ index ca6ffd5..fd8f0ba 100644
          }
      }
  
-@@ -102,7 +105,7 @@ public class PlayerControllerMP
+@@ -102,7 +111,7 @@ public class PlayerControllerMP
      public void setGameType(WorldSettings.GameType p_78746_1_)
      {
          this.currentGameType = p_78746_1_;
@@ -11489,7 +11495,7 @@ index ca6ffd5..fd8f0ba 100644
      }
  
      /**
-@@ -118,7 +121,7 @@ public class PlayerControllerMP
+@@ -118,7 +127,7 @@ public class PlayerControllerMP
          return this.currentGameType.isSurvivalOrAdventure();
      }
  
@@ -11498,7 +11504,7 @@ index ca6ffd5..fd8f0ba 100644
      {
          if (this.currentGameType.isAdventure())
          {
-@@ -127,10 +130,10 @@ public class PlayerControllerMP
+@@ -127,10 +136,10 @@ public class PlayerControllerMP
                  return false;
              }
  
@@ -11512,7 +11518,7 @@ index ca6ffd5..fd8f0ba 100644
  
                  if (var4 == null)
                  {
-@@ -144,43 +147,43 @@ public class PlayerControllerMP
+@@ -144,43 +153,43 @@ public class PlayerControllerMP
              }
          }
  
@@ -11566,7 +11572,7 @@ index ca6ffd5..fd8f0ba 100644
                          }
                      }
                  }
-@@ -190,7 +193,7 @@ public class PlayerControllerMP
+@@ -190,7 +199,7 @@ public class PlayerControllerMP
          }
      }
  
@@ -11575,7 +11581,7 @@ index ca6ffd5..fd8f0ba 100644
      {
          Block var3;
  
-@@ -201,10 +204,10 @@ public class PlayerControllerMP
+@@ -201,10 +210,10 @@ public class PlayerControllerMP
                  return false;
              }
  
@@ -11589,7 +11595,7 @@ index ca6ffd5..fd8f0ba 100644
  
                  if (var4 == null)
                  {
-@@ -218,7 +221,7 @@ public class PlayerControllerMP
+@@ -218,7 +227,7 @@ public class PlayerControllerMP
              }
          }
  
@@ -11598,7 +11604,7 @@ index ca6ffd5..fd8f0ba 100644
          {
              return false;
          }
-@@ -226,38 +229,41 @@ public class PlayerControllerMP
+@@ -226,38 +235,41 @@ public class PlayerControllerMP
          {
              if (this.currentGameType.isCreative())
              {
@@ -11653,7 +11659,7 @@ index ca6ffd5..fd8f0ba 100644
                  }
              }
  
-@@ -272,14 +278,17 @@ public class PlayerControllerMP
+@@ -272,14 +284,17 @@ public class PlayerControllerMP
      {
          if (this.isHittingBlock)
          {
@@ -11674,7 +11680,7 @@ index ca6ffd5..fd8f0ba 100644
      {
          this.syncCurrentPlayItem();
  
-@@ -288,25 +297,34 @@ public class PlayerControllerMP
+@@ -288,25 +303,34 @@ public class PlayerControllerMP
              --this.blockHitDelay;
              return true;
          }
@@ -11717,7 +11723,7 @@ index ca6ffd5..fd8f0ba 100644
  
                  if (this.stepSoundTickCounter % 4.0F == 0.0F)
                  {
-@@ -318,20 +336,28 @@ public class PlayerControllerMP
+@@ -318,20 +342,28 @@ public class PlayerControllerMP
                  if (this.curBlockDamageMP >= 1.0F)
                  {
                      this.isHittingBlock = false;
@@ -11750,7 +11756,7 @@ index ca6ffd5..fd8f0ba 100644
          }
      }
  
-@@ -357,9 +383,9 @@ public class PlayerControllerMP
+@@ -357,9 +389,9 @@ public class PlayerControllerMP
          }
      }
  
@@ -11762,7 +11768,7 @@ index ca6ffd5..fd8f0ba 100644
          boolean var3 = this.currentItemHittingBlock == null && var2 == null;
  
          if (this.currentItemHittingBlock != null && var2 != null)
-@@ -375,16 +401,16 @@ public class PlayerControllerMP
+@@ -375,16 +407,16 @@ public class PlayerControllerMP
       */
      private void syncCurrentPlayItem()
      {
@@ -11782,7 +11788,7 @@ index ca6ffd5..fd8f0ba 100644
      {
          this.syncCurrentPlayItem();
          float var7 = (float)(p_178890_6_.xCoord - (double)p_178890_4_.getX());
-@@ -392,7 +418,7 @@ public class PlayerControllerMP
+@@ -392,7 +424,7 @@ public class PlayerControllerMP
          float var9 = (float)(p_178890_6_.zCoord - (double)p_178890_4_.getZ());
          boolean var10 = false;
  
@@ -11791,7 +11797,7 @@ index ca6ffd5..fd8f0ba 100644
          {
              return false;
          }
-@@ -418,7 +444,7 @@ public class PlayerControllerMP
+@@ -418,7 +450,7 @@ public class PlayerControllerMP
                  }
              }
  
@@ -11800,7 +11806,7 @@ index ca6ffd5..fd8f0ba 100644
  
              if (!var10 && this.currentGameType != WorldSettings.GameType.SPECTATOR)
              {
-@@ -459,11 +485,11 @@ public class PlayerControllerMP
+@@ -459,11 +491,11 @@ public class PlayerControllerMP
          else
          {
              this.syncCurrentPlayItem();
@@ -11814,7 +11820,7 @@ index ca6ffd5..fd8f0ba 100644
              {
                  return false;
              }
-@@ -492,7 +518,7 @@ public class PlayerControllerMP
+@@ -492,7 +524,7 @@ public class PlayerControllerMP
      public void attackEntity(EntityPlayer playerIn, Entity targetEntity)
      {
          this.syncCurrentPlayItem();
@@ -11823,7 +11829,7 @@ index ca6ffd5..fd8f0ba 100644
  
          if (this.currentGameType != WorldSettings.GameType.SPECTATOR)
          {
-@@ -506,15 +532,15 @@ public class PlayerControllerMP
+@@ -506,15 +538,15 @@ public class PlayerControllerMP
      public boolean interactWithEntitySendPacket(EntityPlayer playerIn, Entity targetEntity)
      {
          this.syncCurrentPlayItem();
@@ -11843,7 +11849,7 @@ index ca6ffd5..fd8f0ba 100644
          return this.currentGameType != WorldSettings.GameType.SPECTATOR && p_178894_2_.func_174825_a(p_178894_1_, var4);
      }
  
-@@ -525,7 +551,7 @@ public class PlayerControllerMP
+@@ -525,7 +557,7 @@ public class PlayerControllerMP
      {
          short var6 = playerIn.openContainer.getNextTransactionID(playerIn.inventory);
          ItemStack var7 = playerIn.openContainer.slotClick(slotId, p_78753_3_, p_78753_4_, playerIn);
@@ -11852,7 +11858,7 @@ index ca6ffd5..fd8f0ba 100644
          return var7;
      }
  
-@@ -535,7 +561,7 @@ public class PlayerControllerMP
+@@ -535,7 +567,7 @@ public class PlayerControllerMP
       */
      public void sendEnchantPacket(int p_78756_1_, int p_78756_2_)
      {
@@ -11861,7 +11867,7 @@ index ca6ffd5..fd8f0ba 100644
      }
  
      /**
-@@ -545,7 +571,7 @@ public class PlayerControllerMP
+@@ -545,7 +577,7 @@ public class PlayerControllerMP
      {
          if (this.currentGameType.isCreative())
          {
@@ -11870,7 +11876,7 @@ index ca6ffd5..fd8f0ba 100644
          }
      }
  
-@@ -556,14 +582,14 @@ public class PlayerControllerMP
+@@ -556,14 +588,14 @@ public class PlayerControllerMP
      {
          if (this.currentGameType.isCreative() && itemStackIn != null)
          {
@@ -11887,7 +11893,7 @@ index ca6ffd5..fd8f0ba 100644
          playerIn.stopUsingItem();
      }
  
-@@ -601,7 +627,7 @@ public class PlayerControllerMP
+@@ -601,7 +633,7 @@ public class PlayerControllerMP
       */
      public boolean isRidingHorse()
      {
