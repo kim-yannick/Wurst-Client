@@ -8,7 +8,7 @@
 package tk.wurst_client.features.mods;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.network.play.client.C02PacketUseEntity;
+import net.minecraft.network.play.client.CPacketUseEntity;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.features.Feature;
 import tk.wurst_client.features.special_features.YesCheatSpf.BypassLevel;
@@ -160,7 +160,7 @@ public class ClickAuraMod extends Mod implements UpdateListener
 		// attack entity
 		mc.player.swingArm();
 		mc.player.connection.sendPacket(
-			new C02PacketUseEntity(entity, C02PacketUseEntity.Action.ATTACK));
+			new CPacketUseEntity(entity, CPacketUseEntity.Action.ATTACK));
 		
 		// reset timer
 		updateLastMS();

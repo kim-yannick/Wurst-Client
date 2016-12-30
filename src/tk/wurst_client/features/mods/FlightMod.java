@@ -8,7 +8,7 @@
 package tk.wurst_client.features.mods;
 
 import net.minecraft.network.play.client.CPacketPlayer;
-import net.minecraft.network.play.client.CPacketPlayer.C04PacketPlayerPosition;
+import net.minecraft.network.play.client.CPacketPlayer.Position;
 import net.minecraft.util.AxisAlignedBB;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.features.Feature;
@@ -99,7 +99,7 @@ public class FlightMod extends Mod implements UpdateListener
 			if(y < minY)
 				y = minY;
 			
-			C04PacketPlayerPosition packet = new C04PacketPlayerPosition(
+			Position packet = new Position(
 				mc.player.posX, y, mc.player.posZ, true);
 			mc.player.connection.sendPacket(packet);
 		}
@@ -110,7 +110,7 @@ public class FlightMod extends Mod implements UpdateListener
 			if(y > mc.player.posY)
 				y = mc.player.posY;
 			
-			C04PacketPlayerPosition packet = new C04PacketPlayerPosition(
+			Position packet = new Position(
 				mc.player.posX, y, mc.player.posZ, true);
 			mc.player.connection.sendPacket(packet);
 		}
@@ -138,10 +138,10 @@ public class FlightMod extends Mod implements UpdateListener
 			for(int i = 0; i < 4; i++)
 			{
 				mc.player.connection.sendPacket(
-					new CPacketPlayer.C04PacketPlayerPosition(startX,
+					new CPacketPlayer.Position(startX,
 						startY + 1.01, startZ, false));
 				mc.player.connection.sendPacket(
-					new CPacketPlayer.C04PacketPlayerPosition(startX, startY,
+					new CPacketPlayer.Position(startX, startY,
 						startZ, false));
 			}
 			mc.player.jump();

@@ -1,6 +1,6 @@
-From 486fb59e682645b90dcc27c11c07f3af02fcb29b Mon Sep 17 00:00:00 2001
+From f6f7b4debb5c8cbabd35ffd2146aa934c5d25b55 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Thu, 29 Dec 2016 20:30:29 +0100
+Date: Fri, 30 Dec 2016 15:15:01 +0100
 Subject: [PATCH] mod
 
 ---
@@ -177,7 +177,7 @@ Subject: [PATCH] mod
  .../client/model/PositionTextureVertex.java        |   8 +-
  net/minecraft/client/model/TexturedQuad.java       |   8 +-
  .../client/multiplayer/GuiConnecting.java          |  14 +-
- .../client/multiplayer/PlayerControllerMP.java     | 174 ++++---
+ .../client/multiplayer/PlayerControllerMP.java     | 176 ++++---
  net/minecraft/client/multiplayer/ServerList.java   |  16 +-
  net/minecraft/client/multiplayer/WorldClient.java  |  28 +-
  .../client/network/NetHandlerLoginClient.java      |   5 +
@@ -408,15 +408,18 @@ Subject: [PATCH] mod
  net/minecraft/nbt/CompressedStreamTools.java       |   1 +
  net/minecraft/nbt/JsonToNBT.java                   |   2 +-
  net/minecraft/nbt/NBTTagCompound.java              |   7 +-
- net/minecraft/network/EnumConnectionState.java     |  10 +-
- net/minecraft/network/NetHandlerPlayServer.java    |  37 +-
+ net/minecraft/network/EnumConnectionState.java     |  18 +-
+ net/minecraft/network/NetHandlerPlayServer.java    |  51 ++-
  net/minecraft/network/NetworkManager.java          | 327 +++++++------
  net/minecraft/network/NetworkSystem.java           |  11 +-
  net/minecraft/network/PacketBuffer.java            |   6 +-
- .../network/play/INetHandlerPlayServer.java        |   4 +-
- .../network/play/client/C02PacketUseEntity.java    |  10 +-
+ .../network/play/INetHandlerPlayServer.java        |  12 +-
+ .../network/play/client/C01PacketChatMessage.java  |  59 ---
+ .../network/play/client/C02PacketUseEntity.java    | 105 -----
  .../network/play/client/C03PacketPlayer.java       | 229 ----------
+ .../network/play/client/CPacketChatMessage.java    |  59 +++
  .../network/play/client/CPacketPlayer.java         | 229 ++++++++++
+ .../network/play/client/CPacketUseEntity.java      | 105 +++++
  .../network/play/server/S27PacketExplosion.java    |   4 +-
  .../network/play/server/S29PacketSoundEffect.java  |   2 +-
  net/minecraft/pathfinding/PathEntity.java          |  10 +-
@@ -547,9 +550,13 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |   4 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 543 files changed, 5383 insertions(+), 4066 deletions(-)
+ 546 files changed, 5558 insertions(+), 4241 deletions(-)
+ delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
+ delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
+ create mode 100644 net/minecraft/network/play/client/CPacketChatMessage.java
  create mode 100644 net/minecraft/network/play/client/CPacketPlayer.java
+ create mode 100644 net/minecraft/network/play/client/CPacketUseEntity.java
  delete mode 100644 net/minecraft/util/ChatComponentText.java
  delete mode 100644 net/minecraft/util/MovingObjectPosition.java
  create mode 100644 net/minecraft/util/RayTraceResult.java
@@ -5474,7 +5481,7 @@ index 4b48cd3..05fa973 100644
  
          if (var9 > 0.1F)
 diff --git a/net/minecraft/client/entity/EntityPlayerSP.java b/net/minecraft/client/entity/EntityPlayerSP.java
-index 58f696b..f7f7333 100644
+index 58f696b..905ad46 100644
 --- a/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/net/minecraft/client/entity/EntityPlayerSP.java
 @@ -1,5 +1,6 @@
@@ -5664,7 +5671,7 @@ index 58f696b..f7f7333 100644
                  else if (var13)
                  {
 -                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.onGround));
-+                	BlinkMod.addToBlinkQueue(new CPacketPlayer.C04PacketPlayerPosition(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.onGround));
++                	BlinkMod.addToBlinkQueue(new CPacketPlayer.Position(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.onGround));
                  }
                  else if (var14)
                  {
@@ -5721,7 +5728,7 @@ index 58f696b..f7f7333 100644
 +					}else
 +					{
 +						this.connection
-+							.sendPacket(new CPacketPlayer.C04PacketPlayerPosition(
++							.sendPacket(new CPacketPlayer.Position(
 +								this.posX, this.getEntityBoundingBox().minY,
 +								this.posZ, this.onGround));
  					}
@@ -5734,7 +5741,7 @@ index 58f696b..f7f7333 100644
 +                }
 +                else if (var13)
 +                {
-+                    this.connection.sendPacket(new CPacketPlayer.C04PacketPlayerPosition(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.onGround));
++                    this.connection.sendPacket(new CPacketPlayer.Position(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.onGround));
 +                }
 +                else if (var14)
 +                {
@@ -5772,7 +5779,7 @@ index 58f696b..f7f7333 100644
 +      	if(event.isCancelled())
 +      		return;
 +      	
-+        this.connection.sendPacket(new C01PacketChatMessage(event.getMessage()));
++        this.connection.sendPacket(new CPacketChatMessage(event.getMessage()));
 +    }
 +
 +    /**
@@ -5787,7 +5794,7 @@ index 58f696b..f7f7333 100644
 +      	if(event.isCancelled())
 +      		return;
 +      	
-+        this.connection.sendPacket(new C01PacketChatMessage(event.getMessage()));
++        this.connection.sendPacket(new CPacketChatMessage(event.getMessage()));
      }
  
      /**
@@ -5893,7 +5900,7 @@ index 58f696b..f7f7333 100644
              this.movementInput.moveStrafe *= 0.2F;
              this.movementInput.moveForward *= 0.2F;
 diff --git a/net/minecraft/client/gui/FontRenderer.java b/net/minecraft/client/gui/FontRenderer.java
-index de97013..566d4bb 100644
+index de97013..c511acb 100644
 --- a/net/minecraft/client/gui/FontRenderer.java
 +++ b/net/minecraft/client/gui/FontRenderer.java
 @@ -1,8 +1,5 @@
@@ -5961,7 +5968,7 @@ index de97013..566d4bb 100644
 +			&& WurstClient.INSTANCE.mods.nameProtectMod.isActive())
 +		{
 +			Iterator itr =
-+				Minecraft.getMinecraft().getNetHandler().getPlayerInfo()
++				Minecraft.getMinecraft().getNetHandler().getPlayerInfoMap()
 +					.iterator();
 +			int i = 0;
 +			while(itr.hasNext())
@@ -6921,7 +6928,7 @@ index 4d52ca9..5c9d8fd 100644
          this.field_147083_w = p_i1092_2_;
          this.allowUserInput = false;
 diff --git a/net/minecraft/client/gui/GuiIngame.java b/net/minecraft/client/gui/GuiIngame.java
-index 12b2457..100b266 100644
+index 12b2457..7185b7d 100644
 --- a/net/minecraft/client/gui/GuiIngame.java
 +++ b/net/minecraft/client/gui/GuiIngame.java
 @@ -1,13 +1,15 @@
@@ -7073,7 +7080,7 @@ index 12b2457..100b266 100644
          var16 = var12.getObjectiveInDisplaySlot(0);
  
 -        if (this.mc.gameSettings.keyBindPlayerList.getIsKeyPressed() && (!this.mc.isIntegratedServerRunning() || this.mc.thePlayer.sendQueue.func_175106_d().size() > 1 || var16 != null))
-+        if (this.mc.gameSettings.keyBindPlayerList.getIsKeyPressed() && (!this.mc.isIntegratedServerRunning() || this.mc.player.connection.getPlayerInfo().size() > 1 || var16 != null))
++        if (this.mc.gameSettings.keyBindPlayerList.getIsKeyPressed() && (!this.mc.isIntegratedServerRunning() || this.mc.player.connection.getPlayerInfoMap().size() > 1 || var16 != null))
          {
              this.overlayPlayerList.func_175246_a(true);
              this.overlayPlayerList.func_175249_a(var3, var12, var16);
@@ -8436,7 +8443,7 @@ index 8e601f3..221e068 100644
  
  public class GuiPageButtonList extends GuiListExtended
 diff --git a/net/minecraft/client/gui/GuiPlayerTabOverlay.java b/net/minecraft/client/gui/GuiPlayerTabOverlay.java
-index ddc5d3b..b143db6 100644
+index ddc5d3b..d410483 100644
 --- a/net/minecraft/client/gui/GuiPlayerTabOverlay.java
 +++ b/net/minecraft/client/gui/GuiPlayerTabOverlay.java
 @@ -37,9 +37,9 @@ public class GuiPlayerTabOverlay extends Gui
@@ -8458,7 +8465,7 @@ index ddc5d3b..b143db6 100644
 -        NetHandlerPlayClient var4 = this.field_175250_f.thePlayer.sendQueue;
 -        List var5 = field_175252_a.sortedCopy(var4.func_175106_d());
 +        NetHandlerPlayClient var4 = this.field_175250_f.player.connection;
-+        List var5 = field_175252_a.sortedCopy(var4.getPlayerInfo());
++        List var5 = field_175252_a.sortedCopy(var4.getPlayerInfoMap());
          int var6 = 0;
          int var7 = 0;
          Iterator var8 = var5.iterator();
@@ -10904,7 +10911,7 @@ index aef9419..01c9a98 100644
  
          public void func_178663_a(float p_178663_1_, int p_178663_2_)
 diff --git a/net/minecraft/client/gui/spectator/categories/TeleportToPlayer.java b/net/minecraft/client/gui/spectator/categories/TeleportToPlayer.java
-index d0fef46..000be16 100644
+index d0fef46..dd80b33 100644
 --- a/net/minecraft/client/gui/spectator/categories/TeleportToPlayer.java
 +++ b/net/minecraft/client/gui/spectator/categories/TeleportToPlayer.java
 @@ -15,7 +15,7 @@ import net.minecraft.client.gui.spectator.ISpectatorMenuView;
@@ -10930,7 +10937,7 @@ index d0fef46..000be16 100644
      public TeleportToPlayer()
      {
 -        this(field_178674_a.sortedCopy(Minecraft.getMinecraft().getNetHandler().func_175106_d()));
-+        this(field_178674_a.sortedCopy(Minecraft.getMinecraft().getNetHandler().getPlayerInfo()));
++        this(field_178674_a.sortedCopy(Minecraft.getMinecraft().getNetHandler().getPlayerInfoMap()));
      }
  
      public TeleportToPlayer(Collection p_i45493_1_)
@@ -11420,9 +11427,18 @@ index 1aa77b6..dc1b750 100644
  
              this.mc.displayGuiScreen(this.previousGuiScreen);
 diff --git a/net/minecraft/client/multiplayer/PlayerControllerMP.java b/net/minecraft/client/multiplayer/PlayerControllerMP.java
-index ca6ffd5..da076fb 100644
+index ca6ffd5..fd8f0ba 100644
 --- a/net/minecraft/client/multiplayer/PlayerControllerMP.java
 +++ b/net/minecraft/client/multiplayer/PlayerControllerMP.java
+@@ -13,7 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.item.ItemBlock;
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.item.ItemSword;
+-import net.minecraft.network.play.client.C02PacketUseEntity;
++import net.minecraft.network.play.client.CPacketUseEntity;
+ import net.minecraft.network.play.client.C07PacketPlayerDigging;
+ import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
+ import net.minecraft.network.play.client.C09PacketHeldItemChange;
 @@ -23,11 +23,13 @@ import net.minecraft.network.play.client.C11PacketEnchantItem;
  import net.minecraft.stats.StatFileWriter;
  import net.minecraft.util.BlockPos;
@@ -11803,7 +11819,7 @@ index ca6ffd5..da076fb 100644
      {
          this.syncCurrentPlayItem();
 -        this.netClientHandler.addToSendQueue(new C02PacketUseEntity(targetEntity, C02PacketUseEntity.Action.ATTACK));
-+        this.netClientHandler.sendPacket(new C02PacketUseEntity(targetEntity, C02PacketUseEntity.Action.ATTACK));
++        this.netClientHandler.sendPacket(new CPacketUseEntity(targetEntity, CPacketUseEntity.Action.ATTACK));
  
          if (this.currentGameType != WorldSettings.GameType.SPECTATOR)
          {
@@ -11812,7 +11828,7 @@ index ca6ffd5..da076fb 100644
      {
          this.syncCurrentPlayItem();
 -        this.netClientHandler.addToSendQueue(new C02PacketUseEntity(targetEntity, C02PacketUseEntity.Action.INTERACT));
-+        this.netClientHandler.sendPacket(new C02PacketUseEntity(targetEntity, C02PacketUseEntity.Action.INTERACT));
++        this.netClientHandler.sendPacket(new CPacketUseEntity(targetEntity, CPacketUseEntity.Action.INTERACT));
          return this.currentGameType != WorldSettings.GameType.SPECTATOR && playerIn.interactWith(targetEntity);
      }
  
@@ -11823,7 +11839,7 @@ index ca6ffd5..da076fb 100644
 -        Vec3 var4 = new Vec3(p_178894_3_.hitVec.xCoord - p_178894_2_.posX, p_178894_3_.hitVec.yCoord - p_178894_2_.posY, p_178894_3_.hitVec.zCoord - p_178894_2_.posZ);
 -        this.netClientHandler.addToSendQueue(new C02PacketUseEntity(p_178894_2_, var4));
 +        Vec3d var4 = new Vec3d(p_178894_3_.hitVec.xCoord - p_178894_2_.posX, p_178894_3_.hitVec.yCoord - p_178894_2_.posY, p_178894_3_.hitVec.zCoord - p_178894_2_.posZ);
-+        this.netClientHandler.sendPacket(new C02PacketUseEntity(p_178894_2_, var4));
++        this.netClientHandler.sendPacket(new CPacketUseEntity(p_178894_2_, var4));
          return this.currentGameType != WorldSettings.GameType.SPECTATOR && p_178894_2_.func_174825_a(p_178894_1_, var4);
      }
  
@@ -12064,7 +12080,7 @@ index d6a17db..7506221 100644
  import org.apache.logging.log4j.Logger;
  
 diff --git a/net/minecraft/client/network/NetHandlerPlayClient.java b/net/minecraft/client/network/NetHandlerPlayClient.java
-index 2b1d59a..8e6d6d6 100644
+index 2b1d59a..bf2691d 100644
 --- a/net/minecraft/client/network/NetHandlerPlayClient.java
 +++ b/net/minecraft/client/network/NetHandlerPlayClient.java
 @@ -1,39 +1,24 @@
@@ -12743,7 +12759,7 @@ index 2b1d59a..8e6d6d6 100644
      }
  
 -    public Collection func_175106_d()
-+    public Collection getPlayerInfo()
++    public Collection getPlayerInfoMap()
      {
          return this.playerInfoMap.values();
      }
@@ -21963,35 +21979,43 @@ index 6fcada4..8dd41b5 100644
              private static final String __OBFID = "CL_00001217";
              public String call()
 diff --git a/net/minecraft/network/EnumConnectionState.java b/net/minecraft/network/EnumConnectionState.java
-index 65e3465..c348220 100644
+index 65e3465..8556704 100644
 --- a/net/minecraft/network/EnumConnectionState.java
 +++ b/net/minecraft/network/EnumConnectionState.java
-@@ -17,7 +17,7 @@ import net.minecraft.network.login.server.S03PacketEnableCompression;
+@@ -15,9 +15,9 @@ import net.minecraft.network.login.server.S01PacketEncryptionRequest;
+ import net.minecraft.network.login.server.S02PacketLoginSuccess;
+ import net.minecraft.network.login.server.S03PacketEnableCompression;
  import net.minecraft.network.play.client.C00PacketKeepAlive;
- import net.minecraft.network.play.client.C01PacketChatMessage;
- import net.minecraft.network.play.client.C02PacketUseEntity;
+-import net.minecraft.network.play.client.C01PacketChatMessage;
+-import net.minecraft.network.play.client.C02PacketUseEntity;
 -import net.minecraft.network.play.client.C03PacketPlayer;
++import net.minecraft.network.play.client.CPacketChatMessage;
++import net.minecraft.network.play.client.CPacketUseEntity;
 +import net.minecraft.network.play.client.CPacketPlayer;
  import net.minecraft.network.play.client.C07PacketPlayerDigging;
  import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
  import net.minecraft.network.play.client.C09PacketHeldItemChange;
-@@ -204,10 +204,10 @@ public enum EnumConnectionState
+@@ -202,12 +202,12 @@ public enum EnumConnectionState
+             this.registerPacket(EnumPacketDirection.CLIENTBOUND, S48PacketResourcePackSend.class);
+             this.registerPacket(EnumPacketDirection.CLIENTBOUND, S49PacketUpdateEntityNBT.class);
              this.registerPacket(EnumPacketDirection.SERVERBOUND, C00PacketKeepAlive.class);
-             this.registerPacket(EnumPacketDirection.SERVERBOUND, C01PacketChatMessage.class);
-             this.registerPacket(EnumPacketDirection.SERVERBOUND, C02PacketUseEntity.class);
+-            this.registerPacket(EnumPacketDirection.SERVERBOUND, C01PacketChatMessage.class);
+-            this.registerPacket(EnumPacketDirection.SERVERBOUND, C02PacketUseEntity.class);
 -            this.registerPacket(EnumPacketDirection.SERVERBOUND, C03PacketPlayer.class);
 -            this.registerPacket(EnumPacketDirection.SERVERBOUND, C03PacketPlayer.C04PacketPlayerPosition.class);
 -            this.registerPacket(EnumPacketDirection.SERVERBOUND, C03PacketPlayer.C05PacketPlayerLook.class);
 -            this.registerPacket(EnumPacketDirection.SERVERBOUND, C03PacketPlayer.C06PacketPlayerPosLook.class);
++            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketChatMessage.class);
++            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketUseEntity.class);
 +            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketPlayer.class);
-+            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketPlayer.C04PacketPlayerPosition.class);
++            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketPlayer.Position.class);
 +            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketPlayer.Rotation.class);
 +            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketPlayer.C06PacketPlayerPosLook.class);
              this.registerPacket(EnumPacketDirection.SERVERBOUND, C07PacketPlayerDigging.class);
              this.registerPacket(EnumPacketDirection.SERVERBOUND, C08PacketPlayerBlockPlacement.class);
              this.registerPacket(EnumPacketDirection.SERVERBOUND, C09PacketHeldItemChange.class);
 diff --git a/net/minecraft/network/NetHandlerPlayServer.java b/net/minecraft/network/NetHandlerPlayServer.java
-index 3301ef8..2c77f95 100644
+index 3301ef8..eb21826 100644
 --- a/net/minecraft/network/NetHandlerPlayServer.java
 +++ b/net/minecraft/network/NetHandlerPlayServer.java
 @@ -2,9 +2,11 @@ package net.minecraft.network;
@@ -22021,9 +22045,11 @@ index 3301ef8..2c77f95 100644
 +import net.minecraft.network.NetworkManager;
  import net.minecraft.network.play.INetHandlerPlayServer;
  import net.minecraft.network.play.client.C00PacketKeepAlive;
- import net.minecraft.network.play.client.C01PacketChatMessage;
- import net.minecraft.network.play.client.C02PacketUseEntity;
+-import net.minecraft.network.play.client.C01PacketChatMessage;
+-import net.minecraft.network.play.client.C02PacketUseEntity;
 -import net.minecraft.network.play.client.C03PacketPlayer;
++import net.minecraft.network.play.client.CPacketChatMessage;
++import net.minecraft.network.play.client.CPacketUseEntity;
 +import net.minecraft.network.play.client.CPacketPlayer;
  import net.minecraft.network.play.client.C07PacketPlayerDigging;
  import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
@@ -22126,7 +22152,15 @@ index 3301ef8..2c77f95 100644
              {
                  private static final String __OBFID = "CL_00002270";
                  public String func_180225_a()
-@@ -788,7 +793,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
+@@ -781,14 +786,14 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
+     /**
+      * Process chat messages (broadcast back to clients) and commands (executes)
+      */
+-    public void processChatMessage(C01PacketChatMessage packetIn)
++    public void processChatMessage(CPacketChatMessage packetIn)
+     {
+         PacketThreadUtil.func_180031_a(packetIn, this, this.playerEntity.getServerForPlayer());
+ 
          if (this.playerEntity.getChatVisibility() == EntityPlayer.EnumChatVisibility.HIDDEN)
          {
              ChatComponentTranslation var4 = new ChatComponentTranslation("chat.cannotSend", new Object[0]);
@@ -22144,6 +22178,34 @@ index 3301ef8..2c77f95 100644
      }
  
      /**
+@@ -897,7 +902,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
+      * Processes interactions ((un)leashing, opening command block GUI) and attacks on an entity with players currently
+      * equipped item
+      */
+-    public void processUseEntity(C02PacketUseEntity packetIn)
++    public void processUseEntity(CPacketUseEntity packetIn)
+     {
+         PacketThreadUtil.func_180031_a(packetIn, this, this.playerEntity.getServerForPlayer());
+         WorldServer var2 = this.serverController.worldServerForDimension(this.playerEntity.dimension);
+@@ -916,15 +921,15 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
+ 
+             if (this.playerEntity.getDistanceSqToEntity(var3) < var5)
+             {
+-                if (packetIn.getAction() == C02PacketUseEntity.Action.INTERACT)
++                if (packetIn.getAction() == CPacketUseEntity.Action.INTERACT)
+                 {
+                     this.playerEntity.interactWith(var3);
+                 }
+-                else if (packetIn.getAction() == C02PacketUseEntity.Action.INTERACT_AT)
++                else if (packetIn.getAction() == CPacketUseEntity.Action.INTERACT_AT)
+                 {
+                     var3.func_174825_a(this.playerEntity, packetIn.func_179712_b());
+                 }
+-                else if (packetIn.getAction() == C02PacketUseEntity.Action.ATTACK)
++                else if (packetIn.getAction() == CPacketUseEntity.Action.ATTACK)
+                 {
+                     if (var3 instanceof EntityItem || var3 instanceof EntityXPOrb || var3 instanceof EntityArrow || var3 == this.playerEntity)
+                     {
 @@ -1012,7 +1017,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
  
          if (this.playerEntity.openContainer.windowId == packetIn.getWindowId() && this.playerEntity.openContainer.getCanCraft(this.playerEntity))
@@ -22896,18 +22958,40 @@ index c695f6f..8dcd696 100644
  {
      private final ByteBuf buf;
 diff --git a/net/minecraft/network/play/INetHandlerPlayServer.java b/net/minecraft/network/play/INetHandlerPlayServer.java
-index f9e85f2..35a8434 100644
+index f9e85f2..7107414 100644
 --- a/net/minecraft/network/play/INetHandlerPlayServer.java
 +++ b/net/minecraft/network/play/INetHandlerPlayServer.java
-@@ -4,7 +4,7 @@ import net.minecraft.network.INetHandler;
+@@ -2,9 +2,9 @@ package net.minecraft.network.play;
+ 
+ import net.minecraft.network.INetHandler;
  import net.minecraft.network.play.client.C00PacketKeepAlive;
- import net.minecraft.network.play.client.C01PacketChatMessage;
- import net.minecraft.network.play.client.C02PacketUseEntity;
+-import net.minecraft.network.play.client.C01PacketChatMessage;
+-import net.minecraft.network.play.client.C02PacketUseEntity;
 -import net.minecraft.network.play.client.C03PacketPlayer;
++import net.minecraft.network.play.client.CPacketChatMessage;
++import net.minecraft.network.play.client.CPacketUseEntity;
 +import net.minecraft.network.play.client.CPacketPlayer;
  import net.minecraft.network.play.client.C07PacketPlayerDigging;
  import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
  import net.minecraft.network.play.client.C09PacketHeldItemChange;
+@@ -32,7 +32,7 @@ public interface INetHandlerPlayServer extends INetHandler
+     /**
+      * Process chat messages (broadcast back to clients) and commands (executes)
+      */
+-    void processChatMessage(C01PacketChatMessage packetIn);
++    void processChatMessage(CPacketChatMessage packetIn);
+ 
+     /**
+      * Retrieves possible tab completions for the requested command string and sends them to the client
+@@ -85,7 +85,7 @@ public interface INetHandlerPlayServer extends INetHandler
+      * Processes interactions ((un)leashing, opening command block GUI) and attacks on an entity with players currently
+      * equipped item
+      */
+-    void processUseEntity(C02PacketUseEntity packetIn);
++    void processUseEntity(CPacketUseEntity packetIn);
+ 
+     /**
+      * Updates a players' ping statistics
 @@ -95,7 +95,7 @@ public interface INetHandlerPlayServer extends INetHandler
      /**
       * Processes clients perspective on player positioning and/or orientation
@@ -22917,54 +23001,182 @@ index f9e85f2..35a8434 100644
  
      /**
       * Processes a player starting/stopping flying
+diff --git a/net/minecraft/network/play/client/C01PacketChatMessage.java b/net/minecraft/network/play/client/C01PacketChatMessage.java
+deleted file mode 100644
+index f35632e..0000000
+--- a/net/minecraft/network/play/client/C01PacketChatMessage.java
++++ /dev/null
+@@ -1,59 +0,0 @@
+-package net.minecraft.network.play.client;
+-
+-import java.io.IOException;
+-import net.minecraft.network.INetHandler;
+-import net.minecraft.network.Packet;
+-import net.minecraft.network.PacketBuffer;
+-import net.minecraft.network.play.INetHandlerPlayServer;
+-
+-public class C01PacketChatMessage implements Packet
+-{
+-    private String message;
+-    private static final String __OBFID = "CL_00001347";
+-
+-    public C01PacketChatMessage() {}
+-
+-    public C01PacketChatMessage(String messageIn)
+-    {
+-        if (messageIn.length() > 100)
+-        {
+-            messageIn = messageIn.substring(0, 100);
+-        }
+-
+-        this.message = messageIn;
+-    }
+-
+-    /**
+-     * Reads the raw packet data from the data stream.
+-     */
+-    public void readPacketData(PacketBuffer data) throws IOException
+-    {
+-        this.message = data.readStringFromBuffer(100);
+-    }
+-
+-    /**
+-     * Writes the raw packet data to the data stream.
+-     */
+-    public void writePacketData(PacketBuffer data) throws IOException
+-    {
+-        data.writeString(this.message);
+-    }
+-
+-    public void func_180757_a(INetHandlerPlayServer p_180757_1_)
+-    {
+-        p_180757_1_.processChatMessage(this);
+-    }
+-
+-    public String getMessage()
+-    {
+-        return this.message;
+-    }
+-
+-    /**
+-     * Passes this Packet on to the NetHandler for processing.
+-     */
+-    public void processPacket(INetHandler handler)
+-    {
+-        this.func_180757_a((INetHandlerPlayServer)handler);
+-    }
+-}
 diff --git a/net/minecraft/network/play/client/C02PacketUseEntity.java b/net/minecraft/network/play/client/C02PacketUseEntity.java
-index 4b08f59..a7d3939 100644
+deleted file mode 100644
+index 4b08f59..0000000
 --- a/net/minecraft/network/play/client/C02PacketUseEntity.java
-+++ b/net/minecraft/network/play/client/C02PacketUseEntity.java
-@@ -6,14 +6,14 @@ import net.minecraft.network.INetHandler;
- import net.minecraft.network.Packet;
- import net.minecraft.network.PacketBuffer;
- import net.minecraft.network.play.INetHandlerPlayServer;
++++ /dev/null
+@@ -1,105 +0,0 @@
+-package net.minecraft.network.play.client;
+-
+-import java.io.IOException;
+-import net.minecraft.entity.Entity;
+-import net.minecraft.network.INetHandler;
+-import net.minecraft.network.Packet;
+-import net.minecraft.network.PacketBuffer;
+-import net.minecraft.network.play.INetHandlerPlayServer;
 -import net.minecraft.util.Vec3;
-+import net.minecraft.util.Vec3d;
- import net.minecraft.world.World;
- 
- public class C02PacketUseEntity implements Packet
- {
-     private int entityId;
-     private C02PacketUseEntity.Action action;
+-import net.minecraft.world.World;
+-
+-public class C02PacketUseEntity implements Packet
+-{
+-    private int entityId;
+-    private C02PacketUseEntity.Action action;
 -    private Vec3 field_179713_c;
-+    private Vec3d field_179713_c;
-     private static final String __OBFID = "CL_00001357";
- 
-     public C02PacketUseEntity() {}
-@@ -24,7 +24,7 @@ public class C02PacketUseEntity implements Packet
-         this.action = p_i45251_2_;
-     }
- 
+-    private static final String __OBFID = "CL_00001357";
+-
+-    public C02PacketUseEntity() {}
+-
+-    public C02PacketUseEntity(Entity p_i45251_1_, C02PacketUseEntity.Action p_i45251_2_)
+-    {
+-        this.entityId = p_i45251_1_.getEntityId();
+-        this.action = p_i45251_2_;
+-    }
+-
 -    public C02PacketUseEntity(Entity p_i45944_1_, Vec3 p_i45944_2_)
-+    public C02PacketUseEntity(Entity p_i45944_1_, Vec3d p_i45944_2_)
-     {
-         this(p_i45944_1_, C02PacketUseEntity.Action.INTERACT_AT);
-         this.field_179713_c = p_i45944_2_;
-@@ -40,7 +40,7 @@ public class C02PacketUseEntity implements Packet
- 
-         if (this.action == C02PacketUseEntity.Action.INTERACT_AT)
-         {
+-    {
+-        this(p_i45944_1_, C02PacketUseEntity.Action.INTERACT_AT);
+-        this.field_179713_c = p_i45944_2_;
+-    }
+-
+-    /**
+-     * Reads the raw packet data from the data stream.
+-     */
+-    public void readPacketData(PacketBuffer data) throws IOException
+-    {
+-        this.entityId = data.readVarIntFromBuffer();
+-        this.action = (C02PacketUseEntity.Action)data.readEnumValue(C02PacketUseEntity.Action.class);
+-
+-        if (this.action == C02PacketUseEntity.Action.INTERACT_AT)
+-        {
 -            this.field_179713_c = new Vec3((double)data.readFloat(), (double)data.readFloat(), (double)data.readFloat());
-+            this.field_179713_c = new Vec3d((double)data.readFloat(), (double)data.readFloat(), (double)data.readFloat());
-         }
-     }
- 
-@@ -78,7 +78,7 @@ public class C02PacketUseEntity implements Packet
-         return this.action;
-     }
- 
+-        }
+-    }
+-
+-    /**
+-     * Writes the raw packet data to the data stream.
+-     */
+-    public void writePacketData(PacketBuffer data) throws IOException
+-    {
+-        data.writeVarIntToBuffer(this.entityId);
+-        data.writeEnumValue(this.action);
+-
+-        if (this.action == C02PacketUseEntity.Action.INTERACT_AT)
+-        {
+-            data.writeFloat((float)this.field_179713_c.xCoord);
+-            data.writeFloat((float)this.field_179713_c.yCoord);
+-            data.writeFloat((float)this.field_179713_c.zCoord);
+-        }
+-    }
+-
+-    /**
+-     * Passes this Packet on to the NetHandler for processing.
+-     */
+-    public void processPacket(INetHandlerPlayServer handler)
+-    {
+-        handler.processUseEntity(this);
+-    }
+-
+-    public Entity getEntityFromWorld(World worldIn)
+-    {
+-        return worldIn.getEntityByID(this.entityId);
+-    }
+-
+-    public C02PacketUseEntity.Action getAction()
+-    {
+-        return this.action;
+-    }
+-
 -    public Vec3 func_179712_b()
-+    public Vec3d func_179712_b()
-     {
-         return this.field_179713_c;
-     }
+-    {
+-        return this.field_179713_c;
+-    }
+-
+-    /**
+-     * Passes this Packet on to the NetHandler for processing.
+-     */
+-    public void processPacket(INetHandler handler)
+-    {
+-        this.processPacket((INetHandlerPlayServer)handler);
+-    }
+-
+-    public static enum Action
+-    {
+-        INTERACT("INTERACT", 0),
+-        ATTACK("ATTACK", 1),
+-        INTERACT_AT("INTERACT_AT", 2);
+-
+-        private static final C02PacketUseEntity.Action[] $VALUES = new C02PacketUseEntity.Action[]{INTERACT, ATTACK, INTERACT_AT};
+-        private static final String __OBFID = "CL_00001358";
+-
+-        private Action(String p_i45943_1_, int p_i45943_2_) {}
+-    }
+-}
 diff --git a/net/minecraft/network/play/client/C03PacketPlayer.java b/net/minecraft/network/play/client/C03PacketPlayer.java
 deleted file mode 100644
 index 0fd8749..0000000
@@ -23200,9 +23412,74 @@ index 0fd8749..0000000
 -        }
 -    }
 -}
+diff --git a/net/minecraft/network/play/client/CPacketChatMessage.java b/net/minecraft/network/play/client/CPacketChatMessage.java
+new file mode 100644
+index 0000000..6588f2d
+--- /dev/null
++++ b/net/minecraft/network/play/client/CPacketChatMessage.java
+@@ -0,0 +1,59 @@
++package net.minecraft.network.play.client;
++
++import java.io.IOException;
++import net.minecraft.network.INetHandler;
++import net.minecraft.network.Packet;
++import net.minecraft.network.PacketBuffer;
++import net.minecraft.network.play.INetHandlerPlayServer;
++
++public class CPacketChatMessage implements Packet
++{
++    private String message;
++    private static final String __OBFID = "CL_00001347";
++
++    public CPacketChatMessage() {}
++
++    public CPacketChatMessage(String messageIn)
++    {
++        if (messageIn.length() > 100)
++        {
++            messageIn = messageIn.substring(0, 100);
++        }
++
++        this.message = messageIn;
++    }
++
++    /**
++     * Reads the raw packet data from the data stream.
++     */
++    public void readPacketData(PacketBuffer data) throws IOException
++    {
++        this.message = data.readStringFromBuffer(100);
++    }
++
++    /**
++     * Writes the raw packet data to the data stream.
++     */
++    public void writePacketData(PacketBuffer data) throws IOException
++    {
++        data.writeString(this.message);
++    }
++
++    public void func_180757_a(INetHandlerPlayServer p_180757_1_)
++    {
++        p_180757_1_.processChatMessage(this);
++    }
++
++    public String getMessage()
++    {
++        return this.message;
++    }
++
++    /**
++     * Passes this Packet on to the NetHandler for processing.
++     */
++    public void processPacket(INetHandler handler)
++    {
++        this.func_180757_a((INetHandlerPlayServer)handler);
++    }
++}
 diff --git a/net/minecraft/network/play/client/CPacketPlayer.java b/net/minecraft/network/play/client/CPacketPlayer.java
 new file mode 100644
-index 0000000..1ce8353
+index 0000000..110c6d4
 --- /dev/null
 +++ b/net/minecraft/network/play/client/CPacketPlayer.java
 @@ -0,0 +1,229 @@
@@ -23310,16 +23587,16 @@ index 0000000..1ce8353
 +        this.processPacket((INetHandlerPlayServer)handler);
 +    }
 +
-+    public static class C04PacketPlayerPosition extends CPacketPlayer
++    public static class Position extends CPacketPlayer
 +    {
 +        private static final String __OBFID = "CL_00001361";
 +
-+        public C04PacketPlayerPosition()
++        public Position()
 +        {
 +            this.field_149480_h = true;
 +        }
 +
-+        public C04PacketPlayerPosition(double p_i45942_1_, double p_i45942_3_, double p_i45942_5_, boolean p_i45942_7_)
++        public Position(double p_i45942_1_, double p_i45942_3_, double p_i45942_5_, boolean p_i45942_7_)
 +        {
 +            this.x = p_i45942_1_;
 +            this.y = p_i45942_3_;
@@ -23433,6 +23710,117 @@ index 0000000..1ce8353
 +        {
 +            super.processPacket((INetHandlerPlayServer)handler);
 +        }
++    }
++}
+diff --git a/net/minecraft/network/play/client/CPacketUseEntity.java b/net/minecraft/network/play/client/CPacketUseEntity.java
+new file mode 100644
+index 0000000..48b5874
+--- /dev/null
++++ b/net/minecraft/network/play/client/CPacketUseEntity.java
+@@ -0,0 +1,105 @@
++package net.minecraft.network.play.client;
++
++import java.io.IOException;
++import net.minecraft.entity.Entity;
++import net.minecraft.network.INetHandler;
++import net.minecraft.network.Packet;
++import net.minecraft.network.PacketBuffer;
++import net.minecraft.network.play.INetHandlerPlayServer;
++import net.minecraft.util.Vec3d;
++import net.minecraft.world.World;
++
++public class CPacketUseEntity implements Packet
++{
++    private int entityId;
++    private CPacketUseEntity.Action action;
++    private Vec3d field_179713_c;
++    private static final String __OBFID = "CL_00001357";
++
++    public CPacketUseEntity() {}
++
++    public CPacketUseEntity(Entity p_i45251_1_, CPacketUseEntity.Action p_i45251_2_)
++    {
++        this.entityId = p_i45251_1_.getEntityId();
++        this.action = p_i45251_2_;
++    }
++
++    public CPacketUseEntity(Entity p_i45944_1_, Vec3d p_i45944_2_)
++    {
++        this(p_i45944_1_, CPacketUseEntity.Action.INTERACT_AT);
++        this.field_179713_c = p_i45944_2_;
++    }
++
++    /**
++     * Reads the raw packet data from the data stream.
++     */
++    public void readPacketData(PacketBuffer data) throws IOException
++    {
++        this.entityId = data.readVarIntFromBuffer();
++        this.action = (CPacketUseEntity.Action)data.readEnumValue(CPacketUseEntity.Action.class);
++
++        if (this.action == CPacketUseEntity.Action.INTERACT_AT)
++        {
++            this.field_179713_c = new Vec3d((double)data.readFloat(), (double)data.readFloat(), (double)data.readFloat());
++        }
++    }
++
++    /**
++     * Writes the raw packet data to the data stream.
++     */
++    public void writePacketData(PacketBuffer data) throws IOException
++    {
++        data.writeVarIntToBuffer(this.entityId);
++        data.writeEnumValue(this.action);
++
++        if (this.action == CPacketUseEntity.Action.INTERACT_AT)
++        {
++            data.writeFloat((float)this.field_179713_c.xCoord);
++            data.writeFloat((float)this.field_179713_c.yCoord);
++            data.writeFloat((float)this.field_179713_c.zCoord);
++        }
++    }
++
++    /**
++     * Passes this Packet on to the NetHandler for processing.
++     */
++    public void processPacket(INetHandlerPlayServer handler)
++    {
++        handler.processUseEntity(this);
++    }
++
++    public Entity getEntityFromWorld(World worldIn)
++    {
++        return worldIn.getEntityByID(this.entityId);
++    }
++
++    public CPacketUseEntity.Action getAction()
++    {
++        return this.action;
++    }
++
++    public Vec3d func_179712_b()
++    {
++        return this.field_179713_c;
++    }
++
++    /**
++     * Passes this Packet on to the NetHandler for processing.
++     */
++    public void processPacket(INetHandler handler)
++    {
++        this.processPacket((INetHandlerPlayServer)handler);
++    }
++
++    public static enum Action
++    {
++        INTERACT("INTERACT", 0),
++        ATTACK("ATTACK", 1),
++        INTERACT_AT("INTERACT_AT", 2);
++
++        private static final CPacketUseEntity.Action[] $VALUES = new CPacketUseEntity.Action[]{INTERACT, ATTACK, INTERACT_AT};
++        private static final String __OBFID = "CL_00001358";
++
++        private Action(String p_i45943_1_, int p_i45943_2_) {}
 +    }
 +}
 diff --git a/net/minecraft/network/play/server/S27PacketExplosion.java b/net/minecraft/network/play/server/S27PacketExplosion.java

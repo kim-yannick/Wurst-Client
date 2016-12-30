@@ -8,7 +8,7 @@
 package tk.wurst_client.features.mods;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.network.play.client.C02PacketUseEntity;
+import net.minecraft.network.play.client.CPacketUseEntity;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.utils.EntityUtils;
 import tk.wurst_client.utils.EntityUtils.TargetSettings;
@@ -197,8 +197,8 @@ public class ProtectMod extends Mod implements UpdateListener
 			
 			// attack enemy
 			mc.player.swingArm();
-			mc.player.connection.sendPacket(new C02PacketUseEntity(enemy,
-				C02PacketUseEntity.Action.ATTACK));
+			mc.player.connection.sendPacket(new CPacketUseEntity(enemy,
+				CPacketUseEntity.Action.ATTACK));
 			
 			// reset timer
 			updateLastMS();

@@ -28,7 +28,7 @@ public class AddAltCmd extends Cmd
 		if(args[0].equals("all"))
 		{
 			int alts = 0;
-			Iterator itr = mc.getNetHandler().getPlayerInfo().iterator();
+			Iterator itr = mc.getNetHandler().getPlayerInfoMap().iterator();
 			while(itr.hasNext())
 			{
 				NetworkPlayerInfo info = (NetworkPlayerInfo)itr.next();

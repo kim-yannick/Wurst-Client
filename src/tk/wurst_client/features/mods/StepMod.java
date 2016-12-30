@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.network.play.client.CPacketPlayer.C04PacketPlayerPosition;
+import net.minecraft.network.play.client.CPacketPlayer.Position;
 import net.minecraft.util.BlockPos;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.features.special_features.YesCheatSpf.BypassLevel;
@@ -60,11 +60,11 @@ public class StepMod extends Mod implements UpdateListener
 				&& mc.player.isCollidedHorizontally)
 			{
 				mc.getNetHandler()
-					.sendPacket(new C04PacketPlayerPosition(mc.player.posX,
+					.sendPacket(new Position(mc.player.posX,
 						mc.player.posY + 0.42D, mc.player.posZ,
 						mc.player.onGround));
 				mc.getNetHandler()
-					.sendPacket(new C04PacketPlayerPosition(mc.player.posX,
+					.sendPacket(new Position(mc.player.posX,
 						mc.player.posY + 0.753D, mc.player.posZ,
 						mc.player.onGround));
 				mc.player.setPosition(mc.player.posX, mc.player.posY + 1D,

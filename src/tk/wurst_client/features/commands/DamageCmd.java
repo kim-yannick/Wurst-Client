@@ -8,7 +8,7 @@
 package tk.wurst_client.features.commands;
 
 import net.minecraft.client.network.NetHandlerPlayClient;
-import net.minecraft.network.play.client.CPacketPlayer.C04PacketPlayerPosition;
+import net.minecraft.network.play.client.CPacketPlayer.Position;
 import tk.wurst_client.utils.MiscUtils;
 
 @Cmd.Info(description = "Applies the given amount of damage.",
@@ -43,12 +43,12 @@ public class DamageCmd extends Cmd
 		// apply damage
 		for(int i = 0; (double)i < 80 + 20 * (dmg - 1D); ++i)
 		{
-			sendQueue.sendPacket(new C04PacketPlayerPosition(posX,
+			sendQueue.sendPacket(new Position(posX,
 				posY + 0.049D, posZ, false));
-			sendQueue.sendPacket(new C04PacketPlayerPosition(posX, posY,
+			sendQueue.sendPacket(new Position(posX, posY,
 				posZ, false));
 		}
-		sendQueue.sendPacket(new C04PacketPlayerPosition(posX, posY, posZ,
+		sendQueue.sendPacket(new Position(posX, posY, posZ,
 			true));
 	}
 }

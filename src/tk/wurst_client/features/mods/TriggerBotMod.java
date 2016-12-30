@@ -7,7 +7,7 @@
  */
 package tk.wurst_client.features.mods;
 
-import net.minecraft.network.play.client.C02PacketUseEntity;
+import net.minecraft.network.play.client.CPacketUseEntity;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.features.Feature;
 import tk.wurst_client.features.special_features.YesCheatSpf.BypassLevel;
@@ -123,8 +123,8 @@ public class TriggerBotMod extends Mod implements UpdateListener
 		
 		// attack entity
 		mc.player.swingArm();
-		mc.player.connection.sendPacket(new C02PacketUseEntity(
-			mc.objectMouseOver.entityHit, C02PacketUseEntity.Action.ATTACK));
+		mc.player.connection.sendPacket(new CPacketUseEntity(
+			mc.objectMouseOver.entityHit, CPacketUseEntity.Action.ATTACK));
 		
 		// reset timer
 		updateLastMS();

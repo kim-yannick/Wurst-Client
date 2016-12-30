@@ -7,7 +7,7 @@
  */
 package tk.wurst_client.features.commands;
 
-import net.minecraft.network.play.client.C01PacketChatMessage;
+import net.minecraft.network.play.client.CPacketChatMessage;
 
 @Cmd.Info(description = "Sends a chat message, even if the message starts with a dot.",
 	name = "say",
@@ -24,7 +24,7 @@ public class SayCmd extends Cmd
 			String message = args[0];
 			for(int i = 1; i < args.length; i++)
 				message += " " + args[i];
-			mc.player.connection.sendPacket(new C01PacketChatMessage(
+			mc.player.connection.sendPacket(new CPacketChatMessage(
 				message));
 		}else
 			syntaxError("Message required.");
