@@ -80,7 +80,7 @@ public class AutoEatMod extends Mod implements UpdateListener
 					return;
 				}
 				mc.player.inventory.currentItem = bestSlot;
-				mc.playerController.sendUseItem(mc.player, mc.world, item);
+				mc.playerController.processRightClick(mc.player, mc.world, item);
 				mc.gameSettings.keyBindUseItem.pressed = true;
 			}
 			

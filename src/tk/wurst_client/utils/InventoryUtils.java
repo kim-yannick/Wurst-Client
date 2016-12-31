@@ -9,7 +9,7 @@ package tk.wurst_client.utils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
+import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 
 public class InventoryUtils
 {
@@ -18,13 +18,23 @@ public class InventoryUtils
 	public static boolean placeStackInHotbar(ItemStack stack)
 	{
 		for(int i = 0; i < 9; i++)
-			if(mc.player.inventory.getStackInSlot(i) == null)
+			if(isSlotEmpty(i))
 			{
 				mc.player.connection.sendPacket(
-					new C10PacketCreativeInventoryAction(36 + i, stack));
+					new CPacketCreativeInventoryAction(36 + i, stack));
 				return true;
 			}
 		
 		return false;
+	}
+	
+	public static boolean isSlotEmpty(int slot)
+	{
+		return mc.player.inventory.getStackInSlot(slot) == null;
+	}
+	
+	public static boolean isEmptySlot(ItemStack slot)
+	{
+		return slot == null;
 	}
 }

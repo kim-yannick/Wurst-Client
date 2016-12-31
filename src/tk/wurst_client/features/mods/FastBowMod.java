@@ -49,7 +49,7 @@ public class FastBowMod extends Mod implements UpdateListener
 			&& mc.player.inventory.getCurrentItem().getItem() instanceof ItemBow
 			&& mc.gameSettings.keyBindUseItem.pressed)
 		{
-			mc.playerController.sendUseItem(mc.player, mc.world,
+			mc.playerController.processRightClick(mc.player, mc.world,
 				mc.player.inventory.getCurrentItem());
 			mc.player.inventory.getCurrentItem().getItem().onItemRightClick(
 				mc.player.inventory.getCurrentItem(), mc.world, mc.player);

@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
+import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 import tk.wurst_client.utils.ChatUtils;
 import tk.wurst_client.utils.MiscUtils;
 
@@ -98,7 +98,7 @@ public class ModifyCmd extends Cmd
 		}else
 			syntaxError();
 		
-		player.connection.sendPacket(new C10PacketCreativeInventoryAction(
+		player.connection.sendPacket(new CPacketCreativeInventoryAction(
 			36 + player.inventory.currentItem, item));
 		
 		ChatUtils.message("Item modified.");

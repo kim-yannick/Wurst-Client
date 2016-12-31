@@ -11,7 +11,7 @@ import java.util.Random;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
+import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.features.special_features.YesCheatSpf.BypassLevel;
 
@@ -50,7 +50,7 @@ public class DropCmd extends Cmd implements UpdateListener
 			while(item == null)
 				item = Item.getItemById(new Random().nextInt(431));
 			mc.player.connection
-				.sendPacket(new C10PacketCreativeInventoryAction(-1,
+				.sendPacket(new CPacketCreativeInventoryAction(-1,
 					new ItemStack(item, 64)));
 			return;
 		}

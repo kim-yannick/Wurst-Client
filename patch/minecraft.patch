@@ -1,6 +1,6 @@
-From 50e689e177e6d4419313a285c077fe285ca4221b Mon Sep 17 00:00:00 2001
+From ba748f19c42e1e741bcdc23be2e62ce76ce9f98d Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 30 Dec 2016 16:43:37 +0100
+Date: Sat, 31 Dec 2016 16:46:00 +0100
 Subject: [PATCH] mod
 
 ---
@@ -177,7 +177,7 @@ Subject: [PATCH] mod
  .../client/model/PositionTextureVertex.java        |   8 +-
  net/minecraft/client/model/TexturedQuad.java       |   8 +-
  .../client/multiplayer/GuiConnecting.java          |  14 +-
- .../client/multiplayer/PlayerControllerMP.java     | 182 +++++---
+ .../client/multiplayer/PlayerControllerMP.java     | 186 ++++----
  net/minecraft/client/multiplayer/ServerList.java   |  16 +-
  net/minecraft/client/multiplayer/WorldClient.java  |  28 +-
  .../client/network/NetHandlerLoginClient.java      |   5 +
@@ -227,7 +227,7 @@ Subject: [PATCH] mod
  .../client/renderer/entity/RenderFallingBlock.java |   7 +-
  .../client/renderer/entity/RenderFish.java         |  10 +-
  .../client/renderer/entity/RenderGuardian.java     |  18 +-
- .../client/renderer/entity/RenderItem.java         |  52 ++-
+ .../client/renderer/entity/RenderItem.java         |  54 +--
  .../renderer/entity/RenderLightningBolt.java       |   2 +-
  .../client/renderer/entity/RenderLiving.java       |   8 +-
  .../client/renderer/entity/RenderManager.java      |  25 +-
@@ -358,6 +358,7 @@ Subject: [PATCH] mod
  net/minecraft/entity/passive/EntityBat.java        |   4 +-
  net/minecraft/entity/passive/EntityChicken.java    |   2 +-
  net/minecraft/entity/passive/EntityHorse.java      |   8 +-
+ net/minecraft/entity/passive/EntityMooshroom.java  |   2 +-
  net/minecraft/entity/passive/EntityOcelot.java     |   2 +-
  net/minecraft/entity/passive/EntityRabbit.java     |   8 +-
  net/minecraft/entity/passive/EntitySquid.java      |   2 +-
@@ -369,7 +370,7 @@ Subject: [PATCH] mod
  net/minecraft/entity/projectile/EntityArrow.java   |  46 +-
  net/minecraft/entity/projectile/EntityEgg.java     |   4 +-
  .../entity/projectile/EntityFireball.java          |  30 +-
- .../entity/projectile/EntityFishHook.java          |  42 +-
+ .../entity/projectile/EntityFishHook.java          |  44 +-
  .../entity/projectile/EntityLargeFireball.java     |   4 +-
  net/minecraft/entity/projectile/EntityPotion.java  |   4 +-
  .../entity/projectile/EntitySmallFireball.java     |   6 +-
@@ -377,6 +378,7 @@ Subject: [PATCH] mod
  .../entity/projectile/EntityThrowable.java         |  32 +-
  .../entity/projectile/EntityWitherSkull.java       |   4 +-
  net/minecraft/init/Bootstrap.java                  |   2 +-
+ net/minecraft/init/Items.java                      |   4 +-
  net/minecraft/inventory/ContainerPlayer.java       |   2 +-
  net/minecraft/inventory/InventoryBasic.java        |   4 +-
  net/minecraft/inventory/InventoryCraftResult.java  |   4 +-
@@ -404,20 +406,25 @@ Subject: [PATCH] mod
  net/minecraft/item/ItemMonsterPlacer.java          |  12 +-
  net/minecraft/item/ItemSeedFood.java               |   4 +-
  net/minecraft/item/ItemSeeds.java                  |   4 +-
+ net/minecraft/item/ItemSoup.java                   |   2 +-
  net/minecraft/item/ItemStack.java                  |  12 +-
+ net/minecraft/item/crafting/CraftingManager.java   |   2 +-
+ net/minecraft/item/crafting/RecipesFood.java       |   6 +-
  net/minecraft/nbt/CompressedStreamTools.java       |   1 +
  net/minecraft/nbt/JsonToNBT.java                   |   2 +-
  net/minecraft/nbt/NBTTagCompound.java              |   7 +-
- net/minecraft/network/EnumConnectionState.java     |  18 +-
- net/minecraft/network/NetHandlerPlayServer.java    |  51 ++-
+ net/minecraft/network/EnumConnectionState.java     |  22 +-
+ net/minecraft/network/NetHandlerPlayServer.java    |  55 ++-
  net/minecraft/network/NetworkManager.java          | 327 +++++++------
  net/minecraft/network/NetworkSystem.java           |  11 +-
  net/minecraft/network/PacketBuffer.java            |   6 +-
- .../network/play/INetHandlerPlayServer.java        |  12 +-
+ .../network/play/INetHandlerPlayServer.java        |  16 +-
  .../network/play/client/C01PacketChatMessage.java  |  59 ---
  .../network/play/client/C02PacketUseEntity.java    | 105 -----
  .../network/play/client/C03PacketPlayer.java       | 229 ----------
+ .../client/C10PacketCreativeInventoryAction.java   |  64 ---
  .../network/play/client/CPacketChatMessage.java    |  59 +++
+ .../client/CPacketCreativeInventoryAction.java     |  64 +++
  .../network/play/client/CPacketPlayer.java         | 229 ++++++++++
  .../network/play/client/CPacketUseEntity.java      | 105 +++++
  .../network/play/server/S27PacketExplosion.java    |   4 +-
@@ -550,11 +557,13 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |   4 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 546 files changed, 5564 insertions(+), 4241 deletions(-)
+ 553 files changed, 5646 insertions(+), 4323 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
+ delete mode 100644 net/minecraft/network/play/client/C10PacketCreativeInventoryAction.java
  create mode 100644 net/minecraft/network/play/client/CPacketChatMessage.java
+ create mode 100644 net/minecraft/network/play/client/CPacketCreativeInventoryAction.java
  create mode 100644 net/minecraft/network/play/client/CPacketPlayer.java
  create mode 100644 net/minecraft/network/play/client/CPacketUseEntity.java
  delete mode 100644 net/minecraft/util/ChatComponentText.java
@@ -4036,7 +4045,7 @@ index 0875566..d98e274 100644
  
                  if (OpenGlHelper.isFramebufferEnabled())
 diff --git a/net/minecraft/client/Minecraft.java b/net/minecraft/client/Minecraft.java
-index a9a0567..1c6d2e7 100644
+index a9a0567..525c8ef 100644
 --- a/net/minecraft/client/Minecraft.java
 +++ b/net/minecraft/client/Minecraft.java
 @@ -1,17 +1,15 @@
@@ -4651,7 +4660,7 @@ index a9a0567..1c6d2e7 100644
 +            ItemStack var5 = this.player.inventory.getCurrentItem();
  
 -            if (var5 != null && this.playerController.sendUseItem(this.thePlayer, this.theWorld, var5))
-+            if (var5 != null && this.playerController.sendUseItem(this.player, this.world, var5))
++            if (var5 != null && this.playerController.processRightClick(this.player, this.world, var5))
              {
                  this.entityRenderer.itemRenderer.resetEquippedProgress2();
              }
@@ -11427,10 +11436,10 @@ index 1aa77b6..dc1b750 100644
  
              this.mc.displayGuiScreen(this.previousGuiScreen);
 diff --git a/net/minecraft/client/multiplayer/PlayerControllerMP.java b/net/minecraft/client/multiplayer/PlayerControllerMP.java
-index ca6ffd5..2843006 100644
+index ca6ffd5..ec1cce0 100644
 --- a/net/minecraft/client/multiplayer/PlayerControllerMP.java
 +++ b/net/minecraft/client/multiplayer/PlayerControllerMP.java
-@@ -13,7 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
+@@ -13,21 +13,23 @@ import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.item.ItemBlock;
  import net.minecraft.item.ItemStack;
  import net.minecraft.item.ItemSword;
@@ -11439,7 +11448,10 @@ index ca6ffd5..2843006 100644
  import net.minecraft.network.play.client.C07PacketPlayerDigging;
  import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
  import net.minecraft.network.play.client.C09PacketHeldItemChange;
-@@ -23,11 +23,13 @@ import net.minecraft.network.play.client.C11PacketEnchantItem;
+ import net.minecraft.network.play.client.C0EPacketClickWindow;
+-import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
++import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
+ import net.minecraft.network.play.client.C11PacketEnchantItem;
  import net.minecraft.stats.StatFileWriter;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
@@ -11806,6 +11818,15 @@ index ca6ffd5..2843006 100644
  
              if (!var10 && this.currentGameType != WorldSettings.GameType.SPECTATOR)
              {
+@@ -450,7 +482,7 @@ public class PlayerControllerMP
+     /**
+      * Notifies the server of things like consuming food, etc...
+      */
+-    public boolean sendUseItem(EntityPlayer playerIn, World worldIn, ItemStack itemStackIn)
++    public boolean processRightClick(EntityPlayer playerIn, World worldIn, ItemStack itemStackIn)
+     {
+         if (this.currentGameType == WorldSettings.GameType.SPECTATOR)
+         {
 @@ -459,11 +491,11 @@ public class PlayerControllerMP
          else
          {
@@ -11872,7 +11893,7 @@ index ca6ffd5..2843006 100644
          if (this.currentGameType.isCreative())
          {
 -            this.netClientHandler.addToSendQueue(new C10PacketCreativeInventoryAction(slotId, itemStackIn));
-+            this.netClientHandler.sendPacket(new C10PacketCreativeInventoryAction(slotId, itemStackIn));
++            this.netClientHandler.sendPacket(new CPacketCreativeInventoryAction(slotId, itemStackIn));
          }
      }
  
@@ -11881,7 +11902,7 @@ index ca6ffd5..2843006 100644
          if (this.currentGameType.isCreative() && itemStackIn != null)
          {
 -            this.netClientHandler.addToSendQueue(new C10PacketCreativeInventoryAction(-1, itemStackIn));
-+            this.netClientHandler.sendPacket(new C10PacketCreativeInventoryAction(-1, itemStackIn));
++            this.netClientHandler.sendPacket(new CPacketCreativeInventoryAction(-1, itemStackIn));
          }
      }
  
@@ -15354,7 +15375,7 @@ index ef1550c..7a5da44 100644
              double var31 = var29 * 1.41D;
              double var33 = 0.0D + Math.cos(var26 + 2.356194490192345D) * var31;
 diff --git a/net/minecraft/client/renderer/entity/RenderItem.java b/net/minecraft/client/renderer/entity/RenderItem.java
-index 3da61f1..d388267 100644
+index 3da61f1..e226435 100644
 --- a/net/minecraft/client/renderer/entity/RenderItem.java
 +++ b/net/minecraft/client/renderer/entity/RenderItem.java
 @@ -3,6 +3,7 @@ package net.minecraft.client.renderer.entity;
@@ -15526,6 +15547,15 @@ index 3da61f1..d388267 100644
          p_175044_1_.addVertex((double)(p_175044_2_ + 0), (double)(p_175044_3_ + 0), 0.0D);
          p_175044_1_.addVertex((double)(p_175044_2_ + 0), (double)(p_175044_3_ + p_175044_5_), 0.0D);
          p_175044_1_.addVertex((double)(p_175044_2_ + p_175044_4_), (double)(p_175044_3_ + p_175044_5_), 0.0D);
+@@ -847,7 +849,7 @@ public class RenderItem implements IResourceManagerReloadListener
+         this.registerItem(Items.diamond_pickaxe, "diamond_pickaxe");
+         this.registerItem(Items.diamond_axe, "diamond_axe");
+         this.registerItem(Items.stick, "stick");
+-        this.registerItem(Items.bowl, "bowl");
++        this.registerItem(Items.BOWL, "bowl");
+         this.registerItem(Items.mushroom_stew, "mushroom_stew");
+         this.registerItem(Items.golden_sword, "golden_sword");
+         this.registerItem(Items.golden_shovel, "golden_shovel");
 diff --git a/net/minecraft/client/renderer/entity/RenderLightningBolt.java b/net/minecraft/client/renderer/entity/RenderLightningBolt.java
 index 4175a3f..ca01b20 100644
 --- a/net/minecraft/client/renderer/entity/RenderLightningBolt.java
@@ -19997,6 +20027,19 @@ index 4f4aaed..2772931 100644
  
              if (var7 > 1.0F)
              {
+diff --git a/net/minecraft/entity/passive/EntityMooshroom.java b/net/minecraft/entity/passive/EntityMooshroom.java
+index 235217b..620d7d8 100644
+--- a/net/minecraft/entity/passive/EntityMooshroom.java
++++ b/net/minecraft/entity/passive/EntityMooshroom.java
+@@ -27,7 +27,7 @@ public class EntityMooshroom extends EntityCow
+     {
+         ItemStack var2 = p_70085_1_.inventory.getCurrentItem();
+ 
+-        if (var2 != null && var2.getItem() == Items.bowl && this.getGrowingAge() >= 0)
++        if (var2 != null && var2.getItem() == Items.BOWL && this.getGrowingAge() >= 0)
+         {
+             if (var2.stackSize == 1)
+             {
 diff --git a/net/minecraft/entity/passive/EntityOcelot.java b/net/minecraft/entity/passive/EntityOcelot.java
 index 2f84c12..f74969b 100644
 --- a/net/minecraft/entity/passive/EntityOcelot.java
@@ -20801,7 +20844,7 @@ index 088f1f6..8a5a6c6 100644
                  if (var3 != null)
                  {
 diff --git a/net/minecraft/entity/projectile/EntityFishHook.java b/net/minecraft/entity/projectile/EntityFishHook.java
-index 36ee8af..85175a7 100644
+index 36ee8af..9ba3f10 100644
 --- a/net/minecraft/entity/projectile/EntityFishHook.java
 +++ b/net/minecraft/entity/projectile/EntityFishHook.java
 @@ -21,9 +21,9 @@ import net.minecraft.util.BlockPos;
@@ -20816,6 +20859,15 @@ index 36ee8af..85175a7 100644
  import net.minecraft.util.WeightedRandom;
  import net.minecraft.util.WeightedRandomFishable;
  import net.minecraft.world.World;
+@@ -31,7 +31,7 @@ import net.minecraft.world.WorldServer;
+ 
+ public class EntityFishHook extends Entity
+ {
+-    private static final List JUNK = Arrays.asList(new WeightedRandomFishable[] {(new WeightedRandomFishable(new ItemStack(Items.leather_boots), 10)).setMaxDamagePercent(0.9F), new WeightedRandomFishable(new ItemStack(Items.leather), 10), new WeightedRandomFishable(new ItemStack(Items.bone), 10), new WeightedRandomFishable(new ItemStack(Items.potionitem), 10), new WeightedRandomFishable(new ItemStack(Items.string), 5), (new WeightedRandomFishable(new ItemStack(Items.fishing_rod), 2)).setMaxDamagePercent(0.9F), new WeightedRandomFishable(new ItemStack(Items.bowl), 10), new WeightedRandomFishable(new ItemStack(Items.stick), 5), new WeightedRandomFishable(new ItemStack(Items.dye, 10, EnumDyeColor.BLACK.getDyeColorDamage()), 1), new WeightedRandomFishable(new ItemStack(Blocks.tripwire_hook), 10), new WeightedRandomFishable(new ItemStack(Items.rotten_flesh), 10)});
++    private static final List JUNK = Arrays.asList(new WeightedRandomFishable[] {(new WeightedRandomFishable(new ItemStack(Items.leather_boots), 10)).setMaxDamagePercent(0.9F), new WeightedRandomFishable(new ItemStack(Items.leather), 10), new WeightedRandomFishable(new ItemStack(Items.bone), 10), new WeightedRandomFishable(new ItemStack(Items.potionitem), 10), new WeightedRandomFishable(new ItemStack(Items.string), 5), (new WeightedRandomFishable(new ItemStack(Items.fishing_rod), 2)).setMaxDamagePercent(0.9F), new WeightedRandomFishable(new ItemStack(Items.BOWL), 10), new WeightedRandomFishable(new ItemStack(Items.stick), 5), new WeightedRandomFishable(new ItemStack(Items.dye, 10, EnumDyeColor.BLACK.getDyeColorDamage()), 1), new WeightedRandomFishable(new ItemStack(Blocks.tripwire_hook), 10), new WeightedRandomFishable(new ItemStack(Items.rotten_flesh), 10)});
+     private static final List VALUABLES = Arrays.asList(new WeightedRandomFishable[] {new WeightedRandomFishable(new ItemStack(Blocks.waterlily), 1), new WeightedRandomFishable(new ItemStack(Items.name_tag), 1), new WeightedRandomFishable(new ItemStack(Items.saddle), 1), (new WeightedRandomFishable(new ItemStack(Items.bow), 1)).setMaxDamagePercent(0.25F).setEnchantable(), (new WeightedRandomFishable(new ItemStack(Items.fishing_rod), 1)).setMaxDamagePercent(0.25F).setEnchantable(), (new WeightedRandomFishable(new ItemStack(Items.book), 1)).setEnchantable()});
+     private static final List FISH = Arrays.asList(new WeightedRandomFishable[] {new WeightedRandomFishable(new ItemStack(Items.fish, 1, ItemFishFood.FishType.COD.getItemDamage()), 60), new WeightedRandomFishable(new ItemStack(Items.fish, 1, ItemFishFood.FishType.SALMON.getItemDamage()), 25), new WeightedRandomFishable(new ItemStack(Items.fish, 1, ItemFishFood.FishType.CLOWNFISH.getItemDamage()), 2), new WeightedRandomFishable(new ItemStack(Items.fish, 1, ItemFishFood.FishType.PUFFERFISH.getItemDamage()), 13)});
+     private int xTile;
 @@ -120,7 +120,7 @@ public class EntityFishHook extends Entity
  
      public void handleHookCasting(double p_146035_1_, double p_146035_3_, double p_146035_5_, float p_146035_7_, float p_146035_8_)
@@ -21178,6 +21230,28 @@ index 244dc25..a517244 100644
                      {
                          return this.field_150842_b.dispense(source, stack);
                      }
+diff --git a/net/minecraft/init/Items.java b/net/minecraft/init/Items.java
+index c80fdd0..6b71eb4 100644
+--- a/net/minecraft/init/Items.java
++++ b/net/minecraft/init/Items.java
+@@ -39,7 +39,7 @@ public class Items
+     public static final Item diamond_pickaxe;
+     public static final Item diamond_axe;
+     public static final Item stick;
+-    public static final Item bowl;
++    public static final Item BOWL;
+     public static final Item mushroom_stew;
+     public static final Item golden_sword;
+     public static final Item golden_shovel;
+@@ -241,7 +241,7 @@ public class Items
+             diamond_pickaxe = getRegisteredItem("diamond_pickaxe");
+             diamond_axe = getRegisteredItem("diamond_axe");
+             stick = getRegisteredItem("stick");
+-            bowl = getRegisteredItem("bowl");
++            BOWL = getRegisteredItem("bowl");
+             mushroom_stew = getRegisteredItem("mushroom_stew");
+             golden_sword = getRegisteredItem("golden_sword");
+             golden_shovel = getRegisteredItem("golden_shovel");
 diff --git a/net/minecraft/inventory/ContainerPlayer.java b/net/minecraft/inventory/ContainerPlayer.java
 index 8b598cc..f6f4c15 100644
 --- a/net/minecraft/inventory/ContainerPlayer.java
@@ -21877,6 +21951,18 @@ index 015cbfb..ecc1daa 100644
              --stack.stackSize;
              return true;
          }
+diff --git a/net/minecraft/item/ItemSoup.java b/net/minecraft/item/ItemSoup.java
+index 09d4aa5..59d2c79 100644
+--- a/net/minecraft/item/ItemSoup.java
++++ b/net/minecraft/item/ItemSoup.java
+@@ -21,6 +21,6 @@ public class ItemSoup extends ItemFood
+     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityPlayer playerIn)
+     {
+         super.onItemUseFinish(stack, worldIn, playerIn);
+-        return new ItemStack(Items.bowl);
++        return new ItemStack(Items.BOWL);
+     }
+ }
 diff --git a/net/minecraft/item/ItemStack.java b/net/minecraft/item/ItemStack.java
 index 490dac5..fbbf4ca 100644
 --- a/net/minecraft/item/ItemStack.java
@@ -21917,6 +22003,37 @@ index 490dac5..fbbf4ca 100644
          }
  
          return var2;
+diff --git a/net/minecraft/item/crafting/CraftingManager.java b/net/minecraft/item/crafting/CraftingManager.java
+index 1146247..95dffd6 100644
+--- a/net/minecraft/item/crafting/CraftingManager.java
++++ b/net/minecraft/item/crafting/CraftingManager.java
+@@ -121,7 +121,7 @@ public class CraftingManager
+         this.addRecipe(new ItemStack(Items.stick, 4), new Object[] {"#", "#", '#', Blocks.planks});
+         this.addRecipe(new ItemStack(Blocks.torch, 4), new Object[] {"X", "#", 'X', Items.coal, '#', Items.stick});
+         this.addRecipe(new ItemStack(Blocks.torch, 4), new Object[] {"X", "#", 'X', new ItemStack(Items.coal, 1, 1), '#', Items.stick});
+-        this.addRecipe(new ItemStack(Items.bowl, 4), new Object[] {"# #", " # ", '#', Blocks.planks});
++        this.addRecipe(new ItemStack(Items.BOWL, 4), new Object[] {"# #", " # ", '#', Blocks.planks});
+         this.addRecipe(new ItemStack(Items.glass_bottle, 3), new Object[] {"# #", " # ", '#', Blocks.glass});
+         this.addRecipe(new ItemStack(Blocks.rail, 16), new Object[] {"X X", "X#X", "X X", 'X', Items.iron_ingot, '#', Items.stick});
+         this.addRecipe(new ItemStack(Blocks.golden_rail, 6), new Object[] {"X X", "X#X", "XRX", 'X', Items.gold_ingot, 'R', Items.redstone, '#', Items.stick});
+diff --git a/net/minecraft/item/crafting/RecipesFood.java b/net/minecraft/item/crafting/RecipesFood.java
+index 12796e6..567c730 100644
+--- a/net/minecraft/item/crafting/RecipesFood.java
++++ b/net/minecraft/item/crafting/RecipesFood.java
+@@ -14,10 +14,10 @@ public class RecipesFood
+      */
+     public void addRecipes(CraftingManager p_77608_1_)
+     {
+-        p_77608_1_.addShapelessRecipe(new ItemStack(Items.mushroom_stew), new Object[] {Blocks.brown_mushroom, Blocks.red_mushroom, Items.bowl});
++        p_77608_1_.addShapelessRecipe(new ItemStack(Items.mushroom_stew), new Object[] {Blocks.brown_mushroom, Blocks.red_mushroom, Items.BOWL});
+         p_77608_1_.addRecipe(new ItemStack(Items.cookie, 8), new Object[] {"#X#", 'X', new ItemStack(Items.dye, 1, EnumDyeColor.BROWN.getDyeColorDamage()), '#', Items.wheat});
+-        p_77608_1_.addRecipe(new ItemStack(Items.rabbit_stew), new Object[] {" R ", "CPM", " B ", 'R', new ItemStack(Items.cooked_rabbit), 'C', Items.carrot, 'P', Items.baked_potato, 'M', Blocks.brown_mushroom, 'B', Items.bowl});
+-        p_77608_1_.addRecipe(new ItemStack(Items.rabbit_stew), new Object[] {" R ", "CPD", " B ", 'R', new ItemStack(Items.cooked_rabbit), 'C', Items.carrot, 'P', Items.baked_potato, 'D', Blocks.red_mushroom, 'B', Items.bowl});
++        p_77608_1_.addRecipe(new ItemStack(Items.rabbit_stew), new Object[] {" R ", "CPM", " B ", 'R', new ItemStack(Items.cooked_rabbit), 'C', Items.carrot, 'P', Items.baked_potato, 'M', Blocks.brown_mushroom, 'B', Items.BOWL});
++        p_77608_1_.addRecipe(new ItemStack(Items.rabbit_stew), new Object[] {" R ", "CPD", " B ", 'R', new ItemStack(Items.cooked_rabbit), 'C', Items.carrot, 'P', Items.baked_potato, 'D', Blocks.red_mushroom, 'B', Items.BOWL});
+         p_77608_1_.addRecipe(new ItemStack(Blocks.melon_block), new Object[] {"MMM", "MMM", "MMM", 'M', Items.melon});
+         p_77608_1_.addRecipe(new ItemStack(Items.melon_seeds), new Object[] {"M", 'M', Items.melon});
+         p_77608_1_.addRecipe(new ItemStack(Items.pumpkin_seeds, 4), new Object[] {"M", 'M', Blocks.pumpkin});
 diff --git a/net/minecraft/nbt/CompressedStreamTools.java b/net/minecraft/nbt/CompressedStreamTools.java
 index 94da7fe..8169124 100644
 --- a/net/minecraft/nbt/CompressedStreamTools.java
@@ -21985,7 +22102,7 @@ index 6fcada4..8dd41b5 100644
              private static final String __OBFID = "CL_00001217";
              public String call()
 diff --git a/net/minecraft/network/EnumConnectionState.java b/net/minecraft/network/EnumConnectionState.java
-index 65e3465..8556704 100644
+index 65e3465..bbaf95f 100644
 --- a/net/minecraft/network/EnumConnectionState.java
 +++ b/net/minecraft/network/EnumConnectionState.java
 @@ -15,9 +15,9 @@ import net.minecraft.network.login.server.S01PacketEncryptionRequest;
@@ -22001,6 +22118,15 @@ index 65e3465..8556704 100644
  import net.minecraft.network.play.client.C07PacketPlayerDigging;
  import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
  import net.minecraft.network.play.client.C09PacketHeldItemChange;
+@@ -27,7 +27,7 @@ import net.minecraft.network.play.client.C0CPacketInput;
+ import net.minecraft.network.play.client.C0DPacketCloseWindow;
+ import net.minecraft.network.play.client.C0EPacketClickWindow;
+ import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
+-import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
++import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
+ import net.minecraft.network.play.client.C11PacketEnchantItem;
+ import net.minecraft.network.play.client.C12PacketUpdateSign;
+ import net.minecraft.network.play.client.C13PacketPlayerAbilities;
 @@ -202,12 +202,12 @@ public enum EnumConnectionState
              this.registerPacket(EnumPacketDirection.CLIENTBOUND, S48PacketResourcePackSend.class);
              this.registerPacket(EnumPacketDirection.CLIENTBOUND, S49PacketUpdateEntityNBT.class);
@@ -22020,8 +22146,17 @@ index 65e3465..8556704 100644
              this.registerPacket(EnumPacketDirection.SERVERBOUND, C07PacketPlayerDigging.class);
              this.registerPacket(EnumPacketDirection.SERVERBOUND, C08PacketPlayerBlockPlacement.class);
              this.registerPacket(EnumPacketDirection.SERVERBOUND, C09PacketHeldItemChange.class);
+@@ -217,7 +217,7 @@ public enum EnumConnectionState
+             this.registerPacket(EnumPacketDirection.SERVERBOUND, C0DPacketCloseWindow.class);
+             this.registerPacket(EnumPacketDirection.SERVERBOUND, C0EPacketClickWindow.class);
+             this.registerPacket(EnumPacketDirection.SERVERBOUND, C0FPacketConfirmTransaction.class);
+-            this.registerPacket(EnumPacketDirection.SERVERBOUND, C10PacketCreativeInventoryAction.class);
++            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketCreativeInventoryAction.class);
+             this.registerPacket(EnumPacketDirection.SERVERBOUND, C11PacketEnchantItem.class);
+             this.registerPacket(EnumPacketDirection.SERVERBOUND, C12PacketUpdateSign.class);
+             this.registerPacket(EnumPacketDirection.SERVERBOUND, C13PacketPlayerAbilities.class);
 diff --git a/net/minecraft/network/NetHandlerPlayServer.java b/net/minecraft/network/NetHandlerPlayServer.java
-index 3301ef8..eb21826 100644
+index 3301ef8..ac3f376 100644
 --- a/net/minecraft/network/NetHandlerPlayServer.java
 +++ b/net/minecraft/network/NetHandlerPlayServer.java
 @@ -2,9 +2,11 @@ package net.minecraft.network;
@@ -22060,6 +22195,15 @@ index 3301ef8..eb21826 100644
  import net.minecraft.network.play.client.C07PacketPlayerDigging;
  import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
  import net.minecraft.network.play.client.C09PacketHeldItemChange;
+@@ -51,7 +55,7 @@ import net.minecraft.network.play.client.C0CPacketInput;
+ import net.minecraft.network.play.client.C0DPacketCloseWindow;
+ import net.minecraft.network.play.client.C0EPacketClickWindow;
+ import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
+-import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
++import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
+ import net.minecraft.network.play.client.C11PacketEnchantItem;
+ import net.minecraft.network.play.client.C12PacketUpdateSign;
+ import net.minecraft.network.play.client.C13PacketPlayerAbilities;
 @@ -81,7 +85,7 @@ import net.minecraft.tileentity.TileEntitySign;
  import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
@@ -22230,6 +22374,15 @@ index 3301ef8..eb21826 100644
          {
              this.playerEntity.openContainer.enchantItem(this.playerEntity, packetIn.getButton());
              this.playerEntity.openContainer.detectAndSendChanges();
+@@ -1072,7 +1077,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
+     /**
+      * Update the server with an ItemStack in a slot.
+      */
+-    public void processCreativeInventoryAction(C10PacketCreativeInventoryAction packetIn)
++    public void processCreativeInventoryAction(CPacketCreativeInventoryAction packetIn)
+     {
+         PacketThreadUtil.func_180031_a(packetIn, this, this.playerEntity.getServerForPlayer());
+ 
 @@ -1142,7 +1147,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
          PacketThreadUtil.func_180031_a(packetIn, this, this.playerEntity.getServerForPlayer());
          Short var2 = (Short)this.field_147372_n.lookup(this.playerEntity.openContainer.windowId);
@@ -22964,7 +23117,7 @@ index c695f6f..8dcd696 100644
  {
      private final ByteBuf buf;
 diff --git a/net/minecraft/network/play/INetHandlerPlayServer.java b/net/minecraft/network/play/INetHandlerPlayServer.java
-index f9e85f2..7107414 100644
+index f9e85f2..4c88bdc 100644
 --- a/net/minecraft/network/play/INetHandlerPlayServer.java
 +++ b/net/minecraft/network/play/INetHandlerPlayServer.java
 @@ -2,9 +2,9 @@ package net.minecraft.network.play;
@@ -22980,6 +23133,15 @@ index f9e85f2..7107414 100644
  import net.minecraft.network.play.client.C07PacketPlayerDigging;
  import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
  import net.minecraft.network.play.client.C09PacketHeldItemChange;
+@@ -14,7 +14,7 @@ import net.minecraft.network.play.client.C0CPacketInput;
+ import net.minecraft.network.play.client.C0DPacketCloseWindow;
+ import net.minecraft.network.play.client.C0EPacketClickWindow;
+ import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
+-import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
++import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
+ import net.minecraft.network.play.client.C11PacketEnchantItem;
+ import net.minecraft.network.play.client.C12PacketUpdateSign;
+ import net.minecraft.network.play.client.C13PacketPlayerAbilities;
 @@ -32,7 +32,7 @@ public interface INetHandlerPlayServer extends INetHandler
      /**
       * Process chat messages (broadcast back to clients) and commands (executes)
@@ -23007,6 +23169,15 @@ index f9e85f2..7107414 100644
  
      /**
       * Processes a player starting/stopping flying
+@@ -129,7 +129,7 @@ public interface INetHandlerPlayServer extends INetHandler
+     /**
+      * Update the server with an ItemStack in a slot.
+      */
+-    void processCreativeInventoryAction(C10PacketCreativeInventoryAction packetIn);
++    void processCreativeInventoryAction(CPacketCreativeInventoryAction packetIn);
+ 
+     void processUpdateSign(C12PacketUpdateSign packetIn);
+ 
 diff --git a/net/minecraft/network/play/client/C01PacketChatMessage.java b/net/minecraft/network/play/client/C01PacketChatMessage.java
 deleted file mode 100644
 index f35632e..0000000
@@ -23418,6 +23589,76 @@ index 0fd8749..0000000
 -        }
 -    }
 -}
+diff --git a/net/minecraft/network/play/client/C10PacketCreativeInventoryAction.java b/net/minecraft/network/play/client/C10PacketCreativeInventoryAction.java
+deleted file mode 100644
+index 982e31c..0000000
+--- a/net/minecraft/network/play/client/C10PacketCreativeInventoryAction.java
++++ /dev/null
+@@ -1,64 +0,0 @@
+-package net.minecraft.network.play.client;
+-
+-import java.io.IOException;
+-import net.minecraft.item.ItemStack;
+-import net.minecraft.network.INetHandler;
+-import net.minecraft.network.Packet;
+-import net.minecraft.network.PacketBuffer;
+-import net.minecraft.network.play.INetHandlerPlayServer;
+-
+-public class C10PacketCreativeInventoryAction implements Packet
+-{
+-    private int slotId;
+-    private ItemStack stack;
+-    private static final String __OBFID = "CL_00001369";
+-
+-    public C10PacketCreativeInventoryAction() {}
+-
+-    public C10PacketCreativeInventoryAction(int p_i45263_1_, ItemStack p_i45263_2_)
+-    {
+-        this.slotId = p_i45263_1_;
+-        this.stack = p_i45263_2_ != null ? p_i45263_2_.copy() : null;
+-    }
+-
+-    public void func_180767_a(INetHandlerPlayServer p_180767_1_)
+-    {
+-        p_180767_1_.processCreativeInventoryAction(this);
+-    }
+-
+-    /**
+-     * Reads the raw packet data from the data stream.
+-     */
+-    public void readPacketData(PacketBuffer data) throws IOException
+-    {
+-        this.slotId = data.readShort();
+-        this.stack = data.readItemStackFromBuffer();
+-    }
+-
+-    /**
+-     * Writes the raw packet data to the data stream.
+-     */
+-    public void writePacketData(PacketBuffer data) throws IOException
+-    {
+-        data.writeShort(this.slotId);
+-        data.writeItemStackToBuffer(this.stack);
+-    }
+-
+-    public int getSlotId()
+-    {
+-        return this.slotId;
+-    }
+-
+-    public ItemStack getStack()
+-    {
+-        return this.stack;
+-    }
+-
+-    /**
+-     * Passes this Packet on to the NetHandler for processing.
+-     */
+-    public void processPacket(INetHandler handler)
+-    {
+-        this.func_180767_a((INetHandlerPlayServer)handler);
+-    }
+-}
 diff --git a/net/minecraft/network/play/client/CPacketChatMessage.java b/net/minecraft/network/play/client/CPacketChatMessage.java
 new file mode 100644
 index 0000000..6588f2d
@@ -23481,6 +23722,76 @@ index 0000000..6588f2d
 +    public void processPacket(INetHandler handler)
 +    {
 +        this.func_180757_a((INetHandlerPlayServer)handler);
++    }
++}
+diff --git a/net/minecraft/network/play/client/CPacketCreativeInventoryAction.java b/net/minecraft/network/play/client/CPacketCreativeInventoryAction.java
+new file mode 100644
+index 0000000..fa87e8c
+--- /dev/null
++++ b/net/minecraft/network/play/client/CPacketCreativeInventoryAction.java
+@@ -0,0 +1,64 @@
++package net.minecraft.network.play.client;
++
++import java.io.IOException;
++import net.minecraft.item.ItemStack;
++import net.minecraft.network.INetHandler;
++import net.minecraft.network.Packet;
++import net.minecraft.network.PacketBuffer;
++import net.minecraft.network.play.INetHandlerPlayServer;
++
++public class CPacketCreativeInventoryAction implements Packet
++{
++    private int slotId;
++    private ItemStack stack;
++    private static final String __OBFID = "CL_00001369";
++
++    public CPacketCreativeInventoryAction() {}
++
++    public CPacketCreativeInventoryAction(int p_i45263_1_, ItemStack p_i45263_2_)
++    {
++        this.slotId = p_i45263_1_;
++        this.stack = p_i45263_2_ != null ? p_i45263_2_.copy() : null;
++    }
++
++    public void func_180767_a(INetHandlerPlayServer p_180767_1_)
++    {
++        p_180767_1_.processCreativeInventoryAction(this);
++    }
++
++    /**
++     * Reads the raw packet data from the data stream.
++     */
++    public void readPacketData(PacketBuffer data) throws IOException
++    {
++        this.slotId = data.readShort();
++        this.stack = data.readItemStackFromBuffer();
++    }
++
++    /**
++     * Writes the raw packet data to the data stream.
++     */
++    public void writePacketData(PacketBuffer data) throws IOException
++    {
++        data.writeShort(this.slotId);
++        data.writeItemStackToBuffer(this.stack);
++    }
++
++    public int getSlotId()
++    {
++        return this.slotId;
++    }
++
++    public ItemStack getStack()
++    {
++        return this.stack;
++    }
++
++    /**
++     * Passes this Packet on to the NetHandler for processing.
++     */
++    public void processPacket(INetHandler handler)
++    {
++        this.func_180767_a((INetHandlerPlayServer)handler);
 +    }
 +}
 diff --git a/net/minecraft/network/play/client/CPacketPlayer.java b/net/minecraft/network/play/client/CPacketPlayer.java

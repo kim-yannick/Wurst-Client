@@ -9,7 +9,7 @@ package tk.wurst_client.features.commands;
 
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
+import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 import tk.wurst_client.events.ChatOutputEvent;
 
 @Cmd.Info(description = "Repairs the held item. Requires creative mode.",
@@ -39,7 +39,7 @@ public class RepairCmd extends Cmd
 		
 		// repair item
 		item.setItemDamage(0);
-		player.connection.sendPacket(new C10PacketCreativeInventoryAction(
+		player.connection.sendPacket(new CPacketCreativeInventoryAction(
 			36 + player.inventory.currentItem, item));
 	}
 	
