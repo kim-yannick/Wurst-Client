@@ -1,6 +1,6 @@
-From ba748f19c42e1e741bcdc23be2e62ce76ce9f98d Mon Sep 17 00:00:00 2001
+From f5da2ec999c5e327dd310658099e1fde4dbad45f Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Sat, 31 Dec 2016 16:46:00 +0100
+Date: Tue, 3 Jan 2017 14:31:43 +0100
 Subject: [PATCH] mod
 
 ---
@@ -408,6 +408,8 @@ Subject: [PATCH] mod
  net/minecraft/item/ItemSeeds.java                  |   4 +-
  net/minecraft/item/ItemSoup.java                   |   2 +-
  net/minecraft/item/ItemStack.java                  |  12 +-
+ net/minecraft/item/ItemSword.java                  |   6 +-
+ net/minecraft/item/ItemTool.java                   |   2 +-
  net/minecraft/item/crafting/CraftingManager.java   |   2 +-
  net/minecraft/item/crafting/RecipesFood.java       |   6 +-
  net/minecraft/nbt/CompressedStreamTools.java       |   1 +
@@ -557,7 +559,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |   4 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 553 files changed, 5646 insertions(+), 4323 deletions(-)
+ 555 files changed, 5650 insertions(+), 4327 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -22003,6 +22005,50 @@ index 490dac5..fbbf4ca 100644
          }
  
          return var2;
+diff --git a/net/minecraft/item/ItemSword.java b/net/minecraft/item/ItemSword.java
+index d1db0b6..02975e8 100644
+--- a/net/minecraft/item/ItemSword.java
++++ b/net/minecraft/item/ItemSword.java
+@@ -14,7 +14,7 @@ import net.minecraft.world.World;
+ 
+ public class ItemSword extends Item
+ {
+-    private float field_150934_a;
++    public float attackDamage;
+     private final Item.ToolMaterial repairMaterial;
+     private static final String __OBFID = "CL_00000072";
+ 
+@@ -24,7 +24,7 @@ public class ItemSword extends Item
+         this.maxStackSize = 1;
+         this.setMaxDamage(p_i45356_1_.getMaxUses());
+         this.setCreativeTab(CreativeTabs.tabCombat);
+-        this.field_150934_a = 4.0F + p_i45356_1_.getDamageVsEntity();
++        this.attackDamage = 4.0F + p_i45356_1_.getDamageVsEntity();
+     }
+ 
+     public float func_150931_i()
+@@ -145,7 +145,7 @@ public class ItemSword extends Item
+     public Multimap getItemAttributeModifiers()
+     {
+         Multimap var1 = super.getItemAttributeModifiers();
+-        var1.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(itemModifierUUID, "Weapon modifier", (double)this.field_150934_a, 0));
++        var1.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(itemModifierUUID, "Weapon modifier", (double)this.attackDamage, 0));
+         return var1;
+     }
+ }
+diff --git a/net/minecraft/item/ItemTool.java b/net/minecraft/item/ItemTool.java
+index a821dae..7b3858a 100644
+--- a/net/minecraft/item/ItemTool.java
++++ b/net/minecraft/item/ItemTool.java
+@@ -16,7 +16,7 @@ public class ItemTool extends Item
+     protected float efficiencyOnProperMaterial = 4.0F;
+ 
+     /** Damage versus entities. */
+-    private float damageVsEntity;
++    public float damageVsEntity;
+ 
+     /** The material this tool is made from. */
+     protected Item.ToolMaterial toolMaterial;
 diff --git a/net/minecraft/item/crafting/CraftingManager.java b/net/minecraft/item/crafting/CraftingManager.java
 index 1146247..95dffd6 100644
 --- a/net/minecraft/item/crafting/CraftingManager.java

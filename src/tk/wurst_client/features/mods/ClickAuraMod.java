@@ -94,9 +94,9 @@ public class ClickAuraMod extends Mod implements UpdateListener
 	@Override
 	public Feature[] getSeeAlso()
 	{
-		return new Feature[]{wurst.special.targetSpf,
-			wurst.mods.killauraMod, wurst.mods.killauraLegitMod,
-			wurst.mods.multiAuraMod, wurst.mods.triggerBotMod};
+		return new Feature[]{wurst.special.targetSpf, wurst.mods.killauraMod,
+			wurst.mods.killauraLegitMod, wurst.mods.multiAuraMod,
+			wurst.mods.triggerBotMod};
 	}
 	
 	@Override
@@ -144,8 +144,7 @@ public class ClickAuraMod extends Mod implements UpdateListener
 			return;
 		
 		// AutoSword
-		if(wurst.mods.autoSwordMod.isActive())
-			AutoSwordMod.setSlot();
+		wurst.mods.autoSwordMod.setSlot();
 		
 		// Criticals
 		wurst.mods.criticalsMod.doCritical();

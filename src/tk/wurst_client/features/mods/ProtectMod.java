@@ -186,8 +186,7 @@ public class ProtectMod extends Mod implements UpdateListener
 				return;
 			
 			// AutoSword
-			if(wurst.mods.autoSwordMod.isActive())
-				AutoSwordMod.setSlot();
+			wurst.mods.autoSwordMod.setSlot();
 			
 			// Criticals
 			wurst.mods.criticalsMod.doCritical();
