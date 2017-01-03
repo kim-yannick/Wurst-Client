@@ -1,6 +1,6 @@
-From f5da2ec999c5e327dd310658099e1fde4dbad45f Mon Sep 17 00:00:00 2001
+From 88bef55ba57963038da7c113bd65c044b3943a36 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 3 Jan 2017 14:31:43 +0100
+Date: Tue, 3 Jan 2017 21:44:54 +0100
 Subject: [PATCH] mod
 
 ---
@@ -112,7 +112,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/GuiListButton.java        |   1 +
  net/minecraft/client/gui/GuiListExtended.java      |   4 +
  net/minecraft/client/gui/GuiLockIconButton.java    |   1 +
- net/minecraft/client/gui/GuiMainMenu.java          |  70 ++-
+ net/minecraft/client/gui/GuiMainMenu.java          |  81 +++-
  net/minecraft/client/gui/GuiMemoryErrorScreen.java |   4 +-
  net/minecraft/client/gui/GuiMerchant.java          |  16 +-
  net/minecraft/client/gui/GuiMultiplayer.java       | 156 +++++--
@@ -559,7 +559,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |   4 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 555 files changed, 5650 insertions(+), 4327 deletions(-)
+ 555 files changed, 5659 insertions(+), 4329 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -7436,7 +7436,7 @@ index 7c69b95..e44dc02 100644
  
  public class GuiLockIconButton extends GuiButton
 diff --git a/net/minecraft/client/gui/GuiMainMenu.java b/net/minecraft/client/gui/GuiMainMenu.java
-index 9fd9e99..102581a 100644
+index 9fd9e99..c6b9532 100644
 --- a/net/minecraft/client/gui/GuiMainMenu.java
 +++ b/net/minecraft/client/gui/GuiMainMenu.java
 @@ -1,15 +1,31 @@
@@ -7511,7 +7511,13 @@ index 9fd9e99..102581a 100644
      private int field_92024_r;
      private int field_92023_s;
      private int field_92022_t;
-@@ -74,7 +88,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -69,12 +83,12 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+     private int field_92020_v;
+     private int field_92019_w;
+     private ResourceLocation field_110351_G;
+-    private GuiButton field_175372_K;
++    private GuiButton realmsButton;
+     private static final String __OBFID = "CL_00001154";
  
      public GuiMainMenu()
      {
@@ -7547,7 +7553,7 @@ index 9fd9e99..102581a 100644
          Object var4 = this.field_104025_t;
  
          synchronized (this.field_104025_t)
-@@ -222,7 +242,16 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -222,7 +242,23 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
      {
          this.buttonList.add(new GuiButton(1, this.width / 2 - 100, p_73969_1_, I18n.format("menu.singleplayer", new Object[0])));
          this.buttonList.add(new GuiButton(2, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 1, I18n.format("menu.multiplayer", new Object[0])));
@@ -7555,17 +7561,33 @@ index 9fd9e99..102581a 100644
 +
 +		// TODO: Client
 +		if(WurstClient.INSTANCE.isEnabled())
-+			this.buttonList.add(new GuiButton(3, this.width / 2 - 100,
-+				p_73969_1_ + p_73969_2_ * 2, 200, 20, "Alt Manager"));
-+		else
++		{
++			boolean realms = WurstClient.ENABLE_REALMS;
++			buttonList.add(
++				new GuiButton(3, width / 2 - 100, p_73969_1_ + p_73969_2_ * 2,
++					realms ? 98 : 200, 20, "Alt Manager"));
++			if(realms)
++				this.buttonList.add(this.realmsButton = new GuiButton(14,
++					this.width / 2 + 2, p_73969_1_ + p_73969_2_ * 2, 98, 20,
++					I18n.format("menu.online", new Object[0])));
++		}else
 +			
-+			this.buttonList.add(this.field_175372_K = new GuiButton(14,
++			this.buttonList.add(this.realmsButton = new GuiButton(14,
 +				this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2,
 +				I18n.format("menu.online", new Object[0])));
      }
  
      /**
-@@ -391,7 +420,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -263,7 +299,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+             this.mc.displayGuiScreen(new GuiMultiplayer(this));
+         }
+ 
+-        if (button.id == 14 && this.field_175372_K.visible)
++        if (button.id == 14 && this.realmsButton.visible)
+         {
+             this.switchToRealms();
+         }
+@@ -391,7 +427,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
  
                  this.mc.getTextureManager().bindTexture(titlePanoramaPaths[var11]);
                  var5.startDrawingQuads();
@@ -7574,7 +7596,7 @@ index 9fd9e99..102581a 100644
                  float var12 = 0.0F;
                  var5.addVertexWithUV(-1.0D, -1.0D, 1.0D, (double)(0.0F + var12), (double)(0.0F + var12));
                  var5.addVertexWithUV(1.0D, -1.0D, 1.0D, (double)(1.0F - var12), (double)(0.0F + var12));
-@@ -436,7 +465,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -436,7 +472,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
  
          for (int var5 = 0; var5 < var4; ++var5)
          {
@@ -7583,7 +7605,7 @@ index 9fd9e99..102581a 100644
              int var6 = this.width;
              int var7 = this.height;
              float var8 = (float)(var5 - var4 / 2) / 256.0F;
-@@ -454,7 +483,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -454,7 +490,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
      /**
       * Renders the skybox in the main menu
       */
@@ -7592,7 +7614,7 @@ index 9fd9e99..102581a 100644
      {
          this.mc.getFramebuffer().unbindFramebuffer();
          GlStateManager.viewport(0, 0, 256, 256);
-@@ -474,7 +503,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -474,7 +510,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
          float var6 = this.width > this.height ? 120.0F / (float)this.width : 120.0F / (float)this.height;
          float var7 = (float)this.height * var6 / 256.0F;
          float var8 = (float)this.width * var6 / 256.0F;
@@ -7601,7 +7623,7 @@ index 9fd9e99..102581a 100644
          int var9 = this.width;
          int var10 = this.height;
          var5.addVertexWithUV(0.0D, (double)var10, (double)this.zLevel, (double)(0.5F - var7), (double)(0.5F + var8));
-@@ -494,6 +523,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -494,6 +530,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
          GlStateManager.enableAlpha();
          Tessellator var4 = Tessellator.getInstance();
          WorldRenderer var5 = var4.getWorldRenderer();
@@ -7609,7 +7631,7 @@ index 9fd9e99..102581a 100644
          short var6 = 274;
          int var7 = this.width / 2 - var6 / 2;
          byte var8 = 30;
-@@ -516,13 +546,14 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -516,13 +553,14 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
              this.drawTexturedModalRect(var7 + 155, var8 + 0, 0, 45, 155, 44);
          }
  
@@ -7625,7 +7647,7 @@ index 9fd9e99..102581a 100644
          this.drawCenteredString(this.fontRendererObj, this.splashText, 0, -8, -256);
          GlStateManager.popMatrix();
          String var10 = "Minecraft 1.8";
-@@ -542,7 +573,6 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -542,7 +580,6 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
              this.drawString(this.fontRendererObj, this.field_92025_p, this.field_92022_t, this.field_92021_u, -1);
              this.drawString(this.fontRendererObj, this.field_146972_A, (this.width - this.field_92024_r) / 2, ((GuiButton)this.buttonList.get(0)).yPosition - 12, -1);
          }
