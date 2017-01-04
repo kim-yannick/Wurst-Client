@@ -123,8 +123,7 @@ public class NukerLegitMod extends Mod
 				return;
 			}
 		}
-		if(wurst.mods.autoToolMod.isActive())
-			AutoToolMod.setSlot(pos);
+		wurst.mods.autoToolMod.setSlot(pos);
 		mc.player.connection.sendPacket(new C0APacketAnimation());
 		shouldRenderESP = true;
 		currentDamage += currentBlock.getPlayerRelativeBlockHardness(mc.player,

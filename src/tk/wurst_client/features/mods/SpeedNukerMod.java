@@ -52,9 +52,9 @@ public class SpeedNukerMod extends Mod
 	@Override
 	public Feature[] getSeeAlso()
 	{
-		return new Feature[]{wurst.mods.nukerMod,
-			wurst.mods.nukerLegitMod, wurst.mods.tunnellerMod,
-			wurst.mods.fastBreakMod, wurst.mods.autoMineMod};
+		return new Feature[]{wurst.mods.nukerMod, wurst.mods.nukerLegitMod,
+			wurst.mods.tunnellerMod, wurst.mods.fastBreakMod,
+			wurst.mods.autoMineMod};
 	}
 	
 	@Override
@@ -105,10 +105,9 @@ public class SpeedNukerMod extends Mod
 		currentBlock = mc.world.getBlockState(pos).getBlock();
 		if(wurst.mods.autoToolMod.isActive() && oldSlot == -1)
 			oldSlot = mc.player.inventory.currentItem;
-		if(!mc.player.capabilities.isCreativeMode
-			&& wurst.mods.autoToolMod.isActive() && currentBlock
-				.getPlayerRelativeBlockHardness(mc.player, mc.world, pos) < 1)
-			AutoToolMod.setSlot(pos);
+		if(!mc.player.capabilities.isCreativeMode && currentBlock
+			.getPlayerRelativeBlockHardness(mc.player, mc.world, pos) < 1)
+			wurst.mods.autoToolMod.setSlot(pos);
 		nukeAll();
 	}
 	
@@ -169,8 +168,7 @@ public class SpeedNukerMod extends Mod
 					float zDiff = (float)(mc.player.posZ - posZ);
 					float currentDistance =
 						BlockUtils.getBlockDistance(xDiff, yDiff, zDiff);
-					RayTraceResult fakeObjectMouseOver =
-						mc.objectMouseOver;
+					RayTraceResult fakeObjectMouseOver = mc.objectMouseOver;
 					if(fakeObjectMouseOver == null)
 						continue;
 					fakeObjectMouseOver.setBlockPos(blockPos);
@@ -221,8 +219,7 @@ public class SpeedNukerMod extends Mod
 					float zDiff = (float)(mc.player.posZ - posZ);
 					float currentDistance =
 						BlockUtils.getBlockDistance(xDiff, yDiff, zDiff);
-					RayTraceResult fakeObjectMouseOver =
-						mc.objectMouseOver;
+					RayTraceResult fakeObjectMouseOver = mc.objectMouseOver;
 					fakeObjectMouseOver
 						.setBlockPos(new BlockPos(posX, posY, posZ));
 					if(Block.getIdFromBlock(block) != 0 && posY >= 0

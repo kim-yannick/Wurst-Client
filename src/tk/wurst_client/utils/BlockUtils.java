@@ -9,6 +9,7 @@ package tk.wurst_client.utils;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.BlockPos;
@@ -20,14 +21,24 @@ public final class BlockUtils
 {
 	private static final Minecraft mc = Minecraft.getMinecraft();
 	
+	public static IBlockState getState(BlockPos pos)
+	{
+		return mc.world.getBlockState(pos);
+	}
+	
 	public static Block getBlock(BlockPos pos)
 	{
-		return mc.world.getBlockState(pos).getBlock();
+		return getState(pos).getBlock();
 	}
 	
 	public static Material getMaterial(BlockPos pos)
 	{
-		return mc.world.getBlockState(pos).getBlock().getMaterial();
+		return getState(pos).getBlock().getMaterial();
+	}
+	
+	public static boolean canBeClicked(BlockPos pos)
+	{
+		return getBlock(pos).canCollideCheck(getState(pos), false);
 	}
 	
 	public static boolean placeBlockLegit(BlockPos pos)

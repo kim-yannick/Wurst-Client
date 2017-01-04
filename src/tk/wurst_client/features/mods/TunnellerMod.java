@@ -51,9 +51,9 @@ public class TunnellerMod extends Mod implements RenderListener, UpdateListener
 	@Override
 	public Feature[] getSeeAlso()
 	{
-		return new Feature[]{wurst.mods.nukerMod,
-			wurst.mods.nukerLegitMod, wurst.mods.speedNukerMod,
-			wurst.mods.fastBreakMod, wurst.mods.autoMineMod};
+		return new Feature[]{wurst.mods.nukerMod, wurst.mods.nukerLegitMod,
+			wurst.mods.speedNukerMod, wurst.mods.fastBreakMod,
+			wurst.mods.autoMineMod};
 	}
 	
 	@Override
@@ -114,8 +114,7 @@ public class TunnellerMod extends Mod implements RenderListener, UpdateListener
 				return;
 			}
 		}
-		if(wurst.mods.autoToolMod.isActive())
-			AutoToolMod.setSlot(pos);
+		wurst.mods.autoToolMod.setSlot(pos);
 		mc.player.connection.sendPacket(new C0APacketAnimation());
 		shouldRenderESP = true;
 		BlockUtils.faceBlockPacket(pos);
@@ -172,8 +171,7 @@ public class TunnellerMod extends Mod implements RenderListener, UpdateListener
 					float yDiff = (float)(mc.player.posY - posY);
 					float zDiff = (float)(mc.player.posZ - posZ);
 					float currentDistance = xDiff + yDiff + zDiff;
-					RayTraceResult fakeObjectMouseOver =
-						mc.objectMouseOver;
+					RayTraceResult fakeObjectMouseOver = mc.objectMouseOver;
 					if(fakeObjectMouseOver == null)
 						continue;
 					fakeObjectMouseOver.setBlockPos(blockPos);
@@ -209,8 +207,7 @@ public class TunnellerMod extends Mod implements RenderListener, UpdateListener
 					int posZ = (int)(Math.floor(mc.player.posZ) + z);
 					BlockPos blockPos = new BlockPos(posX, posY, posZ);
 					Block block = mc.world.getBlockState(blockPos).getBlock();
-					RayTraceResult fakeObjectMouseOver =
-						mc.objectMouseOver;
+					RayTraceResult fakeObjectMouseOver = mc.objectMouseOver;
 					fakeObjectMouseOver.setBlockPos(blockPos);
 					if(Block.getIdFromBlock(block) != 0 && posY >= 0)
 					{
