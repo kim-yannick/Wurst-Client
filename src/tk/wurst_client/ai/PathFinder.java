@@ -18,6 +18,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import tk.wurst_client.WurstClient;
+import tk.wurst_client.utils.BlockUtils;
 
 public class PathFinder
 {
@@ -224,8 +225,8 @@ public class PathFinder
 	
 	protected boolean canBeSolid(BlockPos pos)
 	{
-		Material material = getMaterial(pos);
-		Block block = getBlock(pos);
+		Material material = BlockUtils.getMaterial(pos);
+		Block block = BlockUtils.getBlock(pos);
 		return (material.blocksMovement() && !(block instanceof BlockSign))
 			|| block instanceof BlockLadder || (jesus
 				&& (material == Material.water || material == Material.lava));
@@ -238,8 +239,8 @@ public class PathFinder
 			return false;
 		
 		// check if solid
-		Material material = getMaterial(pos);
-		Block block = getBlock(pos);
+		Material material = BlockUtils.getMaterial(pos);
+		Block block = BlockUtils.getBlock(pos);
 		if(material.blocksMovement() && !(block instanceof BlockSign))
 			return false;
 		
@@ -259,7 +260,7 @@ public class PathFinder
 	private boolean canGoAbove(BlockPos pos)
 	{
 		// check for fences, etc.
-		Block block = getBlock(pos);
+		Block block = BlockUtils.getBlock(pos);
 		if(block instanceof BlockFence || block instanceof BlockWall
 			|| block instanceof BlockFenceGate)
 			return false;
@@ -270,7 +271,7 @@ public class PathFinder
 	private boolean canSafelyStandOn(BlockPos pos)
 	{
 		// check if solid
-		Material material = getMaterial(pos);
+		Material material = BlockUtils.getMaterial(pos);
 		if(!canBeSolid(pos))
 			return false;
 		
@@ -298,7 +299,7 @@ public class PathFinder
 			return true;
 		
 		// check if fall ends with slime block
-		if(getBlock(down2) instanceof BlockSlime && fallingAllowed)
+		if(BlockUtils.getBlock(down2) instanceof BlockSlime && fallingAllowed)
 			return true;
 		
 		// check fall damage
@@ -317,7 +318,7 @@ public class PathFinder
 				return true;
 			
 			// check if block resets fall damage
-			Block prevBlock = getBlock(prevPos);
+			Block prevBlock = BlockUtils.getBlock(prevPos);
 			if(prevBlock instanceof BlockLiquid
 				|| prevBlock instanceof BlockLadder
 				|| prevBlock instanceof BlockVine
@@ -333,13 +334,13 @@ public class PathFinder
 	private boolean canFlyAt(BlockPos pos)
 	{
 		return flying
-			|| !noSlowdownActive && getMaterial(pos) == Material.water;
+			|| !noSlowdownActive && BlockUtils.getMaterial(pos) == Material.water;
 	}
 	
 	private boolean canClimbUpAt(BlockPos pos)
 	{
 		// check if this block works for climbing
-		Block block = getBlock(pos);
+		Block block = BlockUtils.getBlock(pos);
 		if(!spider && !(block instanceof BlockLadder)
 			&& !(block instanceof BlockVine))
 			return false;
@@ -358,13 +359,13 @@ public class PathFinder
 	private boolean canMoveSidewaysInMidairAt(BlockPos pos)
 	{
 		// check feet
-		Block blockFeet = getBlock(pos);
+		Block blockFeet = BlockUtils.getBlock(pos);
 		if(blockFeet instanceof BlockLiquid || blockFeet instanceof BlockLadder
 			|| blockFeet instanceof BlockVine || blockFeet instanceof BlockWeb)
 			return true;
 		
 		// check head
-		Block blockHead = getBlock(pos.up());
+		Block blockHead = BlockUtils.getBlock(pos.up());
 		if(blockHead instanceof BlockLiquid || blockHead instanceof BlockWeb)
 			return true;
 		
@@ -380,14 +381,14 @@ public class PathFinder
 			cost *= 1.4142135623730951F;
 		
 		// liquids
-		Material nextMaterial = getMaterial(next);
+		Material nextMaterial = BlockUtils.getMaterial(next);
 		if(nextMaterial == Material.water && !noSlowdownActive)
 			cost *= 1.3164437838225804F;
 		else if(nextMaterial == Material.lava)
 			cost *= 4.539515393656079F;
 		
 		// soul sand
-		if(!canFlyAt(next) && getBlock(next.down()) instanceof BlockSoulSand)
+		if(!canFlyAt(next) && BlockUtils.getBlock(next.down()) instanceof BlockSoulSand)
 			cost *= 2.5F;
 		
 		return cost;
@@ -400,16 +401,6 @@ public class PathFinder
 		float dz = Math.abs(pos.getZ() - goal.getZ());
 		return 1.001F
 			* ((dx + dy + dz) - 0.5857864376269049F * Math.min(dx, dz));
-	}
-	
-	protected Block getBlock(BlockPos pos)
-	{
-		return mc.world.getBlockState(pos).getBlock();
-	}
-	
-	private Material getMaterial(BlockPos pos)
-	{
-		return getBlock(pos).getMaterial();
 	}
 	
 	public PathPos getCurrentPos()
