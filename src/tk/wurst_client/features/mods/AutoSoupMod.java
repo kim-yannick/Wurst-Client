@@ -20,6 +20,7 @@ import tk.wurst_client.features.special_features.YesCheatSpf.BypassLevel;
 import tk.wurst_client.settings.CheckboxSetting;
 import tk.wurst_client.settings.SliderSetting;
 import tk.wurst_client.settings.SliderSetting.ValueDisplay;
+import tk.wurst_client.utils.BlockUtils;
 import tk.wurst_client.utils.ClickType;
 import tk.wurst_client.utils.InventoryUtils;
 
@@ -183,9 +184,8 @@ public class AutoSoupMod extends Mod implements UpdateListener
 				return false;
 			
 			// clickable blocks
-			if(mc.objectMouseOver.getBlockPos() != null
-				&& mc.world.getBlockState(mc.objectMouseOver.getBlockPos())
-					.getBlock() instanceof BlockContainer)
+			if(mc.objectMouseOver.getBlockPos() != null && BlockUtils.getBlock(
+				mc.objectMouseOver.getBlockPos()) instanceof BlockContainer)
 				return false;
 		}
 		
