@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -55,17 +55,15 @@ public class WalkPathProcessor extends PathProcessor
 			
 			// vertical movement
 		}else if(pos.getY() != nextPos.getY())
-		{
 			// go up
 			if(pos.getY() < nextPos.getY())
 			{
 				// climb up
 				// TODO: vines and spider
-				if(mc.world.getBlockState(pos)
-					.getBlock() instanceof BlockLadder)
+				if(BlockUtils.getBlock(pos) instanceof BlockLadder)
 				{
 					BlockUtils.faceBlockClientHorizontally(
-						pos.offset(((EnumFacing)mc.world.getBlockState(pos)
+						pos.offset(((EnumFacing)BlockUtils.getState(pos)
 							.getValue(BlockLadder.field_176382_a))
 								.getOpposite()));
 					mc.gameSettings.keyBindForward.pressed = true;
@@ -96,7 +94,6 @@ public class WalkPathProcessor extends PathProcessor
 				if(mc.player.onGround)
 					mc.gameSettings.keyBindForward.pressed = true;
 			}
-		}
 	}
 	
 	@Override
