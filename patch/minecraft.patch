@@ -1,6 +1,6 @@
-From 88bef55ba57963038da7c113bd65c044b3943a36 Mon Sep 17 00:00:00 2001
+From c9565f7f1ff526f45e2cbd2a6f2140c310ed937a Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 3 Jan 2017 21:44:54 +0100
+Date: Wed, 4 Jan 2017 17:04:52 +0100
 Subject: [PATCH] mod
 
 ---
@@ -181,7 +181,7 @@ Subject: [PATCH] mod
  net/minecraft/client/multiplayer/ServerList.java   |  16 +-
  net/minecraft/client/multiplayer/WorldClient.java  |  28 +-
  .../client/network/NetHandlerLoginClient.java      |   5 +
- .../client/network/NetHandlerPlayClient.java       | 290 ++++--------
+ .../client/network/NetHandlerPlayClient.java       | 292 ++++--------
  .../client/network/NetworkPlayerInfo.java          |  53 ++-
  net/minecraft/client/network/OldServerPinger.java  |  10 +-
  net/minecraft/client/particle/Barrier.java         |   2 +-
@@ -276,7 +276,7 @@ Subject: [PATCH] mod
  net/minecraft/command/CommandHandler.java          |  10 +-
  net/minecraft/command/CommandHelp.java             |   6 +-
  net/minecraft/command/CommandParticle.java         |   4 +-
- net/minecraft/command/CommandPlaySound.java        |   4 +-
+ net/minecraft/command/CommandPlaySound.java        |   8 +-
  net/minecraft/command/CommandSpreadPlayers.java    |  10 +-
  net/minecraft/command/ICommandSender.java          |   4 +-
  net/minecraft/command/IEntitySelector.java         |   2 +-
@@ -365,7 +365,7 @@ Subject: [PATCH] mod
  net/minecraft/entity/passive/EntityVillager.java   |   8 +-
  net/minecraft/entity/passive/EntityWolf.java       |   2 +-
  net/minecraft/entity/player/EntityPlayer.java      |  78 ++--
- net/minecraft/entity/player/EntityPlayerMP.java    |  18 +-
+ net/minecraft/entity/player/EntityPlayerMP.java    |  22 +-
  net/minecraft/entity/player/InventoryPlayer.java   |   9 +-
  net/minecraft/entity/projectile/EntityArrow.java   |  46 +-
  net/minecraft/entity/projectile/EntityEgg.java     |   4 +-
@@ -415,11 +415,12 @@ Subject: [PATCH] mod
  net/minecraft/nbt/CompressedStreamTools.java       |   1 +
  net/minecraft/nbt/JsonToNBT.java                   |   2 +-
  net/minecraft/nbt/NBTTagCompound.java              |   7 +-
- net/minecraft/network/EnumConnectionState.java     |  22 +-
+ net/minecraft/network/EnumConnectionState.java     |  26 +-
  net/minecraft/network/NetHandlerPlayServer.java    |  55 ++-
  net/minecraft/network/NetworkManager.java          | 327 +++++++------
  net/minecraft/network/NetworkSystem.java           |  11 +-
  net/minecraft/network/PacketBuffer.java            |   6 +-
+ .../network/play/INetHandlerPlayClient.java        |   4 +-
  .../network/play/INetHandlerPlayServer.java        |  16 +-
  .../network/play/client/C01PacketChatMessage.java  |  59 ---
  .../network/play/client/C02PacketUseEntity.java    | 105 -----
@@ -430,7 +431,8 @@ Subject: [PATCH] mod
  .../network/play/client/CPacketPlayer.java         | 229 ++++++++++
  .../network/play/client/CPacketUseEntity.java      | 105 +++++
  .../network/play/server/S27PacketExplosion.java    |   4 +-
- .../network/play/server/S29PacketSoundEffect.java  |   2 +-
+ .../network/play/server/S29PacketSoundEffect.java  | 106 -----
+ .../network/play/server/SPacketSoundEffect.java    | 106 +++++
  net/minecraft/pathfinding/PathEntity.java          |  10 +-
  net/minecraft/pathfinding/PathNavigate.java        |  22 +-
  net/minecraft/pathfinding/PathNavigateClimber.java |   2 +-
@@ -498,6 +500,7 @@ Subject: [PATCH] mod
  net/minecraft/world/SpawnerAnimals.java            |  17 +-
  net/minecraft/world/Teleporter.java                |  16 +-
  net/minecraft/world/World.java                     | 167 +++----
+ net/minecraft/world/WorldManager.java              |   6 +-
  net/minecraft/world/WorldProvider.java             |   8 +-
  net/minecraft/world/WorldProviderEnd.java          |   8 +-
  net/minecraft/world/WorldProviderHell.java         |   6 +-
@@ -559,7 +562,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |   4 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 555 files changed, 5659 insertions(+), 4329 deletions(-)
+ 558 files changed, 5776 insertions(+), 4446 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -568,6 +571,8 @@ Subject: [PATCH] mod
  create mode 100644 net/minecraft/network/play/client/CPacketCreativeInventoryAction.java
  create mode 100644 net/minecraft/network/play/client/CPacketPlayer.java
  create mode 100644 net/minecraft/network/play/client/CPacketUseEntity.java
+ delete mode 100644 net/minecraft/network/play/server/S29PacketSoundEffect.java
+ create mode 100644 net/minecraft/network/play/server/SPacketSoundEffect.java
  delete mode 100644 net/minecraft/util/ChatComponentText.java
  delete mode 100644 net/minecraft/util/MovingObjectPosition.java
  create mode 100644 net/minecraft/util/RayTraceResult.java
@@ -12131,7 +12136,7 @@ index d6a17db..7506221 100644
  import org.apache.logging.log4j.Logger;
  
 diff --git a/net/minecraft/client/network/NetHandlerPlayClient.java b/net/minecraft/client/network/NetHandlerPlayClient.java
-index 2b1d59a..bf2691d 100644
+index 2b1d59a..11bbb3e 100644
 --- a/net/minecraft/client/network/NetHandlerPlayClient.java
 +++ b/net/minecraft/client/network/NetHandlerPlayClient.java
 @@ -1,39 +1,24 @@
@@ -12768,12 +12773,16 @@ index 2b1d59a..bf2691d 100644
          var2.capabilities.isFlying = packetIn.isFlying();
          var2.capabilities.isCreativeMode = packetIn.isCreativeMode();
          var2.capabilities.disableDamage = packetIn.isInvulnerable();
-@@ -1705,7 +1593,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
-     public void handleSoundEffect(S29PacketSoundEffect packetIn)
+@@ -1702,10 +1590,10 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+         }
+     }
+ 
+-    public void handleSoundEffect(S29PacketSoundEffect packetIn)
++    public void handleSoundEffect(SPacketSoundEffect packetIn)
      {
          PacketThreadUtil.func_180031_a(packetIn, this, this.gameController);
 -        this.gameController.theWorld.playSound(packetIn.func_149207_d(), packetIn.func_149211_e(), packetIn.func_149210_f(), packetIn.func_149212_c(), packetIn.func_149208_g(), packetIn.func_149209_h(), false);
-+        this.gameController.world.playSound(packetIn.func_149207_d(), packetIn.func_149211_e(), packetIn.func_149210_f(), packetIn.func_149212_c(), packetIn.func_149208_g(), packetIn.func_149209_h(), false);
++        this.gameController.world.playSound(packetIn.func_149207_d(), packetIn.func_149211_e(), packetIn.func_149210_f(), packetIn.getSound(), packetIn.func_149208_g(), packetIn.func_149209_h(), false);
      }
  
      public void func_175095_a(S48PacketResourcePackSend p_175095_1_)
@@ -16974,11 +16983,15 @@ index 80de4fb..4cd1675 100644
                  double var9 = (double)((float)func_175761_b(var31.yCoord, args[2], true));
                  double var11 = (double)((float)func_175761_b(var31.zCoord, args[3], true));
 diff --git a/net/minecraft/command/CommandPlaySound.java b/net/minecraft/command/CommandPlaySound.java
-index 9ed45e4..02ea922 100644
+index 9ed45e4..a272995 100644
 --- a/net/minecraft/command/CommandPlaySound.java
 +++ b/net/minecraft/command/CommandPlaySound.java
-@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
- import net.minecraft.network.play.server.S29PacketSoundEffect;
+@@ -2,10 +2,10 @@ package net.minecraft.command;
+ 
+ import java.util.List;
+ import net.minecraft.entity.player.EntityPlayerMP;
+-import net.minecraft.network.play.server.S29PacketSoundEffect;
++import net.minecraft.network.play.server.SPacketSoundEffect;
  import net.minecraft.server.MinecraftServer;
  import net.minecraft.util.BlockPos;
 -import net.minecraft.util.Vec3;
@@ -16995,6 +17008,15 @@ index 9ed45e4..02ea922 100644
              double var7 = var6.xCoord;
  
              if (args.length > var31)
+@@ -109,7 +109,7 @@ public class CommandPlaySound extends CommandBase
+                 var13 = var17;
+             }
+ 
+-            var5.playerNetServerHandler.sendPacket(new S29PacketSoundEffect(var4, var7, var9, var11, (float)var13, (float)var15));
++            var5.playerNetServerHandler.sendPacket(new SPacketSoundEffect(var4, var7, var9, var11, (float)var13, (float)var15));
+             notifyOperators(sender, this, "commands.playsound.success", new Object[] {var4, var5.getName()});
+         }
+     }
 diff --git a/net/minecraft/command/CommandSpreadPlayers.java b/net/minecraft/command/CommandSpreadPlayers.java
 index 92d5a1d..c3b5c19 100644
 --- a/net/minecraft/command/CommandSpreadPlayers.java
@@ -20445,7 +20467,7 @@ index 04f22d7..d1dd008 100644
  
      public boolean func_175146_a(LockCode p_175146_1_)
 diff --git a/net/minecraft/entity/player/EntityPlayerMP.java b/net/minecraft/entity/player/EntityPlayerMP.java
-index 385fbff..3e2ad5c 100644
+index 385fbff..8bddfc9 100644
 --- a/net/minecraft/entity/player/EntityPlayerMP.java
 +++ b/net/minecraft/entity/player/EntityPlayerMP.java
 @@ -3,13 +3,16 @@ package net.minecraft.entity.player;
@@ -20465,6 +20487,15 @@ index 385fbff..3e2ad5c 100644
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockFence;
  import net.minecraft.block.BlockFenceGate;
+@@ -53,7 +56,7 @@ import net.minecraft.network.play.server.S1EPacketRemoveEntityEffect;
+ import net.minecraft.network.play.server.S1FPacketSetExperience;
+ import net.minecraft.network.play.server.S21PacketChunkData;
+ import net.minecraft.network.play.server.S26PacketMapChunkBulk;
+-import net.minecraft.network.play.server.S29PacketSoundEffect;
++import net.minecraft.network.play.server.SPacketSoundEffect;
+ import net.minecraft.network.play.server.S2BPacketChangeGameState;
+ import net.minecraft.network.play.server.S2DPacketOpenWindow;
+ import net.minecraft.network.play.server.S2EPacketCloseWindow;
 @@ -96,6 +99,7 @@ import net.minecraft.world.WorldServer;
  import net.minecraft.world.WorldSettings;
  import net.minecraft.world.biome.BiomeGenBase;
@@ -20499,7 +20530,7 @@ index 385fbff..3e2ad5c 100644
                  var8 = this.worldObj.getBlockState(var7).getBlock();
              }
          }
-@@ -779,7 +783,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
+@@ -779,10 +783,10 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
          {
              ILockableContainer var2 = (ILockableContainer)chestInventory;
  
@@ -20507,7 +20538,11 @@ index 385fbff..3e2ad5c 100644
 +            if (var2.isLocked() && !this.func_175146_a(var2.getLockCode()) && !this.isSpectator())
              {
                  this.playerNetServerHandler.sendPacket(new S02PacketChat(new ChatComponentTranslation("container.isLocked", new Object[] {chestInventory.getDisplayName()}), (byte)2));
-                 this.playerNetServerHandler.sendPacket(new S29PacketSoundEffect("random.door_close", this.posX, this.posY, this.posZ, 1.0F, 1.0F));
+-                this.playerNetServerHandler.sendPacket(new S29PacketSoundEffect("random.door_close", this.posX, this.posY, this.posZ, 1.0F, 1.0F));
++                this.playerNetServerHandler.sendPacket(new SPacketSoundEffect("random.door_close", this.posX, this.posY, this.posZ, 1.0F, 1.0F));
+                 return;
+             }
+         }
 @@ -1128,7 +1132,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
          this.func_175136_bO();
      }
@@ -22170,7 +22205,7 @@ index 6fcada4..8dd41b5 100644
              private static final String __OBFID = "CL_00001217";
              public String call()
 diff --git a/net/minecraft/network/EnumConnectionState.java b/net/minecraft/network/EnumConnectionState.java
-index 65e3465..bbaf95f 100644
+index 65e3465..1d93e17 100644
 --- a/net/minecraft/network/EnumConnectionState.java
 +++ b/net/minecraft/network/EnumConnectionState.java
 @@ -15,9 +15,9 @@ import net.minecraft.network.login.server.S01PacketEncryptionRequest;
@@ -22195,6 +22230,24 @@ index 65e3465..bbaf95f 100644
  import net.minecraft.network.play.client.C11PacketEnchantItem;
  import net.minecraft.network.play.client.C12PacketUpdateSign;
  import net.minecraft.network.play.client.C13PacketPlayerAbilities;
+@@ -75,7 +75,7 @@ import net.minecraft.network.play.server.S25PacketBlockBreakAnim;
+ import net.minecraft.network.play.server.S26PacketMapChunkBulk;
+ import net.minecraft.network.play.server.S27PacketExplosion;
+ import net.minecraft.network.play.server.S28PacketEffect;
+-import net.minecraft.network.play.server.S29PacketSoundEffect;
++import net.minecraft.network.play.server.SPacketSoundEffect;
+ import net.minecraft.network.play.server.S2APacketParticles;
+ import net.minecraft.network.play.server.S2BPacketChangeGameState;
+ import net.minecraft.network.play.server.S2CPacketSpawnGlobalEntity;
+@@ -168,7 +168,7 @@ public enum EnumConnectionState
+             this.registerPacket(EnumPacketDirection.CLIENTBOUND, S26PacketMapChunkBulk.class);
+             this.registerPacket(EnumPacketDirection.CLIENTBOUND, S27PacketExplosion.class);
+             this.registerPacket(EnumPacketDirection.CLIENTBOUND, S28PacketEffect.class);
+-            this.registerPacket(EnumPacketDirection.CLIENTBOUND, S29PacketSoundEffect.class);
++            this.registerPacket(EnumPacketDirection.CLIENTBOUND, SPacketSoundEffect.class);
+             this.registerPacket(EnumPacketDirection.CLIENTBOUND, S2APacketParticles.class);
+             this.registerPacket(EnumPacketDirection.CLIENTBOUND, S2BPacketChangeGameState.class);
+             this.registerPacket(EnumPacketDirection.CLIENTBOUND, S2CPacketSpawnGlobalEntity.class);
 @@ -202,12 +202,12 @@ public enum EnumConnectionState
              this.registerPacket(EnumPacketDirection.CLIENTBOUND, S48PacketResourcePackSend.class);
              this.registerPacket(EnumPacketDirection.CLIENTBOUND, S49PacketUpdateEntityNBT.class);
@@ -23184,6 +23237,28 @@ index c695f6f..8dcd696 100644
  public class PacketBuffer extends ByteBuf
  {
      private final ByteBuf buf;
+diff --git a/net/minecraft/network/play/INetHandlerPlayClient.java b/net/minecraft/network/play/INetHandlerPlayClient.java
+index b56e8cf..874e543 100644
+--- a/net/minecraft/network/play/INetHandlerPlayClient.java
++++ b/net/minecraft/network/play/INetHandlerPlayClient.java
+@@ -39,7 +39,7 @@ import net.minecraft.network.play.server.S25PacketBlockBreakAnim;
+ import net.minecraft.network.play.server.S26PacketMapChunkBulk;
+ import net.minecraft.network.play.server.S27PacketExplosion;
+ import net.minecraft.network.play.server.S28PacketEffect;
+-import net.minecraft.network.play.server.S29PacketSoundEffect;
++import net.minecraft.network.play.server.SPacketSoundEffect;
+ import net.minecraft.network.play.server.S2APacketParticles;
+ import net.minecraft.network.play.server.S2BPacketChangeGameState;
+ import net.minecraft.network.play.server.S2CPacketSpawnGlobalEntity;
+@@ -347,7 +347,7 @@ public interface INetHandlerPlayClient extends INetHandler
+      */
+     void handleUpdateSign(S33PacketUpdateSign packetIn);
+ 
+-    void handleSoundEffect(S29PacketSoundEffect packetIn);
++    void handleSoundEffect(SPacketSoundEffect packetIn);
+ 
+     void handleCollectItem(S0DPacketCollectItem packetIn);
+ 
 diff --git a/net/minecraft/network/play/INetHandlerPlayServer.java b/net/minecraft/network/play/INetHandlerPlayServer.java
 index f9e85f2..4c88bdc 100644
 --- a/net/minecraft/network/play/INetHandlerPlayServer.java
@@ -24231,18 +24306,229 @@ index 472fe8c..246122a 100644
          this.field_149158_a = p_i45193_1_;
          this.field_149156_b = p_i45193_3_;
 diff --git a/net/minecraft/network/play/server/S29PacketSoundEffect.java b/net/minecraft/network/play/server/S29PacketSoundEffect.java
-index 383f1b1..29f68e5 100644
+deleted file mode 100644
+index 383f1b1..0000000
 --- a/net/minecraft/network/play/server/S29PacketSoundEffect.java
-+++ b/net/minecraft/network/play/server/S29PacketSoundEffect.java
-@@ -29,7 +29,7 @@ public class S29PacketSoundEffect implements Packet
-         this.field_149215_d = (int)(p_i45200_6_ * 8.0D);
-         this.field_149216_e = p_i45200_8_;
-         this.field_149214_f = (int)(p_i45200_9_ * 63.0F);
++++ /dev/null
+@@ -1,106 +0,0 @@
+-package net.minecraft.network.play.server;
+-
+-import java.io.IOException;
+-import net.minecraft.network.INetHandler;
+-import net.minecraft.network.Packet;
+-import net.minecraft.network.PacketBuffer;
+-import net.minecraft.network.play.INetHandlerPlayClient;
+-import net.minecraft.util.MathHelper;
+-import org.apache.commons.lang3.Validate;
+-
+-public class S29PacketSoundEffect implements Packet
+-{
+-    private String field_149219_a;
+-    private int field_149217_b;
+-    private int field_149218_c = Integer.MAX_VALUE;
+-    private int field_149215_d;
+-    private float field_149216_e;
+-    private int field_149214_f;
+-    private static final String __OBFID = "CL_00001309";
+-
+-    public S29PacketSoundEffect() {}
+-
+-    public S29PacketSoundEffect(String p_i45200_1_, double p_i45200_2_, double p_i45200_4_, double p_i45200_6_, float p_i45200_8_, float p_i45200_9_)
+-    {
+-        Validate.notNull(p_i45200_1_, "name", new Object[0]);
+-        this.field_149219_a = p_i45200_1_;
+-        this.field_149217_b = (int)(p_i45200_2_ * 8.0D);
+-        this.field_149218_c = (int)(p_i45200_4_ * 8.0D);
+-        this.field_149215_d = (int)(p_i45200_6_ * 8.0D);
+-        this.field_149216_e = p_i45200_8_;
+-        this.field_149214_f = (int)(p_i45200_9_ * 63.0F);
 -        p_i45200_9_ = MathHelper.clamp_float(p_i45200_9_, 0.0F, 255.0F);
+-    }
+-
+-    /**
+-     * Reads the raw packet data from the data stream.
+-     */
+-    public void readPacketData(PacketBuffer data) throws IOException
+-    {
+-        this.field_149219_a = data.readStringFromBuffer(256);
+-        this.field_149217_b = data.readInt();
+-        this.field_149218_c = data.readInt();
+-        this.field_149215_d = data.readInt();
+-        this.field_149216_e = data.readFloat();
+-        this.field_149214_f = data.readUnsignedByte();
+-    }
+-
+-    /**
+-     * Writes the raw packet data to the data stream.
+-     */
+-    public void writePacketData(PacketBuffer data) throws IOException
+-    {
+-        data.writeString(this.field_149219_a);
+-        data.writeInt(this.field_149217_b);
+-        data.writeInt(this.field_149218_c);
+-        data.writeInt(this.field_149215_d);
+-        data.writeFloat(this.field_149216_e);
+-        data.writeByte(this.field_149214_f);
+-    }
+-
+-    public String func_149212_c()
+-    {
+-        return this.field_149219_a;
+-    }
+-
+-    public double func_149207_d()
+-    {
+-        return (double)((float)this.field_149217_b / 8.0F);
+-    }
+-
+-    public double func_149211_e()
+-    {
+-        return (double)((float)this.field_149218_c / 8.0F);
+-    }
+-
+-    public double func_149210_f()
+-    {
+-        return (double)((float)this.field_149215_d / 8.0F);
+-    }
+-
+-    public float func_149208_g()
+-    {
+-        return this.field_149216_e;
+-    }
+-
+-    public float func_149209_h()
+-    {
+-        return (float)this.field_149214_f / 63.0F;
+-    }
+-
+-    /**
+-     * Passes this Packet on to the NetHandler for processing.
+-     */
+-    public void processPacket(INetHandlerPlayClient handler)
+-    {
+-        handler.handleSoundEffect(this);
+-    }
+-
+-    /**
+-     * Passes this Packet on to the NetHandler for processing.
+-     */
+-    public void processPacket(INetHandler handler)
+-    {
+-        this.processPacket((INetHandlerPlayClient)handler);
+-    }
+-}
+diff --git a/net/minecraft/network/play/server/SPacketSoundEffect.java b/net/minecraft/network/play/server/SPacketSoundEffect.java
+new file mode 100644
+index 0000000..34689af
+--- /dev/null
++++ b/net/minecraft/network/play/server/SPacketSoundEffect.java
+@@ -0,0 +1,106 @@
++package net.minecraft.network.play.server;
++
++import java.io.IOException;
++import net.minecraft.network.INetHandler;
++import net.minecraft.network.Packet;
++import net.minecraft.network.PacketBuffer;
++import net.minecraft.network.play.INetHandlerPlayClient;
++import net.minecraft.util.MathHelper;
++import org.apache.commons.lang3.Validate;
++
++public class SPacketSoundEffect implements Packet
++{
++    private String field_149219_a;
++    private int field_149217_b;
++    private int field_149218_c = Integer.MAX_VALUE;
++    private int field_149215_d;
++    private float field_149216_e;
++    private int field_149214_f;
++    private static final String __OBFID = "CL_00001309";
++
++    public SPacketSoundEffect() {}
++
++    public SPacketSoundEffect(String p_i45200_1_, double p_i45200_2_, double p_i45200_4_, double p_i45200_6_, float p_i45200_8_, float p_i45200_9_)
++    {
++        Validate.notNull(p_i45200_1_, "name", new Object[0]);
++        this.field_149219_a = p_i45200_1_;
++        this.field_149217_b = (int)(p_i45200_2_ * 8.0D);
++        this.field_149218_c = (int)(p_i45200_4_ * 8.0D);
++        this.field_149215_d = (int)(p_i45200_6_ * 8.0D);
++        this.field_149216_e = p_i45200_8_;
++        this.field_149214_f = (int)(p_i45200_9_ * 63.0F);
 +        p_i45200_9_ = MathHelper.clamp(p_i45200_9_, 0.0F, 255.0F);
-     }
- 
-     /**
++    }
++
++    /**
++     * Reads the raw packet data from the data stream.
++     */
++    public void readPacketData(PacketBuffer data) throws IOException
++    {
++        this.field_149219_a = data.readStringFromBuffer(256);
++        this.field_149217_b = data.readInt();
++        this.field_149218_c = data.readInt();
++        this.field_149215_d = data.readInt();
++        this.field_149216_e = data.readFloat();
++        this.field_149214_f = data.readUnsignedByte();
++    }
++
++    /**
++     * Writes the raw packet data to the data stream.
++     */
++    public void writePacketData(PacketBuffer data) throws IOException
++    {
++        data.writeString(this.field_149219_a);
++        data.writeInt(this.field_149217_b);
++        data.writeInt(this.field_149218_c);
++        data.writeInt(this.field_149215_d);
++        data.writeFloat(this.field_149216_e);
++        data.writeByte(this.field_149214_f);
++    }
++
++    public String getSound()
++    {
++        return this.field_149219_a;
++    }
++
++    public double func_149207_d()
++    {
++        return (double)((float)this.field_149217_b / 8.0F);
++    }
++
++    public double func_149211_e()
++    {
++        return (double)((float)this.field_149218_c / 8.0F);
++    }
++
++    public double func_149210_f()
++    {
++        return (double)((float)this.field_149215_d / 8.0F);
++    }
++
++    public float func_149208_g()
++    {
++        return this.field_149216_e;
++    }
++
++    public float func_149209_h()
++    {
++        return (float)this.field_149214_f / 63.0F;
++    }
++
++    /**
++     * Passes this Packet on to the NetHandler for processing.
++     */
++    public void processPacket(INetHandlerPlayClient handler)
++    {
++        handler.handleSoundEffect(this);
++    }
++
++    /**
++     * Passes this Packet on to the NetHandler for processing.
++     */
++    public void processPacket(INetHandler handler)
++    {
++        this.processPacket((INetHandlerPlayClient)handler);
++    }
++}
 diff --git a/net/minecraft/pathfinding/PathEntity.java b/net/minecraft/pathfinding/PathEntity.java
 index 78bea32..655a1c1 100644
 --- a/net/minecraft/pathfinding/PathEntity.java
@@ -28351,6 +28637,37 @@ index 18e9ecf..93a6e8c 100644
          catch (Throwable var4)
          {
              var2.addCrashSectionThrowable("Level Data Unobtainable", var4);
+diff --git a/net/minecraft/world/WorldManager.java b/net/minecraft/world/WorldManager.java
+index 8aefb53..5537cf6 100644
+--- a/net/minecraft/world/WorldManager.java
++++ b/net/minecraft/world/WorldManager.java
+@@ -6,7 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.entity.player.EntityPlayerMP;
+ import net.minecraft.network.play.server.S25PacketBlockBreakAnim;
+ import net.minecraft.network.play.server.S28PacketEffect;
+-import net.minecraft.network.play.server.S29PacketSoundEffect;
++import net.minecraft.network.play.server.SPacketSoundEffect;
+ import net.minecraft.server.MinecraftServer;
+ import net.minecraft.util.BlockPos;
+ 
+@@ -50,7 +50,7 @@ public class WorldManager implements IWorldAccess
+      */
+     public void playSound(String soundName, double x, double y, double z, float volume, float pitch)
+     {
+-        this.mcServer.getConfigurationManager().sendToAllNear(x, y, z, volume > 1.0F ? (double)(16.0F * volume) : 16.0D, this.theWorldServer.provider.getDimensionId(), new S29PacketSoundEffect(soundName, x, y, z, volume, pitch));
++        this.mcServer.getConfigurationManager().sendToAllNear(x, y, z, volume > 1.0F ? (double)(16.0F * volume) : 16.0D, this.theWorldServer.provider.getDimensionId(), new SPacketSoundEffect(soundName, x, y, z, volume, pitch));
+     }
+ 
+     /**
+@@ -58,7 +58,7 @@ public class WorldManager implements IWorldAccess
+      */
+     public void playSoundToNearExcept(EntityPlayer except, String soundName, double x, double y, double z, float volume, float pitch)
+     {
+-        this.mcServer.getConfigurationManager().sendToAllNearExcept(except, x, y, z, volume > 1.0F ? (double)(16.0F * volume) : 16.0D, this.theWorldServer.provider.getDimensionId(), new S29PacketSoundEffect(soundName, x, y, z, volume, pitch));
++        this.mcServer.getConfigurationManager().sendToAllNearExcept(except, x, y, z, volume > 1.0F ? (double)(16.0F * volume) : 16.0D, this.theWorldServer.provider.getDimensionId(), new SPacketSoundEffect(soundName, x, y, z, volume, pitch));
+     }
+ 
+     /**
 diff --git a/net/minecraft/world/WorldProvider.java b/net/minecraft/world/WorldProvider.java
 index cf52741..a778ef5 100644
 --- a/net/minecraft/world/WorldProvider.java
