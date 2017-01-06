@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -35,9 +35,20 @@ public class AntiFireMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(!mc.player.capabilities.isCreativeMode && mc.player.onGround
-			&& mc.player.isBurning())
-			for(int i = 0; i < 100; i++)
-				mc.player.connection.sendPacket(new CPacketPlayer());
+		// check gamemode
+		if(mc.player.capabilities.isCreativeMode)
+			return;
+		
+		// check onGround
+		if(!mc.player.onGround)
+			return;
+		
+		// check if burning
+		if(!mc.player.isBurning())
+			return;
+		
+		// send updates
+		for(int i = 0; i < 100; i++)
+			mc.player.connection.sendPacket(new CPacketPlayer());
 	}
 }
