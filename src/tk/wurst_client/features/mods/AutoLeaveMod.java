@@ -7,11 +7,9 @@
  */
 package tk.wurst_client.features.mods;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.client.CPacketChatMessage;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketUseEntity;
-import net.minecraft.network.play.client.CPacketUseEntity.Action;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.features.Feature;
 import tk.wurst_client.settings.ModeSetting;
@@ -71,8 +69,8 @@ public class AutoLeaveMod extends Mod implements UpdateListener
 			return;
 		
 		// check for other players
-		if(mc.isSingleplayer() || Minecraft.getMinecraft().player.connection
-			.getPlayerInfoMap().size() == 1)
+		if(mc.isSingleplayer()
+			|| mc.player.connection.getPlayerInfoMap().size() == 1)
 			return;
 		
 		// check health
@@ -92,12 +90,12 @@ public class AutoLeaveMod extends Mod implements UpdateListener
 			
 			case 2:
 				mc.player.connection.sendPacket(
-					new CPacketPlayer.Position(3.1e7d, 100, 3.1e7d, false));
+					new CPacketPlayer.Position(3.1e7, 100, 3.1e7, false));
 				break;
 			
 			case 3:
-				mc.player.connection
-					.sendPacket(new CPacketUseEntity(mc.player, Action.ATTACK));
+				mc.player.connection.sendPacket(new CPacketUseEntity(mc.player,
+					CPacketUseEntity.Action.ATTACK));
 				break;
 		}
 		
