@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -14,7 +14,8 @@ import tk.wurst_client.utils.ChatUtils;
 
 @Cmd.Info(description = "Shows the feature count and some over statistics.",
 	name = "features",
-	syntax = {})
+	syntax = {},
+	help = "Commands/features")
 public class FeaturesCmd extends Cmd
 {
 	@Override
@@ -23,17 +24,18 @@ public class FeaturesCmd extends Cmd
 		if(args.length != 0)
 			syntaxError();
 		
-		ChatUtils.message("> All features: "
-			+ wurst.navigator.countAllFeatures());
+		ChatUtils
+			.message("> All features: " + wurst.navigator.countAllFeatures());
 		ChatUtils.message("> Mods: " + wurst.mods.countMods());
 		ChatUtils.message("> Commands: " + wurst.commands.countCommands());
-		ChatUtils.message("> Special features: "
-			+ wurst.special.countFeatures());
+		ChatUtils
+			.message("> Special features: " + wurst.special.countFeatures());
 		int settings = 0, bypasses = 0;
 		for(Mod mod : wurst.mods.getAllMods())
 		{
 			settings += mod.getSettings().size();
-			if(mod.getClass().getAnnotation(Mod.Info.class).noCheatCompatible())
+			if(mod.getClass().getAnnotation(Mod.Bypasses.class)
+				.mineplexAntiCheat())
 				bypasses++;
 		}
 		ChatUtils.message("> NoCheat bypasses (mods only): " + bypasses);

@@ -12,7 +12,6 @@ import tk.wurst_client.events.listeners.UpdateListener;
 
 @Mod.Info(description = "Makes you fall like if you had a hang glider.",
 	name = "Glide",
-	noCheatCompatible = false,
 	help = "Mods/Glide")
 @Mod.Bypasses
 public class GlideMod extends Mod implements UpdateListener

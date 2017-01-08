@@ -16,7 +16,6 @@ import tk.wurst_client.utils.ChatUtils;
 		+ "this mod is enabled, that player will be unable to see\n"
 		+ "you. Only works on vanilla servers!",
 	name = "Invisibility",
-	noCheatCompatible = false,
 	tags = "Invisible, GodMode, god mode",
 	help = "Mods/Invisibility")
 @Mod.Bypasses

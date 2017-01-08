@@ -12,7 +12,6 @@ import tk.wurst_client.settings.SliderSetting.ValueDisplay;
 
 @Mod.Info(description = "Makes you jump much higher.",
 	name = "HighJump",
-	noCheatCompatible = false,
 	tags = "high jump",
 	help = "Mods/HighJump")
 @Mod.Bypasses

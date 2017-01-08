@@ -15,7 +15,6 @@ import tk.wurst_client.settings.CheckboxSetting;
 	description = "Allows you to jump in mid-air.\n"
 		+ "Looks as if you had a jetpack.",
 	name = "Jetpack",
-	noCheatCompatible = false,
 	tags = "jet pack",
 	help = "Mods/Jetpack")
 @Mod.Bypasses

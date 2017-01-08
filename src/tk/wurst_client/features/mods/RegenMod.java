@@ -14,7 +14,6 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	description = "Regenerates your health 1000 times faster.\n"
 		+ "Can cause unwanted \"Flying is not enabled!\" kicks.",
 	name = "Regen",
-	noCheatCompatible = false,
 	tags = "GodMode, god mode",
 	help = "Mods/Regen")
 @Mod.Bypasses

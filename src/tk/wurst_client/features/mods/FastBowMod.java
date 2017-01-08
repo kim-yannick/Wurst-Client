@@ -21,7 +21,6 @@ import tk.wurst_client.features.Feature;
 	description = "Turns your bow into a machine gun.\n"
 		+ "Tip: This works with BowAimbot.",
 	name = "FastBow",
-	noCheatCompatible = false,
 	tags = "RapidFire, BowSpam, fast bow, rapid fire, bow spam",
 	help = "Mods/FastBow")
 @Mod.Bypasses

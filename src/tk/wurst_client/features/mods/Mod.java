@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -11,9 +11,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.Callable;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.util.ReportedException;
@@ -23,8 +21,7 @@ import tk.wurst_client.features.special_features.YesCheatSpf.BypassLevel;
 import tk.wurst_client.navigator.PossibleKeybind;
 import tk.wurst_client.settings.Setting;
 
-@Mod.Bypasses
-public class Mod extends Feature
+public abstract class Mod extends Feature
 {
 	private final String name = getClass().getAnnotation(Info.class).name();
 	private final String description =
@@ -39,17 +36,12 @@ public class Mod extends Feature
 	private long currentMS = 0L;
 	protected long lastMS = -1L;
 	
-	protected static final WurstClient wurst = WurstClient.INSTANCE;
-	protected static final Minecraft mc = Minecraft.getMinecraft();
-	
 	@Retention(RetentionPolicy.RUNTIME)
 	public @interface Info
 	{
 		String name();
 		
 		String description();
-		
-		boolean noCheatCompatible() default true;
 		
 		String tags() default "";
 		
@@ -178,29 +170,15 @@ public class Mod extends Feature
 				onDisable();
 		}catch(Throwable e)
 		{
-			CrashReport crashReport =
+			CrashReport report =
 				CrashReport.makeCrashReport(e, "Toggling Wurst mod");
-			CrashReportCategory crashreportcategory =
-				crashReport.makeCategory("Affected mod");
-			crashreportcategory.setDetail("Mod name",
-				new Callable()
-				{
-					@Override
-					public String call() throws Exception
-					{
-						return name;
-					}
-				});
-			crashreportcategory.setDetail("Attempted action",
-				new Callable()
-				{
-					@Override
-					public String call() throws Exception
-					{
-						return enabled ? "Enable" : "Disable";
-					}
-				});
-			throw new ReportedException(crashReport);
+			
+			CrashReportCategory category = report.makeCategory("Affected mod");
+			category.setDetail("Mod name", () -> name);
+			category.setDetail("Attempted action",
+				() -> enabled ? "Enable" : "Disable");
+			
+			throw new ReportedException(report);
 		}
 		
 		if(!WurstClient.INSTANCE.files.isModBlacklisted(this))
@@ -218,29 +196,14 @@ public class Mod extends Feature
 			onEnable();
 		}catch(Throwable e)
 		{
-			CrashReport crashReport =
+			CrashReport report =
 				CrashReport.makeCrashReport(e, "Toggling Wurst mod");
-			CrashReportCategory crashreportcategory =
-				crashReport.makeCategory("Affected mod");
-			crashreportcategory.setDetail("Mod name",
-				new Callable()
-				{
-					@Override
-					public String call() throws Exception
-					{
-						return name;
-					}
-				});
-			crashreportcategory.setDetail("Attempted action",
-				new Callable()
-				{
-					@Override
-					public String call() throws Exception
-					{
-						return "Enable on startup";
-					}
-				});
-			throw new ReportedException(crashReport);
+			
+			CrashReportCategory category = report.makeCategory("Affected mod");
+			category.setDetail("Mod name", () -> name);
+			category.setDetail("Attempted action", () -> "Enable on startup");
+			
+			throw new ReportedException(report);
 		}
 	}
 	
@@ -260,7 +223,6 @@ public class Mod extends Feature
 		this.blocked = blocked;
 		active = enabled && !blocked;
 		if(enabled)
-		{
 			try
 			{
 				onToggle();
@@ -270,31 +232,17 @@ public class Mod extends Feature
 					onEnable();
 			}catch(Throwable e)
 			{
-				CrashReport crashReport =
+				CrashReport report =
 					CrashReport.makeCrashReport(e, "Toggling Wurst mod");
-				CrashReportCategory crashreportcategory =
-					crashReport.makeCategory("Affected mod");
-				crashreportcategory.setDetail("Mod name",
-					new Callable()
-					{
-						@Override
-						public String call() throws Exception
-						{
-							return name;
-						}
-					});
-				crashreportcategory.setDetail("Attempted action",
-					new Callable()
-					{
-						@Override
-						public String call() throws Exception
-						{
-							return blocked ? "Block" : "Unblock";
-						}
-					});
-				throw new ReportedException(crashReport);
+				
+				CrashReportCategory category =
+					report.makeCategory("Affected mod");
+				category.setDetail("Mod name", () -> name);
+				category.setDetail("Attempted action",
+					() -> blocked ? "Block" : "Unblock");
+				
+				throw new ReportedException(report);
 			}
-		}
 	}
 	
 	public final void updateMS()
