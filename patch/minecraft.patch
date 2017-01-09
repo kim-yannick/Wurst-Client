@@ -1,6 +1,6 @@
-From 09c48064d3a7883540684a250c10eca9618e2378 Mon Sep 17 00:00:00 2001
+From ac39ca47d912147180f846411e351faf02ab68cb Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Thu, 5 Jan 2017 16:54:58 +0100
+Date: Mon, 9 Jan 2017 16:43:05 +0100
 Subject: [PATCH] mod
 
 ---
@@ -92,7 +92,7 @@ Subject: [PATCH] mod
  net/minecraft/client/audio/SoundManager.java       |  12 +-
  .../client/entity/AbstractClientPlayer.java        |  19 +-
  .../client/entity/EntityOtherPlayerMP.java         |   4 +-
- net/minecraft/client/entity/EntityPlayerSP.java    | 226 ++++++---
+ net/minecraft/client/entity/EntityPlayerSP.java    | 212 ++++++---
  net/minecraft/client/gui/FontRenderer.java         |  53 ++-
  net/minecraft/client/gui/Gui.java                  |   8 +-
  net/minecraft/client/gui/GuiButton.java            |  96 ++--
@@ -249,7 +249,7 @@ Subject: [PATCH] mod
  .../client/renderer/entity/RenderXPOrb.java        |   2 +-
  .../renderer/entity/RendererLivingEntity.java      |  26 +-
  .../client/renderer/entity/layers/LayerArrow.java  |   2 +-
- .../client/renderer/entity/layers/LayerCape.java   |   2 +-
+ .../client/renderer/entity/layers/LayerCape.java   |   8 +-
  .../entity/layers/LayerEnderDragonDeath.java       |   4 +-
  .../renderer/entity/layers/LayerHeldBlock.java     |   2 +-
  .../entity/layers/LayerIronGolemFlower.java        |   2 +-
@@ -384,7 +384,7 @@ Subject: [PATCH] mod
  net/minecraft/entity/passive/EntitySquid.java      |   2 +-
  net/minecraft/entity/passive/EntityVillager.java   |  10 +-
  net/minecraft/entity/passive/EntityWolf.java       |   2 +-
- net/minecraft/entity/player/EntityPlayer.java      |  78 ++--
+ net/minecraft/entity/player/EntityPlayer.java      | 114 ++---
  net/minecraft/entity/player/EntityPlayerMP.java    |  22 +-
  net/minecraft/entity/player/InventoryPlayer.java   |   9 +-
  net/minecraft/entity/projectile/EntityArrow.java   |  46 +-
@@ -621,7 +621,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |   8 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 617 files changed, 6869 insertions(+), 5539 deletions(-)
+ 617 files changed, 6874 insertions(+), 5562 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -6339,7 +6339,7 @@ index 4b48cd3..05fa973 100644
  
          if (var9 > 0.1F)
 diff --git a/net/minecraft/client/entity/EntityPlayerSP.java b/net/minecraft/client/entity/EntityPlayerSP.java
-index 58f696b..905ad46 100644
+index 58f696b..ee73695 100644
 --- a/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/net/minecraft/client/entity/EntityPlayerSP.java
 @@ -1,5 +1,6 @@
@@ -6480,7 +6480,7 @@ index 58f696b..905ad46 100644
              }
  
              this.field_175170_bN = var2;
-@@ -184,36 +193,127 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -184,36 +193,109 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
          if (this.func_175160_A())
          {
@@ -6517,30 +6517,8 @@ index 58f696b..905ad46 100644
 +				|| WurstClient.INSTANCE.mods.freecamMod.isActive()
 +				|| (WurstClient.INSTANCE.mods.potionSaverMod.isActive()
 +					&& !getActivePotionEffects().isEmpty() && motionX == 0 && motionZ == 0))
-             {
++            {
 +				
-+			}else if(WurstClient.INSTANCE.mods.blinkMod.isActive())
-+            {//Redirects motion updates to the Blink queue
-                 if (var13 && var14)
-                 {
--                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround));
-+                    BlinkMod.addToBlinkQueue(new CPacketPlayer.C06PacketPlayerPosLook(this.posX, this.getEntityBoundingBox().minY, this.posZ, yaw, pitch, this.onGround));
-                 }
-                 else if (var13)
-                 {
--                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.onGround));
-+                	BlinkMod.addToBlinkQueue(new CPacketPlayer.Position(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.onGround));
-                 }
-                 else if (var14)
-                 {
--                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
-+                	BlinkMod.addToBlinkQueue(new CPacketPlayer.Rotation(yaw, pitch, this.onGround));
-                 }
-                 else
-                 {
--                    this.sendQueue.addToSendQueue(new C03PacketPlayer(this.onGround));
-+                	BlinkMod.addToBlinkQueue(new CPacketPlayer(this.onGround));
-+                }
 +			}else if(WurstClient.INSTANCE.mods.jesusMod.isActive()
 +				&& WurstClient.INSTANCE.mods.jesusMod.isOverWater()
 +				&& !mc.player.isInWater()
@@ -6571,16 +6549,16 @@ index 58f696b..905ad46 100644
 +						
 +						if(mc.player.ticksExisted % 2 == 0)
 +							mc.player.connection
-+								.sendPacket(new CPacketPlayer.C06PacketPlayerPosLook(
++								.sendPacket(new CPacketPlayer.PositionRotation(
 +									x, y - 0.05, z, yaw2, pitch2, true));
 +						else
 +							mc.player.connection
-+								.sendPacket(new CPacketPlayer.C06PacketPlayerPosLook(
++								.sendPacket(new CPacketPlayer.PositionRotation(
 +									x, y + 0.05, z, yaw2, pitch2, true));
 +					}else if(var13 && var14)
 +					{
 +						this.connection
-+							.sendPacket(new CPacketPlayer.C06PacketPlayerPosLook(
++							.sendPacket(new CPacketPlayer.PositionRotation(
 +								this.posX, this.getEntityBoundingBox().minY,
 +								this.posZ, yaw, pitch, this.onGround));
 +					}else
@@ -6589,34 +6567,40 @@ index 58f696b..905ad46 100644
 +							.sendPacket(new CPacketPlayer.Position(
 +								this.posX, this.getEntityBoundingBox().minY,
 +								this.posZ, this.onGround));
- 					}
- 				}
++					}
++				}
 +			}else if(this.ridingEntity == null)
-+            {
-+                if (var13 && var14)
-+                {
-+                    this.connection.sendPacket(new CPacketPlayer.C06PacketPlayerPosLook(this.posX, this.getEntityBoundingBox().minY, this.posZ, yaw, pitch, this.onGround));
-+                }
-+                else if (var13)
-+                {
+             {
+                 if (var13 && var14)
+                 {
+-                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround));
++                    this.connection.sendPacket(new CPacketPlayer.PositionRotation(this.posX, this.getEntityBoundingBox().minY, this.posZ, yaw, pitch, this.onGround));
+                 }
+                 else if (var13)
+                 {
+-                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.onGround));
 +                    this.connection.sendPacket(new CPacketPlayer.Position(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.onGround));
-+                }
-+                else if (var14)
-+                {
+                 }
+                 else if (var14)
+                 {
+-                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
 +                    this.connection.sendPacket(new CPacketPlayer.Rotation(yaw, pitch, this.onGround));
-+            }
+             }
              else
              {
--                this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(this.motionX, -999.0D, this.motionZ, this.rotationYaw, this.rotationPitch, this.onGround));
+-                    this.sendQueue.addToSendQueue(new C03PacketPlayer(this.onGround));
 +                    this.connection.sendPacket(new CPacketPlayer(this.onGround));
-+                }
+                 }
+-            }
+-            else
 +            }else
-+            {
-+                this.connection.sendPacket(new CPacketPlayer.C06PacketPlayerPosLook(this.motionX, -999.0D, this.motionZ, yaw, pitch, this.onGround));
+             {
+-                this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(this.motionX, -999.0D, this.motionZ, this.rotationYaw, this.rotationPitch, this.onGround));
++                this.connection.sendPacket(new CPacketPlayer.PositionRotation(this.motionX, -999.0D, this.motionZ, yaw, pitch, this.onGround));
                  var13 = false;
              }
  
-@@ -241,7 +341,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -241,7 +323,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
      public EntityItem dropOneItem(boolean p_71040_1_)
      {
          C07PacketPlayerDigging.Action var2 = p_71040_1_ ? C07PacketPlayerDigging.Action.DROP_ALL_ITEMS : C07PacketPlayerDigging.Action.DROP_ITEM;
@@ -6625,7 +6609,7 @@ index 58f696b..905ad46 100644
          return null;
      }
  
-@@ -255,21 +355,43 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -255,21 +337,43 @@ public class EntityPlayerSP extends AbstractClientPlayer
       */
      public void sendChatMessage(String p_71165_1_)
      {
@@ -6674,7 +6658,7 @@ index 58f696b..905ad46 100644
      }
  
      /**
-@@ -289,7 +411,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -289,7 +393,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
       */
      public void closeScreen()
      {
@@ -6683,7 +6667,7 @@ index 58f696b..905ad46 100644
          this.func_175159_q();
      }
  
-@@ -353,7 +475,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -353,7 +457,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
       */
      public void sendPlayerAbilities()
      {
@@ -6692,7 +6676,7 @@ index 58f696b..905ad46 100644
      }
  
      public boolean func_175144_cb()
-@@ -363,12 +485,12 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -363,12 +467,12 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
      protected void sendHorseJump()
      {
@@ -6707,7 +6691,7 @@ index 58f696b..905ad46 100644
      }
  
      public void func_175158_f(String p_175158_1_)
-@@ -408,25 +530,25 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -408,25 +512,25 @@ public class EntityPlayerSP extends AbstractClientPlayer
                  byte var12 = -1;
                  double var13 = 9999.0D;
  
@@ -6737,7 +6721,7 @@ index 58f696b..905ad46 100644
                  {
                      var13 = 1.0D - var10;
                      var12 = 5;
-@@ -461,7 +583,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -461,7 +565,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
      private boolean func_175162_d(BlockPos p_175162_1_)
      {
@@ -6746,7 +6730,7 @@ index 58f696b..905ad46 100644
      }
  
      /**
-@@ -738,7 +860,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -738,7 +842,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
          boolean var4 = this.movementInput.moveForward >= var3;
          this.movementInput.updatePlayerMoveState();
  
@@ -13069,7 +13053,7 @@ index d6a17db..7506221 100644
  import org.apache.logging.log4j.Logger;
  
 diff --git a/net/minecraft/client/network/NetHandlerPlayClient.java b/net/minecraft/client/network/NetHandlerPlayClient.java
-index 2b1d59a..11bbb3e 100644
+index 2b1d59a..9f34000 100644
 --- a/net/minecraft/client/network/NetHandlerPlayClient.java
 +++ b/net/minecraft/client/network/NetHandlerPlayClient.java
 @@ -1,39 +1,24 @@
@@ -13325,7 +13309,7 @@ index 2b1d59a..11bbb3e 100644
  
          var2.setPositionAndRotation(var3, var5, var7, var9, var10);
 -        this.netManager.sendPacket(new C03PacketPlayer.C06PacketPlayerPosLook(var2.posX, var2.getEntityBoundingBox().minY, var2.posZ, var2.rotationYaw, var2.rotationPitch, false));
-+        this.netManager.sendPacket(new CPacketPlayer.C06PacketPlayerPosLook(var2.posX, var2.getEntityBoundingBox().minY, var2.posZ, var2.rotationYaw, var2.rotationPitch, false));
++        this.netManager.sendPacket(new CPacketPlayer.PositionRotation(var2.posX, var2.getEntityBoundingBox().minY, var2.posZ, var2.rotationYaw, var2.rotationPitch, false));
  
          if (!this.doneLoadingTerrain)
          {
@@ -17278,10 +17262,20 @@ index 0034f10..290614a 100644
                  var10.prevRotationPitch = var10.rotationPitch = (float)(Math.atan2((double)var16, (double)var21) * 180.0D / Math.PI);
                  double var22 = 0.0D;
 diff --git a/net/minecraft/client/renderer/entity/layers/LayerCape.java b/net/minecraft/client/renderer/entity/layers/LayerCape.java
-index a2b3b3e..9cb5679 100644
+index a2b3b3e..ece6ea5 100644
 --- a/net/minecraft/client/renderer/entity/layers/LayerCape.java
 +++ b/net/minecraft/client/renderer/entity/layers/LayerCape.java
-@@ -32,7 +32,7 @@ public class LayerCape implements LayerRenderer
+@@ -25,14 +25,14 @@ public class LayerCape implements LayerRenderer
+             this.playerRenderer.bindTexture(p_177166_1_.getLocationCape());
+             GlStateManager.pushMatrix();
+             GlStateManager.translate(0.0F, 0.0F, 0.125F);
+-            double var9 = p_177166_1_.field_71091_bM + (p_177166_1_.field_71094_bP - p_177166_1_.field_71091_bM) * (double)p_177166_4_ - (p_177166_1_.prevPosX + (p_177166_1_.posX - p_177166_1_.prevPosX) * (double)p_177166_4_);
+-            double var11 = p_177166_1_.field_71096_bN + (p_177166_1_.field_71095_bQ - p_177166_1_.field_71096_bN) * (double)p_177166_4_ - (p_177166_1_.prevPosY + (p_177166_1_.posY - p_177166_1_.prevPosY) * (double)p_177166_4_);
+-            double var13 = p_177166_1_.field_71097_bO + (p_177166_1_.field_71085_bR - p_177166_1_.field_71097_bO) * (double)p_177166_4_ - (p_177166_1_.prevPosZ + (p_177166_1_.posZ - p_177166_1_.prevPosZ) * (double)p_177166_4_);
++            double var9 = p_177166_1_.field_71091_bM + (p_177166_1_.chasingPosX - p_177166_1_.field_71091_bM) * (double)p_177166_4_ - (p_177166_1_.prevPosX + (p_177166_1_.posX - p_177166_1_.prevPosX) * (double)p_177166_4_);
++            double var11 = p_177166_1_.field_71096_bN + (p_177166_1_.chasingPosY - p_177166_1_.field_71096_bN) * (double)p_177166_4_ - (p_177166_1_.prevPosY + (p_177166_1_.posY - p_177166_1_.prevPosY) * (double)p_177166_4_);
++            double var13 = p_177166_1_.field_71097_bO + (p_177166_1_.chasingPosZ - p_177166_1_.field_71097_bO) * (double)p_177166_4_ - (p_177166_1_.prevPosZ + (p_177166_1_.posZ - p_177166_1_.prevPosZ) * (double)p_177166_4_);
+             float var15 = p_177166_1_.prevRenderYawOffset + (p_177166_1_.renderYawOffset - p_177166_1_.prevRenderYawOffset) * p_177166_4_;
              double var16 = (double)MathHelper.sin(var15 * (float)Math.PI / 180.0F);
              double var18 = (double)(-MathHelper.cos(var15 * (float)Math.PI / 180.0F));
              float var20 = (float)var11 * 10.0F;
@@ -22063,7 +22057,7 @@ index b1345a2..9026ae0 100644
              if (this.timeWolfIsShaking == 0.0F)
              {
 diff --git a/net/minecraft/entity/player/EntityPlayer.java b/net/minecraft/entity/player/EntityPlayer.java
-index 04f22d7..d1dd008 100644
+index 04f22d7..478d142 100644
 --- a/net/minecraft/entity/player/EntityPlayer.java
 +++ b/net/minecraft/entity/player/EntityPlayer.java
 @@ -1,17 +1,19 @@
@@ -22116,6 +22110,19 @@ index 04f22d7..d1dd008 100644
  public abstract class EntityPlayer extends EntityLivingBase
  {
      /** Inventory of the player */
+@@ -108,9 +114,9 @@ public abstract class EntityPlayer extends EntityLivingBase
+     public double field_71091_bM;
+     public double field_71096_bN;
+     public double field_71097_bO;
+-    public double field_71094_bP;
+-    public double field_71095_bQ;
+-    public double field_71085_bR;
++    public double chasingPosX;
++    public double chasingPosY;
++    public double chasingPosZ;
+ 
+     /** Boolean value indicating weather a player is sleeping or not */
+     protected boolean sleeping;
 @@ -266,9 +272,9 @@ public abstract class EntityPlayer extends EntityLivingBase
       */
      public void onUpdate()
@@ -22128,6 +22135,69 @@ index 04f22d7..d1dd008 100644
          {
              this.onGround = false;
          }
+@@ -344,47 +350,47 @@ public abstract class EntityPlayer extends EntityLivingBase
+             this.extinguish();
+         }
+ 
+-        this.field_71091_bM = this.field_71094_bP;
+-        this.field_71096_bN = this.field_71095_bQ;
+-        this.field_71097_bO = this.field_71085_bR;
+-        double var14 = this.posX - this.field_71094_bP;
+-        double var3 = this.posY - this.field_71095_bQ;
+-        double var5 = this.posZ - this.field_71085_bR;
++        this.field_71091_bM = this.chasingPosX;
++        this.field_71096_bN = this.chasingPosY;
++        this.field_71097_bO = this.chasingPosZ;
++        double var14 = this.posX - this.chasingPosX;
++        double var3 = this.posY - this.chasingPosY;
++        double var5 = this.posZ - this.chasingPosZ;
+         double var7 = 10.0D;
+ 
+         if (var14 > var7)
+         {
+-            this.field_71091_bM = this.field_71094_bP = this.posX;
++            this.field_71091_bM = this.chasingPosX = this.posX;
+         }
+ 
+         if (var5 > var7)
+         {
+-            this.field_71097_bO = this.field_71085_bR = this.posZ;
++            this.field_71097_bO = this.chasingPosZ = this.posZ;
+         }
+ 
+         if (var3 > var7)
+         {
+-            this.field_71096_bN = this.field_71095_bQ = this.posY;
++            this.field_71096_bN = this.chasingPosY = this.posY;
+         }
+ 
+         if (var14 < -var7)
+         {
+-            this.field_71091_bM = this.field_71094_bP = this.posX;
++            this.field_71091_bM = this.chasingPosX = this.posX;
+         }
+ 
+         if (var5 < -var7)
+         {
+-            this.field_71097_bO = this.field_71085_bR = this.posZ;
++            this.field_71097_bO = this.chasingPosZ = this.posZ;
+         }
+ 
+         if (var3 < -var7)
+         {
+-            this.field_71096_bN = this.field_71095_bQ = this.posY;
++            this.field_71096_bN = this.chasingPosY = this.posY;
+         }
+ 
+-        this.field_71094_bP += var14 * 0.25D;
+-        this.field_71085_bR += var5 * 0.25D;
+-        this.field_71095_bQ += var3 * 0.25D;
++        this.chasingPosX += var14 * 0.25D;
++        this.chasingPosZ += var5 * 0.25D;
++        this.chasingPosY += var3 * 0.25D;
+ 
+         if (this.ridingEntity == null)
+         {
 @@ -403,8 +409,8 @@ public abstract class EntityPlayer extends EntityLivingBase
          }
  
@@ -25206,7 +25276,7 @@ index 6fcada4..8dd41b5 100644
              private static final String __OBFID = "CL_00001217";
              public String call()
 diff --git a/net/minecraft/network/EnumConnectionState.java b/net/minecraft/network/EnumConnectionState.java
-index 65e3465..1d93e17 100644
+index 65e3465..c8b996f 100644
 --- a/net/minecraft/network/EnumConnectionState.java
 +++ b/net/minecraft/network/EnumConnectionState.java
 @@ -15,9 +15,9 @@ import net.minecraft.network.login.server.S01PacketEncryptionRequest;
@@ -25264,7 +25334,7 @@ index 65e3465..1d93e17 100644
 +            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketPlayer.class);
 +            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketPlayer.Position.class);
 +            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketPlayer.Rotation.class);
-+            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketPlayer.C06PacketPlayerPosLook.class);
++            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketPlayer.PositionRotation.class);
              this.registerPacket(EnumPacketDirection.SERVERBOUND, C07PacketPlayerDigging.class);
              this.registerPacket(EnumPacketDirection.SERVERBOUND, C08PacketPlayerBlockPlacement.class);
              this.registerPacket(EnumPacketDirection.SERVERBOUND, C09PacketHeldItemChange.class);
@@ -26940,7 +27010,7 @@ index 0000000..fa87e8c
 +}
 diff --git a/net/minecraft/network/play/client/CPacketPlayer.java b/net/minecraft/network/play/client/CPacketPlayer.java
 new file mode 100644
-index 0000000..110c6d4
+index 0000000..8e3be88
 --- /dev/null
 +++ b/net/minecraft/network/play/client/CPacketPlayer.java
 @@ -0,0 +1,229 @@
@@ -27125,17 +27195,17 @@ index 0000000..110c6d4
 +        }
 +    }
 +
-+    public static class C06PacketPlayerPosLook extends CPacketPlayer
++    public static class PositionRotation extends CPacketPlayer
 +    {
 +        private static final String __OBFID = "CL_00001362";
 +
-+        public C06PacketPlayerPosLook()
++        public PositionRotation()
 +        {
 +            this.field_149480_h = true;
 +            this.rotating = true;
 +        }
 +
-+        public C06PacketPlayerPosLook(double p_i45941_1_, double p_i45941_3_, double p_i45941_5_, float p_i45941_7_, float p_i45941_8_, boolean p_i45941_9_)
++        public PositionRotation(double p_i45941_1_, double p_i45941_3_, double p_i45941_5_, float p_i45941_7_, float p_i45941_8_, boolean p_i45941_9_)
 +        {
 +            this.x = p_i45941_1_;
 +            this.y = p_i45941_3_;
