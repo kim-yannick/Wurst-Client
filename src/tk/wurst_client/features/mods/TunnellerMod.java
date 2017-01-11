@@ -118,11 +118,7 @@ public class TunnellerMod extends Mod implements RenderListener, UpdateListener
 		mc.player.connection.sendPacket(new CPacketAnimation());
 		shouldRenderESP = true;
 		BlockUtils.faceBlockPacket(pos);
-		currentDamage += currentBlock.getPlayerRelativeBlockHardness(mc.player,
-			mc.world, pos)
-			* (wurst.mods.fastBreakMod.isActive()
-				&& wurst.options.fastbreakMode == 0
-					? wurst.mods.fastBreakMod.speed : 1);
+		currentDamage += BlockUtils.getHardness(pos);
 		mc.world.sendBlockBreakProgress(mc.player.getEntityId(), pos,
 			(int)(currentDamage * 10.0F) - 1);
 		if(currentDamage >= 1)

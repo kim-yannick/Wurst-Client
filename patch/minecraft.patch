@@ -1,10 +1,10 @@
-From 0db1a86d076a60c5fabf028632a2a239fef20d4b Mon Sep 17 00:00:00 2001
+From fe6f2fae69fcc15f72b181e3cb3d0739e91384f6 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 11 Jan 2017 21:12:11 +0100
+Date: Wed, 11 Jan 2017 22:17:18 +0100
 Subject: [PATCH] mod
 
 ---
- net/minecraft/block/Block.java                     |  61 +--
+ net/minecraft/block/Block.java                     |  69 +--
  net/minecraft/block/BlockAir.java                  |   2 +-
  net/minecraft/block/BlockAnvil.java                |   2 +-
  net/minecraft/block/BlockBanner.java               |   2 +-
@@ -185,7 +185,7 @@ Subject: [PATCH] mod
  .../client/model/PositionTextureVertex.java        |   8 +-
  net/minecraft/client/model/TexturedQuad.java       |   8 +-
  .../client/multiplayer/GuiConnecting.java          |  14 +-
- .../client/multiplayer/PlayerControllerMP.java     | 188 ++++----
+ .../client/multiplayer/PlayerControllerMP.java     | 183 ++++----
  net/minecraft/client/multiplayer/ServerList.java   |  16 +-
  net/minecraft/client/multiplayer/WorldClient.java  |  28 +-
  .../client/network/NetHandlerLoginClient.java      |   5 +
@@ -625,7 +625,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |   8 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 621 files changed, 7024 insertions(+), 5712 deletions(-)
+ 621 files changed, 7025 insertions(+), 5714 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -648,7 +648,7 @@ Subject: [PATCH] mod
  create mode 100644 net/minecraft/util/Vec3d.java
 
 diff --git a/net/minecraft/block/Block.java b/net/minecraft/block/Block.java
-index d8fe39f..9f462c9 100644
+index d8fe39f..833f76b 100644
 --- a/net/minecraft/block/Block.java
 +++ b/net/minecraft/block/Block.java
 @@ -3,6 +3,7 @@ package net.minecraft.block;
@@ -729,7 +729,22 @@ index d8fe39f..9f462c9 100644
          return this.isCollidable();
      }
  
-@@ -659,17 +668,17 @@ public class Block
+@@ -562,7 +571,13 @@ public class Block
+     public float getPlayerRelativeBlockHardness(EntityPlayer playerIn, World worldIn, BlockPos pos)
+     {
+         float var4 = this.getBlockHardness(worldIn, pos);
+-        return var4 < 0.0F ? 0.0F : (!playerIn.canHarvestBlock(this) ? playerIn.func_180471_a(this) / var4 / 100.0F : playerIn.func_180471_a(this) / var4 / 30.0F);
++
++		// TODO: Client
++		return var4 < 0.0F ? 0.0F
++			: (!playerIn.canHarvestBlock(this)
++				? playerIn.func_180471_a(this) / var4 / 100.0F
++				: playerIn.func_180471_a(this) / var4 / 30.0F)
++				* WurstClient.INSTANCE.mods.fastBreakMod.getHardnessModifier();
+     }
+ 
+     /**
+@@ -659,17 +674,17 @@ public class Block
       * @param start The start vector
       * @param end The end vector
       */
@@ -754,7 +769,7 @@ index d8fe39f..9f462c9 100644
  
          if (!this.isVecInsideYZBounds(var5))
          {
-@@ -701,7 +710,7 @@ public class Block
+@@ -701,7 +716,7 @@ public class Block
              var10 = null;
          }
  
@@ -763,7 +778,7 @@ index d8fe39f..9f462c9 100644
  
          if (var5 != null && (var11 == null || start.squareDistanceTo(var5) < start.squareDistanceTo(var11)))
          {
-@@ -771,14 +780,14 @@ public class Block
+@@ -771,14 +786,14 @@ public class Block
                  var12 = EnumFacing.SOUTH;
              }
  
@@ -780,7 +795,7 @@ index d8fe39f..9f462c9 100644
      {
          return point == null ? false : point.yCoord >= this.minY && point.yCoord <= this.maxY && point.zCoord >= this.minZ && point.zCoord <= this.maxZ;
      }
-@@ -786,7 +795,7 @@ public class Block
+@@ -786,7 +801,7 @@ public class Block
      /**
       * Checks if a vector is within the X and Z bounds of the block.
       */
@@ -789,7 +804,7 @@ index d8fe39f..9f462c9 100644
      {
          return point == null ? false : point.xCoord >= this.minX && point.xCoord <= this.maxX && point.zCoord >= this.minZ && point.zCoord <= this.maxZ;
      }
-@@ -794,7 +803,7 @@ public class Block
+@@ -794,7 +809,7 @@ public class Block
      /**
       * Checks if a vector is within the X and Y bounds of the block.
       */
@@ -798,7 +813,7 @@ index d8fe39f..9f462c9 100644
      {
          return point == null ? false : point.xCoord >= this.minX && point.xCoord <= this.maxX && point.yCoord >= this.minY && point.yCoord <= this.maxY;
      }
-@@ -844,7 +853,7 @@ public class Block
+@@ -844,7 +859,7 @@ public class Block
  
      public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn) {}
  
@@ -807,7 +822,7 @@ index d8fe39f..9f462c9 100644
      {
          return motion;
      }
-@@ -1409,7 +1418,7 @@ public class Block
+@@ -1409,7 +1424,7 @@ public class Block
          {
              var14 = (Block)var13.next();
  
@@ -12392,7 +12407,7 @@ index 1aa77b6..dc1b750 100644
  
              this.mc.displayGuiScreen(this.previousGuiScreen);
 diff --git a/net/minecraft/client/multiplayer/PlayerControllerMP.java b/net/minecraft/client/multiplayer/PlayerControllerMP.java
-index ca6ffd5..892df32 100644
+index ca6ffd5..cd956fe 100644
 --- a/net/minecraft/client/multiplayer/PlayerControllerMP.java
 +++ b/net/minecraft/client/multiplayer/PlayerControllerMP.java
 @@ -13,21 +13,23 @@ import net.minecraft.entity.player.EntityPlayer;
@@ -12573,7 +12588,7 @@ index ca6ffd5..892df32 100644
          {
              return false;
          }
-@@ -226,38 +235,41 @@ public class PlayerControllerMP
+@@ -226,38 +235,42 @@ public class PlayerControllerMP
          {
              if (this.currentGameType.isCreative())
              {
@@ -12583,8 +12598,9 @@ index ca6ffd5..892df32 100644
 +                this.netClientHandler.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, p_180511_1_, p_180511_2_));
 +                clickBlockCreative(this.mc, this, p_180511_1_, p_180511_2_);
 +                
-+                //TODO: Client
-+                this.blockHitDelay = WurstClient.INSTANCE.mods.fastBreakMod.isEnabled() ? 0 : 5;
++				// TODO: Client
++				this.blockHitDelay =
++					WurstClient.INSTANCE.mods.fastBreakMod.isEnabled() ? 0 : 5;
 +                
              }
 -            else if (!this.isHittingBlock || !this.func_178893_a(p_180511_1_))
@@ -12628,7 +12644,7 @@ index ca6ffd5..892df32 100644
                  }
              }
  
-@@ -272,14 +284,17 @@ public class PlayerControllerMP
+@@ -272,14 +285,17 @@ public class PlayerControllerMP
      {
          if (this.isHittingBlock)
          {
@@ -12649,7 +12665,7 @@ index ca6ffd5..892df32 100644
      {
          this.syncCurrentPlayItem();
  
-@@ -288,25 +303,34 @@ public class PlayerControllerMP
+@@ -288,25 +304,28 @@ public class PlayerControllerMP
              --this.blockHitDelay;
              return true;
          }
@@ -12659,8 +12675,10 @@ index ca6ffd5..892df32 100644
 -            this.blockHitDelay = 5;
 -            this.netClientHandler.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.START_DESTROY_BLOCK, p_180512_1_, p_180512_2_));
 -            func_178891_a(this.mc, this, p_180512_1_, p_180512_2_);
-+        	//TODO: Client
-+            this.blockHitDelay = WurstClient.INSTANCE.mods.fastBreakMod.isEnabled() ? 0 : 5;
++			// TODO: Client
++			this.blockHitDelay =
++				WurstClient.INSTANCE.mods.fastBreakMod.isEnabled() ? 0 : 5;
++            
 +            this.netClientHandler.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, p_180512_1_, p_180512_2_));
 +            clickBlockCreative(this.mc, this, p_180512_1_, p_180512_2_);
              return true;
@@ -12680,19 +12698,11 @@ index ca6ffd5..892df32 100644
              else
              {
 -                this.curBlockDamageMP += var3.getPlayerRelativeBlockHardness(this.mc.thePlayer, this.mc.thePlayer.worldObj, p_180512_1_);
-+				// TODO: Client
-+				FastBreakMod fastBreak = WurstClient.INSTANCE.mods.fastBreakMod;
-+				this.curBlockDamageMP +=
-+					var3.getPlayerRelativeBlockHardness(this.mc.player,
-+						this.mc.player.worldObj, p_180512_1_)
-+						* (fastBreak.isActive()
-+							&& !this.currentGameType.isCreative()
-+							&& WurstClient.INSTANCE.options.fastbreakMode == 0
-+							? fastBreak.speed : 1);
++				this.curBlockDamageMP += var3.getPlayerRelativeBlockHardness(this.mc.player, this.mc.player.worldObj, p_180512_1_);
  
                  if (this.stepSoundTickCounter % 4.0F == 0.0F)
                  {
-@@ -318,20 +342,28 @@ public class PlayerControllerMP
+@@ -318,20 +337,26 @@ public class PlayerControllerMP
                  if (this.curBlockDamageMP >= 1.0F)
                  {
                      this.isHittingBlock = false;
@@ -12703,17 +12713,16 @@ index ca6ffd5..892df32 100644
                      this.curBlockDamageMP = 0.0F;
                      this.stepSoundTickCounter = 0.0F;
                      this.blockHitDelay = 5;
-+                    
-+					// TODO: Client
-+				}else if(!this.currentGameType.isCreative()
-+					&& WurstClient.INSTANCE.mods.fastBreakMod.isEnabled()
-+					&& WurstClient.INSTANCE.options.fastbreakMode == 1)
-+				{
-+                	
-+                    this.netClientHandler.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, p_180512_1_, p_180512_2_));
-                 }
- 
+-                }
+                     
 -                this.mc.theWorld.sendBlockBreakProgress(this.mc.thePlayer.getEntityId(), this.field_178895_c, (int)(this.curBlockDamageMP * 10.0F) - 1);
++					// TODO: Client
++				}else if(WurstClient.INSTANCE.mods.fastBreakMod
++					.shouldSpamPackets())
++					this.netClientHandler.sendPacket(new CPacketPlayerDigging(
++						CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK,
++						p_180512_1_, p_180512_2_));
++
 +                this.mc.world.sendBlockBreakProgress(this.mc.player.getEntityId(), this.field_178895_c, (int)(this.curBlockDamageMP * 10.0F) - 1);
                  return true;
              }
@@ -12725,7 +12734,7 @@ index ca6ffd5..892df32 100644
          }
      }
  
-@@ -357,9 +389,9 @@ public class PlayerControllerMP
+@@ -357,9 +382,9 @@ public class PlayerControllerMP
          }
      }
  
@@ -12737,7 +12746,7 @@ index ca6ffd5..892df32 100644
          boolean var3 = this.currentItemHittingBlock == null && var2 == null;
  
          if (this.currentItemHittingBlock != null && var2 != null)
-@@ -375,16 +407,16 @@ public class PlayerControllerMP
+@@ -375,16 +400,16 @@ public class PlayerControllerMP
       */
      private void syncCurrentPlayItem()
      {
@@ -12757,7 +12766,7 @@ index ca6ffd5..892df32 100644
      {
          this.syncCurrentPlayItem();
          float var7 = (float)(p_178890_6_.xCoord - (double)p_178890_4_.getX());
-@@ -392,7 +424,7 @@ public class PlayerControllerMP
+@@ -392,7 +417,7 @@ public class PlayerControllerMP
          float var9 = (float)(p_178890_6_.zCoord - (double)p_178890_4_.getZ());
          boolean var10 = false;
  
@@ -12766,7 +12775,7 @@ index ca6ffd5..892df32 100644
          {
              return false;
          }
-@@ -418,7 +450,7 @@ public class PlayerControllerMP
+@@ -418,7 +443,7 @@ public class PlayerControllerMP
                  }
              }
  
@@ -12775,7 +12784,7 @@ index ca6ffd5..892df32 100644
  
              if (!var10 && this.currentGameType != WorldSettings.GameType.SPECTATOR)
              {
-@@ -450,7 +482,7 @@ public class PlayerControllerMP
+@@ -450,7 +475,7 @@ public class PlayerControllerMP
      /**
       * Notifies the server of things like consuming food, etc...
       */
@@ -12784,7 +12793,7 @@ index ca6ffd5..892df32 100644
      {
          if (this.currentGameType == WorldSettings.GameType.SPECTATOR)
          {
-@@ -459,11 +491,11 @@ public class PlayerControllerMP
+@@ -459,11 +484,11 @@ public class PlayerControllerMP
          else
          {
              this.syncCurrentPlayItem();
@@ -12798,7 +12807,7 @@ index ca6ffd5..892df32 100644
              {
                  return false;
              }
-@@ -492,7 +524,7 @@ public class PlayerControllerMP
+@@ -492,7 +517,7 @@ public class PlayerControllerMP
      public void attackEntity(EntityPlayer playerIn, Entity targetEntity)
      {
          this.syncCurrentPlayItem();
@@ -12807,7 +12816,7 @@ index ca6ffd5..892df32 100644
  
          if (this.currentGameType != WorldSettings.GameType.SPECTATOR)
          {
-@@ -506,15 +538,15 @@ public class PlayerControllerMP
+@@ -506,15 +531,15 @@ public class PlayerControllerMP
      public boolean interactWithEntitySendPacket(EntityPlayer playerIn, Entity targetEntity)
      {
          this.syncCurrentPlayItem();
@@ -12827,7 +12836,7 @@ index ca6ffd5..892df32 100644
          return this.currentGameType != WorldSettings.GameType.SPECTATOR && p_178894_2_.func_174825_a(p_178894_1_, var4);
      }
  
-@@ -525,7 +557,7 @@ public class PlayerControllerMP
+@@ -525,7 +550,7 @@ public class PlayerControllerMP
      {
          short var6 = playerIn.openContainer.getNextTransactionID(playerIn.inventory);
          ItemStack var7 = playerIn.openContainer.slotClick(slotId, p_78753_3_, p_78753_4_, playerIn);
@@ -12836,7 +12845,7 @@ index ca6ffd5..892df32 100644
          return var7;
      }
  
-@@ -535,7 +567,7 @@ public class PlayerControllerMP
+@@ -535,7 +560,7 @@ public class PlayerControllerMP
       */
      public void sendEnchantPacket(int p_78756_1_, int p_78756_2_)
      {
@@ -12845,7 +12854,7 @@ index ca6ffd5..892df32 100644
      }
  
      /**
-@@ -545,7 +577,7 @@ public class PlayerControllerMP
+@@ -545,7 +570,7 @@ public class PlayerControllerMP
      {
          if (this.currentGameType.isCreative())
          {
@@ -12854,7 +12863,7 @@ index ca6ffd5..892df32 100644
          }
      }
  
-@@ -556,14 +588,14 @@ public class PlayerControllerMP
+@@ -556,14 +581,14 @@ public class PlayerControllerMP
      {
          if (this.currentGameType.isCreative() && itemStackIn != null)
          {
@@ -12871,7 +12880,7 @@ index ca6ffd5..892df32 100644
          playerIn.stopUsingItem();
      }
  
-@@ -601,7 +633,7 @@ public class PlayerControllerMP
+@@ -601,7 +626,7 @@ public class PlayerControllerMP
       */
      public boolean isRidingHorse()
      {

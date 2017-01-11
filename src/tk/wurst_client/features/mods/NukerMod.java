@@ -175,10 +175,6 @@ public class NukerMod extends Mod
 			return;
 		}
 		
-		// reset damage
-		if(!newPos.equals(pos))
-			currentDamage = 0;
-		
 		// wait for timer
 		if(blockHitDelay > 0)
 		{
@@ -186,26 +182,26 @@ public class NukerMod extends Mod
 			return;
 		}
 		
-		// set current pos
-		pos = newPos;
-		
 		// enable rendering
 		shouldRenderESP = true;
 		
 		// face block
-		BlockUtils.faceBlockPacket(pos);
+		BlockUtils.faceBlockPacket(newPos);
 		
-		if(currentDamage == 0)
+		// start breaking new block
+		if(!newPos.equals(pos))
 		{
-			// start breaking the block
+			// reset damage
+			currentDamage = 0;
+			
+			// set current pos
+			pos = newPos;
+			
+			// start breaking
 			mc.player.connection.sendPacket(new CPacketPlayerDigging(
 				Action.START_DESTROY_BLOCK, pos, side));
 			
-			// save old slot
-			if(wurst.mods.autoToolMod.isActive() && oldSlot == -1)
-				oldSlot = mc.player.inventory.currentItem;
-			
-			// check if block can be destroyed instantly
+			// check if block can be broken instantly
 			if(mc.player.capabilities.isCreativeMode
 				|| BlockUtils.getHardness(pos) >= 1)
 			{
@@ -217,19 +213,20 @@ public class NukerMod extends Mod
 				
 				return;
 			}
+			
+			// save old slot
+			if(wurst.mods.autoToolMod.isActive() && oldSlot == -1)
+				oldSlot = mc.player.inventory.currentItem;
 		}
 		
-		// AutoTool
+		// set slot
 		wurst.mods.autoToolMod.setSlot(pos);
 		
 		// swing arm
 		mc.player.connection.sendPacket(new CPacketAnimation());
 		
 		// update damage
-		currentDamage +=
-			BlockUtils.getHardness(pos) * (wurst.mods.fastBreakMod.isActive()
-				&& wurst.options.fastbreakMode == 0
-					? wurst.mods.fastBreakMod.speed : 1);
+		currentDamage += BlockUtils.getHardness(pos);
 		
 		// send damage to server
 		mc.world.sendBlockBreakProgress(mc.player.getEntityId(), pos,
@@ -250,10 +247,7 @@ public class NukerMod extends Mod
 			currentDamage = 0;
 			
 			// FastBreak instant mode
-		}else if(wurst.mods.fastBreakMod.isActive()
-			&& wurst.options.fastbreakMode == 1)
-			
-			// try to destroy block
+		}else if(wurst.mods.fastBreakMod.shouldSpamPackets())
 			mc.player.connection.sendPacket(
 				new CPacketPlayerDigging(Action.STOP_DESTROY_BLOCK, pos, side));
 	}
