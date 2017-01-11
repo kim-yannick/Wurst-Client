@@ -9,9 +9,9 @@ package tk.wurst_client.features.mods;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.play.client.C07PacketPlayerDigging;
-import net.minecraft.network.play.client.C07PacketPlayerDigging.Action;
-import net.minecraft.network.play.client.C0APacketAnimation;
+import net.minecraft.network.play.client.CPacketPlayerDigging;
+import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
+import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.RayTraceResult;
@@ -102,13 +102,13 @@ public class KaboomMod extends Mod implements UpdateListener
 								EnumFacing side = fakeObjectMouseOver.sideHit;
 								BlockUtils.faceBlockPacket(pos);
 								mc.player.connection
-									.sendPacket(new C0APacketAnimation());
+									.sendPacket(new CPacketAnimation());
 								mc.player.connection
-									.sendPacket(new C07PacketPlayerDigging(
+									.sendPacket(new CPacketPlayerDigging(
 										Action.START_DESTROY_BLOCK, pos, side));
 								for(int i = 0; i < power; i++)
 									mc.player.connection
-										.sendPacket(new C07PacketPlayerDigging(
+										.sendPacket(new CPacketPlayerDigging(
 											Action.STOP_DESTROY_BLOCK, pos,
 											side));
 								block.onBlockDestroyedByPlayer(

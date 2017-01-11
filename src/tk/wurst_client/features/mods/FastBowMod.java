@@ -10,8 +10,8 @@ package tk.wurst_client.features.mods;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemBow;
 import net.minecraft.network.play.client.CPacketPlayer;
-import net.minecraft.network.play.client.C07PacketPlayerDigging;
-import net.minecraft.network.play.client.C07PacketPlayerDigging.Action;
+import net.minecraft.network.play.client.CPacketPlayerDigging;
+import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import tk.wurst_client.events.listeners.UpdateListener;
@@ -55,7 +55,7 @@ public class FastBowMod extends Mod implements UpdateListener
 			for(int i = 0; i < 20; i++)
 				mc.player.connection.sendPacket(new CPacketPlayer(false));
 			Minecraft.getMinecraft().getNetHandler()
-				.sendPacket(new C07PacketPlayerDigging(Action.RELEASE_USE_ITEM,
+				.sendPacket(new CPacketPlayerDigging(Action.RELEASE_USE_ITEM,
 					new BlockPos(0, 0, 0), EnumFacing.DOWN));
 			mc.player.inventory.getCurrentItem().getItem().onPlayerStoppedUsing(
 				mc.player.inventory.getCurrentItem(), mc.world, mc.player, 10);

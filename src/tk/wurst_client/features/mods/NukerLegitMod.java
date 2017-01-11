@@ -12,9 +12,9 @@ import java.util.LinkedList;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.network.play.client.C07PacketPlayerDigging;
-import net.minecraft.network.play.client.C07PacketPlayerDigging.Action;
-import net.minecraft.network.play.client.C0APacketAnimation;
+import net.minecraft.network.play.client.CPacketPlayerDigging;
+import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
+import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import tk.wurst_client.events.LeftClickEvent;
@@ -52,9 +52,9 @@ public class NukerLegitMod extends Mod
 	@Override
 	public Feature[] getSeeAlso()
 	{
-		return new Feature[]{wurst.mods.nukerMod,
-			wurst.mods.speedNukerMod, wurst.mods.tunnellerMod,
-			wurst.mods.fastBreakMod, wurst.mods.autoMineMod};
+		return new Feature[]{wurst.mods.nukerMod, wurst.mods.speedNukerMod,
+			wurst.mods.tunnellerMod, wurst.mods.fastBreakMod,
+			wurst.mods.autoMineMod};
 	}
 	
 	@Override
@@ -108,7 +108,7 @@ public class NukerLegitMod extends Mod
 		BlockUtils.faceBlockClient(pos);
 		if(currentDamage == 0)
 		{
-			mc.player.connection.sendPacket(new C07PacketPlayerDigging(
+			mc.player.connection.sendPacket(new CPacketPlayerDigging(
 				Action.START_DESTROY_BLOCK, pos, side));
 			if(wurst.mods.autoToolMod.isActive() && oldSlot == -1)
 				oldSlot = mc.player.inventory.currentItem;
@@ -124,7 +124,7 @@ public class NukerLegitMod extends Mod
 			}
 		}
 		wurst.mods.autoToolMod.setSlot(pos);
-		mc.player.connection.sendPacket(new C0APacketAnimation());
+		mc.player.connection.sendPacket(new CPacketAnimation());
 		shouldRenderESP = true;
 		currentDamage += currentBlock.getPlayerRelativeBlockHardness(mc.player,
 			mc.world, pos);
@@ -132,8 +132,8 @@ public class NukerLegitMod extends Mod
 			(int)(currentDamage * 10.0F) - 1);
 		if(currentDamage >= 1)
 		{
-			mc.player.connection.sendPacket(new C07PacketPlayerDigging(
-				Action.STOP_DESTROY_BLOCK, pos, side));
+			mc.player.connection.sendPacket(
+				new CPacketPlayerDigging(Action.STOP_DESTROY_BLOCK, pos, side));
 			mc.playerController.onPlayerDestroyBlock(pos, side);
 			blockHitDelay = (byte)4;
 			currentDamage = 0;
@@ -153,7 +153,7 @@ public class NukerLegitMod extends Mod
 		}
 		currentDamage = 0;
 		shouldRenderESP = false;
-		NukerMod.id = 0;
+		wurst.mods.nukerMod.id = 0;
 		wurst.files.saveOptions();
 	}
 	
@@ -163,11 +163,11 @@ public class NukerLegitMod extends Mod
 		if(mc.objectMouseOver == null
 			|| mc.objectMouseOver.getBlockPos() == null)
 			return;
-		if(wurst.mods.nukerMod.getMode() == 1
+		if(wurst.mods.nukerMod.mode.getSelected() == 1
 			&& mc.world.getBlockState(mc.objectMouseOver.getBlockPos())
 				.getBlock().getMaterial() != Material.AIR)
 		{
-			NukerMod.id = Block.getIdFromBlock(mc.world
+			wurst.mods.nukerMod.id = Block.getIdFromBlock(mc.world
 				.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock());
 			wurst.files.saveOptions();
 		}
@@ -184,16 +184,16 @@ public class NukerLegitMod extends Mod
 			if(alreadyProcessed.contains(currentPos))
 				continue;
 			alreadyProcessed.add(currentPos);
-			if(BlockUtils.getPlayerBlockDistance(
-				currentPos) > wurst.mods.nukerMod.yesCheatRange)
+			if(BlockUtils.getPlayerBlockDistance(currentPos) > Math
+				.min(wurst.mods.nukerMod.range.getValueF(), 4.25F))
 				continue;
 			int currentID = Block
 				.getIdFromBlock(mc.world.getBlockState(currentPos).getBlock());
 			if(currentID != 0)
-				switch(wurst.mods.nukerMod.getMode())
+				switch(wurst.mods.nukerMod.mode.getSelected())
 				{
 					case 1:
-						if(currentID == NukerMod.id)
+						if(currentID == wurst.mods.nukerMod.id)
 							return currentPos;
 						break;
 					case 2:

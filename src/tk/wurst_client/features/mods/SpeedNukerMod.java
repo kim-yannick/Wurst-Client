@@ -9,8 +9,8 @@ package tk.wurst_client.features.mods;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.network.play.client.C07PacketPlayerDigging;
-import net.minecraft.network.play.client.C07PacketPlayerDigging.Action;
+import net.minecraft.network.play.client.CPacketPlayerDigging;
+import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.RayTraceResult;
@@ -38,14 +38,14 @@ public class SpeedNukerMod extends Mod
 	public String getRenderName()
 	{
 		NukerMod nuker = wurst.mods.nukerMod;
-		switch(nuker.getMode())
+		switch(nuker.mode.getSelected())
 		{
 			case 0:
 				return "SpeedNuker";
 			case 1:
-				return "IDSpeedNuker [" + NukerMod.id + "]";
+				return "IDSpeedNuker [" + wurst.mods.nukerMod.id + "]";
 			default:
-				return nuker.getModes()[nuker.getMode()] + "SpeedNuker";
+				return nuker.mode.getSelectedMode() + "SpeedNuker";
 		}
 	}
 	
@@ -121,7 +121,7 @@ public class SpeedNukerMod extends Mod
 			mc.player.inventory.currentItem = oldSlot;
 			oldSlot = -1;
 		}
-		NukerMod.id = 0;
+		wurst.mods.nukerMod.id = 0;
 		wurst.files.saveOptions();
 	}
 	
@@ -131,11 +131,11 @@ public class SpeedNukerMod extends Mod
 		if(mc.objectMouseOver == null
 			|| mc.objectMouseOver.getBlockPos() == null)
 			return;
-		if(wurst.mods.nukerMod.getMode() == 1
+		if(wurst.mods.nukerMod.mode.getSelected() == 1
 			&& mc.world.getBlockState(mc.objectMouseOver.getBlockPos())
 				.getBlock().getMaterial() != Material.AIR)
 		{
-			NukerMod.id = Block.getIdFromBlock(mc.world
+			wurst.mods.nukerMod.id = Block.getIdFromBlock(mc.world
 				.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock());
 			wurst.files.saveOptions();
 		}
@@ -144,15 +144,16 @@ public class SpeedNukerMod extends Mod
 	private BlockPos find()
 	{
 		BlockPos closest = null;
-		float closestDistance = wurst.mods.nukerMod.yesCheatRange + 1;
-		int nukerMode = wurst.mods.nukerMod.getMode();
-		for(int y = (int)wurst.mods.nukerMod.yesCheatRange; y >= (nukerMode == 2
-			? 0 : -wurst.mods.nukerMod.yesCheatRange); y--)
-			for(int x =
-				(int)wurst.mods.nukerMod.yesCheatRange; x >= -wurst.mods.nukerMod.yesCheatRange
+		float closestDistance = wurst.mods.nukerMod.range.getValueF() + 1;
+		int nukerMode = wurst.mods.nukerMod.mode.getSelected();
+		for(int y = wurst.mods.nukerMod.range.getValueI(); y >= (nukerMode == 2
+			? 0 : -wurst.mods.nukerMod.range.getValueI()); y--)
+			for(int x = wurst.mods.nukerMod.range
+				.getValueI(); x >= -wurst.mods.nukerMod.range.getValueI()
 					- 1; x--)
-				for(int z =
-					(int)wurst.mods.nukerMod.yesCheatRange; z >= -wurst.mods.nukerMod.yesCheatRange; z--)
+				for(int z = wurst.mods.nukerMod.range
+					.getValueI(); z >= -wurst.mods.nukerMod.range
+						.getValueI(); z--)
 				{
 					if(mc.player == null)
 						continue;
@@ -173,10 +174,11 @@ public class SpeedNukerMod extends Mod
 						continue;
 					fakeObjectMouseOver.setBlockPos(blockPos);
 					if(Block.getIdFromBlock(block) != 0 && posY >= 0
-						&& currentDistance <= wurst.mods.nukerMod.yesCheatRange)
+						&& currentDistance <= wurst.mods.nukerMod.range
+							.getValueF())
 					{
-						if(nukerMode == 1
-							&& Block.getIdFromBlock(block) != NukerMod.id)
+						if(nukerMode == 1 && Block
+							.getIdFromBlock(block) != wurst.mods.nukerMod.id)
 							continue;
 						if(nukerMode == 3
 							&& block.getPlayerRelativeBlockHardness(mc.player,
@@ -198,14 +200,15 @@ public class SpeedNukerMod extends Mod
 	
 	private void nukeAll()
 	{
-		int nukerMode = wurst.mods.nukerMod.getMode();
-		for(int y = (int)wurst.mods.nukerMod.normalRange; y >= (nukerMode == 2
-			? 0 : -wurst.mods.nukerMod.normalRange); y--)
-			for(int x =
-				(int)wurst.mods.nukerMod.normalRange; x >= -wurst.mods.nukerMod.normalRange
+		int nukerMode = wurst.mods.nukerMod.mode.getSelected();
+		for(int y = wurst.mods.nukerMod.range.getValueI(); y >= (nukerMode == 2
+			? 0 : -wurst.mods.nukerMod.range.getValueI()); y--)
+			for(int x = wurst.mods.nukerMod.range
+				.getValueI(); x >= -wurst.mods.nukerMod.range.getValueI()
 					- 1; x--)
-				for(int z =
-					(int)wurst.mods.nukerMod.normalRange; z >= -wurst.mods.nukerMod.normalRange; z--)
+				for(int z = wurst.mods.nukerMod.range
+					.getValueI(); z >= -wurst.mods.nukerMod.range
+						.getValueI(); z--)
 				{
 					int posX = (int)(Math.floor(mc.player.posX) + x);
 					int posY = (int)(Math.floor(mc.player.posY) + y);
@@ -223,10 +226,11 @@ public class SpeedNukerMod extends Mod
 					fakeObjectMouseOver
 						.setBlockPos(new BlockPos(posX, posY, posZ));
 					if(Block.getIdFromBlock(block) != 0 && posY >= 0
-						&& currentDistance <= wurst.mods.nukerMod.normalRange)
+						&& currentDistance <= wurst.mods.nukerMod.range
+							.getValueF())
 					{
-						if(nukerMode == 1
-							&& Block.getIdFromBlock(block) != NukerMod.id)
+						if(nukerMode == 1 && Block
+							.getIdFromBlock(block) != wurst.mods.nukerMod.id)
 							continue;
 						if(nukerMode == 3
 							&& block.getPlayerRelativeBlockHardness(mc.player,
@@ -235,12 +239,12 @@ public class SpeedNukerMod extends Mod
 						if(!mc.player.onGround)
 							continue;
 						EnumFacing side = fakeObjectMouseOver.sideHit;
-						mc.player.connection
-							.sendPacket(new C07PacketPlayerDigging(
-								Action.START_DESTROY_BLOCK, blockPos, side));
-						mc.player.connection
-							.sendPacket(new C07PacketPlayerDigging(
-								Action.STOP_DESTROY_BLOCK, blockPos, side));
+						mc.player.connection.sendPacket(
+							new CPacketPlayerDigging(Action.START_DESTROY_BLOCK,
+								blockPos, side));
+						mc.player.connection.sendPacket(
+							new CPacketPlayerDigging(Action.STOP_DESTROY_BLOCK,
+								blockPos, side));
 					}
 				}
 	}

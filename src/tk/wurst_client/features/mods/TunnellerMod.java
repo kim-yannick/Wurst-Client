@@ -8,9 +8,9 @@
 package tk.wurst_client.features.mods;
 
 import net.minecraft.block.Block;
-import net.minecraft.network.play.client.C07PacketPlayerDigging;
-import net.minecraft.network.play.client.C07PacketPlayerDigging.Action;
-import net.minecraft.network.play.client.C0APacketAnimation;
+import net.minecraft.network.play.client.CPacketPlayerDigging;
+import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
+import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.RayTraceResult;
@@ -93,7 +93,7 @@ public class TunnellerMod extends Mod implements RenderListener, UpdateListener
 		BlockUtils.faceBlockPacket(pos);
 		if(currentDamage == 0)
 		{
-			mc.player.connection.sendPacket(new C07PacketPlayerDigging(
+			mc.player.connection.sendPacket(new CPacketPlayerDigging(
 				Action.START_DESTROY_BLOCK, pos, side));
 			if(wurst.mods.autoToolMod.isActive() && oldSlot == -1)
 				oldSlot = mc.player.inventory.currentItem;
@@ -115,7 +115,7 @@ public class TunnellerMod extends Mod implements RenderListener, UpdateListener
 			}
 		}
 		wurst.mods.autoToolMod.setSlot(pos);
-		mc.player.connection.sendPacket(new C0APacketAnimation());
+		mc.player.connection.sendPacket(new CPacketAnimation());
 		shouldRenderESP = true;
 		BlockUtils.faceBlockPacket(pos);
 		currentDamage += currentBlock.getPlayerRelativeBlockHardness(mc.player,
@@ -127,15 +127,15 @@ public class TunnellerMod extends Mod implements RenderListener, UpdateListener
 			(int)(currentDamage * 10.0F) - 1);
 		if(currentDamage >= 1)
 		{
-			mc.player.connection.sendPacket(new C07PacketPlayerDigging(
-				Action.STOP_DESTROY_BLOCK, pos, side));
+			mc.player.connection.sendPacket(
+				new CPacketPlayerDigging(Action.STOP_DESTROY_BLOCK, pos, side));
 			mc.playerController.onPlayerDestroyBlock(pos, side);
 			blockHitDelay = (byte)4;
 			currentDamage = 0;
 		}else if(wurst.mods.fastBreakMod.isActive()
 			&& wurst.options.fastbreakMode == 1)
-			mc.player.connection.sendPacket(new C07PacketPlayerDigging(
-				Action.STOP_DESTROY_BLOCK, pos, side));
+			mc.player.connection.sendPacket(
+				new CPacketPlayerDigging(Action.STOP_DESTROY_BLOCK, pos, side));
 	}
 	
 	@Override
@@ -177,7 +177,7 @@ public class TunnellerMod extends Mod implements RenderListener, UpdateListener
 					fakeObjectMouseOver.setBlockPos(blockPos);
 					if(Block.getIdFromBlock(block) != 0 && posY >= 0)
 					{
-						if(wurst.mods.nukerMod.getMode() == 3
+						if(wurst.mods.nukerMod.mode.getSelected() == 3
 							&& block.getPlayerRelativeBlockHardness(mc.player,
 								mc.world, blockPos) < 1)
 							continue;
@@ -211,16 +211,16 @@ public class TunnellerMod extends Mod implements RenderListener, UpdateListener
 					fakeObjectMouseOver.setBlockPos(blockPos);
 					if(Block.getIdFromBlock(block) != 0 && posY >= 0)
 					{
-						if(wurst.mods.nukerMod.getMode() == 3
+						if(wurst.mods.nukerMod.mode.getSelected() == 3
 							&& block.getPlayerRelativeBlockHardness(mc.player,
 								mc.world, blockPos) < 1)
 							continue;
 						side = fakeObjectMouseOver.sideHit;
 						shouldRenderESP = true;
 						BlockUtils.faceBlockPacket(pos);
-						mc.player.connection
-							.sendPacket(new C07PacketPlayerDigging(
-								Action.START_DESTROY_BLOCK, blockPos, side));
+						mc.player.connection.sendPacket(
+							new CPacketPlayerDigging(Action.START_DESTROY_BLOCK,
+								blockPos, side));
 						block.onBlockDestroyedByPlayer(mc.world, blockPos,
 							mc.world.getBlockState(blockPos));
 					}
