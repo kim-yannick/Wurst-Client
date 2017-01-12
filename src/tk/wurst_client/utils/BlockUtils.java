@@ -34,7 +34,7 @@ public final class BlockUtils
 	
 	public static Material getMaterial(BlockPos pos)
 	{
-		return getState(pos).getBlock().getMaterial();
+		return getBlock(pos).getMaterial();
 	}
 	
 	public static boolean canBeClicked(BlockPos pos)
@@ -78,8 +78,11 @@ public final class BlockUtils
 			if(eyesPos.squareDistanceTo(hitVec) > 18.0625)
 				continue;
 			
+			// face block
+			if(!RotationUtils.faceVectorPacket(hitVec))
+				return true;
+			
 			// place block
-			faceVectorPacket(hitVec);
 			mc.playerController.processRightClickBlock(mc.player, mc.world,
 				mc.player.getCurrentEquippedItem(), neighbor, side2, hitVec);
 			mc.player.swingArm();
@@ -138,19 +141,19 @@ public final class BlockUtils
 			if(eyesPos.squareDistanceTo(hitVec) > 18.0625)
 				continue;
 			
-			// check if neighbor can be clicked (blocks vision)
-			if(canBeClicked(pos.offset(side)))
-				continue;
-			
 			// check if side is facing towards player
 			if(eyesPos.squareDistanceTo(posVec) <= eyesPos
 				.squareDistanceTo(hitVec))
 				continue;
 			
-			// TODO: actual line-of-sight check
+			// check line of sight
+			if(mc.world.rayTraceBlocks(eyesPos, hitVec, false, true,
+				false) != null)
+				continue;
 			
-			// FIXME: Too many packets
-			faceVectorPacket(hitVec);
+			// face block
+			if(!RotationUtils.faceVectorPacket(hitVec))
+				return true;
 			
 			// damage block
 			if(!mc.playerController.onPlayerDamageBlock(pos, side))
@@ -165,27 +168,7 @@ public final class BlockUtils
 		return false;
 	}
 	
-	// TODO: RotationUtils class for all the faceSomething() methods
-	
-	private static void faceVectorPacket(Vec3d vec)
-	{
-		double diffX = vec.xCoord - mc.player.posX;
-		double diffY = vec.yCoord - (mc.player.posY + mc.player.getEyeHeight());
-		double diffZ = vec.zCoord - mc.player.posZ;
-		
-		double dist = MathHelper.sqrt(diffX * diffX + diffZ * diffZ);
-		
-		float yaw = (float)Math.toDegrees(Math.atan2(diffZ, diffX)) - 90F;
-		float pitch = (float)-Math.toDegrees(Math.atan2(diffY, dist));
-		
-		mc.player.connection.sendPacket(new CPacketPlayer.Rotation(
-			mc.player.rotationYaw
-				+ MathHelper.wrapDegrees(yaw - mc.player.rotationYaw),
-			mc.player.rotationPitch
-				+ MathHelper.wrapDegrees(pitch - mc.player.rotationPitch),
-			mc.player.onGround));
-	}
-	
+	@Deprecated
 	public static void faceBlockClient(BlockPos blockPos)
 	{
 		double diffX = blockPos.getX() + 0.5 - mc.player.posX;
@@ -202,6 +185,7 @@ public final class BlockUtils
 			+ MathHelper.wrapDegrees(pitch - mc.player.rotationPitch);
 	}
 	
+	@Deprecated
 	public static void faceBlockPacket(BlockPos blockPos)
 	{
 		double diffX = blockPos.getX() + 0.5 - mc.player.posX;
@@ -220,6 +204,7 @@ public final class BlockUtils
 			mc.player.onGround));
 	}
 	
+	@Deprecated
 	public static void faceBlockClientHorizontally(BlockPos blockPos)
 	{
 		double diffX = blockPos.getX() + 0.5 - mc.player.posX;
@@ -230,13 +215,15 @@ public final class BlockUtils
 			+ MathHelper.wrapDegrees(yaw - mc.player.rotationYaw);
 	}
 	
+	@Deprecated
 	public static float getPlayerBlockDistance(BlockPos blockPos)
 	{
 		return getPlayerBlockDistance(blockPos.getX(), blockPos.getY(),
 			blockPos.getZ());
 	}
 	
-	public static float getPlayerBlockDistance(double posX, double posY,
+	@Deprecated
+	private static float getPlayerBlockDistance(double posX, double posY,
 		double posZ)
 	{
 		float xDiff = (float)(mc.player.posX - posX);
@@ -245,18 +232,11 @@ public final class BlockUtils
 		return getBlockDistance(xDiff, yDiff, zDiff);
 	}
 	
+	@Deprecated
 	public static float getBlockDistance(float xDiff, float yDiff, float zDiff)
 	{
 		return MathHelper.sqrt(
 			(xDiff - 0.5F) * (xDiff - 0.5F) + (yDiff - 0.5F) * (yDiff - 0.5F)
 				+ (zDiff - 0.5F) * (zDiff - 0.5F));
-	}
-	
-	public static float getHorizontalPlayerBlockDistance(BlockPos blockPos)
-	{
-		float xDiff = (float)(mc.player.posX - blockPos.getX());
-		float zDiff = (float)(mc.player.posZ - blockPos.getZ());
-		return MathHelper.sqrt(
-			(xDiff - 0.5F) * (xDiff - 0.5F) + (zDiff - 0.5F) * (zDiff - 0.5F));
 	}
 }
