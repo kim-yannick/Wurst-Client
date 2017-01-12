@@ -1,6 +1,6 @@
-From 204a5b078c5ec12a27f6ef14b70f7365a062bedd Mon Sep 17 00:00:00 2001
+From 7580bc730da8f9f55eb44550110c5e21746d4603 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Thu, 12 Jan 2017 16:45:54 +0100
+Date: Thu, 12 Jan 2017 17:13:24 +0100
 Subject: [PATCH] mod
 
 ---
@@ -92,7 +92,7 @@ Subject: [PATCH] mod
  net/minecraft/client/audio/SoundManager.java       |  12 +-
  .../client/entity/AbstractClientPlayer.java        |  19 +-
  .../client/entity/EntityOtherPlayerMP.java         |   4 +-
- net/minecraft/client/entity/EntityPlayerSP.java    | 214 ++++++---
+ net/minecraft/client/entity/EntityPlayerSP.java    | 212 ++++++---
  net/minecraft/client/gui/FontRenderer.java         |  53 ++-
  net/minecraft/client/gui/Gui.java                  |   8 +-
  net/minecraft/client/gui/GuiButton.java            |  96 ++--
@@ -625,7 +625,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |   8 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 621 files changed, 7033 insertions(+), 5715 deletions(-)
+ 621 files changed, 7031 insertions(+), 5715 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -6362,17 +6362,10 @@ index 4b48cd3..05fa973 100644
  
          if (var9 > 0.1F)
 diff --git a/net/minecraft/client/entity/EntityPlayerSP.java b/net/minecraft/client/entity/EntityPlayerSP.java
-index 58f696b..f2577a9 100644
+index 58f696b..9043b96 100644
 --- a/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/net/minecraft/client/entity/EntityPlayerSP.java
-@@ -1,5 +1,6 @@
- package net.minecraft.client.entity;
- 
-+import net.minecraft.block.material.Material;
- import net.minecraft.client.Minecraft;
- import net.minecraft.client.audio.MovingSoundMinecartRiding;
- import net.minecraft.client.audio.PositionedSoundRecord;
-@@ -10,14 +11,7 @@ import net.minecraft.client.gui.GuiMerchant;
+@@ -10,14 +10,7 @@ import net.minecraft.client.gui.GuiMerchant;
  import net.minecraft.client.gui.GuiRepair;
  import net.minecraft.client.gui.GuiScreen;
  import net.minecraft.client.gui.GuiScreenBook;
@@ -6388,7 +6381,7 @@ index 58f696b..f2577a9 100644
  import net.minecraft.client.network.NetHandlerPlayClient;
  import net.minecraft.command.server.CommandBlockLogic;
  import net.minecraft.entity.Entity;
-@@ -29,15 +23,8 @@ import net.minecraft.init.Items;
+@@ -29,15 +22,8 @@ import net.minecraft.init.Items;
  import net.minecraft.inventory.IInventory;
  import net.minecraft.item.Item;
  import net.minecraft.item.ItemStack;
@@ -6406,16 +6399,15 @@ index 58f696b..f2577a9 100644
  import net.minecraft.potion.Potion;
  import net.minecraft.stats.StatBase;
  import net.minecraft.stats.StatFileWriter;
-@@ -51,10 +38,16 @@ import net.minecraft.util.MovementInput;
+@@ -51,10 +37,15 @@ import net.minecraft.util.MovementInput;
  import net.minecraft.util.ResourceLocation;
  import net.minecraft.world.IInteractionObject;
  import net.minecraft.world.World;
 +import tk.wurst_client.WurstClient;
 +import tk.wurst_client.events.ChatOutputEvent;
 +import tk.wurst_client.events.UpdateEvent;
-+import tk.wurst_client.features.mods.BlinkMod;
 +import tk.wurst_client.features.mods.JesusMod;
-+import tk.wurst_client.utils.EntityUtils;
++import tk.wurst_client.utils.RotationUtils;
  
  public class EntityPlayerSP extends AbstractClientPlayer
  {
@@ -6424,7 +6416,7 @@ index 58f696b..f2577a9 100644
      private final StatFileWriter field_146108_bO;
      private double field_175172_bI;
      private double field_175166_bJ;
-@@ -95,7 +88,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -95,7 +86,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
      public EntityPlayerSP(Minecraft mcIn, World worldIn, NetHandlerPlayClient p_i46278_3_, StatFileWriter p_i46278_4_)
      {
          super(worldIn, p_i46278_3_.func_175105_e());
@@ -6433,7 +6425,7 @@ index 58f696b..f2577a9 100644
          this.field_146108_bO = p_i46278_4_;
          this.mc = mcIn;
          this.dimension = 0;
-@@ -134,21 +127,37 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -134,21 +125,37 @@ public class EntityPlayerSP extends AbstractClientPlayer
      {
          if (this.worldObj.isBlockLoaded(new BlockPos(this.posX, 0.0D, this.posZ)))
          {
@@ -6475,7 +6467,7 @@ index 58f696b..f2577a9 100644
      {
          boolean var1 = this.isSprinting();
  
-@@ -156,11 +165,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -156,11 +163,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
          {
              if (var1)
              {
@@ -6489,7 +6481,7 @@ index 58f696b..f2577a9 100644
              }
  
              this.field_175171_bO = var1;
-@@ -172,11 +181,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -172,11 +179,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
          {
              if (var2)
              {
@@ -6503,24 +6495,24 @@ index 58f696b..f2577a9 100644
              }
  
              this.field_175170_bN = var2;
-@@ -184,36 +193,109 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -184,36 +191,109 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
          if (this.func_175160_A())
          {
 +        	// TODO: Client
 +        	float yaw;
 +        	float pitch;
-+        	if(EntityUtils.lookChanged)
++        	if(RotationUtils.lookChanged)
 +        	{
-+        		yaw = EntityUtils.yaw;
-+        		pitch = EntityUtils.pitch;
++        		yaw = RotationUtils.yaw;
++        		pitch = RotationUtils.pitch;
 +        	}else
 +        	{
-+        		EntityUtils.yaw = EntityUtils.limitAngleChange(EntityUtils.yaw, rotationYaw, 30);
-+        		EntityUtils.pitch = rotationPitch;
++        		RotationUtils.yaw = RotationUtils.limitAngleChange(RotationUtils.yaw, rotationYaw, 30);
++        		RotationUtils.pitch = rotationPitch;
 +        		
-+        		yaw = EntityUtils.yaw;
-+        		pitch = EntityUtils.pitch;
++        		yaw = RotationUtils.yaw;
++        		pitch = RotationUtils.pitch;
 +        	}
 +        	
              double var3 = this.posX - this.field_175172_bI;
@@ -6623,7 +6615,7 @@ index 58f696b..f2577a9 100644
                  var13 = false;
              }
  
-@@ -240,8 +322,8 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -240,8 +320,8 @@ public class EntityPlayerSP extends AbstractClientPlayer
       */
      public EntityItem dropOneItem(boolean p_71040_1_)
      {
@@ -6634,7 +6626,7 @@ index 58f696b..f2577a9 100644
          return null;
      }
  
-@@ -255,21 +337,43 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -255,21 +335,43 @@ public class EntityPlayerSP extends AbstractClientPlayer
       */
      public void sendChatMessage(String p_71165_1_)
      {
@@ -6683,7 +6675,7 @@ index 58f696b..f2577a9 100644
      }
  
      /**
-@@ -289,7 +393,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -289,7 +391,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
       */
      public void closeScreen()
      {
@@ -6692,7 +6684,7 @@ index 58f696b..f2577a9 100644
          this.func_175159_q();
      }
  
-@@ -353,7 +457,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -353,7 +455,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
       */
      public void sendPlayerAbilities()
      {
@@ -6701,7 +6693,7 @@ index 58f696b..f2577a9 100644
      }
  
      public boolean func_175144_cb()
-@@ -363,12 +467,12 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -363,12 +465,12 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
      protected void sendHorseJump()
      {
@@ -6716,7 +6708,7 @@ index 58f696b..f2577a9 100644
      }
  
      public void func_175158_f(String p_175158_1_)
-@@ -408,25 +512,25 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -408,25 +510,25 @@ public class EntityPlayerSP extends AbstractClientPlayer
                  byte var12 = -1;
                  double var13 = 9999.0D;
  
@@ -6746,7 +6738,7 @@ index 58f696b..f2577a9 100644
                  {
                      var13 = 1.0D - var10;
                      var12 = 5;
-@@ -461,7 +565,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -461,7 +563,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
      private boolean func_175162_d(BlockPos p_175162_1_)
      {
@@ -6755,7 +6747,7 @@ index 58f696b..f2577a9 100644
      }
  
      /**
-@@ -738,7 +842,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -738,7 +840,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
          boolean var4 = this.movementInput.moveForward >= var3;
          this.movementInput.updatePlayerMoveState();
  
