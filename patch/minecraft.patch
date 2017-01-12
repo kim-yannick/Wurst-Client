@@ -1,6 +1,6 @@
-From 7580bc730da8f9f55eb44550110c5e21746d4603 Mon Sep 17 00:00:00 2001
+From 5568e99dd6b795894bdfea74ceb59af5afcf8b29 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Thu, 12 Jan 2017 17:13:24 +0100
+Date: Thu, 12 Jan 2017 23:20:43 +0100
 Subject: [PATCH] mod
 
 ---
@@ -448,7 +448,7 @@ Subject: [PATCH] mod
  net/minecraft/nbt/NBTTagCompound.java              |   7 +-
  net/minecraft/network/EnumConnectionState.java     |  34 +-
  net/minecraft/network/NetHandlerPlayServer.java    |  83 ++--
- net/minecraft/network/NetworkManager.java          | 327 +++++++------
+ net/minecraft/network/NetworkManager.java          | 334 +++++++-------
  net/minecraft/network/NetworkSystem.java           |  11 +-
  net/minecraft/network/PacketBuffer.java            |   6 +-
  .../network/play/INetHandlerPlayClient.java        |   4 +-
@@ -625,7 +625,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |   8 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 621 files changed, 7031 insertions(+), 5715 deletions(-)
+ 621 files changed, 7038 insertions(+), 5715 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -25701,7 +25701,7 @@ index 3301ef8..2edd273 100644
              catch (NoSuchFieldError var1)
              {
 diff --git a/net/minecraft/network/NetworkManager.java b/net/minecraft/network/NetworkManager.java
-index ee166ff..13b43bb 100644
+index ee166ff..72d465f 100644
 --- a/net/minecraft/network/NetworkManager.java
 +++ b/net/minecraft/network/NetworkManager.java
 @@ -1,17 +1,7 @@
@@ -25749,12 +25749,13 @@ index ee166ff..13b43bb 100644
  import org.apache.commons.lang3.ArrayUtils;
  import org.apache.commons.lang3.Validate;
  import org.apache.logging.log4j.LogManager;
-@@ -41,38 +27,45 @@ import org.apache.logging.log4j.Logger;
+@@ -41,38 +27,46 @@ import org.apache.logging.log4j.Logger;
  import org.apache.logging.log4j.Marker;
  import org.apache.logging.log4j.MarkerManager;
  
 +import tk.wurst_client.WurstClient;
 +import tk.wurst_client.events.PacketInputEvent;
++import tk.wurst_client.events.PacketOutputEvent;
 +
 +import com.google.common.collect.Queues;
 +import com.google.common.util.concurrent.ThreadFactoryBuilder;
@@ -25803,7 +25804,7 @@ index ee166ff..13b43bb 100644
      /** The queue for packets that require transmission */
      private final Queue outboundPacketsQueue = Queues.newConcurrentLinkedQueue();
  
-@@ -89,59 +82,74 @@ public class NetworkManager extends SimpleChannelInboundHandler
+@@ -89,59 +83,74 @@ public class NetworkManager extends SimpleChannelInboundHandler
      private IChatComponent terminationReason;
      private boolean isEncrypted;
      private boolean disconnected;
@@ -25897,7 +25898,7 @@ index ee166ff..13b43bb 100644
              {
                  ;
              }
-@@ -149,110 +157,97 @@ public class NetworkManager extends SimpleChannelInboundHandler
+@@ -149,110 +158,103 @@ public class NetworkManager extends SimpleChannelInboundHandler
      }
  
      /**
@@ -25924,6 +25925,12 @@ index ee166ff..13b43bb 100644
 -            this.dispatchPacket(packetIn, (GenericFutureListener[])null);
 -        }
 -        else
++		// TODO: Client
++		PacketOutputEvent event = new PacketOutputEvent(packetIn);
++		WurstClient.INSTANCE.events.fire(event);
++		if(event.isCancelled())
++			return;
++		
 +		if(channel != null && channel.isOpen())
          {
 -            this.outboundPacketsQueue.add(new NetworkManager.InboundHandlerTuplePacketListener(packetIn, (GenericFutureListener[])null));
@@ -26048,7 +26055,7 @@ index ee166ff..13b43bb 100644
          }
      }
  
-@@ -261,14 +256,12 @@ public class NetworkManager extends SimpleChannelInboundHandler
+@@ -261,14 +263,12 @@ public class NetworkManager extends SimpleChannelInboundHandler
       */
      public void processReceivedPackets()
      {
@@ -26067,7 +26074,7 @@ index ee166ff..13b43bb 100644
      }
  
      /**
-@@ -276,47 +269,50 @@ public class NetworkManager extends SimpleChannelInboundHandler
+@@ -276,47 +276,50 @@ public class NetworkManager extends SimpleChannelInboundHandler
       */
      public SocketAddress getRemoteAddress()
      {
@@ -26129,7 +26136,7 @@ index ee166ff..13b43bb 100644
                  {
                      ;
                  }
-@@ -325,61 +321,64 @@ public class NetworkManager extends SimpleChannelInboundHandler
+@@ -325,61 +328,64 @@ public class NetworkManager extends SimpleChannelInboundHandler
                  {
                      p_initChannel_1_.config().setOption(ChannelOption.TCP_NODELAY, Boolean.valueOf(false));
                  }
@@ -26209,7 +26216,7 @@ index ee166ff..13b43bb 100644
      }
  
      /**
-@@ -387,7 +386,7 @@ public class NetworkManager extends SimpleChannelInboundHandler
+@@ -387,7 +393,7 @@ public class NetworkManager extends SimpleChannelInboundHandler
       */
      public INetHandler getNetHandler()
      {
@@ -26218,7 +26225,7 @@ index ee166ff..13b43bb 100644
      }
  
      /**
-@@ -395,7 +394,7 @@ public class NetworkManager extends SimpleChannelInboundHandler
+@@ -395,7 +401,7 @@ public class NetworkManager extends SimpleChannelInboundHandler
       */
      public IChatComponent getExitMessage()
      {
@@ -26227,7 +26234,7 @@ index ee166ff..13b43bb 100644
      }
  
      /**
-@@ -403,62 +402,47 @@ public class NetworkManager extends SimpleChannelInboundHandler
+@@ -403,62 +409,47 @@ public class NetworkManager extends SimpleChannelInboundHandler
       */
      public void disableAutoRead()
      {
@@ -26309,7 +26316,7 @@ index ee166ff..13b43bb 100644
      protected void channelRead0(ChannelHandlerContext p_channelRead0_1_, Object p_channelRead0_2_)
      {
          this.channelRead0(p_channelRead0_1_, (Packet)p_channelRead0_2_);
-@@ -468,12 +452,11 @@ public class NetworkManager extends SimpleChannelInboundHandler
+@@ -468,12 +459,11 @@ public class NetworkManager extends SimpleChannelInboundHandler
      {
          private final Packet packet;
          private final GenericFutureListener[] futureListeners;
