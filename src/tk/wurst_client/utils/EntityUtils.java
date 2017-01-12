@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityFlying;
@@ -24,100 +23,78 @@ import net.minecraft.entity.passive.EntityAmbientCreature;
 import net.minecraft.entity.passive.EntityWaterMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3d;
 import tk.wurst_client.WurstClient;
 
 public class EntityUtils
 {
+	private static final Minecraft mc = Minecraft.getMinecraft();
+	
 	public static boolean lookChanged;
 	public static float yaw;
 	public static float pitch;
 	
 	public static final TargetSettings DEFAULT_SETTINGS = new TargetSettings();
 	
-	public synchronized static boolean faceEntityClient(Entity entity)
+	public static boolean faceEntityClient(Entity entity)
 	{
 		float[] rotations = getRotationsNeeded(entity);
-		if(rotations != null)
-		{
-			EntityPlayerSP player = Minecraft.getMinecraft().player;
-			player.rotationYaw =
-				limitAngleChange(player.prevRotationYaw, rotations[0], 55);
-			player.rotationPitch = rotations[1];
-			return player.rotationYaw == rotations[0];
-		}
-		return true;
-	}
-	
-	public synchronized static boolean faceEntityPacket(Entity entity)
-	{
-		float[] rotations = getRotationsNeeded(entity);
-		if(rotations != null)
-		{
-			yaw = limitAngleChange(yaw, rotations[0], 30);
-			pitch = rotations[1];
-			return yaw == rotations[0];
-		}
-		return true;
-	}
-	
-	public static float[] getRotationsNeeded(Entity entity)
-	{
-		if(entity == null)
-			return null;
-		double diffX = entity.posX - Minecraft.getMinecraft().player.posX;
-		double diffY;
-		if(entity instanceof EntityLivingBase)
-		{
-			EntityLivingBase entityLivingBase = (EntityLivingBase)entity;
-			diffY =
-				entityLivingBase.posY + entityLivingBase.getEyeHeight() * 0.9
-					- (Minecraft.getMinecraft().player.posY
-						+ Minecraft.getMinecraft().player.getEyeHeight());
-		}else
-			diffY = (entity.boundingBox.minY + entity.boundingBox.maxY) / 2.0D
-				- (Minecraft.getMinecraft().player.posY
-					+ Minecraft.getMinecraft().player.getEyeHeight());
-		double diffZ = entity.posZ - Minecraft.getMinecraft().player.posZ;
-		double dist = MathHelper.sqrt(diffX * diffX + diffZ * diffZ);
-		float yaw =
-			(float)(Math.atan2(diffZ, diffX) * 180.0D / Math.PI) - 90.0F;
-		float pitch = (float)-(Math.atan2(diffY, dist) * 180.0D / Math.PI);
-		return new float[]{
-			Minecraft.getMinecraft().player.rotationYaw
-				+ MathHelper.wrapDegrees(
-					yaw - Minecraft.getMinecraft().player.rotationYaw),
-			Minecraft.getMinecraft().player.rotationPitch
-				+ MathHelper.wrapDegrees(
-					pitch - Minecraft.getMinecraft().player.rotationPitch)};
 		
+		mc.player.rotationYaw =
+			limitAngleChange(mc.player.prevRotationYaw, rotations[0], 30);
+		mc.player.rotationPitch = rotations[1];
+		
+		return mc.player.rotationYaw == rotations[0];
 	}
 	
-	public final static float limitAngleChange(final float current,
-		final float intended, final float maxChange)
+	public static boolean faceEntityPacket(Entity entity)
+	{
+		float[] rotations = getRotationsNeeded(entity);
+		
+		yaw = limitAngleChange(yaw, rotations[0], 30);
+		pitch = rotations[1];
+		
+		return yaw == rotations[0];
+	}
+	
+	private static float[] getRotationsNeeded(Entity entity)
+	{
+		Vec3d vec = entity.boundingBox.getCenter();
+		
+		double diffX = vec.xCoord - mc.player.posX;
+		double diffY = vec.yCoord - (mc.player.posY + mc.player.getEyeHeight());
+		double diffZ = vec.zCoord - mc.player.posZ;
+		
+		double dist = MathHelper.sqrt(diffX * diffX + diffZ * diffZ);
+		
+		float yaw = (float)Math.toDegrees(Math.atan2(diffZ, diffX)) - 90F;
+		float pitch = (float)-Math.toDegrees(Math.atan2(diffY, dist));
+		
+		return new float[]{MathHelper.wrapDegrees(yaw),
+			MathHelper.wrapDegrees(pitch)};
+	}
+	
+	public final static float limitAngleChange(float current, float intended,
+		float maxChange)
 	{
 		float change = intended - current;
-		if(change > maxChange)
-			change = maxChange;
-		else if(change < -maxChange)
-			change = -maxChange;
+		
+		change = MathHelper.clamp(change, -maxChange, maxChange);
+		
 		return current + change;
 	}
 	
-	public static int getDistanceFromMouse(Entity entity)
+	private static float getDistanceFromMouse(Entity entity)
 	{
-		float[] neededRotations = getRotationsNeeded(entity);
-		if(neededRotations != null)
-		{
-			float neededYaw =
-				Minecraft.getMinecraft().player.rotationYaw
-					- neededRotations[0],
-				neededPitch = Minecraft.getMinecraft().player.rotationPitch
-					- neededRotations[1];
-			float distanceFromMouse = MathHelper
-				.sqrt(neededYaw * neededYaw + neededPitch * neededPitch);
-			return (int)distanceFromMouse;
-		}
-		return -1;
+		float[] needed = getRotationsNeeded(entity);
+		
+		float diffYaw = mc.player.rotationYaw - needed[0];
+		float diffPitch = mc.player.rotationPitch - needed[1];
+		
+		float distance =
+			MathHelper.sqrt(diffYaw * diffYaw + diffPitch * diffPitch);
+		
+		return distance;
 	}
 	
 	public static boolean isCorrectEntity(Entity en, TargetSettings settings)
@@ -132,8 +109,7 @@ public class EntityUtils
 			return false;
 		
 		// entities outside the range
-		if(Minecraft.getMinecraft().player.getDistanceToEntity(en) > settings
-			.getRange())
+		if(mc.player.getDistanceToEntity(en) > settings.getRange())
 			return false;
 		
 		// entities outside the FOV
@@ -142,8 +118,7 @@ public class EntityUtils
 			return false;
 		
 		// entities behind walls
-		if(!settings.targetBehindWalls()
-			&& !Minecraft.getMinecraft().player.canEntityBeSeen(en))
+		if(!settings.targetBehindWalls() && !mc.player.canEntityBeSeen(en))
 			return false;
 		
 		// friends
@@ -169,11 +144,9 @@ public class EntityUtils
 				
 				// invisible players
 			}else if(!settings.targetInvisiblePlayers())
-			{
 				if(((EntityPlayer)en).isInvisible())
 					return false;
-			}
-			
+				
 			// team players
 			if(settings.targetTeams() && !checkName(
 				((EntityPlayer)en).getDisplayName().getFormattedText(),
@@ -181,12 +154,11 @@ public class EntityUtils
 				return false;
 			
 			// the user
-			if(en == Minecraft.getMinecraft().player)
+			if(en == mc.player)
 				return false;
 			
 			// Freecam entity
-			if(((EntityPlayer)en).getName()
-				.equals(Minecraft.getMinecraft().player.getName()))
+			if(((EntityPlayer)en).getName().equals(mc.player.getName()))
 				return false;
 			
 			// mobs
@@ -199,16 +171,16 @@ public class EntityUtils
 					return false;
 				
 				// animals
-			}else if((en instanceof EntityAgeable
+			}else if(en instanceof EntityAgeable
 				|| en instanceof EntityAmbientCreature
-				|| en instanceof EntityWaterMob))
+				|| en instanceof EntityWaterMob)
 			{
 				if(!settings.targetAnimals())
 					return false;
 				
 				// monsters
-			}else if((en instanceof EntityMob || en instanceof EntitySlime
-				|| en instanceof EntityFlying))
+			}else if(en instanceof EntityMob || en instanceof EntitySlime
+				|| en instanceof EntityFlying)
 			{
 				if(!settings.targetMonsters())
 					return false;
@@ -258,9 +230,8 @@ public class EntityUtils
 	{
 		ArrayList<Entity> validEntities = new ArrayList<>();
 		
-		for(Object o : Minecraft.getMinecraft().world.loadedEntityList)
+		for(Entity entity : mc.world.loadedEntityList)
 		{
-			Entity entity = (Entity)o;
 			if(isCorrectEntity(entity, settings))
 				validEntities.add(entity);
 			
@@ -273,63 +244,49 @@ public class EntityUtils
 	
 	public static Entity getClosestEntity(TargetSettings settings)
 	{
-		Minecraft mc = Minecraft.getMinecraft();
 		Entity closestEntity = null;
 		
-		for(Object o : Minecraft.getMinecraft().world.loadedEntityList)
-		{
-			Entity entity = (Entity)o;
+		for(Entity entity : mc.world.loadedEntityList)
 			if(isCorrectEntity(entity, settings) && (closestEntity == null
 				|| mc.player.getDistanceToEntity(entity) < mc.player
 					.getDistanceToEntity(closestEntity)))
 				closestEntity = entity;
-		}
-		
+			
 		return closestEntity;
 	}
 	
 	public static Entity getClosestEntityOtherThan(Entity otherEntity,
 		TargetSettings settings)
 	{
-		Minecraft mc = Minecraft.getMinecraft();
 		Entity closestEnemy = null;
 		
-		for(Object o : Minecraft.getMinecraft().world.loadedEntityList)
-		{
-			Entity entity = (Entity)o;
+		for(Entity entity : mc.world.loadedEntityList)
 			if(isCorrectEntity(entity, settings) && entity != otherEntity
 				&& (closestEnemy == null
 					|| mc.player.getDistanceToEntity(entity) < mc.player
 						.getDistanceToEntity(closestEnemy)))
 				closestEnemy = entity;
-		}
-		
+			
 		return closestEnemy;
 	}
 	
 	public static Entity getEntityWithName(String name, TargetSettings settings)
 	{
-		for(Object o : Minecraft.getMinecraft().world.loadedEntityList)
-		{
-			Entity entity = (Entity)o;
+		for(Entity entity : mc.world.loadedEntityList)
 			if(isCorrectEntity(entity, settings)
 				&& entity.getName().equalsIgnoreCase(name))
 				return entity;
-		}
-		
+			
 		return null;
 	}
 	
 	public static Entity getEntityWithId(UUID id, TargetSettings settings)
 	{
-		for(Object o : Minecraft.getMinecraft().world.loadedEntityList)
-		{
-			Entity entity = (Entity)o;
+		for(Entity entity : mc.world.loadedEntityList)
 			if(isCorrectEntity(entity, settings)
 				&& entity.getUniqueID().equals(id))
 				return entity;
-		}
-		
+			
 		return null;
 	}
 	

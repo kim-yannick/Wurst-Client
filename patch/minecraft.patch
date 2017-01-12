@@ -1,6 +1,6 @@
-From 614b4100411b4a0f3efa3507cd8bc6bc936ee7f9 Mon Sep 17 00:00:00 2001
+From 204a5b078c5ec12a27f6ef14b70f7365a062bedd Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Thu, 12 Jan 2017 15:38:51 +0100
+Date: Thu, 12 Jan 2017 16:45:54 +0100
 Subject: [PATCH] mod
 
 ---
@@ -507,7 +507,7 @@ Subject: [PATCH] mod
  net/minecraft/tileentity/TileEntityMobSpawner.java |   2 +-
  net/minecraft/tileentity/TileEntityNote.java       |   6 +-
  net/minecraft/tileentity/TileEntitySign.java       |  21 +-
- net/minecraft/util/AxisAlignedBB.java              |  26 +-
+ net/minecraft/util/AxisAlignedBB.java              |  34 +-
  net/minecraft/util/BlockPos.java                   |  46 +-
  net/minecraft/util/ChatComponentProcessor.java     |   8 +-
  net/minecraft/util/ChatComponentScore.java         |   4 +-
@@ -539,7 +539,7 @@ Subject: [PATCH] mod
  net/minecraft/world/Explosion.java                 |  18 +-
  net/minecraft/world/SpawnerAnimals.java            |  19 +-
  net/minecraft/world/Teleporter.java                |  22 +-
- net/minecraft/world/World.java                     | 181 ++++----
+ net/minecraft/world/World.java                     | 183 ++++----
  net/minecraft/world/WorldManager.java              |   6 +-
  net/minecraft/world/WorldProvider.java             |  10 +-
  net/minecraft/world/WorldProviderEnd.java          |   8 +-
@@ -625,7 +625,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |   8 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 621 files changed, 7024 insertions(+), 5714 deletions(-)
+ 621 files changed, 7033 insertions(+), 5715 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -29586,10 +29586,25 @@ index 3d886a9..02cebe7 100644
              if (var4 != null && var4.getChatClickEvent() != null)
              {
 diff --git a/net/minecraft/util/AxisAlignedBB.java b/net/minecraft/util/AxisAlignedBB.java
-index 71114ed..23938f3 100644
+index 71114ed..606749e 100644
 --- a/net/minecraft/util/AxisAlignedBB.java
 +++ b/net/minecraft/util/AxisAlignedBB.java
-@@ -245,7 +245,7 @@ public class AxisAlignedBB
+@@ -30,6 +30,14 @@ public class AxisAlignedBB
+         this.maxZ = (double)p_i45554_2_.getZ();
+     }
+ 
++	// TODO: Client
++	public Vec3d getCenter()
++	{
++		return new Vec3d(this.minX + (this.maxX - this.minX) * 0.5D,
++			this.minY + (this.maxY - this.minY) * 0.5D,
++			this.minZ + (this.maxZ - this.minZ) * 0.5D);
++	}
++
+     /**
+      * Adds the coordinates to the bounding box extending it if the point lies outside the current ranges. Args: x, y, z
+      */
+@@ -245,7 +253,7 @@ public class AxisAlignedBB
      /**
       * Returns if the supplied Vec3D is completely inside the bounding box
       */
@@ -29598,7 +29613,7 @@ index 71114ed..23938f3 100644
      {
          return vec.xCoord > this.minX && vec.xCoord < this.maxX ? (vec.yCoord > this.minY && vec.yCoord < this.maxY ? vec.zCoord > this.minZ && vec.zCoord < this.maxZ : false) : false;
      }
-@@ -275,14 +275,14 @@ public class AxisAlignedBB
+@@ -275,14 +283,14 @@ public class AxisAlignedBB
          return new AxisAlignedBB(var7, var9, var11, var13, var15, var17);
      }
  
@@ -29620,7 +29635,7 @@ index 71114ed..23938f3 100644
  
          if (!this.isVecInYZ(var3))
          {
-@@ -314,7 +314,7 @@ public class AxisAlignedBB
+@@ -314,7 +322,7 @@ public class AxisAlignedBB
              var8 = null;
          }
  
@@ -29629,7 +29644,7 @@ index 71114ed..23938f3 100644
  
          if (var3 != null)
          {
-@@ -379,14 +379,14 @@ public class AxisAlignedBB
+@@ -379,14 +387,14 @@ public class AxisAlignedBB
                  var10 = EnumFacing.SOUTH;
              }
  
@@ -29646,7 +29661,7 @@ index 71114ed..23938f3 100644
      {
          return vec == null ? false : vec.yCoord >= this.minY && vec.yCoord <= this.maxY && vec.zCoord >= this.minZ && vec.zCoord <= this.maxZ;
      }
-@@ -394,7 +394,7 @@ public class AxisAlignedBB
+@@ -394,7 +402,7 @@ public class AxisAlignedBB
      /**
       * Checks if the specified vector is within the XZ dimensions of the bounding box. Args: Vec3D
       */
@@ -29655,7 +29670,7 @@ index 71114ed..23938f3 100644
      {
          return vec == null ? false : vec.xCoord >= this.minX && vec.xCoord <= this.maxX && vec.zCoord >= this.minZ && vec.zCoord <= this.maxZ;
      }
-@@ -402,7 +402,7 @@ public class AxisAlignedBB
+@@ -402,7 +410,7 @@ public class AxisAlignedBB
      /**
       * Checks if the specified vector is within the XY dimensions of the bounding box. Args: Vec3D
       */
@@ -31701,7 +31716,7 @@ index fc9a24e..91953aa 100644
              }
  
 diff --git a/net/minecraft/world/World.java b/net/minecraft/world/World.java
-index 18e9ecf..fca68b6 100644
+index 18e9ecf..ac5b028 100644
 --- a/net/minecraft/world/World.java
 +++ b/net/minecraft/world/World.java
 @@ -3,6 +3,7 @@ package net.minecraft.world;
@@ -31732,6 +31747,15 @@ index 18e9ecf..fca68b6 100644
  import net.minecraft.village.VillageCollection;
  import net.minecraft.world.biome.BiomeGenBase;
  import net.minecraft.world.biome.WorldChunkManager;
+@@ -62,7 +64,7 @@ public abstract class World implements IBlockAccess
+     protected boolean scheduledUpdatesAreImmediate;
+ 
+     /** A list of all Entities in all currently-loaded chunks */
+-    public final List loadedEntityList = Lists.newArrayList();
++    public final List<Entity> loadedEntityList = Lists.<Entity>newArrayList();
+     protected final List unloadedEntityList = Lists.newArrayList();
+ 
+     /** A list of the loaded tile entities in the world */
 @@ -82,12 +84,15 @@ public abstract class World implements IBlockAccess
      /** How much light is subtracted from full daylight */
      private int skylightSubtracted;
