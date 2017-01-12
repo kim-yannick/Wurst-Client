@@ -8,7 +8,6 @@
 package tk.wurst_client.features.mods;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.RayTraceResult.Type;
 import tk.wurst_client.events.listeners.RenderListener;
@@ -43,7 +42,7 @@ public class OverlayMod extends Mod implements RenderListener
 		Block mouseOverBlock =
 			mc.world.getBlockState(mc.objectMouseOver.getBlockPos()).getBlock();
 		if(Block.getIdFromBlock(mouseOverBlock) != 0)
-			RenderUtils.nukerBox(pos, PlayerControllerMP.curBlockDamageMP);
+			RenderUtils.nukerBox(pos, mc.playerController.curBlockDamageMP);
 	}
 	
 	@Override

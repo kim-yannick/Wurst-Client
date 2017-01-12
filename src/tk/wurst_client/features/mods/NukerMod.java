@@ -12,7 +12,6 @@ import java.util.HashSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
 import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
 import net.minecraft.util.BlockPos;
@@ -39,9 +38,6 @@ import tk.wurst_client.utils.RenderUtils;
 public class NukerMod extends Mod
 	implements LeftClickListener, UpdateListener, RenderListener
 {
-	private float currentDamage;
-	private EnumFacing side = EnumFacing.UP;
-	private int blockHitDelay = 0;
 	public int id = 0;
 	private BlockPos pos;
 	private int oldSlot = -1;
@@ -113,7 +109,7 @@ public class NukerMod extends Mod
 		}
 		
 		// reset damage
-		currentDamage = 0;
+		mc.playerController.resetBlockRemoving();
 		
 		// reset pos
 		pos = null;
@@ -169,81 +165,25 @@ public class NukerMod extends Mod
 			}
 			
 			pos = null;
+			mc.playerController.resetBlockRemoving();
 			return;
 		}
 		
-		// wait for timer
-		if(blockHitDelay > 0)
-		{
-			blockHitDelay--;
-			return;
-		}
+		// set current pos
+		pos = newPos;
 		
-		// face block
-		BlockUtils.faceBlockPacket(newPos);
-		
-		// start breaking new block
-		if(!newPos.equals(pos))
-		{
-			// reset damage
-			currentDamage = 0;
-			
-			// set current pos
-			pos = newPos;
-			
-			// start breaking
-			mc.player.connection.sendPacket(new CPacketPlayerDigging(
-				Action.START_DESTROY_BLOCK, pos, side));
-			
-			// check if block can be broken instantly
-			if(mc.player.capabilities.isCreativeMode
-				|| BlockUtils.getHardness(pos) >= 1)
-			{
-				// swing arm
-				mc.player.swingArm();
-				
-				// destroy block
-				mc.playerController.onPlayerDestroyBlock(pos, null);
-				
-				return;
-			}
-			
-			// save old slot
-			if(wurst.mods.autoToolMod.isActive() && oldSlot == -1)
-				oldSlot = mc.player.inventory.currentItem;
-		}
+		// save old slot
+		if(wurst.mods.autoToolMod.isActive() && oldSlot == -1)
+			oldSlot = mc.player.inventory.currentItem;
 		
 		// set slot
 		wurst.mods.autoToolMod.setSlot(pos);
 		
-		// swing arm
-		mc.player.connection.sendPacket(new CPacketAnimation());
-		
-		// update damage
-		currentDamage += BlockUtils.getHardness(pos);
-		
-		// send damage to server
-		mc.world.sendBlockBreakProgress(mc.player.getEntityId(), pos,
-			(int)(currentDamage * 10) - 1);
-		
-		// check if block is ready to be destroyed
-		if(currentDamage >= 1)
+		if(!BlockUtils.breakBlockLegit(pos))
 		{
-			// destroy block
-			mc.player.connection.sendPacket(
-				new CPacketPlayerDigging(Action.STOP_DESTROY_BLOCK, pos, side));
-			mc.playerController.onPlayerDestroyBlock(pos, null);
-			
-			// reset delay
-			blockHitDelay = 4;
-			
-			// reset damage
-			currentDamage = 0;
-			
-			// FastBreak instant mode
-		}else if(wurst.mods.fastBreakMod.shouldSpamPackets())
-			mc.player.connection.sendPacket(
-				new CPacketPlayerDigging(Action.STOP_DESTROY_BLOCK, pos, side));
+			pos = null;
+			mc.playerController.resetBlockRemoving();
+		}
 	}
 	
 	@Override
@@ -257,7 +197,7 @@ public class NukerMod extends Mod
 			|| BlockUtils.getHardness(pos) >= 1)
 			RenderUtils.nukerBox(pos, 1);
 		else
-			RenderUtils.nukerBox(pos, currentDamage);
+			RenderUtils.nukerBox(pos, mc.playerController.curBlockDamageMP);
 	}
 	
 	@Override
@@ -352,11 +292,10 @@ public class NukerMod extends Mod
 	
 	private void nukeAll()
 	{
-		// reset timer
-		blockHitDelay = 0;
-		
-		// reset current pos
+		// reset pos & damage
 		pos = null;
+		mc.playerController.resetBlockRemoving();
+		
 		double closestDistanceSq = Double.POSITIVE_INFINITY;
 		
 		// prepare range check
