@@ -201,6 +201,46 @@ public final class BlockUtils
 		return false;
 	}
 	
+	public static boolean rightClickBlockLegit(BlockPos pos)
+	{
+		Vec3d eyesPos = RotationUtils.getEyesPos();
+		
+		for(EnumFacing side : EnumFacing.values())
+		{
+			Vec3d posVec = new Vec3d(pos).addVector(0.5, 0.5, 0.5);
+			Vec3d hitVec =
+				posVec.add(new Vec3d(side.getDirectionVec()).scale(0.5));
+			
+			// check if hitVec is within range (4.25 blocks)
+			if(eyesPos.squareDistanceTo(hitVec) > 18.0625)
+				continue;
+			
+			// check if side is facing towards player
+			if(eyesPos.squareDistanceTo(posVec) <= eyesPos
+				.squareDistanceTo(hitVec))
+				continue;
+			
+			// check line of sight
+			if(mc.world.rayTraceBlocks(eyesPos, hitVec, false, true,
+				false) != null)
+				continue;
+			
+			// face block
+			if(!RotationUtils.faceVectorPacket(hitVec))
+				return true;
+			
+			// place block
+			mc.playerController.processRightClickBlock(mc.player, mc.world,
+				mc.player.getCurrentEquippedItem(), pos, side, hitVec);
+			mc.player.swingArm();
+			mc.rightClickDelayTimer = 4;
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
 	@Deprecated
 	public static void faceBlockClient(BlockPos blockPos)
 	{
