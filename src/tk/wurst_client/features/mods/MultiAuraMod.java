@@ -122,7 +122,6 @@ public class MultiAuraMod extends Mod implements UpdateListener
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
-		RotationUtils.lookChanged = false;
 	}
 	
 	@Override
@@ -138,10 +137,7 @@ public class MultiAuraMod extends Mod implements UpdateListener
 		// get entities
 		ArrayList<Entity> entities =
 			EntityUtils.getValidEntities(targetSettings);
-		
-		// head rotation
-		RotationUtils.lookChanged = !entities.isEmpty();
-		if(!RotationUtils.lookChanged)
+		if(entities.isEmpty())
 			return;
 		
 		// AutoSword

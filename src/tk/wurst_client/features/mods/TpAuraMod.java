@@ -99,10 +99,9 @@ public class TpAuraMod extends Mod implements UpdateListener
 	@Override
 	public Feature[] getSeeAlso()
 	{
-		return new Feature[]{wurst.special.targetSpf,
-			wurst.mods.killauraMod, wurst.mods.killauraLegitMod,
-			wurst.mods.multiAuraMod, wurst.mods.clickAuraMod,
-			wurst.mods.triggerBotMod};
+		return new Feature[]{wurst.special.targetSpf, wurst.mods.killauraMod,
+			wurst.mods.killauraLegitMod, wurst.mods.multiAuraMod,
+			wurst.mods.clickAuraMod, wurst.mods.triggerBotMod};
 	}
 	
 	@Override
@@ -126,7 +125,6 @@ public class TpAuraMod extends Mod implements UpdateListener
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
-		RotationUtils.lookChanged = false;
 	}
 	
 	@Override
@@ -137,10 +135,7 @@ public class TpAuraMod extends Mod implements UpdateListener
 		
 		// set entity
 		Entity entity = EntityUtils.getClosestEntity(targetSettings);
-		
-		// head rotation
-		RotationUtils.lookChanged = entity != null;
-		if(!RotationUtils.lookChanged)
+		if(entity == null)
 			return;
 		
 		// teleport

@@ -216,7 +216,6 @@ public class KillauraMod extends Mod implements UpdateListener
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
-		RotationUtils.lookChanged = false;
 	}
 	
 	@Override
@@ -231,10 +230,7 @@ public class KillauraMod extends Mod implements UpdateListener
 		
 		// set entity
 		Entity entity = EntityUtils.getClosestEntity(targetSettings);
-		
-		// head rotation
-		RotationUtils.lookChanged = entity != null;
-		if(!RotationUtils.lookChanged)
+		if(entity == null)
 			return;
 		
 		// AutoSword
