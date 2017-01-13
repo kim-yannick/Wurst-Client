@@ -1,6 +1,6 @@
-From ea0ea02c625ccefea5af7cf28c885528228d77dc Mon Sep 17 00:00:00 2001
+From 35b577e79f2106045db7b746b352896a8d771dd8 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 13 Jan 2017 12:28:30 +0100
+Date: Fri, 13 Jan 2017 16:11:56 +0100
 Subject: [PATCH] mod
 
 ---
@@ -17,14 +17,14 @@ Subject: [PATCH] mod
  net/minecraft/block/BlockCarpet.java               |   2 +-
  net/minecraft/block/BlockCauldron.java             |   2 +-
  net/minecraft/block/BlockChest.java                |  50 +-
- net/minecraft/block/BlockCocoa.java                |   4 +-
- net/minecraft/block/BlockCrops.java                |  16 +-
+ net/minecraft/block/BlockCocoa.java                |   6 +-
+ net/minecraft/block/BlockCrops.java                |  18 +-
  net/minecraft/block/BlockDaylightDetector.java     |   2 +-
  net/minecraft/block/BlockDeadBush.java             |   4 +-
  net/minecraft/block/BlockDirt.java                 |   4 +-
  net/minecraft/block/BlockDispenser.java            |  10 +-
  net/minecraft/block/BlockDoor.java                 |  28 +-
- net/minecraft/block/BlockDoublePlant.java          |  40 +-
+ net/minecraft/block/BlockDoublePlant.java          |  42 +-
  net/minecraft/block/BlockDragonEgg.java            |   6 +-
  net/minecraft/block/BlockDynamicLiquid.java        |  28 +-
  net/minecraft/block/BlockEndPortalFrame.java       |   2 +-
@@ -38,14 +38,14 @@ Subject: [PATCH] mod
  net/minecraft/block/BlockFlowerPot.java            |  30 +-
  net/minecraft/block/BlockFurnace.java              |  12 +-
  net/minecraft/block/BlockGlowstone.java            |   2 +-
- net/minecraft/block/BlockGrass.java                |  28 +-
+ net/minecraft/block/BlockGrass.java                |  30 +-
  net/minecraft/block/BlockIce.java                  |   6 +-
  net/minecraft/block/BlockLadder.java               |   2 +-
  net/minecraft/block/BlockLeaves.java               |   4 +-
  net/minecraft/block/BlockLever.java                |  12 +-
  net/minecraft/block/BlockLilyPad.java              |   4 +-
  net/minecraft/block/BlockLiquid.java               |  51 ++-
- net/minecraft/block/BlockMushroom.java             |   8 +-
+ net/minecraft/block/BlockMushroom.java             |  10 +-
  net/minecraft/block/BlockMycelium.java             |  16 +-
  net/minecraft/block/BlockNetherWart.java           |   2 +-
  net/minecraft/block/BlockObsidian.java             |   2 +-
@@ -63,7 +63,7 @@ Subject: [PATCH] mod
  net/minecraft/block/BlockRedstoneOre.java          |  18 +-
  net/minecraft/block/BlockRedstoneWire.java         |  32 +-
  net/minecraft/block/BlockReed.java                 |  14 +-
- net/minecraft/block/BlockSapling.java              |   4 +-
+ net/minecraft/block/BlockSapling.java              |   6 +-
  net/minecraft/block/BlockSeaLantern.java           |   2 +-
  net/minecraft/block/BlockSilverfish.java           |   6 +-
  net/minecraft/block/BlockSkull.java                |  10 +-
@@ -74,15 +74,16 @@ Subject: [PATCH] mod
  net/minecraft/block/BlockStairs.java               | 116 ++---
  net/minecraft/block/BlockStandingSign.java         |   2 +-
  net/minecraft/block/BlockStaticLiquid.java         |   6 +-
- net/minecraft/block/BlockStem.java                 |   6 +-
+ net/minecraft/block/BlockStem.java                 |   8 +-
  net/minecraft/block/BlockStone.java                |   2 +-
- net/minecraft/block/BlockTallGrass.java            |   8 +-
+ net/minecraft/block/BlockTallGrass.java            |  10 +-
  net/minecraft/block/BlockTorch.java                |   6 +-
  net/minecraft/block/BlockTrapDoor.java             |   6 +-
  net/minecraft/block/BlockTripWire.java             |   4 +-
  net/minecraft/block/BlockTripWireHook.java         |   6 +-
  net/minecraft/block/BlockVine.java                 |  24 +-
  net/minecraft/block/BlockWall.java                 |  10 +-
+ net/minecraft/block/IGrowable.java                 |   2 +-
  net/minecraft/block/material/Material.java         |   2 +-
  .../block/state/BlockPistonStructureHelper.java    |   6 +-
  net/minecraft/client/LoadingScreenRenderer.java    |  10 +-
@@ -416,7 +417,7 @@ Subject: [PATCH] mod
  net/minecraft/item/ItemBoat.java                   |  20 +-
  net/minecraft/item/ItemBucket.java                 |  22 +-
  net/minecraft/item/ItemDoor.java                   |  10 +-
- net/minecraft/item/ItemDye.java                    |   4 +-
+ net/minecraft/item/ItemDye.java                    |   6 +-
  net/minecraft/item/ItemEditableBook.java           |   4 +-
  net/minecraft/item/ItemEnderEye.java               |   6 +-
  net/minecraft/item/ItemFireball.java               |   2 +-
@@ -625,7 +626,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |   8 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 621 files changed, 7023 insertions(+), 5715 deletions(-)
+ 622 files changed, 7033 insertions(+), 5725 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -1206,7 +1207,7 @@ index 12edff7..3ad2b08 100644
  
      private boolean isOcelotSittingOnChest(World worldIn, BlockPos p_176453_2_)
 diff --git a/net/minecraft/block/BlockCocoa.java b/net/minecraft/block/BlockCocoa.java
-index 2dfc6a2..e5c2e01 100644
+index 2dfc6a2..087e6f9 100644
 --- a/net/minecraft/block/BlockCocoa.java
 +++ b/net/minecraft/block/BlockCocoa.java
 @@ -52,7 +52,7 @@ public class BlockCocoa extends BlockDirectional implements IGrowable
@@ -1227,8 +1228,17 @@ index 2dfc6a2..e5c2e01 100644
          this.dropBlockAsItem(worldIn, p_176500_2_, p_176500_3_, 0);
      }
  
+@@ -167,7 +167,7 @@ public class BlockCocoa extends BlockDirectional implements IGrowable
+         return EnumDyeColor.BROWN.getDyeColorDamage();
+     }
+ 
+-    public boolean isStillGrowing(World worldIn, BlockPos p_176473_2_, IBlockState p_176473_3_, boolean p_176473_4_)
++    public boolean canGrow(World worldIn, BlockPos p_176473_2_, IBlockState p_176473_3_, boolean p_176473_4_)
+     {
+         return ((Integer)p_176473_3_.getValue(field_176501_a)).intValue() < 2;
+     }
 diff --git a/net/minecraft/block/BlockCrops.java b/net/minecraft/block/BlockCrops.java
-index b6831f7..ee7736b 100644
+index b6831f7..771f195 100644
 --- a/net/minecraft/block/BlockCrops.java
 +++ b/net/minecraft/block/BlockCrops.java
 @@ -43,7 +43,7 @@ public class BlockCrops extends BlockBush implements IGrowable
@@ -1282,6 +1292,15 @@ index b6831f7..ee7736b 100644
      }
  
      protected Item getSeed()
+@@ -185,7 +185,7 @@ public class BlockCrops extends BlockBush implements IGrowable
+         return this.getSeed();
+     }
+ 
+-    public boolean isStillGrowing(World worldIn, BlockPos p_176473_2_, IBlockState p_176473_3_, boolean p_176473_4_)
++    public boolean canGrow(World worldIn, BlockPos p_176473_2_, IBlockState p_176473_3_, boolean p_176473_4_)
+     {
+         return ((Integer)p_176473_3_.getValue(AGE)).intValue() < 7;
+     }
 diff --git a/net/minecraft/block/BlockDaylightDetector.java b/net/minecraft/block/BlockDaylightDetector.java
 index 21ba855..cef790b 100644
 --- a/net/minecraft/block/BlockDaylightDetector.java
@@ -1486,7 +1505,7 @@ index 7369437..8e6d04e 100644
              if (var4.getBlock() == this)
              {
 diff --git a/net/minecraft/block/BlockDoublePlant.java b/net/minecraft/block/BlockDoublePlant.java
-index 0e6d100..9a83cf7 100644
+index 0e6d100..cd88370 100644
 --- a/net/minecraft/block/BlockDoublePlant.java
 +++ b/net/minecraft/block/BlockDoublePlant.java
 @@ -59,7 +59,7 @@ public class BlockDoublePlant extends BlockBush implements IGrowable
@@ -1613,6 +1632,15 @@ index 0e6d100..9a83cf7 100644
              return true;
          }
      }
+@@ -254,7 +254,7 @@ public class BlockDoublePlant extends BlockBush implements IGrowable
+         return this.func_176490_e(worldIn, pos).func_176936_a();
+     }
+ 
+-    public boolean isStillGrowing(World worldIn, BlockPos p_176473_2_, IBlockState p_176473_3_, boolean p_176473_4_)
++    public boolean canGrow(World worldIn, BlockPos p_176473_2_, IBlockState p_176473_3_, boolean p_176473_4_)
+     {
+         BlockDoublePlant.EnumPlantType var5 = this.func_176490_e(worldIn, p_176473_2_);
+         return var5 != BlockDoublePlant.EnumPlantType.GRASS && var5 != BlockDoublePlant.EnumPlantType.FERN;
 @@ -286,7 +286,7 @@ public class BlockDoublePlant extends BlockBush implements IGrowable
      {
          if (state.getValue(HALF_PROP) == BlockDoublePlant.EnumBlockHalf.UPPER)
@@ -2332,7 +2360,7 @@ index 549457d..34c23ba 100644
  
      /**
 diff --git a/net/minecraft/block/BlockGrass.java b/net/minecraft/block/BlockGrass.java
-index 7b6ba6a..0c81a63 100644
+index 7b6ba6a..483ca7a 100644
 --- a/net/minecraft/block/BlockGrass.java
 +++ b/net/minecraft/block/BlockGrass.java
 @@ -35,8 +35,8 @@ public class BlockGrass extends Block implements IGrowable
@@ -2376,7 +2404,7 @@ index 7b6ba6a..0c81a63 100644
                          }
                      }
                  }
-@@ -89,7 +89,7 @@ public class BlockGrass extends Block implements IGrowable
+@@ -89,10 +89,10 @@ public class BlockGrass extends Block implements IGrowable
       */
      public Item getItemDropped(IBlockState state, Random rand, int fortune)
      {
@@ -2384,7 +2412,11 @@ index 7b6ba6a..0c81a63 100644
 +        return Blocks.DIRT.getItemDropped(Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.DIRT), rand, fortune);
      }
  
-     public boolean isStillGrowing(World worldIn, BlockPos p_176473_2_, IBlockState p_176473_3_, boolean p_176473_4_)
+-    public boolean isStillGrowing(World worldIn, BlockPos p_176473_2_, IBlockState p_176473_3_, boolean p_176473_4_)
++    public boolean canGrow(World worldIn, BlockPos p_176473_2_, IBlockState p_176473_3_, boolean p_176473_4_)
+     {
+         return true;
+     }
 @@ -104,7 +104,7 @@ public class BlockGrass extends Block implements IGrowable
  
      public void grow(World worldIn, Random p_176474_2_, BlockPos p_176474_3_, IBlockState p_176474_4_)
@@ -2733,7 +2765,7 @@ index be12b92..e15cd66 100644
          else
          {
 diff --git a/net/minecraft/block/BlockMushroom.java b/net/minecraft/block/BlockMushroom.java
-index c7d9a85..081219c 100644
+index c7d9a85..e5b4da8 100644
 --- a/net/minecraft/block/BlockMushroom.java
 +++ b/net/minecraft/block/BlockMushroom.java
 @@ -78,8 +78,8 @@ public class BlockMushroom extends BlockBush implements IGrowable
@@ -2761,6 +2793,15 @@ index c7d9a85..081219c 100644
          {
              var5 = new WorldGenBigMushroom(1);
          }
+@@ -112,7 +112,7 @@ public class BlockMushroom extends BlockBush implements IGrowable
+         }
+     }
+ 
+-    public boolean isStillGrowing(World worldIn, BlockPos p_176473_2_, IBlockState p_176473_3_, boolean p_176473_4_)
++    public boolean canGrow(World worldIn, BlockPos p_176473_2_, IBlockState p_176473_3_, boolean p_176473_4_)
+     {
+         return true;
+     }
 diff --git a/net/minecraft/block/BlockMycelium.java b/net/minecraft/block/BlockMycelium.java
 index dd7c22f..fa85617 100644
 --- a/net/minecraft/block/BlockMycelium.java
@@ -3825,7 +3866,7 @@ index 9abbba2..78bdf32 100644
              return true;
          }
 diff --git a/net/minecraft/block/BlockSapling.java b/net/minecraft/block/BlockSapling.java
-index cba1d61..4ae8339 100644
+index cba1d61..a2ef619 100644
 --- a/net/minecraft/block/BlockSapling.java
 +++ b/net/minecraft/block/BlockSapling.java
 @@ -43,7 +43,7 @@ public class BlockSapling extends BlockBush implements IGrowable
@@ -3846,6 +3887,15 @@ index cba1d61..4ae8339 100644
  
          if (var8)
          {
+@@ -209,7 +209,7 @@ public class BlockSapling extends BlockBush implements IGrowable
+         }
+     }
+ 
+-    public boolean isStillGrowing(World worldIn, BlockPos p_176473_2_, IBlockState p_176473_3_, boolean p_176473_4_)
++    public boolean canGrow(World worldIn, BlockPos p_176473_2_, IBlockState p_176473_3_, boolean p_176473_4_)
+     {
+         return true;
+     }
 diff --git a/net/minecraft/block/BlockSeaLantern.java b/net/minecraft/block/BlockSeaLantern.java
 index 229d720..0fdb2bb 100644
 --- a/net/minecraft/block/BlockSeaLantern.java
@@ -4522,7 +4572,7 @@ index 473934a..de5a7c0 100644
                      }
                  }
 diff --git a/net/minecraft/block/BlockStem.java b/net/minecraft/block/BlockStem.java
-index c49d16b..2349234 100644
+index c49d16b..4eb2296 100644
 --- a/net/minecraft/block/BlockStem.java
 +++ b/net/minecraft/block/BlockStem.java
 @@ -83,7 +83,7 @@ public class BlockStem extends BlockBush implements IGrowable
@@ -4546,6 +4596,15 @@ index c49d16b..2349234 100644
                      {
                          worldIn.setBlockState(pos, this.cropBlock.getDefaultState());
                      }
+@@ -215,7 +215,7 @@ public class BlockStem extends BlockBush implements IGrowable
+         return var3 != null ? var3 : null;
+     }
+ 
+-    public boolean isStillGrowing(World worldIn, BlockPos p_176473_2_, IBlockState p_176473_3_, boolean p_176473_4_)
++    public boolean canGrow(World worldIn, BlockPos p_176473_2_, IBlockState p_176473_3_, boolean p_176473_4_)
+     {
+         return ((Integer)p_176473_3_.getValue(AGE_PROP)).intValue() != 7;
+     }
 diff --git a/net/minecraft/block/BlockStone.java b/net/minecraft/block/BlockStone.java
 index 31772f6..5e8ba6e 100644
 --- a/net/minecraft/block/BlockStone.java
@@ -4560,7 +4619,7 @@ index 31772f6..5e8ba6e 100644
  
      /**
 diff --git a/net/minecraft/block/BlockTallGrass.java b/net/minecraft/block/BlockTallGrass.java
-index 4b1d817..bbb83bd 100644
+index 4b1d817..a558a91 100644
 --- a/net/minecraft/block/BlockTallGrass.java
 +++ b/net/minecraft/block/BlockTallGrass.java
 @@ -41,7 +41,7 @@ public class BlockTallGrass extends BlockBush implements IGrowable
@@ -4581,6 +4640,15 @@ index 4b1d817..bbb83bd 100644
          }
          else
          {
+@@ -118,7 +118,7 @@ public class BlockTallGrass extends BlockBush implements IGrowable
+         }
+     }
+ 
+-    public boolean isStillGrowing(World worldIn, BlockPos p_176473_2_, IBlockState p_176473_3_, boolean p_176473_4_)
++    public boolean canGrow(World worldIn, BlockPos p_176473_2_, IBlockState p_176473_3_, boolean p_176473_4_)
+     {
+         return p_176473_3_.getValue(field_176497_a) != BlockTallGrass.EnumType.DEAD_BUSH;
+     }
 @@ -137,9 +137,9 @@ public class BlockTallGrass extends BlockBush implements IGrowable
              var5 = BlockDoublePlant.EnumPlantType.FERN;
          }
@@ -4833,6 +4901,19 @@ index afb4097..96da50b 100644
      }
  
      protected BlockState createBlockState()
+diff --git a/net/minecraft/block/IGrowable.java b/net/minecraft/block/IGrowable.java
+index e08752e..0220fd7 100644
+--- a/net/minecraft/block/IGrowable.java
++++ b/net/minecraft/block/IGrowable.java
+@@ -7,7 +7,7 @@ import net.minecraft.world.World;
+ 
+ public interface IGrowable
+ {
+-    boolean isStillGrowing(World worldIn, BlockPos p_176473_2_, IBlockState p_176473_3_, boolean p_176473_4_);
++    boolean canGrow(World worldIn, BlockPos p_176473_2_, IBlockState p_176473_3_, boolean p_176473_4_);
+ 
+     boolean canUseBonemeal(World worldIn, Random p_180670_2_, BlockPos p_180670_3_, IBlockState p_180670_4_);
+ 
 diff --git a/net/minecraft/block/material/Material.java b/net/minecraft/block/material/Material.java
 index 9d2852c..499254c 100644
 --- a/net/minecraft/block/material/Material.java
@@ -24330,7 +24411,7 @@ index 216565f..8cb0370 100644
          worldIn.setBlockState(p_179235_1_, var12.withProperty(BlockDoor.HALF_PROP, BlockDoor.EnumDoorHalf.LOWER), 2);
          worldIn.setBlockState(var11, var12.withProperty(BlockDoor.HALF_PROP, BlockDoor.EnumDoorHalf.UPPER), 2);
 diff --git a/net/minecraft/item/ItemDye.java b/net/minecraft/item/ItemDye.java
-index b41655b..adf6ae3 100644
+index b41655b..b53b791 100644
 --- a/net/minecraft/item/ItemDye.java
 +++ b/net/minecraft/item/ItemDye.java
 @@ -71,7 +71,7 @@ public class ItemDye extends Item
@@ -24342,6 +24423,15 @@ index b41655b..adf6ae3 100644
                  {
                      if (side == EnumFacing.DOWN)
                      {
+@@ -112,7 +112,7 @@ public class ItemDye extends Item
+         {
+             IGrowable var4 = (IGrowable)var3.getBlock();
+ 
+-            if (var4.isStillGrowing(worldIn, p_179234_2_, var3, worldIn.isRemote))
++            if (var4.canGrow(worldIn, p_179234_2_, var3, worldIn.isRemote))
+             {
+                 if (!worldIn.isRemote)
+                 {
 @@ -140,7 +140,7 @@ public class ItemDye extends Item
  
          Block var3 = worldIn.getBlockState(p_180617_1_).getBlock();
