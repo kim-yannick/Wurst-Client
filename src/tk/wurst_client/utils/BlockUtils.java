@@ -301,6 +301,35 @@ public final class BlockUtils
 		return false;
 	}
 	
+	public static boolean rightClickBlockSimple(BlockPos pos)
+	{
+		Vec3d eyesPos = RotationUtils.getEyesPos();
+		Vec3d posVec = new Vec3d(pos).addVector(0.5, 0.5, 0.5);
+		double distanceSqPosVec = eyesPos.squareDistanceTo(posVec);
+		
+		for(EnumFacing side : EnumFacing.values())
+		{
+			Vec3d hitVec =
+				posVec.add(new Vec3d(side.getDirectionVec()).scale(0.5));
+			double distanceSqHitVec = eyesPos.squareDistanceTo(hitVec);
+			
+			// check if hitVec is within range (6 blocks)
+			if(distanceSqHitVec > 36)
+				continue;
+			
+			// check if side is facing towards player
+			if(distanceSqHitVec >= distanceSqPosVec)
+				continue;
+			
+			// place block
+			processRightClickBlock(pos, side, hitVec);
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
 	public static BlockPos findClosestValidBlock(double range,
 		boolean ignoreVisibility, BlockValidator validator)
 	{
@@ -313,7 +342,7 @@ public final class BlockUtils
 		double rangeSq = Math.pow(range + 0.5, 2);
 		
 		// add start pos
-		queue.add(new BlockPos(mc.player).up());
+		queue.add(new BlockPos(RotationUtils.getEyesPos()));
 		
 		// find block using breadth first search
 		while(!queue.isEmpty())
@@ -357,7 +386,7 @@ public final class BlockUtils
 		double rangeSq = Math.pow(range + 0.5, 2);
 		int blockRange = (int)Math.ceil(range);
 		
-		BlockPos playerPos = new BlockPos(mc.player).up();
+		BlockPos playerPos = new BlockPos(RotationUtils.getEyesPos());
 		for(int y = -blockRange; y < blockRange + 1; y++)
 			for(int x = -blockRange; x < blockRange + 1; x++)
 				for(int z = -blockRange; z < blockRange + 1; z++)
