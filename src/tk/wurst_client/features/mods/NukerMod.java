@@ -9,10 +9,7 @@ package tk.wurst_client.features.mods;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.network.play.client.CPacketPlayerDigging;
-import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
 import tk.wurst_client.events.LeftClickEvent;
 import tk.wurst_client.events.listeners.LeftClickListener;
 import tk.wurst_client.events.listeners.RenderListener;
@@ -185,13 +182,9 @@ public class NukerMod extends Mod
 			// set current pos
 			pos = newPos;
 			
-			BlockUtils.forEachValidBlock(range.getValue(), validator, (pos) -> {
-				// break block
-				mc.player.connection.sendPacket(new CPacketPlayerDigging(
-					Action.START_DESTROY_BLOCK, pos, EnumFacing.UP));
-				mc.player.connection.sendPacket(new CPacketPlayerDigging(
-					Action.STOP_DESTROY_BLOCK, pos, EnumFacing.UP));
-			});
+			// break blocks
+			BlockUtils.forEachValidBlock(range.getValue(), validator,
+				(pos) -> BlockUtils.breakBlockPacketSpam(pos));
 			
 			return;
 		}
