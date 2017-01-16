@@ -34,7 +34,6 @@ public class NukerMod extends Mod
 {
 	public int id = 0;
 	private BlockPos pos;
-	private int oldSlot = -1;
 	private BlockValidator validator;
 	
 	public final SliderSetting range =
@@ -192,13 +191,6 @@ public class NukerMod extends Mod
 		// set current pos
 		pos = newPos;
 		
-		// save old slot
-		if(wurst.mods.autoToolMod.isActive() && oldSlot == -1)
-			oldSlot = mc.player.inventory.currentItem;
-		
-		// set slot
-		wurst.mods.autoToolMod.setSlot(pos);
-		
 		boolean successful;
 		
 		// break block
@@ -250,12 +242,5 @@ public class NukerMod extends Mod
 		mc.playerController.resetBlockRemoving();
 		
 		pos = null;
-		
-		// reset slot
-		if(oldSlot != -1)
-		{
-			mc.player.inventory.currentItem = oldSlot;
-			oldSlot = -1;
-		}
 	}
 }
