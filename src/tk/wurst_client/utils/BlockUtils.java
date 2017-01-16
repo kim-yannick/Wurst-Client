@@ -56,6 +56,23 @@ public final class BlockUtils
 			pos);
 	}
 	
+	private static void processRightClickBlock(BlockPos pos, EnumFacing side,
+		Vec3d hitVec)
+	{
+		mc.playerController.processRightClickBlock(mc.player, mc.world,
+			mc.player.getCurrentEquippedItem(), pos, side, hitVec);
+	}
+	
+	private static void swingArmClient()
+	{
+		mc.player.swingArm();
+	}
+	
+	private static void swingArmPacket()
+	{
+		mc.player.connection.sendPacket(new CPacketAnimation());
+	}
+	
 	public static boolean placeBlockLegit(BlockPos pos)
 	{
 		Vec3d eyesPos = RotationUtils.getEyesPos();
@@ -91,10 +108,8 @@ public final class BlockUtils
 				return true;
 			
 			// place block
-			mc.playerController.processRightClickBlock(mc.player, mc.world,
-				mc.player.getCurrentEquippedItem(), neighbor,
-				side.getOpposite(), hitVec);
-			mc.player.swingArm();
+			processRightClickBlock(neighbor, side.getOpposite(), hitVec);
+			swingArmClient();
 			mc.rightClickDelayTimer = 4;
 			
 			return true;
@@ -124,8 +139,7 @@ public final class BlockUtils
 				continue;
 			
 			// place block
-			mc.playerController.processRightClickBlock(mc.player, mc.world,
-				mc.player.getCurrentEquippedItem(), neighbor, side2, hitVec);
+			processRightClickBlock(neighbor, side2, hitVec);
 			
 			return true;
 		}
@@ -166,7 +180,7 @@ public final class BlockUtils
 				return false;
 			
 			// swing arm
-			mc.player.connection.sendPacket(new CPacketAnimation());
+			swingArmPacket();
 			
 			return true;
 		}
@@ -201,7 +215,7 @@ public final class BlockUtils
 				return false;
 			
 			// swing arm
-			mc.player.connection.sendPacket(new CPacketAnimation());
+			swingArmPacket();
 			
 			return true;
 		}
@@ -238,9 +252,8 @@ public final class BlockUtils
 				return true;
 			
 			// place block
-			mc.playerController.processRightClickBlock(mc.player, mc.world,
-				mc.player.getCurrentEquippedItem(), pos, side, hitVec);
-			mc.player.swingArm();
+			processRightClickBlock(pos, side, hitVec);
+			swingArmClient();
 			mc.rightClickDelayTimer = 4;
 			
 			return true;
