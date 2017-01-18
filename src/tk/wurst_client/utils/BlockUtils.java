@@ -410,10 +410,6 @@ public final class BlockUtils
 					
 					boolean canBeClicked = canBeClicked(current);
 					
-					// check if block is valid
-					if(canBeClicked && validator.isValid(current))
-						return current;
-					
 					if(ignoreVisibility || !canBeClicked)
 					{
 						// add neighbors
@@ -428,11 +424,26 @@ public final class BlockUtils
 							visited.add(next);
 						}
 					}
+					
+					// check if block is valid
+					if(canBeClicked && validator.isValid(current))
+						return current;
 				}
 				
 				return endOfData();
 			}
 		};
+	}
+	
+	public static Iterable<BlockPos> getValidBlocksByDistanceReversed(
+		double range, boolean ignoreVisibility, BlockValidator validator)
+	{
+		ArrayDeque<BlockPos> validBlocks = new ArrayDeque<>();
+		
+		BlockUtils.getValidBlocksByDistance(range, ignoreVisibility, validator)
+			.forEach((p) -> validBlocks.push(p));
+		
+		return validBlocks;
 	}
 	
 	public static Iterable<BlockPos> getValidBlocks(double range,
