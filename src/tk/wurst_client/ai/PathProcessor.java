@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -13,8 +13,10 @@ import org.lwjgl.input.Keyboard;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.Vec3d;
 import tk.wurst_client.WurstClient;
-import tk.wurst_client.utils.BlockUtils;
+import tk.wurst_client.utils.RotationUtils;
 
 public abstract class PathProcessor
 {
@@ -48,12 +50,22 @@ public abstract class PathProcessor
 	
 	public void lockControls()
 	{
+		// disable keys
 		for(KeyBinding key : controls)
 			key.pressed = false;
-		mc.player.rotationPitch = 10;
+		
+		// face next position
 		if(index < path.size())
-			BlockUtils.faceBlockClientHorizontally(path.get(index));
+			facePosition(path.get(index));
+		
+		// disable sprinting
 		mc.player.setSprinting(false);
+	}
+	
+	protected void facePosition(BlockPos pos)
+	{
+		RotationUtils
+			.faceVectorForWalking(new Vec3d(pos).addVector(0.5, 0.5, 0.5));
 	}
 	
 	public final void releaseControls()

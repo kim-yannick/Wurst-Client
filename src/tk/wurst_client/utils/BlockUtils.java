@@ -19,6 +19,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
 import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
@@ -47,6 +48,11 @@ public final class BlockUtils
 	public static Material getMaterial(BlockPos pos)
 	{
 		return getBlock(pos).getMaterial();
+	}
+	
+	public static AxisAlignedBB getBoundingBox(BlockPos pos)
+	{
+		return getBlock(pos).getSelectedBoundingBox(mc.world, pos);
 	}
 	
 	public static boolean canBeClicked(BlockPos pos)
