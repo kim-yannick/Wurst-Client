@@ -124,9 +124,9 @@ public class GuiCleanUp extends GuiScreen
 				{
 					prevMenu.savedServerList.clearServerList();
 					prevMenu.savedServerList.saveServerList();
-					prevMenu.serverListSelector.setSelectedServer(-1);
+					prevMenu.serverListSelector.setSelectedSlotIndex(-1);
 					prevMenu.serverListSelector
-						.func_148195_a(prevMenu.savedServerList);
+						.updateOnlineServers(prevMenu.savedServerList);
 					mc.displayGuiScreen(prevMenu);
 					return;
 				}
@@ -149,9 +149,9 @@ public class GuiCleanUp extends GuiScreen
 					{
 						prevMenu.savedServerList.removeServerData(i);
 						prevMenu.savedServerList.saveServerList();
-						prevMenu.serverListSelector.setSelectedServer(-1);
+						prevMenu.serverListSelector.setSelectedSlotIndex(-1);
 						prevMenu.serverListSelector
-							.func_148195_a(prevMenu.savedServerList);
+							.updateOnlineServers(prevMenu.savedServerList);
 					}
 				}
 				if(WurstClient.INSTANCE.options.cleanupRename)
@@ -162,9 +162,9 @@ public class GuiCleanUp extends GuiScreen
 							prevMenu.savedServerList.getServerData(i);
 						server.serverName = "Grief me #" + (i + 1);
 						prevMenu.savedServerList.saveServerList();
-						prevMenu.serverListSelector.setSelectedServer(-1);
+						prevMenu.serverListSelector.setSelectedSlotIndex(-1);
 						prevMenu.serverListSelector
-							.func_148195_a(prevMenu.savedServerList);
+							.updateOnlineServers(prevMenu.savedServerList);
 					}
 				mc.displayGuiScreen(prevMenu);
 			}else if(clickedButton.id == 2)

@@ -265,9 +265,9 @@ public class GuiServerFinder extends GuiScreen
 						GuiServerFinder.this.prevMenu.savedServerList
 							.saveServerList();
 						GuiServerFinder.this.prevMenu.serverListSelector
-							.setSelectedServer(-1);
+							.setSelectedSlotIndex(-1);
 						GuiServerFinder.this.prevMenu.serverListSelector
-							.func_148195_a(GuiServerFinder.this.prevMenu.savedServerList);
+							.updateOnlineServers(GuiServerFinder.this.prevMenu.savedServerList);
 					}
 				}
 				pingers.remove(i);

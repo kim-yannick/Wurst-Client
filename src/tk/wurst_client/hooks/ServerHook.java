@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -35,7 +35,6 @@ public class ServerHook
 {
 	private static String currentServerIP = "127.0.0.1:25565";
 	private static ServerListEntryNormal lastServer;
-	private static int protocolVersion = WurstClient.PROTOCOLS.firstKey();
 	
 	public static void importServers(GuiMultiplayer guiMultiplayer)
 	{
@@ -53,8 +52,8 @@ public class ServerHook
 			};
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fileChooser.setAcceptAllFileFilterUsed(false);
-		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(
-			"TXT files", "txt"));
+		fileChooser.addChoosableFileFilter(
+			new FileNameExtensionFilter("TXT files", "txt"));
 		int action = fileChooser.showOpenDialog(FrameHook.getFrame());
 		if(action == JFileChooser.APPROVE_OPTION)
 			try
@@ -68,9 +67,9 @@ public class ServerHook
 					guiMultiplayer.savedServerList
 						.addServerData(new ServerData("Grief me #" + i, line));
 					guiMultiplayer.savedServerList.saveServerList();
-					guiMultiplayer.serverListSelector.setSelectedServer(-1);
+					guiMultiplayer.serverListSelector.setSelectedSlotIndex(-1);
 					guiMultiplayer.serverListSelector
-						.func_148195_a(guiMultiplayer.savedServerList);
+						.updateOnlineServers(guiMultiplayer.savedServerList);
 				}
 				load.close();
 				guiMultiplayer.refreshServerList();
@@ -97,8 +96,8 @@ public class ServerHook
 			};
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fileChooser.setAcceptAllFileFilterUsed(false);
-		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(
-			"TXT files", "txt"));
+		fileChooser.addChoosableFileFilter(
+			new FileNameExtensionFilter("TXT files", "txt"));
 		int action = fileChooser.showSaveDialog(FrameHook.getFrame());
 		if(action == JFileChooser.APPROVE_OPTION)
 			try
@@ -141,8 +140,8 @@ public class ServerHook
 			currentServerIP += ":25565";
 		
 		Minecraft mc = Minecraft.getMinecraft();
-		mc.displayGuiScreen(new GuiConnecting(prevScreen, mc, lastServer
-			.getServerData()));
+		mc.displayGuiScreen(
+			new GuiConnecting(prevScreen, mc, lastServer.getServerData()));
 	}
 	
 	public static void updateLastServerFromServerlist(IGuiListEntry entry,
@@ -157,19 +156,16 @@ public class ServerHook
 			
 			lastServer =
 				(ServerListEntryNormal)(guiMultiplayer.serverListSelector
-					.getSelectedServer() < 0 ? null
-					: guiMultiplayer.serverListSelector
-						.getListEntry(guiMultiplayer.serverListSelector
-							.getSelectedServer()));
+					.getSelected() < 0 ? null
+						: guiMultiplayer.serverListSelector.getListEntry(
+							guiMultiplayer.serverListSelector.getSelected()));
 		}else if(entry instanceof ServerListEntryLanDetected)
 		{
-			currentServerIP =
-				((ServerListEntryLanDetected)entry).getLanServer()
-					.getServerIpPort();
+			currentServerIP = ((ServerListEntryLanDetected)entry)
+				.getServerData().getServerIpPort();
 			
-			lastServer =
-				new ServerListEntryNormal(guiMultiplayer, new ServerData(
-					"LAN-Server", currentServerIP));
+			lastServer = new ServerListEntryNormal(guiMultiplayer,
+				new ServerData("LAN-Server", currentServerIP));
 		}
 	}
 	
@@ -208,21 +204,13 @@ public class ServerHook
 		return lastServer.getServerData();
 	}
 	
-	public static void switchProtocolVersion()
-	{
-		if(protocolVersion == WurstClient.PROTOCOLS.lastKey())
-			protocolVersion = WurstClient.PROTOCOLS.firstKey();
-		else
-			protocolVersion = WurstClient.PROTOCOLS.higherKey(protocolVersion);
-	}
-	
-	public static String getVersionButtonText()
-	{
-		return "Version: " + WurstClient.PROTOCOLS.get(protocolVersion);
-	}
-	
 	public static int getProtocolVersion()
 	{
-		return protocolVersion;
+		int serverProtocol = lastServer.getServerData().version;
+		
+		if(WurstClient.PROTOCOLS.containsKey(serverProtocol))
+			return serverProtocol;
+		else
+			return WurstClient.PROTOCOLS.firstKey();
 	}
 }
