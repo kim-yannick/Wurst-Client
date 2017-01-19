@@ -120,7 +120,7 @@ public class KillauraLegitMod extends Mod implements UpdateListener
 			return;
 		
 		// set entity
-		Entity entity = EntityUtils.getClosestEntity(targetSettings);
+		Entity entity = EntityUtils.getBestEntityToAttack(targetSettings);
 		
 		// check if entity was found
 		if(entity == null)

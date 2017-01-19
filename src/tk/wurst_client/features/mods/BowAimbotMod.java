@@ -123,7 +123,7 @@ public class BowAimbotMod extends Mod
 			return;
 		
 		// set target
-		target = EntityUtils.getClosestEntity(targetSettings);
+		target = EntityUtils.getBestEntityToAttack(targetSettings);
 		if(target == null)
 			return;
 		
