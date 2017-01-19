@@ -23,7 +23,6 @@ import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3d;
 import tk.wurst_client.WurstClient;
 
@@ -539,30 +538,5 @@ public final class BlockUtils
 	public static interface BlockValidator
 	{
 		public boolean isValid(BlockPos pos);
-	}
-	
-	@Deprecated
-	public static float getPlayerBlockDistance(BlockPos blockPos)
-	{
-		return getPlayerBlockDistance(blockPos.getX(), blockPos.getY(),
-			blockPos.getZ());
-	}
-	
-	@Deprecated
-	private static float getPlayerBlockDistance(double posX, double posY,
-		double posZ)
-	{
-		float xDiff = (float)(mc.player.posX - posX);
-		float yDiff = (float)(mc.player.posY - posY);
-		float zDiff = (float)(mc.player.posZ - posZ);
-		return getBlockDistance(xDiff, yDiff, zDiff);
-	}
-	
-	@Deprecated
-	public static float getBlockDistance(float xDiff, float yDiff, float zDiff)
-	{
-		return MathHelper.sqrt(
-			(xDiff - 0.5F) * (xDiff - 0.5F) + (yDiff - 0.5F) * (yDiff - 0.5F)
-				+ (zDiff - 0.5F) * (zDiff - 0.5F));
 	}
 }
