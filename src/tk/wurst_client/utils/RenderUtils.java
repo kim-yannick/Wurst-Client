@@ -105,7 +105,7 @@ public class RenderUtils
 	 * @param y
 	 * @param z
 	 */
-	public static void blockESPBox(BlockPos blockPos)
+	public static void blockEsp(BlockPos blockPos)
 	{
 		double x = blockPos.getX()
 			- Minecraft.getMinecraft().getRenderManager().renderPosX;

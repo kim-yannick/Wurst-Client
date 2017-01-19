@@ -50,11 +50,11 @@ public class ChestEspMod extends Mod implements RenderListener
 			if(o instanceof TileEntityChest)
 			{
 				i++;
-				RenderUtils.blockESPBox(((TileEntityChest)o).getPos());
+				RenderUtils.blockEsp(((TileEntityChest)o).getPos());
 			}else if(o instanceof TileEntityEnderChest)
 			{
 				i++;
-				RenderUtils.blockESPBox(((TileEntityEnderChest)o).getPos());
+				RenderUtils.blockEsp(((TileEntityEnderChest)o).getPos());
 			}
 		}
 		for(Object o : mc.world.loadedEntityList)
@@ -64,7 +64,7 @@ public class ChestEspMod extends Mod implements RenderListener
 			if(o instanceof EntityMinecartChest)
 			{
 				i++;
-				RenderUtils.blockESPBox(((EntityMinecartChest)o).getPosition());
+				RenderUtils.blockEsp(((EntityMinecartChest)o).getPosition());
 			}
 		}
 		if(i >= maxChests && shouldInform)
