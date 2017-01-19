@@ -45,7 +45,6 @@ public class GuiAlts extends GuiScreen
 		prevMenu = par1GuiScreen;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public void initGui()
 	{

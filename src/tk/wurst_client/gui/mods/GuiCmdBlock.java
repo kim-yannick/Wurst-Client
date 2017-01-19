@@ -30,7 +30,6 @@ public class GuiCmdBlock extends GuiScreen
 		this.prevMenu = prevMenu;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public void initGui()
 	{

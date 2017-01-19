@@ -34,7 +34,6 @@ public class GuiMessage extends GuiScreen
 		cancel = json.get("cancel").getAsString();
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public void initGui()
 	{

@@ -78,7 +78,6 @@ public class NavigatorNewKeybindScreen extends NavigatorScreen
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void onResize()
 	{

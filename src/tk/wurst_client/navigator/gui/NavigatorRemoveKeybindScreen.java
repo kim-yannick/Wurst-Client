@@ -66,7 +66,6 @@ public class NavigatorRemoveKeybindScreen extends NavigatorScreen
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void onResize()
 	{

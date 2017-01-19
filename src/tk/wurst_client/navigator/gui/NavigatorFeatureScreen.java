@@ -75,7 +75,6 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		wurst.files.saveNavigatorData();
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void onResize()
 	{

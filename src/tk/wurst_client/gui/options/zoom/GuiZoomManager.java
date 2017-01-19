@@ -25,7 +25,6 @@ public class GuiZoomManager extends GuiScreen implements GuiPressAKeyCallback
 		prevMenu = par1GuiScreen;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public void initGui()
 	{
