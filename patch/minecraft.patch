@@ -1,6 +1,6 @@
-From 142353a57aeb9319679636c5a82b071b17a96b52 Mon Sep 17 00:00:00 2001
+From acac90f3cba306f565038b88042d7a30b38f72b6 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 20 Jan 2017 14:24:30 +0100
+Date: Fri, 20 Jan 2017 21:37:44 +0100
 Subject: [PATCH] mod
 
 ---
@@ -188,6 +188,7 @@ Subject: [PATCH] mod
  net/minecraft/client/model/TexturedQuad.java       |   8 +-
  .../client/multiplayer/GuiConnecting.java          |  14 +-
  .../client/multiplayer/PlayerControllerMP.java     | 182 ++++----
+ net/minecraft/client/multiplayer/ServerData.java   |   2 +-
  net/minecraft/client/multiplayer/ServerList.java   |  16 +-
  net/minecraft/client/multiplayer/WorldClient.java  |  28 +-
  .../client/network/NetHandlerLoginClient.java      |   5 +
@@ -631,7 +632,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |   8 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 627 files changed, 7284 insertions(+), 5981 deletions(-)
+ 628 files changed, 7285 insertions(+), 5982 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -10798,7 +10799,7 @@ index 5481461..215b9fe 100644
          return this.field_148291_b;
      }
 diff --git a/net/minecraft/client/gui/ServerListEntryNormal.java b/net/minecraft/client/gui/ServerListEntryNormal.java
-index 71f1e82..99bcd4d 100644
+index 71f1e82..64eea20 100644
 --- a/net/minecraft/client/gui/ServerListEntryNormal.java
 +++ b/net/minecraft/client/gui/ServerListEntryNormal.java
 @@ -18,6 +18,8 @@ import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -10836,13 +10837,13 @@ index 71f1e82..99bcd4d 100644
      public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected)
      {
 -        if (!this.field_148301_e.field_78841_f)
-+        if (!this.server.field_78841_f)
++        if (!this.server.pinged)
          {
 -            this.field_148301_e.field_78841_f = true;
 -            this.field_148301_e.pingToServer = -2L;
 -            this.field_148301_e.serverMOTD = "";
 -            this.field_148301_e.populationInfo = "";
-+            this.server.field_78841_f = true;
++            this.server.pinged = true;
 +            this.server.pingToServer = -2L;
 +            this.server.serverMOTD = "";
 +            this.server.populationInfo = "";
@@ -10912,7 +10913,7 @@ index 71f1e82..99bcd4d 100644
 +            var17 = this.server.playerList;
          }
 -        else if (this.field_148301_e.field_78841_f && this.field_148301_e.pingToServer != -2L)
-+        else if (this.server.field_78841_f && this.server.pingToServer != -2L)
++        else if (this.server.pinged && this.server.pingToServer != -2L)
          {
 -            if (this.field_148301_e.pingToServer < 0L)
 +            if (this.server.pingToServer < 0L)
@@ -13195,6 +13196,19 @@ index ca6ffd5..ae1bc31 100644
      }
  
      public boolean isSpectatorMode()
+diff --git a/net/minecraft/client/multiplayer/ServerData.java b/net/minecraft/client/multiplayer/ServerData.java
+index 3b6ed40..bbfad75 100644
+--- a/net/minecraft/client/multiplayer/ServerData.java
++++ b/net/minecraft/client/multiplayer/ServerData.java
+@@ -27,7 +27,7 @@ public class ServerData
+ 
+     /** Game version for this server. */
+     public String gameVersion = "1.8";
+-    public boolean field_78841_f;
++    public boolean pinged;
+     public String playerList;
+     private ServerData.ServerResourceMode resourceMode;
+     private String serverIcon;
 diff --git a/net/minecraft/client/multiplayer/ServerList.java b/net/minecraft/client/multiplayer/ServerList.java
 index 3931254..a5d71ef 100644
 --- a/net/minecraft/client/multiplayer/ServerList.java
