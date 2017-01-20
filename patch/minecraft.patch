@@ -1,6 +1,6 @@
-From 8656b148c853456dad50c0d2bcda27fb51f49386 Mon Sep 17 00:00:00 2001
+From 142353a57aeb9319679636c5a82b071b17a96b52 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Thu, 19 Jan 2017 15:53:19 +0100
+Date: Fri, 20 Jan 2017 14:24:30 +0100
 Subject: [PATCH] mod
 
 ---
@@ -160,7 +160,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/ScaledResolution.java     |   8 +-
  net/minecraft/client/gui/ScreenChatOptions.java    |   2 +
  .../client/gui/ServerListEntryLanDetected.java     |   2 +-
- .../client/gui/ServerListEntryNormal.java          |  77 ++--
+ .../client/gui/ServerListEntryNormal.java          |  83 ++--
  net/minecraft/client/gui/ServerSelectionList.java  |  15 +-
  .../client/gui/achievement/GuiAchievement.java     |   2 +-
  .../client/gui/achievement/GuiAchievements.java    |  26 +-
@@ -631,7 +631,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |   8 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 627 files changed, 7279 insertions(+), 5980 deletions(-)
+ 627 files changed, 7284 insertions(+), 5981 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -10798,7 +10798,7 @@ index 5481461..215b9fe 100644
          return this.field_148291_b;
      }
 diff --git a/net/minecraft/client/gui/ServerListEntryNormal.java b/net/minecraft/client/gui/ServerListEntryNormal.java
-index 71f1e82..254cc9f 100644
+index 71f1e82..99bcd4d 100644
 --- a/net/minecraft/client/gui/ServerListEntryNormal.java
 +++ b/net/minecraft/client/gui/ServerListEntryNormal.java
 @@ -18,6 +18,8 @@ import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -10849,7 +10849,7 @@ index 71f1e82..254cc9f 100644
              field_148302_b.submit(new Runnable()
              {
                  private static final String __OBFID = "CL_00000818";
-@@ -61,34 +63,39 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
+@@ -61,34 +63,43 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
                  {
                      try
                      {
@@ -10876,11 +10876,15 @@ index 71f1e82..254cc9f 100644
  
 -        boolean var9 = this.field_148301_e.version > 47;
 -        boolean var10 = this.field_148301_e.version < 47;
-+        boolean var9 = this.server.version > 47;
-+        boolean var10 = this.server.version < 47;
-         boolean var11 = var9 || var10;
+-        boolean var11 = var9 || var10;
 -        this.field_148300_d.fontRendererObj.drawString(this.field_148301_e.serverName, x + 32 + 3, y + 1, 16777215);
 -        List var12 = this.field_148300_d.fontRendererObj.listFormattedStringToWidth(this.field_148301_e.serverMOTD, listWidth - 32 - 2);
++        boolean var9 = this.server.version > 47;
++        boolean var10 = this.server.version < 47;
++
++		// TODO: Client
++		boolean var11 = !WurstClient.PROTOCOLS.containsKey(server.version);
++        
 +        this.field_148300_d.fontRendererObj.drawString(this.server.serverName, x + 32 + 3, y + 1, 16777215);
 +        List var12 = this.field_148300_d.fontRendererObj.listFormattedStringToWidth(this.server.serverMOTD, listWidth - 32 - 2);
  
@@ -10891,15 +10895,16 @@ index 71f1e82..254cc9f 100644
  
 -        String var23 = var11 ? EnumChatFormatting.DARK_RED + this.field_148301_e.gameVersion : this.field_148301_e.populationInfo;
 +		// TODO: Client
-+		String var23 = !WurstClient.PROTOCOLS.containsKey(server.version)
-+			? EnumChatFormatting.DARK_RED + this.server.gameVersion
-+			: EnumChatFormatting.GREEN + server.gameVersion
-+				+ EnumChatFormatting.RESET + " " + this.server.populationInfo;
++		String var23 =
++			var11 ? EnumChatFormatting.DARK_RED + this.server.gameVersion
++				: EnumChatFormatting.GREEN + server.gameVersion
++					+ EnumChatFormatting.RESET + " "
++					+ this.server.populationInfo;
 +
          int var14 = this.field_148300_d.fontRendererObj.getStringWidth(var23);
          this.field_148300_d.fontRendererObj.drawString(var23, x + listWidth - var14 - 15 - 2, y + 1, 8421504);
          byte var15 = 0;
-@@ -100,27 +107,27 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
+@@ -100,27 +111,27 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
          {
              var16 = 5;
              var18 = var9 ? "Client out of date!" : "Server out of date!";
@@ -10934,7 +10939,7 @@ index 71f1e82..254cc9f 100644
              {
                  var16 = 3;
              }
-@@ -129,14 +136,14 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
+@@ -129,14 +140,14 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
                  var16 = 4;
              }
  
@@ -10952,7 +10957,7 @@ index 71f1e82..254cc9f 100644
              }
          }
          else
-@@ -156,9 +163,9 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
+@@ -156,9 +167,9 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
          this.field_148300_d.getTextureManager().bindTexture(Gui.icons);
          Gui.drawModalRectWithCustomSizedTexture(x + listWidth - 15, y, (float)(var15 * 10), (float)(176 + var16 * 8), 10, 8, 256.0F, 256.0F);
  
@@ -10964,7 +10969,7 @@ index 71f1e82..254cc9f 100644
              this.prepareServerIcon();
              this.field_148303_c.getServerList().saveServerList();
          }
-@@ -245,14 +252,14 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
+@@ -245,14 +256,14 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
  
      private void prepareServerIcon()
      {
@@ -10981,7 +10986,7 @@ index 71f1e82..254cc9f 100644
              ByteBuf var3 = Base64.decode(var2);
              BufferedImage var1;
              label74:
-@@ -266,8 +273,8 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
+@@ -266,8 +277,8 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
                  }
                  catch (Exception var8)
                  {
@@ -10992,7 +10997,7 @@ index 71f1e82..254cc9f 100644
                  }
                  finally
                  {
-@@ -336,6 +343,6 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
+@@ -336,6 +347,6 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
  
      public ServerData getServerData()
      {
