@@ -14,6 +14,7 @@ import java.util.HashSet;
 import com.google.common.collect.AbstractIterator;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockChest;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -29,6 +30,9 @@ import tk.wurst_client.WurstClient;
 public final class BlockUtils
 {
 	private static final Minecraft mc = Minecraft.getMinecraft();
+	
+	private static final AxisAlignedBB CHEST_AABB =
+		new AxisAlignedBB(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
 	
 	public static IBlockState getState(BlockPos pos)
 	{
@@ -52,7 +56,12 @@ public final class BlockUtils
 	
 	public static AxisAlignedBB getBoundingBox(BlockPos pos)
 	{
-		return getBlock(pos).getSelectedBoundingBox(mc.world, pos);
+		Block block = getBlock(pos);
+		
+		if(block instanceof BlockChest)
+			return CHEST_AABB.offset(pos);
+		
+		return block.getSelectedBoundingBox(mc.world, pos);
 	}
 	
 	public static boolean canBeClicked(BlockPos pos)

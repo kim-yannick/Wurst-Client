@@ -1,6 +1,6 @@
-From acac90f3cba306f565038b88042d7a30b38f72b6 Mon Sep 17 00:00:00 2001
+From 5a9cd61ecfcd8dc17ed7493614598b7cd7c74501 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 20 Jan 2017 21:37:44 +0100
+Date: Tue, 24 Jan 2017 08:33:30 +0100
 Subject: [PATCH] mod
 
 ---
@@ -167,7 +167,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/achievement/GuiStats.java |  26 +-
  net/minecraft/client/gui/inventory/GuiBeacon.java  |   5 +-
  net/minecraft/client/gui/inventory/GuiChest.java   | 114 ++++-
- .../client/gui/inventory/GuiContainer.java         |  76 +--
+ .../client/gui/inventory/GuiContainer.java         |  81 ++--
  .../client/gui/inventory/GuiContainerCreative.java |  69 +--
  .../client/gui/inventory/GuiEditSign.java          |  38 +-
  .../client/gui/inventory/GuiInventory.java         |  11 +-
@@ -187,7 +187,7 @@ Subject: [PATCH] mod
  .../client/model/PositionTextureVertex.java        |   8 +-
  net/minecraft/client/model/TexturedQuad.java       |   8 +-
  .../client/multiplayer/GuiConnecting.java          |  14 +-
- .../client/multiplayer/PlayerControllerMP.java     | 182 ++++----
+ .../client/multiplayer/PlayerControllerMP.java     | 185 ++++----
  net/minecraft/client/multiplayer/ServerData.java   |   2 +-
  net/minecraft/client/multiplayer/ServerList.java   |  16 +-
  net/minecraft/client/multiplayer/WorldClient.java  |  28 +-
@@ -403,6 +403,7 @@ Subject: [PATCH] mod
  net/minecraft/init/Blocks.java                     | 180 ++++----
  net/minecraft/init/Bootstrap.java                  |   2 +-
  net/minecraft/init/Items.java                      |   4 +-
+ net/minecraft/inventory/Container.java             |   2 +-
  net/minecraft/inventory/ContainerPlayer.java       |   2 +-
  net/minecraft/inventory/InventoryBasic.java        |   4 +-
  net/minecraft/inventory/InventoryCraftResult.java  |   4 +-
@@ -514,7 +515,7 @@ Subject: [PATCH] mod
  net/minecraft/tileentity/TileEntityMobSpawner.java |   2 +-
  net/minecraft/tileentity/TileEntityNote.java       |   6 +-
  net/minecraft/tileentity/TileEntitySign.java       |  21 +-
- net/minecraft/util/AxisAlignedBB.java              |  34 +-
+ net/minecraft/util/AxisAlignedBB.java              |  43 +-
  net/minecraft/util/BlockPos.java                   |  60 ++-
  net/minecraft/util/ChatComponentProcessor.java     |   8 +-
  net/minecraft/util/ChatComponentScore.java         |   4 +-
@@ -546,7 +547,7 @@ Subject: [PATCH] mod
  net/minecraft/world/Explosion.java                 |  18 +-
  net/minecraft/world/SpawnerAnimals.java            |  19 +-
  net/minecraft/world/Teleporter.java                |  22 +-
- net/minecraft/world/World.java                     | 183 ++++----
+ net/minecraft/world/World.java                     | 185 ++++----
  net/minecraft/world/WorldManager.java              |  12 +-
  net/minecraft/world/WorldProvider.java             |  10 +-
  net/minecraft/world/WorldProviderEnd.java          |   8 +-
@@ -632,7 +633,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |   8 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 628 files changed, 7285 insertions(+), 5982 deletions(-)
+ 629 files changed, 7304 insertions(+), 5984 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -11452,10 +11453,19 @@ index 15a710a..b6fb2d0 100644
      }
  }
 diff --git a/net/minecraft/client/gui/inventory/GuiContainer.java b/net/minecraft/client/gui/inventory/GuiContainer.java
-index b87feb0..877772c 100644
+index b87feb0..d9e9542 100644
 --- a/net/minecraft/client/gui/inventory/GuiContainer.java
 +++ b/net/minecraft/client/gui/inventory/GuiContainer.java
-@@ -89,7 +89,7 @@ public abstract class GuiContainer extends GuiScreen
+@@ -18,6 +18,8 @@ import net.minecraft.item.ItemStack;
+ import net.minecraft.util.EnumChatFormatting;
+ import net.minecraft.util.MathHelper;
+ import net.minecraft.util.ResourceLocation;
++import tk.wurst_client.WurstClient;
++
+ import org.lwjgl.input.Keyboard;
+ 
+ public abstract class GuiContainer extends GuiScreen
+@@ -89,7 +91,7 @@ public abstract class GuiContainer extends GuiScreen
      public void initGui()
      {
          super.initGui();
@@ -11464,7 +11474,7 @@ index b87feb0..877772c 100644
          this.guiLeft = (this.width - this.xSize) / 2;
          this.guiTop = (this.height - this.ySize) / 2;
      }
-@@ -143,7 +143,7 @@ public abstract class GuiContainer extends GuiScreen
+@@ -143,7 +145,7 @@ public abstract class GuiContainer extends GuiScreen
          RenderHelper.disableStandardItemLighting();
          this.drawGuiContainerForegroundLayer(mouseX, mouseY);
          RenderHelper.enableGUIStandardItemLighting();
@@ -11473,7 +11483,7 @@ index b87feb0..877772c 100644
          ItemStack var16 = this.draggedStack == null ? var15.getItemStack() : this.draggedStack;
  
          if (var16 != null)
-@@ -185,7 +185,7 @@ public abstract class GuiContainer extends GuiScreen
+@@ -185,7 +187,7 @@ public abstract class GuiContainer extends GuiScreen
              int var20 = this.returningStackDestSlot.yDisplayPosition - this.touchUpY;
              int var13 = this.touchUpX + (int)((float)var11 * var18);
              int var14 = this.touchUpY + (int)((float)var20 * var18);
@@ -11482,7 +11492,7 @@ index b87feb0..877772c 100644
          }
  
          GlStateManager.popMatrix();
-@@ -229,40 +229,40 @@ public abstract class GuiContainer extends GuiScreen
+@@ -229,40 +231,40 @@ public abstract class GuiContainer extends GuiScreen
      {
          int var2 = slotIn.xDisplayPosition;
          int var3 = slotIn.yDisplayPosition;
@@ -11538,7 +11548,7 @@ index b87feb0..877772c 100644
                  }
              }
              else
-@@ -275,9 +275,9 @@ public abstract class GuiContainer extends GuiScreen
+@@ -275,9 +277,9 @@ public abstract class GuiContainer extends GuiScreen
          this.zLevel = 100.0F;
          this.itemRender.zLevel = 100.0F;
  
@@ -11550,7 +11560,7 @@ index b87feb0..877772c 100644
  
              if (var9 != null)
              {
-@@ -288,6 +288,8 @@ public abstract class GuiContainer extends GuiScreen
+@@ -288,6 +290,8 @@ public abstract class GuiContainer extends GuiScreen
                  GlStateManager.enableLighting();
                  var6 = true;
              }
@@ -11559,7 +11569,7 @@ index b87feb0..877772c 100644
          }
  
          if (!var6)
-@@ -298,8 +300,8 @@ public abstract class GuiContainer extends GuiScreen
+@@ -298,8 +302,8 @@ public abstract class GuiContainer extends GuiScreen
              }
  
              GlStateManager.enableDepth();
@@ -11570,7 +11580,7 @@ index b87feb0..877772c 100644
          }
  
          this.itemRender.zLevel = 0.0F;
-@@ -308,7 +310,7 @@ public abstract class GuiContainer extends GuiScreen
+@@ -308,7 +312,7 @@ public abstract class GuiContainer extends GuiScreen
  
      private void updateDragSplitting()
      {
@@ -11579,7 +11589,7 @@ index b87feb0..877772c 100644
  
          if (var1 != null && this.dragSplitting)
          {
-@@ -383,7 +385,7 @@ public abstract class GuiContainer extends GuiScreen
+@@ -383,7 +387,7 @@ public abstract class GuiContainer extends GuiScreen
                  var11 = -999;
              }
  
@@ -11588,7 +11598,7 @@ index b87feb0..877772c 100644
              {
                  this.mc.displayGuiScreen((GuiScreen)null);
                  return;
-@@ -406,7 +408,7 @@ public abstract class GuiContainer extends GuiScreen
+@@ -406,7 +410,7 @@ public abstract class GuiContainer extends GuiScreen
                  }
                  else if (!this.dragSplitting)
                  {
@@ -11597,7 +11607,7 @@ index b87feb0..877772c 100644
                      {
                          if (mouseButton == this.mc.gameSettings.keyBindPickBlock.getKeyCode() + 100)
                          {
-@@ -467,7 +469,7 @@ public abstract class GuiContainer extends GuiScreen
+@@ -467,7 +471,7 @@ public abstract class GuiContainer extends GuiScreen
      protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick)
      {
          Slot var6 = this.getSlotAtPosition(mouseX, mouseY);
@@ -11606,7 +11616,7 @@ index b87feb0..877772c 100644
  
          if (this.clickedSlot != null && this.mc.gameSettings.touchscreen)
          {
-@@ -546,7 +548,7 @@ public abstract class GuiContainer extends GuiScreen
+@@ -546,7 +550,7 @@ public abstract class GuiContainer extends GuiScreen
                      {
                          var10 = (Slot)var11.next();
  
@@ -11615,7 +11625,7 @@ index b87feb0..877772c 100644
                          {
                              this.handleMouseClick(var10, var10.slotNumber, state, 1);
                          }
-@@ -595,7 +597,7 @@ public abstract class GuiContainer extends GuiScreen
+@@ -595,7 +599,7 @@ public abstract class GuiContainer extends GuiScreen
                          this.handleMouseClick(this.clickedSlot, this.clickedSlot.slotNumber, state, 0);
                          this.handleMouseClick(var4, var8, 0, 0);
  
@@ -11624,7 +11634,7 @@ index b87feb0..877772c 100644
                          {
                              this.handleMouseClick(this.clickedSlot, this.clickedSlot.slotNumber, state, 0);
                              this.touchUpX = mouseX - var5;
-@@ -635,7 +637,7 @@ public abstract class GuiContainer extends GuiScreen
+@@ -635,7 +639,7 @@ public abstract class GuiContainer extends GuiScreen
  
                  this.handleMouseClick((Slot)null, -999, Container.func_94534_d(2, this.dragSplittingLimit), 5);
              }
@@ -11633,7 +11643,7 @@ index b87feb0..877772c 100644
              {
                  if (state == this.mc.gameSettings.keyBindPickBlock.getKeyCode() + 100)
                  {
-@@ -655,7 +657,7 @@ public abstract class GuiContainer extends GuiScreen
+@@ -655,7 +659,7 @@ public abstract class GuiContainer extends GuiScreen
              }
          }
  
@@ -11642,7 +11652,7 @@ index b87feb0..877772c 100644
          {
              this.lastClickTime = 0L;
          }
-@@ -694,7 +696,7 @@ public abstract class GuiContainer extends GuiScreen
+@@ -694,7 +698,7 @@ public abstract class GuiContainer extends GuiScreen
              slotId = slotIn.slotNumber;
          }
  
@@ -11651,7 +11661,7 @@ index b87feb0..877772c 100644
      }
  
      /**
-@@ -705,7 +707,7 @@ public abstract class GuiContainer extends GuiScreen
+@@ -705,7 +709,7 @@ public abstract class GuiContainer extends GuiScreen
      {
          if (keyCode == 1 || keyCode == this.mc.gameSettings.keyBindInventory.getKeyCode())
          {
@@ -11660,7 +11670,7 @@ index b87feb0..877772c 100644
          }
  
          this.checkHotbarKeys(keyCode);
-@@ -729,7 +731,7 @@ public abstract class GuiContainer extends GuiScreen
+@@ -729,7 +733,7 @@ public abstract class GuiContainer extends GuiScreen
       */
      protected boolean checkHotbarKeys(int keyCode)
      {
@@ -11669,11 +11679,14 @@ index b87feb0..877772c 100644
          {
              for (int var2 = 0; var2 < 9; ++var2)
              {
-@@ -749,9 +751,9 @@ public abstract class GuiContainer extends GuiScreen
+@@ -749,9 +753,12 @@ public abstract class GuiContainer extends GuiScreen
       */
      public void onGuiClosed()
      {
 -        if (this.mc.thePlayer != null)
++		// TODO: Client
++		WurstClient.INSTANCE.mods.chestEspMod.closeChest(inventorySlots);
++    	
 +        if (this.mc.player != null)
          {
 -            this.inventorySlots.onContainerClosed(this.mc.thePlayer);
@@ -11681,7 +11694,7 @@ index b87feb0..877772c 100644
          }
      }
  
-@@ -770,9 +772,9 @@ public abstract class GuiContainer extends GuiScreen
+@@ -770,9 +777,9 @@ public abstract class GuiContainer extends GuiScreen
      {
          super.updateScreen();
  
@@ -12715,7 +12728,7 @@ index 1aa77b6..dc1b750 100644
  
              this.mc.displayGuiScreen(this.previousGuiScreen);
 diff --git a/net/minecraft/client/multiplayer/PlayerControllerMP.java b/net/minecraft/client/multiplayer/PlayerControllerMP.java
-index ca6ffd5..ae1bc31 100644
+index ca6ffd5..81e4f8c 100644
 --- a/net/minecraft/client/multiplayer/PlayerControllerMP.java
 +++ b/net/minecraft/client/multiplayer/PlayerControllerMP.java
 @@ -13,21 +13,23 @@ import net.minecraft.entity.player.EntityPlayer;
@@ -12769,10 +12782,10 @@ index ca6ffd5..ae1bc31 100644
 +	}
 +
 +    public static void clickBlockCreative(Minecraft mcIn, PlayerControllerMP p_178891_1_, BlockPos p_178891_2_, EnumFacing p_178891_3_)
-+    {
-+        if (!mcIn.world.func_175719_a(mcIn.player, p_178891_2_, p_178891_3_))
-         {
+     {
 -            p_178891_1_.func_178888_a(p_178891_2_, p_178891_3_);
++        if (!mcIn.world.func_175719_a(mcIn.player, p_178891_2_, p_178891_3_))
++        {
 +            p_178891_1_.onPlayerDestroyBlock(p_178891_2_, p_178891_3_);
          }
      }
@@ -13053,7 +13066,7 @@ index ca6ffd5..ae1bc31 100644
          boolean var3 = this.currentItemHittingBlock == null && var2 == null;
  
          if (this.currentItemHittingBlock != null && var2 != null)
-@@ -375,16 +399,16 @@ public class PlayerControllerMP
+@@ -375,24 +399,27 @@ public class PlayerControllerMP
       */
      private void syncCurrentPlayItem()
      {
@@ -13071,9 +13084,12 @@ index ca6ffd5..ae1bc31 100644
 -    public boolean func_178890_a(EntityPlayerSP p_178890_1_, WorldClient p_178890_2_, ItemStack p_178890_3_, BlockPos p_178890_4_, EnumFacing p_178890_5_, Vec3 p_178890_6_)
 +    public boolean processRightClickBlock(EntityPlayerSP p_178890_1_, WorldClient p_178890_2_, ItemStack p_178890_3_, BlockPos p_178890_4_, EnumFacing p_178890_5_, Vec3d p_178890_6_)
      {
++		// TODO: Client
++		WurstClient.INSTANCE.mods.chestEspMod.openChest(p_178890_4_);
++		
          this.syncCurrentPlayItem();
          float var7 = (float)(p_178890_6_.xCoord - (double)p_178890_4_.getX());
-@@ -392,7 +416,7 @@ public class PlayerControllerMP
+         float var8 = (float)(p_178890_6_.yCoord - (double)p_178890_4_.getY());
          float var9 = (float)(p_178890_6_.zCoord - (double)p_178890_4_.getZ());
          boolean var10 = false;
  
@@ -13082,7 +13098,7 @@ index ca6ffd5..ae1bc31 100644
          {
              return false;
          }
-@@ -418,7 +442,7 @@ public class PlayerControllerMP
+@@ -418,7 +445,7 @@ public class PlayerControllerMP
                  }
              }
  
@@ -13091,7 +13107,7 @@ index ca6ffd5..ae1bc31 100644
  
              if (!var10 && this.currentGameType != WorldSettings.GameType.SPECTATOR)
              {
-@@ -450,7 +474,7 @@ public class PlayerControllerMP
+@@ -450,7 +477,7 @@ public class PlayerControllerMP
      /**
       * Notifies the server of things like consuming food, etc...
       */
@@ -13100,7 +13116,7 @@ index ca6ffd5..ae1bc31 100644
      {
          if (this.currentGameType == WorldSettings.GameType.SPECTATOR)
          {
-@@ -459,11 +483,11 @@ public class PlayerControllerMP
+@@ -459,11 +486,11 @@ public class PlayerControllerMP
          else
          {
              this.syncCurrentPlayItem();
@@ -13114,7 +13130,7 @@ index ca6ffd5..ae1bc31 100644
              {
                  return false;
              }
-@@ -492,7 +516,7 @@ public class PlayerControllerMP
+@@ -492,7 +519,7 @@ public class PlayerControllerMP
      public void attackEntity(EntityPlayer playerIn, Entity targetEntity)
      {
          this.syncCurrentPlayItem();
@@ -13123,7 +13139,7 @@ index ca6ffd5..ae1bc31 100644
  
          if (this.currentGameType != WorldSettings.GameType.SPECTATOR)
          {
-@@ -506,15 +530,15 @@ public class PlayerControllerMP
+@@ -506,15 +533,15 @@ public class PlayerControllerMP
      public boolean interactWithEntitySendPacket(EntityPlayer playerIn, Entity targetEntity)
      {
          this.syncCurrentPlayItem();
@@ -13143,7 +13159,7 @@ index ca6ffd5..ae1bc31 100644
          return this.currentGameType != WorldSettings.GameType.SPECTATOR && p_178894_2_.func_174825_a(p_178894_1_, var4);
      }
  
-@@ -525,7 +549,7 @@ public class PlayerControllerMP
+@@ -525,7 +552,7 @@ public class PlayerControllerMP
      {
          short var6 = playerIn.openContainer.getNextTransactionID(playerIn.inventory);
          ItemStack var7 = playerIn.openContainer.slotClick(slotId, p_78753_3_, p_78753_4_, playerIn);
@@ -13152,7 +13168,7 @@ index ca6ffd5..ae1bc31 100644
          return var7;
      }
  
-@@ -535,7 +559,7 @@ public class PlayerControllerMP
+@@ -535,7 +562,7 @@ public class PlayerControllerMP
       */
      public void sendEnchantPacket(int p_78756_1_, int p_78756_2_)
      {
@@ -13161,7 +13177,7 @@ index ca6ffd5..ae1bc31 100644
      }
  
      /**
-@@ -545,7 +569,7 @@ public class PlayerControllerMP
+@@ -545,7 +572,7 @@ public class PlayerControllerMP
      {
          if (this.currentGameType.isCreative())
          {
@@ -13170,7 +13186,7 @@ index ca6ffd5..ae1bc31 100644
          }
      }
  
-@@ -556,14 +580,14 @@ public class PlayerControllerMP
+@@ -556,14 +583,14 @@ public class PlayerControllerMP
      {
          if (this.currentGameType.isCreative() && itemStackIn != null)
          {
@@ -13187,7 +13203,7 @@ index ca6ffd5..ae1bc31 100644
          playerIn.stopUsingItem();
      }
  
-@@ -601,7 +625,7 @@ public class PlayerControllerMP
+@@ -601,7 +628,7 @@ public class PlayerControllerMP
       */
      public boolean isRidingHorse()
      {
@@ -24014,6 +24030,19 @@ index c80fdd0..6b71eb4 100644
              mushroom_stew = getRegisteredItem("mushroom_stew");
              golden_sword = getRegisteredItem("golden_sword");
              golden_shovel = getRegisteredItem("golden_shovel");
+diff --git a/net/minecraft/inventory/Container.java b/net/minecraft/inventory/Container.java
+index 506f636..6958863 100644
+--- a/net/minecraft/inventory/Container.java
++++ b/net/minecraft/inventory/Container.java
+@@ -19,7 +19,7 @@ public abstract class Container
+     public List inventoryItemStacks = Lists.newArrayList();
+ 
+     /** the list of all slots in the inventory */
+-    public List inventorySlots = Lists.newArrayList();
++    public List<Slot> inventorySlots = Lists.<Slot>newArrayList();
+     public int windowId;
+     private short transactionID;
+ 
 diff --git a/net/minecraft/inventory/ContainerPlayer.java b/net/minecraft/inventory/ContainerPlayer.java
 index 8b598cc..f6f4c15 100644
 --- a/net/minecraft/inventory/ContainerPlayer.java
@@ -30383,10 +30412,10 @@ index 3d886a9..02cebe7 100644
              if (var4 != null && var4.getChatClickEvent() != null)
              {
 diff --git a/net/minecraft/util/AxisAlignedBB.java b/net/minecraft/util/AxisAlignedBB.java
-index 71114ed..606749e 100644
+index 71114ed..0ef84e1 100644
 --- a/net/minecraft/util/AxisAlignedBB.java
 +++ b/net/minecraft/util/AxisAlignedBB.java
-@@ -30,6 +30,14 @@ public class AxisAlignedBB
+@@ -30,6 +30,23 @@ public class AxisAlignedBB
          this.maxZ = (double)p_i45554_2_.getZ();
      }
  
@@ -30397,11 +30426,20 @@ index 71114ed..606749e 100644
 +			this.minY + (this.maxY - this.minY) * 0.5D,
 +			this.minZ + (this.maxZ - this.minZ) * 0.5D);
 +	}
++	
++	// TODO: Client
++	public AxisAlignedBB offset(BlockPos pos)
++	{
++		return new AxisAlignedBB(this.minX + (double)pos.getX(),
++			this.minY + (double)pos.getY(), this.minZ + (double)pos.getZ(),
++			this.maxX + (double)pos.getX(), this.maxY + (double)pos.getY(),
++			this.maxZ + (double)pos.getZ());
++	}
 +
      /**
       * Adds the coordinates to the bounding box extending it if the point lies outside the current ranges. Args: x, y, z
       */
-@@ -245,7 +253,7 @@ public class AxisAlignedBB
+@@ -245,7 +262,7 @@ public class AxisAlignedBB
      /**
       * Returns if the supplied Vec3D is completely inside the bounding box
       */
@@ -30410,7 +30448,7 @@ index 71114ed..606749e 100644
      {
          return vec.xCoord > this.minX && vec.xCoord < this.maxX ? (vec.yCoord > this.minY && vec.yCoord < this.maxY ? vec.zCoord > this.minZ && vec.zCoord < this.maxZ : false) : false;
      }
-@@ -275,14 +283,14 @@ public class AxisAlignedBB
+@@ -275,14 +292,14 @@ public class AxisAlignedBB
          return new AxisAlignedBB(var7, var9, var11, var13, var15, var17);
      }
  
@@ -30432,7 +30470,7 @@ index 71114ed..606749e 100644
  
          if (!this.isVecInYZ(var3))
          {
-@@ -314,7 +322,7 @@ public class AxisAlignedBB
+@@ -314,7 +331,7 @@ public class AxisAlignedBB
              var8 = null;
          }
  
@@ -30441,7 +30479,7 @@ index 71114ed..606749e 100644
  
          if (var3 != null)
          {
-@@ -379,14 +387,14 @@ public class AxisAlignedBB
+@@ -379,14 +396,14 @@ public class AxisAlignedBB
                  var10 = EnumFacing.SOUTH;
              }
  
@@ -30458,7 +30496,7 @@ index 71114ed..606749e 100644
      {
          return vec == null ? false : vec.yCoord >= this.minY && vec.yCoord <= this.maxY && vec.zCoord >= this.minZ && vec.zCoord <= this.maxZ;
      }
-@@ -394,7 +402,7 @@ public class AxisAlignedBB
+@@ -394,7 +411,7 @@ public class AxisAlignedBB
      /**
       * Checks if the specified vector is within the XZ dimensions of the bounding box. Args: Vec3D
       */
@@ -30467,7 +30505,7 @@ index 71114ed..606749e 100644
      {
          return vec == null ? false : vec.xCoord >= this.minX && vec.xCoord <= this.maxX && vec.zCoord >= this.minZ && vec.zCoord <= this.maxZ;
      }
-@@ -402,7 +410,7 @@ public class AxisAlignedBB
+@@ -402,7 +419,7 @@ public class AxisAlignedBB
      /**
       * Checks if the specified vector is within the XY dimensions of the bounding box. Args: Vec3D
       */
@@ -32554,7 +32592,7 @@ index fc9a24e..91953aa 100644
              }
  
 diff --git a/net/minecraft/world/World.java b/net/minecraft/world/World.java
-index 18e9ecf..ac5b028 100644
+index 18e9ecf..f123eb2 100644
 --- a/net/minecraft/world/World.java
 +++ b/net/minecraft/world/World.java
 @@ -3,6 +3,7 @@ package net.minecraft.world;
@@ -32585,7 +32623,7 @@ index 18e9ecf..ac5b028 100644
  import net.minecraft.village.VillageCollection;
  import net.minecraft.world.biome.BiomeGenBase;
  import net.minecraft.world.biome.WorldChunkManager;
-@@ -62,7 +64,7 @@ public abstract class World implements IBlockAccess
+@@ -62,11 +64,11 @@ public abstract class World implements IBlockAccess
      protected boolean scheduledUpdatesAreImmediate;
  
      /** A list of all Entities in all currently-loaded chunks */
@@ -32594,6 +32632,11 @@ index 18e9ecf..ac5b028 100644
      protected final List unloadedEntityList = Lists.newArrayList();
  
      /** A list of the loaded tile entities in the world */
+-    public final List loadedTileEntityList = Lists.newArrayList();
++    public final List<TileEntity> loadedTileEntityList = Lists.<TileEntity>newArrayList();
+     public final List tickableTileEntities = Lists.newArrayList();
+     private final List addedTileEntityList = Lists.newArrayList();
+     private final List tileEntitiesToBeRemoved = Lists.newArrayList();
 @@ -82,12 +84,15 @@ public abstract class World implements IBlockAccess
      /** How much light is subtracted from full daylight */
      private int skylightSubtracted;
