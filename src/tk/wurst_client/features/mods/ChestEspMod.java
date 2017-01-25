@@ -67,7 +67,10 @@ public class ChestEspMod extends Mod implements UpdateListener, RenderListener
 	@Override
 	public String getRenderName()
 	{
-		return getName() + " [" + totalChests + " chests]";
+		if(totalChests == 1)
+			return getName() + " [1 chest]";
+		else
+			return getName() + " [" + totalChests + " chests]";
 	}
 	
 	@Override
