@@ -1,6 +1,6 @@
-From 5a9cd61ecfcd8dc17ed7493614598b7cd7c74501 Mon Sep 17 00:00:00 2001
+From f63471d163b9811608a4de86b9ca2f1fc1c2a626 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 24 Jan 2017 08:33:30 +0100
+Date: Thu, 26 Jan 2017 08:24:47 +0100
 Subject: [PATCH] mod
 
 ---
@@ -547,7 +547,7 @@ Subject: [PATCH] mod
  net/minecraft/world/Explosion.java                 |  18 +-
  net/minecraft/world/SpawnerAnimals.java            |  19 +-
  net/minecraft/world/Teleporter.java                |  22 +-
- net/minecraft/world/World.java                     | 185 ++++----
+ net/minecraft/world/World.java                     | 187 ++++----
  net/minecraft/world/WorldManager.java              |  12 +-
  net/minecraft/world/WorldProvider.java             |  10 +-
  net/minecraft/world/WorldProviderEnd.java          |   8 +-
@@ -633,7 +633,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |   8 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 629 files changed, 7304 insertions(+), 5984 deletions(-)
+ 629 files changed, 7305 insertions(+), 5985 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -32592,7 +32592,7 @@ index fc9a24e..91953aa 100644
              }
  
 diff --git a/net/minecraft/world/World.java b/net/minecraft/world/World.java
-index 18e9ecf..f123eb2 100644
+index 18e9ecf..3338707 100644
 --- a/net/minecraft/world/World.java
 +++ b/net/minecraft/world/World.java
 @@ -3,6 +3,7 @@ package net.minecraft.world;
@@ -32623,7 +32623,7 @@ index 18e9ecf..f123eb2 100644
  import net.minecraft.village.VillageCollection;
  import net.minecraft.world.biome.BiomeGenBase;
  import net.minecraft.world.biome.WorldChunkManager;
-@@ -62,11 +64,11 @@ public abstract class World implements IBlockAccess
+@@ -62,17 +64,17 @@ public abstract class World implements IBlockAccess
      protected boolean scheduledUpdatesAreImmediate;
  
      /** A list of all Entities in all currently-loaded chunks */
@@ -32637,6 +32637,13 @@ index 18e9ecf..f123eb2 100644
      public final List tickableTileEntities = Lists.newArrayList();
      private final List addedTileEntityList = Lists.newArrayList();
      private final List tileEntitiesToBeRemoved = Lists.newArrayList();
+ 
+     /** Array list of players in the world. */
+-    public final List playerEntities = Lists.newArrayList();
++    public final List<EntityPlayer> playerEntities = Lists.<EntityPlayer>newArrayList();
+ 
+     /** a list of all the lightning entities */
+     public final List weatherEffects = Lists.newArrayList();
 @@ -82,12 +84,15 @@ public abstract class World implements IBlockAccess
      /** How much light is subtracted from full daylight */
      private int skylightSubtracted;
