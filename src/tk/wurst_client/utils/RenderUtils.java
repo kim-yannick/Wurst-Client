@@ -279,47 +279,6 @@ public class RenderUtils
 		ts.draw();// Ends Z.
 	}
 	
-	public static void tracerLine(Entity entity, int mode)
-	{
-		double x = entity.posX
-			- Minecraft.getMinecraft().getRenderManager().renderPosX;
-		double y = entity.posY + entity.height / 2
-			- Minecraft.getMinecraft().getRenderManager().renderPosY;
-		double z = entity.posZ
-			- Minecraft.getMinecraft().getRenderManager().renderPosZ;
-		glBlendFunc(770, 771);
-		glEnable(GL_BLEND);
-		glLineWidth(2.0F);
-		glDisable(GL11.GL_TEXTURE_2D);
-		glDisable(GL_DEPTH_TEST);
-		glDepthMask(false);
-		if(mode == 0)// Enemy
-			GL11.glColor4d(
-				1 - Minecraft.getMinecraft().player.getDistanceToEntity(entity)
-					/ 40,
-				Minecraft.getMinecraft().player.getDistanceToEntity(entity)
-					/ 40,
-				0, 0.5F);
-		else if(mode == 1)// Friend
-			GL11.glColor4d(0, 0, 1, 0.5F);
-		else if(mode == 2)// Other
-			GL11.glColor4d(1, 1, 0, 0.5F);
-		else if(mode == 3)// Target
-			GL11.glColor4d(1, 0, 0, 0.5F);
-		else if(mode == 4)// Team
-			GL11.glColor4d(0, 1, 0, 0.5F);
-		glBegin(GL_LINES);
-		{
-			glVertex3d(0, Minecraft.getMinecraft().player.getEyeHeight(), 0);
-			glVertex3d(x, y, z);
-		}
-		glEnd();
-		glEnable(GL11.GL_TEXTURE_2D);
-		glEnable(GL_DEPTH_TEST);
-		glDepthMask(true);
-		glDisable(GL_BLEND);
-	}
-	
 	public static void tracerLine(int x, int y, int z, Color color)
 	{
 		x += 0.5 - Minecraft.getMinecraft().getRenderManager().renderPosX;
