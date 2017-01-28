@@ -1,6 +1,6 @@
-From f63471d163b9811608a4de86b9ca2f1fc1c2a626 Mon Sep 17 00:00:00 2001
+From 6b4e96a635aaa98711118de46991eeec793ed9d7 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Thu, 26 Jan 2017 08:24:47 +0100
+Date: Sat, 28 Jan 2017 12:46:14 +0100
 Subject: [PATCH] mod
 
 ---
@@ -14961,7 +14961,7 @@ index 33c3df8..6a0c707 100644
              private static final String __OBFID = "CL_00002524";
              protected ModelResourceLocation func_178132_a(IBlockState p_178132_1_)
 diff --git a/net/minecraft/client/renderer/EntityRenderer.java b/net/minecraft/client/renderer/EntityRenderer.java
-index 9f404dc..c26994e 100644
+index 9f404dc..e4e1263 100644
 --- a/net/minecraft/client/renderer/EntityRenderer.java
 +++ b/net/minecraft/client/renderer/EntityRenderer.java
 @@ -1,11 +1,11 @@
@@ -15343,8 +15343,8 @@ index 9f404dc..c26994e 100644
  
          this.mc.mcProfiler.endStartSection("hand");
  
-+        //TODO: Client
-+        WurstClient.INSTANCE.events.fire(new RenderEvent());
++		// TODO: Client
++		WurstClient.INSTANCE.events.fire(new RenderEvent(p_175068_2_));
 +        
          if (this.field_175074_C)
          {

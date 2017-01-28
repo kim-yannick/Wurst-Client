@@ -50,7 +50,7 @@ public class TrajectoriesMod extends Mod implements RenderListener
 	}
 	
 	@Override
-	public void onRender()
+	public void onRender(float partialTicks)
 	{
 		EntityPlayerSP player = mc.player;
 		

@@ -115,7 +115,7 @@ public class InstantBunkerMod extends Mod
 	}
 	
 	@Override
-	public void onRender()
+	public void onRender(float partialTicks)
 	{
 		if(!building || blockIndex >= positions.size())
 			return;
