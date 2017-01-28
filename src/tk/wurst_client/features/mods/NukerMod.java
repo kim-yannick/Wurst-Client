@@ -7,6 +7,8 @@
  */
 package tk.wurst_client.features.mods;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.util.BlockPos;
 import tk.wurst_client.events.LeftClickEvent;
@@ -103,12 +105,9 @@ public class NukerMod extends Mod
 	public void onEnable()
 	{
 		// disable other nukers
-		if(wurst.mods.nukerLegitMod.isEnabled())
-			wurst.mods.nukerLegitMod.setEnabled(false);
-		if(wurst.mods.speedNukerMod.isEnabled())
-			wurst.mods.speedNukerMod.setEnabled(false);
-		if(wurst.mods.tunnellerMod.isEnabled())
-			wurst.mods.tunnellerMod.setEnabled(false);
+		wurst.mods.nukerLegitMod.setEnabled(false);
+		wurst.mods.speedNukerMod.setEnabled(false);
+		wurst.mods.tunnellerMod.setEnabled(false);
 		
 		// add listeners
 		wurst.events.add(LeftClickListener.class, this);
@@ -215,13 +214,58 @@ public class NukerMod extends Mod
 		if(currentBlock == null)
 			return;
 		
-		// check if block can be destroyed instantly
-		if(mc.player.capabilities.isCreativeMode
-			|| BlockUtils.getHardness(currentBlock) >= 1)
-			RenderUtils.nukerBox(currentBlock, 1);
+		// GL settings
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glEnable(GL11.GL_LINE_SMOOTH);
+		GL11.glLineWidth(2);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glEnable(GL11.GL_CULL_FACE);
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		
+		GL11.glPushMatrix();
+		GL11.glTranslated(-mc.getRenderManager().renderPosX,
+			-mc.getRenderManager().renderPosY,
+			-mc.getRenderManager().renderPosZ);
+		
+		// set position
+		GL11.glTranslated(currentBlock.getX(), currentBlock.getY(),
+			currentBlock.getZ());
+		
+		// get progress
+		float progress;
+		float hardness = BlockUtils.getHardness(currentBlock);
+		if(hardness < 1)
+			progress =
+				mc.playerController.curBlockDamageMP + partialTicks * hardness;
 		else
-			RenderUtils.nukerBox(currentBlock,
-				mc.playerController.curBlockDamageMP);
+			progress = 1;
+		
+		// set size
+		if(progress < 1)
+		{
+			GL11.glTranslated(0.5, 0.5, 0.5);
+			GL11.glScaled(progress, progress, progress);
+			GL11.glTranslated(-0.5, -0.5, -0.5);
+		}
+		
+		// get color
+		float red = progress * 2F;
+		float green = 2 - red;
+		
+		// draw box
+		GL11.glColor4f(red, green, 0, 0.25F);
+		RenderUtils.drawSolidBox();
+		GL11.glColor4f(red, green, 0, 0.5F);
+		RenderUtils.drawOutlinedBox();
+		
+		GL11.glPopMatrix();
+		
+		// GL resets
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glDisable(GL11.GL_LINE_SMOOTH);
 	}
 	
 	@Override
