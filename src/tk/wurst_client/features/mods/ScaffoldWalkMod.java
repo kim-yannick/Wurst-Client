@@ -7,6 +7,7 @@
  */
 package tk.wurst_client.features.mods;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
@@ -56,6 +57,10 @@ public class ScaffoldWalkMod extends Mod implements UpdateListener
 			ItemStack stack = mc.player.inventory.getStackInSlot(i);
 			if(InventoryUtils.isEmptySlot(stack)
 				|| !(stack.getItem() instanceof ItemBlock))
+				continue;
+			
+			// filter out non-solid blocks
+			if(!Block.getBlockFromItem(stack.getItem()).isFullBlock())
 				continue;
 			
 			newSlot = i;
