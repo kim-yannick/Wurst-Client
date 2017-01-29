@@ -94,7 +94,8 @@ public class AutoToolMod extends Mod implements UpdateListener
 			return;
 		
 		// find best tool
-		float bestSpeed = 0;
+		float bestSpeed = mc.player.inventory.getCurrentItem()
+			.getStrVsBlock(BlockUtils.getBlock(pos));
 		int bestSlot = -1;
 		for(int i = 0; i < 9; i++)
 		{
