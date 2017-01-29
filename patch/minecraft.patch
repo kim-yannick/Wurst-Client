@@ -1,6 +1,6 @@
-From 5fdc6a86e21dde4bf2da6416e8a7602133921b14 Mon Sep 17 00:00:00 2001
+From 400ef84f25c9d1f12520111e8602981a878ad108 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Sun, 29 Jan 2017 11:15:56 +0100
+Date: Sun, 29 Jan 2017 12:57:37 +0100
 Subject: [PATCH] mod
 
 ---
@@ -93,7 +93,7 @@ Subject: [PATCH] mod
  net/minecraft/client/audio/SoundManager.java       |  12 +-
  .../client/entity/AbstractClientPlayer.java        |  19 +-
  .../client/entity/EntityOtherPlayerMP.java         |   4 +-
- net/minecraft/client/entity/EntityPlayerSP.java    | 151 +++---
+ net/minecraft/client/entity/EntityPlayerSP.java    | 153 ++++---
  net/minecraft/client/gui/FontRenderer.java         |  53 ++-
  net/minecraft/client/gui/Gui.java                  |   8 +-
  net/minecraft/client/gui/GuiButton.java            |  96 ++--
@@ -147,7 +147,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/GuiSelectWorld.java       |   6 +
  net/minecraft/client/gui/GuiShareToLan.java        |  12 +-
  .../gui/GuiSimpleScrolledSelectionListProxy.java   |   8 +-
- net/minecraft/client/gui/GuiSleepMP.java           |   8 +-
+ net/minecraft/client/gui/GuiSleepMP.java           |  10 +-
  net/minecraft/client/gui/GuiSlider.java            |   1 +
  net/minecraft/client/gui/GuiSlot.java              |  32 +-
  net/minecraft/client/gui/GuiSnooper.java           |   3 +
@@ -456,22 +456,24 @@ Subject: [PATCH] mod
  net/minecraft/nbt/CompressedStreamTools.java       |   1 +
  net/minecraft/nbt/JsonToNBT.java                   |   2 +-
  net/minecraft/nbt/NBTTagCompound.java              |   7 +-
- net/minecraft/network/EnumConnectionState.java     |  42 +-
- net/minecraft/network/NetHandlerPlayServer.java    | 103 +++--
+ net/minecraft/network/EnumConnectionState.java     |  46 +-
+ net/minecraft/network/NetHandlerPlayServer.java    | 123 ++---
  net/minecraft/network/NetworkManager.java          | 328 +++++++------
  net/minecraft/network/NetworkSystem.java           |  11 +-
  net/minecraft/network/PacketBuffer.java            |   6 +-
  .../network/play/INetHandlerPlayClient.java        |  12 +-
- .../network/play/INetHandlerPlayServer.java        |  24 +-
+ .../network/play/INetHandlerPlayServer.java        |  28 +-
  .../network/play/client/C01PacketChatMessage.java  |  59 ---
  .../network/play/client/C02PacketUseEntity.java    | 105 -----
  .../network/play/client/C03PacketPlayer.java       | 229 ----------
  .../play/client/C07PacketPlayerDigging.java        |  91 ----
  .../network/play/client/C0APacketAnimation.java    |  35 --
+ .../network/play/client/C0BPacketEntityAction.java |  89 ----
  .../client/C10PacketCreativeInventoryAction.java   |  64 ---
  .../network/play/client/CPacketAnimation.java      |  35 ++
  .../network/play/client/CPacketChatMessage.java    |  59 +++
  .../client/CPacketCreativeInventoryAction.java     |  64 +++
+ .../network/play/client/CPacketEntityAction.java   |  89 ++++
  .../network/play/client/CPacketPlayer.java         | 229 ++++++++++
  .../network/play/client/CPacketPlayerDigging.java  |  91 ++++
  .../network/play/client/CPacketUseEntity.java      | 105 +++++
@@ -640,16 +642,18 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |  10 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 636 files changed, 7377 insertions(+), 6095 deletions(-)
+ 638 files changed, 7483 insertions(+), 6199 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
  delete mode 100644 net/minecraft/network/play/client/C07PacketPlayerDigging.java
  delete mode 100644 net/minecraft/network/play/client/C0APacketAnimation.java
+ delete mode 100644 net/minecraft/network/play/client/C0BPacketEntityAction.java
  delete mode 100644 net/minecraft/network/play/client/C10PacketCreativeInventoryAction.java
  create mode 100644 net/minecraft/network/play/client/CPacketAnimation.java
  create mode 100644 net/minecraft/network/play/client/CPacketChatMessage.java
  create mode 100644 net/minecraft/network/play/client/CPacketCreativeInventoryAction.java
+ create mode 100644 net/minecraft/network/play/client/CPacketEntityAction.java
  create mode 100644 net/minecraft/network/play/client/CPacketPlayer.java
  create mode 100644 net/minecraft/network/play/client/CPacketPlayerDigging.java
  create mode 100644 net/minecraft/network/play/client/CPacketUseEntity.java
@@ -6617,7 +6621,7 @@ index 4b48cd3..05fa973 100644
  
          if (var9 > 0.1F)
 diff --git a/net/minecraft/client/entity/EntityPlayerSP.java b/net/minecraft/client/entity/EntityPlayerSP.java
-index 58f696b..1701296 100644
+index 58f696b..75c7c07 100644
 --- a/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/net/minecraft/client/entity/EntityPlayerSP.java
 @@ -10,14 +10,7 @@ import net.minecraft.client.gui.GuiMerchant;
@@ -6636,7 +6640,7 @@ index 58f696b..1701296 100644
  import net.minecraft.client.network.NetHandlerPlayClient;
  import net.minecraft.command.server.CommandBlockLogic;
  import net.minecraft.entity.Entity;
-@@ -29,15 +22,8 @@ import net.minecraft.init.Items;
+@@ -29,15 +22,7 @@ import net.minecraft.init.Items;
  import net.minecraft.inventory.IInventory;
  import net.minecraft.item.Item;
  import net.minecraft.item.ItemStack;
@@ -6650,16 +6654,16 @@ index 58f696b..1701296 100644
 -import net.minecraft.network.play.client.C13PacketPlayerAbilities;
 -import net.minecraft.network.play.client.C16PacketClientStatus;
 +import net.minecraft.network.play.client.*;
-+import net.minecraft.network.play.client.C0BPacketEntityAction.Action;
  import net.minecraft.potion.Potion;
  import net.minecraft.stats.StatBase;
  import net.minecraft.stats.StatFileWriter;
-@@ -51,10 +37,14 @@ import net.minecraft.util.MovementInput;
+@@ -51,10 +36,15 @@ import net.minecraft.util.MovementInput;
  import net.minecraft.util.ResourceLocation;
  import net.minecraft.world.IInteractionObject;
  import net.minecraft.world.World;
 +import tk.wurst_client.WurstClient;
 +import tk.wurst_client.events.ChatOutputEvent;
++import tk.wurst_client.events.PostUpdateEvent;
 +import tk.wurst_client.events.UpdateEvent;
 +import tk.wurst_client.utils.RotationUtils;
  
@@ -6679,13 +6683,12 @@ index 58f696b..1701296 100644
          this.field_146108_bO = p_i46278_4_;
          this.mc = mcIn;
          this.dimension = 0;
-@@ -134,21 +124,37 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -134,21 +124,27 @@ public class EntityPlayerSP extends AbstractClientPlayer
      {
          if (this.worldObj.isBlockLoaded(new BlockPos(this.posX, 0.0D, this.posZ)))
          {
-+        	//TODO: Client
-+        	WurstClient wurst = WurstClient.INSTANCE;
-+			wurst.events.fire(new UpdateEvent());
++			// TODO: Client
++			WurstClient.INSTANCE.events.fire(UpdateEvent.INSTANCE);
 +        	
              super.onUpdate();
  
@@ -6700,19 +6703,10 @@ index 58f696b..1701296 100644
              {
 -                this.func_175161_p();
 +                this.sendMotionUpdates();
-+            }
-+            
-+            // TODO: Client
-+            // TODO: Event management for this
-+            if(wurst.mods.sneakMod.isActive())
-+            {
-+    			NetHandlerPlayClient sendQueue =
-+    				Minecraft.getMinecraft().player.connection;
-+    			sendQueue.sendPacket(new C0BPacketEntityAction(Minecraft
-+    				.getMinecraft().player, Action.STOP_SNEAKING));
-+    			sendQueue.sendPacket(new C0BPacketEntityAction(Minecraft
-+    				.getMinecraft().player, Action.START_SNEAKING));
              }
++            
++			// TODO: Client
++			WurstClient.INSTANCE.events.fire(PostUpdateEvent.INSTANCE);
          }
      }
  
@@ -6721,35 +6715,35 @@ index 58f696b..1701296 100644
      {
          boolean var1 = this.isSprinting();
  
-@@ -156,11 +162,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -156,11 +152,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
          {
              if (var1)
              {
 -                this.sendQueue.addToSendQueue(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.START_SPRINTING));
-+                this.connection.sendPacket(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.START_SPRINTING));
++                this.connection.sendPacket(new CPacketEntityAction(this, CPacketEntityAction.Action.START_SPRINTING));
              }
              else
              {
 -                this.sendQueue.addToSendQueue(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.STOP_SPRINTING));
-+                this.connection.sendPacket(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.STOP_SPRINTING));
++                this.connection.sendPacket(new CPacketEntityAction(this, CPacketEntityAction.Action.STOP_SPRINTING));
              }
  
              this.field_175171_bO = var1;
-@@ -172,11 +178,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -172,11 +168,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
          {
              if (var2)
              {
 -                this.sendQueue.addToSendQueue(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.START_SNEAKING));
-+                this.connection.sendPacket(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.START_SNEAKING));
++                this.connection.sendPacket(new CPacketEntityAction(this, CPacketEntityAction.Action.START_SNEAKING));
              }
              else
              {
 -                this.sendQueue.addToSendQueue(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.STOP_SNEAKING));
-+                this.connection.sendPacket(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.STOP_SNEAKING));
++                this.connection.sendPacket(new CPacketEntityAction(this, CPacketEntityAction.Action.STOP_SNEAKING));
              }
  
              this.field_175170_bN = var2;
-@@ -184,36 +190,49 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -184,36 +180,62 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
          if (this.func_175160_A())
          {
@@ -6763,8 +6757,11 @@ index 58f696b..1701296 100644
              double var7 = this.posZ - this.field_175167_bK;
 -            double var9 = (double)(this.rotationYaw - this.field_175164_bL);
 -            double var11 = (double)(this.rotationPitch - this.field_175165_bM);
++
++			// TODO: Client
 +            double var9 = (double)(yaw - this.field_175164_bL);
 +            double var11 = (double)(pitch - this.field_175165_bM);
++            
              boolean var13 = var3 * var3 + var5 * var5 + var7 * var7 > 9.0E-4D || this.field_175168_bP >= 20;
              boolean var14 = var9 != 0.0D || var11 != 0.0D;
  
@@ -6783,7 +6780,11 @@ index 58f696b..1701296 100644
                  if (var13 && var14)
                  {
 -                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround));
-+                    this.connection.sendPacket(new CPacketPlayer.PositionRotation(this.posX, this.getEntityBoundingBox().minY, this.posZ, yaw, pitch, this.onGround));
++					// TODO: Client
++					this.connection.sendPacket(
++						new CPacketPlayer.PositionRotation(this.posX,
++							this.getEntityBoundingBox().minY, this.posZ, yaw,
++							pitch, this.onGround));
                  }
                  else if (var13)
                  {
@@ -6793,10 +6794,12 @@ index 58f696b..1701296 100644
                  else if (var14)
                  {
 -                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
-+                    this.connection.sendPacket(new CPacketPlayer.Rotation(yaw, pitch, this.onGround));
-             }
-             else
-             {
++					// TODO: Client
++					this.connection.sendPacket(
++						new CPacketPlayer.Rotation(yaw, pitch, this.onGround));
+ 	            }
+ 	            else
+ 	            {
 -                    this.sendQueue.addToSendQueue(new C03PacketPlayer(this.onGround));
 +                    this.connection.sendPacket(new CPacketPlayer(this.onGround));
                  }
@@ -6805,11 +6808,15 @@ index 58f696b..1701296 100644
 +            }else
              {
 -                this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(this.motionX, -999.0D, this.motionZ, this.rotationYaw, this.rotationPitch, this.onGround));
-+                this.connection.sendPacket(new CPacketPlayer.PositionRotation(this.motionX, -999.0D, this.motionZ, yaw, pitch, this.onGround));
++				// TODO: Client
++				this.connection
++					.sendPacket(new CPacketPlayer.PositionRotation(this.motionX,
++						-999.0D, this.motionZ, yaw, pitch, this.onGround));
++                
                  var13 = false;
              }
  
-@@ -240,8 +259,8 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -240,8 +262,8 @@ public class EntityPlayerSP extends AbstractClientPlayer
       */
      public EntityItem dropOneItem(boolean p_71040_1_)
      {
@@ -6820,35 +6827,34 @@ index 58f696b..1701296 100644
          return null;
      }
  
-@@ -255,21 +274,43 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -255,21 +277,42 @@ public class EntityPlayerSP extends AbstractClientPlayer
       */
      public void sendChatMessage(String p_71165_1_)
      {
 -        this.sendQueue.addToSendQueue(new C01PacketChatMessage(p_71165_1_));
-+        //TODO: Client
-+      	ChatOutputEvent event = new ChatOutputEvent(p_71165_1_, false);
-+      	WurstClient.INSTANCE.commands.onSentMessage(event);
-+      	WurstClient.INSTANCE.events.fire(event);
-+      	if(event.isCancelled())
-+      		return;
++		// TODO: Client
++		ChatOutputEvent event = new ChatOutputEvent(p_71165_1_, false);
++		WurstClient.INSTANCE.commands.onSentMessage(event);
++		WurstClient.INSTANCE.events.fire(event);
++		if(event.isCancelled())
++			return;
 +      	
 +        this.connection.sendPacket(new CPacketChatMessage(event.getMessage()));
 +    }
 +
-+    /**
-+     * Sends a chat message from the player. Args: chatMessage
-+     */
-+    public void sendAutomaticChatMessage(String message)
-+    {
-+        //TODO: Client
-+      	ChatOutputEvent event = new ChatOutputEvent(message, true);
-+      	WurstClient.INSTANCE.commands.onSentMessage(event);
-+      	WurstClient.INSTANCE.events.fire(event);
-+      	if(event.isCancelled())
-+      		return;
-+      	
-+        this.connection.sendPacket(new CPacketChatMessage(event.getMessage()));
-     }
++	// TODO: Client
++	/**
++	 * Sends a chat message from the player. Args: chatMessage
++	 */
++	public void sendAutomaticChatMessage(String message)
++	{
++		ChatOutputEvent event = new ChatOutputEvent(message, true);
++		WurstClient.INSTANCE.commands.onSentMessage(event);
++		WurstClient.INSTANCE.events.fire(event);
++		if(event.isCancelled())
++			return;
++		this.connection.sendPacket(new CPacketChatMessage(event.getMessage()));
+ 	}
  
      /**
       * Swings the item the player is holding.
@@ -6869,7 +6875,7 @@ index 58f696b..1701296 100644
      }
  
      /**
-@@ -289,7 +330,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -289,7 +332,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
       */
      public void closeScreen()
      {
@@ -6878,7 +6884,7 @@ index 58f696b..1701296 100644
          this.func_175159_q();
      }
  
-@@ -353,7 +394,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -353,7 +396,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
       */
      public void sendPlayerAbilities()
      {
@@ -6887,22 +6893,22 @@ index 58f696b..1701296 100644
      }
  
      public boolean func_175144_cb()
-@@ -363,12 +404,12 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -363,12 +406,12 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
      protected void sendHorseJump()
      {
 -        this.sendQueue.addToSendQueue(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.RIDING_JUMP, (int)(this.getHorseJumpPower() * 100.0F)));
-+        this.connection.sendPacket(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.RIDING_JUMP, (int)(this.getHorseJumpPower() * 100.0F)));
++        this.connection.sendPacket(new CPacketEntityAction(this, CPacketEntityAction.Action.RIDING_JUMP, (int)(this.getHorseJumpPower() * 100.0F)));
      }
  
      public void func_175163_u()
      {
 -        this.sendQueue.addToSendQueue(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.OPEN_INVENTORY));
-+        this.connection.sendPacket(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.OPEN_INVENTORY));
++        this.connection.sendPacket(new CPacketEntityAction(this, CPacketEntityAction.Action.OPEN_INVENTORY));
      }
  
      public void func_175158_f(String p_175158_1_)
-@@ -408,25 +449,25 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -408,25 +451,25 @@ public class EntityPlayerSP extends AbstractClientPlayer
                  byte var12 = -1;
                  double var13 = 9999.0D;
  
@@ -6932,7 +6938,7 @@ index 58f696b..1701296 100644
                  {
                      var13 = 1.0D - var10;
                      var12 = 5;
-@@ -461,7 +502,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -461,7 +504,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
      private boolean func_175162_d(BlockPos p_175162_1_)
      {
@@ -6941,7 +6947,7 @@ index 58f696b..1701296 100644
      }
  
      /**
-@@ -738,7 +779,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -738,7 +781,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
          boolean var4 = this.movementInput.moveForward >= var3;
          this.movementInput.updatePlayerMoveState();
  
@@ -10429,10 +10435,10 @@ index 2f6c16a..c84c65c 100644
                  var7.addVertexWithUV((double)(var5 - 1), (double)(var13 + var12 - 1), 0.0D, 1.0D, 1.0D);
                  var7.addVertexWithUV((double)(var5 - 1), (double)var13, 0.0D, 1.0D, 0.0D);
 diff --git a/net/minecraft/client/gui/GuiSleepMP.java b/net/minecraft/client/gui/GuiSleepMP.java
-index efac2ec..1d4c2a7 100644
+index efac2ec..0039246 100644
 --- a/net/minecraft/client/gui/GuiSleepMP.java
 +++ b/net/minecraft/client/gui/GuiSleepMP.java
-@@ -1,6 +1,8 @@
+@@ -1,9 +1,11 @@
  package net.minecraft.client.gui;
  
  import java.io.IOException;
@@ -10440,7 +10446,11 @@ index efac2ec..1d4c2a7 100644
 +import net.minecraft.client.gui.GuiButton;
  import net.minecraft.client.network.NetHandlerPlayClient;
  import net.minecraft.client.resources.I18n;
- import net.minecraft.network.play.client.C0BPacketEntityAction;
+-import net.minecraft.network.play.client.C0BPacketEntityAction;
++import net.minecraft.network.play.client.CPacketEntityAction;
+ 
+ public class GuiSleepMP extends GuiChat
+ {
 @@ -38,7 +40,7 @@ public class GuiSleepMP extends GuiChat
  
              if (!var3.isEmpty())
@@ -10457,7 +10467,7 @@ index efac2ec..1d4c2a7 100644
 -        NetHandlerPlayClient var1 = this.mc.thePlayer.sendQueue;
 -        var1.addToSendQueue(new C0BPacketEntityAction(this.mc.thePlayer, C0BPacketEntityAction.Action.STOP_SLEEPING));
 +        NetHandlerPlayClient var1 = this.mc.player.connection;
-+        var1.sendPacket(new C0BPacketEntityAction(this.mc.player, C0BPacketEntityAction.Action.STOP_SLEEPING));
++        var1.sendPacket(new CPacketEntityAction(this.mc.player, CPacketEntityAction.Action.STOP_SLEEPING));
      }
  }
 diff --git a/net/minecraft/client/gui/GuiSlider.java b/net/minecraft/client/gui/GuiSlider.java
@@ -26336,7 +26346,7 @@ index 6fcada4..8dd41b5 100644
              private static final String __OBFID = "CL_00001217";
              public String call()
 diff --git a/net/minecraft/network/EnumConnectionState.java b/net/minecraft/network/EnumConnectionState.java
-index 65e3465..c4a1825 100644
+index 65e3465..0c32b8e 100644
 --- a/net/minecraft/network/EnumConnectionState.java
 +++ b/net/minecraft/network/EnumConnectionState.java
 @@ -15,19 +15,19 @@ import net.minecraft.network.login.server.S01PacketEncryptionRequest;
@@ -26354,8 +26364,9 @@ index 65e3465..c4a1825 100644
  import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
  import net.minecraft.network.play.client.C09PacketHeldItemChange;
 -import net.minecraft.network.play.client.C0APacketAnimation;
+-import net.minecraft.network.play.client.C0BPacketEntityAction;
 +import net.minecraft.network.play.client.CPacketAnimation;
- import net.minecraft.network.play.client.C0BPacketEntityAction;
++import net.minecraft.network.play.client.CPacketEntityAction;
  import net.minecraft.network.play.client.C0CPacketInput;
  import net.minecraft.network.play.client.C0DPacketCloseWindow;
  import net.minecraft.network.play.client.C0EPacketClickWindow;
@@ -26416,8 +26427,9 @@ index 65e3465..c4a1825 100644
              this.registerPacket(EnumPacketDirection.SERVERBOUND, C08PacketPlayerBlockPlacement.class);
              this.registerPacket(EnumPacketDirection.SERVERBOUND, C09PacketHeldItemChange.class);
 -            this.registerPacket(EnumPacketDirection.SERVERBOUND, C0APacketAnimation.class);
+-            this.registerPacket(EnumPacketDirection.SERVERBOUND, C0BPacketEntityAction.class);
 +            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketAnimation.class);
-             this.registerPacket(EnumPacketDirection.SERVERBOUND, C0BPacketEntityAction.class);
++            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketEntityAction.class);
              this.registerPacket(EnumPacketDirection.SERVERBOUND, C0CPacketInput.class);
              this.registerPacket(EnumPacketDirection.SERVERBOUND, C0DPacketCloseWindow.class);
              this.registerPacket(EnumPacketDirection.SERVERBOUND, C0EPacketClickWindow.class);
@@ -26428,7 +26440,7 @@ index 65e3465..c4a1825 100644
              this.registerPacket(EnumPacketDirection.SERVERBOUND, C12PacketUpdateSign.class);
              this.registerPacket(EnumPacketDirection.SERVERBOUND, C13PacketPlayerAbilities.class);
 diff --git a/net/minecraft/network/NetHandlerPlayServer.java b/net/minecraft/network/NetHandlerPlayServer.java
-index 3301ef8..77f22de 100644
+index 3301ef8..fc9ab90 100644
 --- a/net/minecraft/network/NetHandlerPlayServer.java
 +++ b/net/minecraft/network/NetHandlerPlayServer.java
 @@ -2,9 +2,11 @@ package net.minecraft.network;
@@ -26469,8 +26481,9 @@ index 3301ef8..77f22de 100644
  import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
  import net.minecraft.network.play.client.C09PacketHeldItemChange;
 -import net.minecraft.network.play.client.C0APacketAnimation;
+-import net.minecraft.network.play.client.C0BPacketEntityAction;
 +import net.minecraft.network.play.client.CPacketAnimation;
- import net.minecraft.network.play.client.C0BPacketEntityAction;
++import net.minecraft.network.play.client.CPacketEntityAction;
  import net.minecraft.network.play.client.C0CPacketInput;
  import net.minecraft.network.play.client.C0DPacketCloseWindow;
  import net.minecraft.network.play.client.C0EPacketClickWindow;
@@ -26679,7 +26692,7 @@ index 3301ef8..77f22de 100644
              this.sendPacket(new S02PacketChat(var4));
          }
          else
-@@ -833,11 +838,11 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
+@@ -833,18 +838,18 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
          this.serverController.getCommandManager().executeCommand(this.playerEntity, command);
      }
  
@@ -26693,6 +26706,14 @@ index 3301ef8..77f22de 100644
      }
  
      /**
+      * Processes a range of action-types: sneaking, sprinting, waking from sleep, opening the inventory or setting jump
+      * height of the horse the player is riding
+      */
+-    public void processEntityAction(C0BPacketEntityAction packetIn)
++    public void processEntityAction(CPacketEntityAction packetIn)
+     {
+         PacketThreadUtil.func_180031_a(packetIn, this, this.playerEntity.getServerForPlayer());
+         this.playerEntity.markPlayerActive();
 @@ -897,7 +902,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
       * Processes interactions ((un)leashing, opening command block GUI) and attacks on an entity with players currently
       * equipped item
@@ -26757,7 +26778,74 @@ index 3301ef8..77f22de 100644
          {
              this.playerEntity.openContainer.setCanCraft(this.playerEntity, true);
          }
-@@ -1561,11 +1566,11 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
+@@ -1496,11 +1501,11 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
+                 ;
+             }
+ 
+-            field_180222_b = new int[C0BPacketEntityAction.Action.values().length];
++            field_180222_b = new int[CPacketEntityAction.Action.values().length];
+ 
+             try
+             {
+-                field_180222_b[C0BPacketEntityAction.Action.START_SNEAKING.ordinal()] = 1;
++                field_180222_b[CPacketEntityAction.Action.START_SNEAKING.ordinal()] = 1;
+             }
+             catch (NoSuchFieldError var13)
+             {
+@@ -1509,7 +1514,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
+ 
+             try
+             {
+-                field_180222_b[C0BPacketEntityAction.Action.STOP_SNEAKING.ordinal()] = 2;
++                field_180222_b[CPacketEntityAction.Action.STOP_SNEAKING.ordinal()] = 2;
+             }
+             catch (NoSuchFieldError var12)
+             {
+@@ -1518,7 +1523,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
+ 
+             try
+             {
+-                field_180222_b[C0BPacketEntityAction.Action.START_SPRINTING.ordinal()] = 3;
++                field_180222_b[CPacketEntityAction.Action.START_SPRINTING.ordinal()] = 3;
+             }
+             catch (NoSuchFieldError var11)
+             {
+@@ -1527,7 +1532,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
+ 
+             try
+             {
+-                field_180222_b[C0BPacketEntityAction.Action.STOP_SPRINTING.ordinal()] = 4;
++                field_180222_b[CPacketEntityAction.Action.STOP_SPRINTING.ordinal()] = 4;
+             }
+             catch (NoSuchFieldError var10)
+             {
+@@ -1536,7 +1541,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
+ 
+             try
+             {
+-                field_180222_b[C0BPacketEntityAction.Action.STOP_SLEEPING.ordinal()] = 5;
++                field_180222_b[CPacketEntityAction.Action.STOP_SLEEPING.ordinal()] = 5;
+             }
+             catch (NoSuchFieldError var9)
+             {
+@@ -1545,7 +1550,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
+ 
+             try
+             {
+-                field_180222_b[C0BPacketEntityAction.Action.RIDING_JUMP.ordinal()] = 6;
++                field_180222_b[CPacketEntityAction.Action.RIDING_JUMP.ordinal()] = 6;
+             }
+             catch (NoSuchFieldError var8)
+             {
+@@ -1554,18 +1559,18 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
+ 
+             try
+             {
+-                field_180222_b[C0BPacketEntityAction.Action.OPEN_INVENTORY.ordinal()] = 7;
++                field_180222_b[CPacketEntityAction.Action.OPEN_INVENTORY.ordinal()] = 7;
+             }
+             catch (NoSuchFieldError var7)
+             {
                  ;
              }
  
@@ -27588,7 +27676,7 @@ index b56e8cf..890c4e5 100644
      void handleCollectItem(S0DPacketCollectItem packetIn);
  
 diff --git a/net/minecraft/network/play/INetHandlerPlayServer.java b/net/minecraft/network/play/INetHandlerPlayServer.java
-index f9e85f2..3c05c04 100644
+index f9e85f2..9402afe 100644
 --- a/net/minecraft/network/play/INetHandlerPlayServer.java
 +++ b/net/minecraft/network/play/INetHandlerPlayServer.java
 @@ -2,19 +2,19 @@ package net.minecraft.network.play;
@@ -27606,8 +27694,9 @@ index f9e85f2..3c05c04 100644
  import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
  import net.minecraft.network.play.client.C09PacketHeldItemChange;
 -import net.minecraft.network.play.client.C0APacketAnimation;
+-import net.minecraft.network.play.client.C0BPacketEntityAction;
 +import net.minecraft.network.play.client.CPacketAnimation;
- import net.minecraft.network.play.client.C0BPacketEntityAction;
++import net.minecraft.network.play.client.CPacketEntityAction;
  import net.minecraft.network.play.client.C0CPacketInput;
  import net.minecraft.network.play.client.C0DPacketCloseWindow;
  import net.minecraft.network.play.client.C0EPacketClickWindow;
@@ -27650,7 +27739,7 @@ index f9e85f2..3c05c04 100644
  
      /**
       * Processes a player starting/stopping flying
-@@ -107,7 +107,7 @@ public interface INetHandlerPlayServer extends INetHandler
+@@ -107,13 +107,13 @@ public interface INetHandlerPlayServer extends INetHandler
       * initiated, 1: reinitiated, 2? , 3-4 drop item (respectively without or with player control), 5: stopped; x,y,z,
       * side clicked on;)
       */
@@ -27659,6 +27748,13 @@ index f9e85f2..3c05c04 100644
  
      /**
       * Processes a range of action-types: sneaking, sprinting, waking from sleep, opening the inventory or setting jump
+      * height of the horse the player is riding
+      */
+-    void processEntityAction(C0BPacketEntityAction packetIn);
++    void processEntityAction(CPacketEntityAction packetIn);
+ 
+     /**
+      * Processes player movement input. Includes walking, strafing, jumping, sneaking; excludes riding and toggling
 @@ -129,7 +129,7 @@ public interface INetHandlerPlayServer extends INetHandler
      /**
       * Update the server with an ItemStack in a slot.
@@ -28217,6 +28313,101 @@ index b82bf83..0000000
 -        this.func_179721_a((INetHandlerPlayServer)handler);
 -    }
 -}
+diff --git a/net/minecraft/network/play/client/C0BPacketEntityAction.java b/net/minecraft/network/play/client/C0BPacketEntityAction.java
+deleted file mode 100644
+index a9ea679..0000000
+--- a/net/minecraft/network/play/client/C0BPacketEntityAction.java
++++ /dev/null
+@@ -1,89 +0,0 @@
+-package net.minecraft.network.play.client;
+-
+-import java.io.IOException;
+-import net.minecraft.entity.Entity;
+-import net.minecraft.network.INetHandler;
+-import net.minecraft.network.Packet;
+-import net.minecraft.network.PacketBuffer;
+-import net.minecraft.network.play.INetHandlerPlayServer;
+-
+-public class C0BPacketEntityAction implements Packet
+-{
+-    private int field_149517_a;
+-    private C0BPacketEntityAction.Action field_149515_b;
+-    private int field_149516_c;
+-    private static final String __OBFID = "CL_00001366";
+-
+-    public C0BPacketEntityAction() {}
+-
+-    public C0BPacketEntityAction(Entity p_i45937_1_, C0BPacketEntityAction.Action p_i45937_2_)
+-    {
+-        this(p_i45937_1_, p_i45937_2_, 0);
+-    }
+-
+-    public C0BPacketEntityAction(Entity p_i45938_1_, C0BPacketEntityAction.Action p_i45938_2_, int p_i45938_3_)
+-    {
+-        this.field_149517_a = p_i45938_1_.getEntityId();
+-        this.field_149515_b = p_i45938_2_;
+-        this.field_149516_c = p_i45938_3_;
+-    }
+-
+-    /**
+-     * Reads the raw packet data from the data stream.
+-     */
+-    public void readPacketData(PacketBuffer data) throws IOException
+-    {
+-        this.field_149517_a = data.readVarIntFromBuffer();
+-        this.field_149515_b = (C0BPacketEntityAction.Action)data.readEnumValue(C0BPacketEntityAction.Action.class);
+-        this.field_149516_c = data.readVarIntFromBuffer();
+-    }
+-
+-    /**
+-     * Writes the raw packet data to the data stream.
+-     */
+-    public void writePacketData(PacketBuffer data) throws IOException
+-    {
+-        data.writeVarIntToBuffer(this.field_149517_a);
+-        data.writeEnumValue(this.field_149515_b);
+-        data.writeVarIntToBuffer(this.field_149516_c);
+-    }
+-
+-    public void func_180765_a(INetHandlerPlayServer p_180765_1_)
+-    {
+-        p_180765_1_.processEntityAction(this);
+-    }
+-
+-    public C0BPacketEntityAction.Action func_180764_b()
+-    {
+-        return this.field_149515_b;
+-    }
+-
+-    public int func_149512_e()
+-    {
+-        return this.field_149516_c;
+-    }
+-
+-    /**
+-     * Passes this Packet on to the NetHandler for processing.
+-     */
+-    public void processPacket(INetHandler handler)
+-    {
+-        this.func_180765_a((INetHandlerPlayServer)handler);
+-    }
+-
+-    public static enum Action
+-    {
+-        START_SNEAKING("START_SNEAKING", 0),
+-        STOP_SNEAKING("STOP_SNEAKING", 1),
+-        STOP_SLEEPING("STOP_SLEEPING", 2),
+-        START_SPRINTING("START_SPRINTING", 3),
+-        STOP_SPRINTING("STOP_SPRINTING", 4),
+-        RIDING_JUMP("RIDING_JUMP", 5),
+-        OPEN_INVENTORY("OPEN_INVENTORY", 6);
+-
+-        private static final C0BPacketEntityAction.Action[] $VALUES = new C0BPacketEntityAction.Action[]{START_SNEAKING, STOP_SNEAKING, STOP_SLEEPING, START_SPRINTING, STOP_SPRINTING, RIDING_JUMP, OPEN_INVENTORY};
+-        private static final String __OBFID = "CL_00002283";
+-
+-        private Action(String p_i45936_1_, int p_i45936_2_) {}
+-    }
+-}
 diff --git a/net/minecraft/network/play/client/C10PacketCreativeInventoryAction.java b/net/minecraft/network/play/client/C10PacketCreativeInventoryAction.java
 deleted file mode 100644
 index 982e31c..0000000
@@ -28461,6 +28652,101 @@ index 0000000..fa87e8c
 +    public void processPacket(INetHandler handler)
 +    {
 +        this.func_180767_a((INetHandlerPlayServer)handler);
++    }
++}
+diff --git a/net/minecraft/network/play/client/CPacketEntityAction.java b/net/minecraft/network/play/client/CPacketEntityAction.java
+new file mode 100644
+index 0000000..3917980
+--- /dev/null
++++ b/net/minecraft/network/play/client/CPacketEntityAction.java
+@@ -0,0 +1,89 @@
++package net.minecraft.network.play.client;
++
++import java.io.IOException;
++import net.minecraft.entity.Entity;
++import net.minecraft.network.INetHandler;
++import net.minecraft.network.Packet;
++import net.minecraft.network.PacketBuffer;
++import net.minecraft.network.play.INetHandlerPlayServer;
++
++public class CPacketEntityAction implements Packet
++{
++    private int field_149517_a;
++    private CPacketEntityAction.Action field_149515_b;
++    private int field_149516_c;
++    private static final String __OBFID = "CL_00001366";
++
++    public CPacketEntityAction() {}
++
++    public CPacketEntityAction(Entity p_i45937_1_, CPacketEntityAction.Action p_i45937_2_)
++    {
++        this(p_i45937_1_, p_i45937_2_, 0);
++    }
++
++    public CPacketEntityAction(Entity p_i45938_1_, CPacketEntityAction.Action p_i45938_2_, int p_i45938_3_)
++    {
++        this.field_149517_a = p_i45938_1_.getEntityId();
++        this.field_149515_b = p_i45938_2_;
++        this.field_149516_c = p_i45938_3_;
++    }
++
++    /**
++     * Reads the raw packet data from the data stream.
++     */
++    public void readPacketData(PacketBuffer data) throws IOException
++    {
++        this.field_149517_a = data.readVarIntFromBuffer();
++        this.field_149515_b = (CPacketEntityAction.Action)data.readEnumValue(CPacketEntityAction.Action.class);
++        this.field_149516_c = data.readVarIntFromBuffer();
++    }
++
++    /**
++     * Writes the raw packet data to the data stream.
++     */
++    public void writePacketData(PacketBuffer data) throws IOException
++    {
++        data.writeVarIntToBuffer(this.field_149517_a);
++        data.writeEnumValue(this.field_149515_b);
++        data.writeVarIntToBuffer(this.field_149516_c);
++    }
++
++    public void func_180765_a(INetHandlerPlayServer p_180765_1_)
++    {
++        p_180765_1_.processEntityAction(this);
++    }
++
++    public CPacketEntityAction.Action func_180764_b()
++    {
++        return this.field_149515_b;
++    }
++
++    public int func_149512_e()
++    {
++        return this.field_149516_c;
++    }
++
++    /**
++     * Passes this Packet on to the NetHandler for processing.
++     */
++    public void processPacket(INetHandler handler)
++    {
++        this.func_180765_a((INetHandlerPlayServer)handler);
++    }
++
++    public static enum Action
++    {
++        START_SNEAKING("START_SNEAKING", 0),
++        STOP_SNEAKING("STOP_SNEAKING", 1),
++        STOP_SLEEPING("STOP_SLEEPING", 2),
++        START_SPRINTING("START_SPRINTING", 3),
++        STOP_SPRINTING("STOP_SPRINTING", 4),
++        RIDING_JUMP("RIDING_JUMP", 5),
++        OPEN_INVENTORY("OPEN_INVENTORY", 6);
++
++        private static final CPacketEntityAction.Action[] $VALUES = new CPacketEntityAction.Action[]{START_SNEAKING, STOP_SNEAKING, STOP_SLEEPING, START_SPRINTING, STOP_SPRINTING, RIDING_JUMP, OPEN_INVENTORY};
++        private static final String __OBFID = "CL_00002283";
++
++        private Action(String p_i45936_1_, int p_i45936_2_) {}
 +    }
 +}
 diff --git a/net/minecraft/network/play/client/CPacketPlayer.java b/net/minecraft/network/play/client/CPacketPlayer.java
