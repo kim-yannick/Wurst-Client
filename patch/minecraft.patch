@@ -1,10 +1,10 @@
-From 6b4e96a635aaa98711118de46991eeec793ed9d7 Mon Sep 17 00:00:00 2001
+From 5fdc6a86e21dde4bf2da6416e8a7602133921b14 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Sat, 28 Jan 2017 12:46:14 +0100
+Date: Sun, 29 Jan 2017 11:15:56 +0100
 Subject: [PATCH] mod
 
 ---
- net/minecraft/block/Block.java                     |  69 +--
+ net/minecraft/block/Block.java                     |  77 ++--
  net/minecraft/block/BlockAir.java                  |   2 +-
  net/minecraft/block/BlockAnvil.java                |   2 +-
  net/minecraft/block/BlockBanner.java               |   2 +-
@@ -26,11 +26,11 @@ Subject: [PATCH] mod
  net/minecraft/block/BlockDoor.java                 |  28 +-
  net/minecraft/block/BlockDoublePlant.java          |  42 +-
  net/minecraft/block/BlockDragonEgg.java            |   6 +-
- net/minecraft/block/BlockDynamicLiquid.java        |  28 +-
+ net/minecraft/block/BlockDynamicLiquid.java        |  38 +-
  net/minecraft/block/BlockEndPortalFrame.java       |   2 +-
  net/minecraft/block/BlockEnderChest.java           |   8 +-
  net/minecraft/block/BlockFalling.java              |   8 +-
- net/minecraft/block/BlockFarmland.java             |  16 +-
+ net/minecraft/block/BlockFarmland.java             |  18 +-
  net/minecraft/block/BlockFence.java                |  18 +-
  net/minecraft/block/BlockFenceGate.java            |   6 +-
  net/minecraft/block/BlockFire.java                 |  66 +--
@@ -43,8 +43,8 @@ Subject: [PATCH] mod
  net/minecraft/block/BlockLadder.java               |   2 +-
  net/minecraft/block/BlockLeaves.java               |   4 +-
  net/minecraft/block/BlockLever.java                |  12 +-
- net/minecraft/block/BlockLilyPad.java              |   4 +-
- net/minecraft/block/BlockLiquid.java               |  51 ++-
+ net/minecraft/block/BlockLilyPad.java              |   6 +-
+ net/minecraft/block/BlockLiquid.java               |  73 +--
  net/minecraft/block/BlockMushroom.java             |  10 +-
  net/minecraft/block/BlockMycelium.java             |  16 +-
  net/minecraft/block/BlockNetherWart.java           |   2 +-
@@ -70,10 +70,10 @@ Subject: [PATCH] mod
  net/minecraft/block/BlockSlab.java                 |   7 +-
  net/minecraft/block/BlockSnow.java                 |   4 +-
  net/minecraft/block/BlockSoulSand.java             |   6 +
- net/minecraft/block/BlockSponge.java               |   6 +-
+ net/minecraft/block/BlockSponge.java               |   8 +-
  net/minecraft/block/BlockStairs.java               | 116 ++---
  net/minecraft/block/BlockStandingSign.java         |   2 +-
- net/minecraft/block/BlockStaticLiquid.java         |   6 +-
+ net/minecraft/block/BlockStaticLiquid.java         |  10 +-
  net/minecraft/block/BlockStem.java                 |   8 +-
  net/minecraft/block/BlockStone.java                |   2 +-
  net/minecraft/block/BlockTallGrass.java            |  10 +-
@@ -84,7 +84,7 @@ Subject: [PATCH] mod
  net/minecraft/block/BlockVine.java                 |  24 +-
  net/minecraft/block/BlockWall.java                 |  10 +-
  net/minecraft/block/IGrowable.java                 |   2 +-
- net/minecraft/block/material/Material.java         |   2 +-
+ net/minecraft/block/material/Material.java         |   6 +-
  .../block/state/BlockPistonStructureHelper.java    |   6 +-
  net/minecraft/client/LoadingScreenRenderer.java    |  10 +-
  net/minecraft/client/Minecraft.java                | 507 +++++++++++----------
@@ -93,7 +93,7 @@ Subject: [PATCH] mod
  net/minecraft/client/audio/SoundManager.java       |  12 +-
  .../client/entity/AbstractClientPlayer.java        |  19 +-
  .../client/entity/EntityOtherPlayerMP.java         |   4 +-
- net/minecraft/client/entity/EntityPlayerSP.java    | 197 +++++---
+ net/minecraft/client/entity/EntityPlayerSP.java    | 151 +++---
  net/minecraft/client/gui/FontRenderer.java         |  53 ++-
  net/minecraft/client/gui/Gui.java                  |   8 +-
  net/minecraft/client/gui/GuiButton.java            |  96 ++--
@@ -114,7 +114,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/GuiFlatPresets.java       |  22 +-
  net/minecraft/client/gui/GuiGameOver.java          |  23 +-
  net/minecraft/client/gui/GuiHopper.java            |   2 +-
- net/minecraft/client/gui/GuiIngame.java            |  92 ++--
+ net/minecraft/client/gui/GuiIngame.java            |  94 ++--
  net/minecraft/client/gui/GuiIngameMenu.java        |  60 ++-
  net/minecraft/client/gui/GuiKeyBindingList.java    |   3 +
  net/minecraft/client/gui/GuiLanguage.java          |   3 +
@@ -192,15 +192,17 @@ Subject: [PATCH] mod
  net/minecraft/client/multiplayer/ServerList.java   |  16 +-
  net/minecraft/client/multiplayer/WorldClient.java  |  28 +-
  .../client/network/NetHandlerLoginClient.java      |   5 +
- .../client/network/NetHandlerPlayClient.java       | 308 ++++---------
+ .../client/network/NetHandlerPlayClient.java       | 322 +++++--------
  .../client/network/NetworkPlayerInfo.java          |  53 ++-
  net/minecraft/client/network/OldServerPinger.java  |  10 +-
  net/minecraft/client/particle/Barrier.java         |   2 +-
  net/minecraft/client/particle/EffectRenderer.java  |  12 +-
  .../client/particle/EntityBreakingFX.java          |   2 +-
+ net/minecraft/client/particle/EntityBubbleFX.java  |   2 +-
  net/minecraft/client/particle/EntityCloudFX.java   |   2 +-
  net/minecraft/client/particle/EntityCrit2FX.java   |   2 +-
  net/minecraft/client/particle/EntityDiggingFX.java |   6 +-
+ .../client/particle/EntityDropParticleFX.java      |  14 +-
  net/minecraft/client/particle/EntityFX.java        |   4 +-
  .../client/particle/EntityFireworkOverlayFX.java   |   2 +-
  .../client/particle/EntityFireworkStarterFX.java   |   2 +-
@@ -214,11 +216,12 @@ Subject: [PATCH] mod
  net/minecraft/client/particle/EntitySmokeFX.java   |   2 +-
  .../client/particle/EntitySnowShovelFX.java        |   2 +-
  .../client/particle/EntitySpellParticleFX.java     |   2 +-
+ net/minecraft/client/particle/EntitySuspendFX.java |   2 +-
  .../client/renderer/ActiveRenderInfo.java          |  16 +-
- .../client/renderer/BlockFluidRenderer.java        |  24 +-
+ .../client/renderer/BlockFluidRenderer.java        |  26 +-
  .../client/renderer/BlockModelRenderer.java        |  10 +-
  .../client/renderer/BlockModelShapes.java          |  36 +-
- net/minecraft/client/renderer/EntityRenderer.java  | 193 ++++----
+ net/minecraft/client/renderer/EntityRenderer.java  | 209 +++++----
  .../client/renderer/ImageBufferDownload.java       |   6 +-
  .../client/renderer/InventoryEffectRenderer.java   |  10 +-
  net/minecraft/client/renderer/ItemModelMesher.java |  15 +-
@@ -317,16 +320,16 @@ Subject: [PATCH] mod
  net/minecraft/crash/CrashReportCategory.java       |  15 +-
  net/minecraft/creativetab/CreativeTabs.java        |   2 +-
  net/minecraft/entity/DataWatcher.java              |  10 +
- net/minecraft/entity/Entity.java                   | 149 +++---
+ net/minecraft/entity/Entity.java                   | 169 ++++---
  net/minecraft/entity/EntityAgeable.java            |   2 +-
  net/minecraft/entity/EntityBodyHelper.java         |   2 +-
  net/minecraft/entity/EntityFlying.java             |   2 +-
- net/minecraft/entity/EntityHanging.java            |   4 +-
- net/minecraft/entity/EntityLiving.java             |   4 +-
- net/minecraft/entity/EntityLivingBase.java         |  58 ++-
+ net/minecraft/entity/EntityHanging.java            |   6 +-
+ net/minecraft/entity/EntityLiving.java             |   6 +-
+ net/minecraft/entity/EntityLivingBase.java         |  62 ++-
  .../entity/EntityMinecartCommandBlock.java         |   6 +-
  net/minecraft/entity/EntityTracker.java            |   5 +-
- net/minecraft/entity/EnumCreatureType.java         |   6 +-
+ net/minecraft/entity/EnumCreatureType.java         |   8 +-
  net/minecraft/entity/ai/EntityAIArrowAttack.java   |   6 +-
  .../entity/ai/EntityAIAttackOnCollide.java         |   2 +-
  net/minecraft/entity/ai/EntityAIAvoidEntity.java   |   4 +-
@@ -355,45 +358,48 @@ Subject: [PATCH] mod
  net/minecraft/entity/boss/EntityWither.java        |   8 +-
  .../entity/effect/EntityLightningBolt.java         |   6 +-
  net/minecraft/entity/item/EntityArmorStand.java    |  10 +-
- net/minecraft/entity/item/EntityBoat.java          |  10 +-
+ net/minecraft/entity/item/EntityBoat.java          |  12 +-
  net/minecraft/entity/item/EntityEnderEye.java      |   6 +-
  net/minecraft/entity/item/EntityEnderPearl.java    |   4 +-
  net/minecraft/entity/item/EntityExpBottle.java     |   4 +-
  net/minecraft/entity/item/EntityFallingBlock.java  |  10 +-
  .../entity/item/EntityFireworkRocket.java          |   4 +-
- net/minecraft/entity/item/EntityItem.java          |   8 +-
+ net/minecraft/entity/item/EntityItem.java          |  12 +-
  net/minecraft/entity/item/EntityItemFrame.java     |   4 +-
  net/minecraft/entity/item/EntityMinecart.java      |  56 +--
  .../entity/item/EntityMinecartContainer.java       |   2 +-
  .../entity/item/EntityMinecartFurnace.java         |   4 +-
  net/minecraft/entity/item/EntityMinecartTNT.java   |   4 +-
- net/minecraft/entity/item/EntityXPOrb.java         |   4 +-
+ net/minecraft/entity/item/EntityXPOrb.java         |   8 +-
  net/minecraft/entity/monster/EntityBlaze.java      |   2 +-
  net/minecraft/entity/monster/EntityCreeper.java    |   2 +-
- net/minecraft/entity/monster/EntityEnderman.java   |  40 +-
- net/minecraft/entity/monster/EntityGhast.java      |   6 +-
- net/minecraft/entity/monster/EntityGuardian.java   |   8 +-
+ net/minecraft/entity/monster/EntityEnderman.java   |  42 +-
+ net/minecraft/entity/monster/EntityGhast.java      |   8 +-
+ net/minecraft/entity/monster/EntityGuardian.java   |  12 +-
  net/minecraft/entity/monster/EntityIronGolem.java  |   4 +-
+ net/minecraft/entity/monster/EntityMagmaCube.java  |   2 +-
+ net/minecraft/entity/monster/EntityPigZombie.java  |   2 +-
  net/minecraft/entity/monster/EntitySilverfish.java |   6 +-
  net/minecraft/entity/monster/EntitySnowman.java    |   6 +-
- net/minecraft/entity/monster/EntityWitch.java      |   2 +-
+ net/minecraft/entity/monster/EntityWitch.java      |   4 +-
+ net/minecraft/entity/monster/EntityZombie.java     |   2 +-
  net/minecraft/entity/passive/EntityAnimal.java     |   6 +-
  net/minecraft/entity/passive/EntityBat.java        |   4 +-
  net/minecraft/entity/passive/EntityChicken.java    |   2 +-
  net/minecraft/entity/passive/EntityHorse.java      |  12 +-
  net/minecraft/entity/passive/EntityMooshroom.java  |   4 +-
- net/minecraft/entity/passive/EntityOcelot.java     |   4 +-
+ net/minecraft/entity/passive/EntityOcelot.java     |   6 +-
  net/minecraft/entity/passive/EntityRabbit.java     |  12 +-
- net/minecraft/entity/passive/EntitySquid.java      |   2 +-
+ net/minecraft/entity/passive/EntitySquid.java      |   4 +-
  net/minecraft/entity/passive/EntityVillager.java   |  10 +-
  net/minecraft/entity/passive/EntityWolf.java       |   2 +-
- net/minecraft/entity/player/EntityPlayer.java      | 114 ++---
- net/minecraft/entity/player/EntityPlayerMP.java    |  22 +-
+ net/minecraft/entity/player/EntityPlayer.java      | 118 ++---
+ net/minecraft/entity/player/EntityPlayerMP.java    |  24 +-
  net/minecraft/entity/player/InventoryPlayer.java   |   9 +-
  net/minecraft/entity/projectile/EntityArrow.java   |  46 +-
  net/minecraft/entity/projectile/EntityEgg.java     |   4 +-
  .../entity/projectile/EntityFireball.java          |  30 +-
- .../entity/projectile/EntityFishHook.java          |  46 +-
+ .../entity/projectile/EntityFishHook.java          |  48 +-
  .../entity/projectile/EntityLargeFireball.java     |   4 +-
  net/minecraft/entity/projectile/EntityPotion.java  |   4 +-
  .../entity/projectile/EntitySmallFireball.java     |   6 +-
@@ -401,7 +407,7 @@ Subject: [PATCH] mod
  .../entity/projectile/EntityThrowable.java         |  32 +-
  .../entity/projectile/EntityWitherSkull.java       |   6 +-
  net/minecraft/init/Blocks.java                     | 180 ++++----
- net/minecraft/init/Bootstrap.java                  |   2 +-
+ net/minecraft/init/Bootstrap.java                  |   8 +-
  net/minecraft/init/Items.java                      |   4 +-
  net/minecraft/inventory/Container.java             |   2 +-
  net/minecraft/inventory/ContainerPlayer.java       |   2 +-
@@ -417,8 +423,8 @@ Subject: [PATCH] mod
  net/minecraft/item/ItemAxe.java                    |   2 +-
  net/minecraft/item/ItemBed.java                    |   4 +-
  net/minecraft/item/ItemBlock.java                  |   4 +-
- net/minecraft/item/ItemBoat.java                   |  20 +-
- net/minecraft/item/ItemBucket.java                 |  22 +-
+ net/minecraft/item/ItemBoat.java                   |  22 +-
+ net/minecraft/item/ItemBucket.java                 |  26 +-
  net/minecraft/item/ItemDoor.java                   |  10 +-
  net/minecraft/item/ItemDye.java                    |   6 +-
  net/minecraft/item/ItemEditableBook.java           |   4 +-
@@ -426,9 +432,9 @@ Subject: [PATCH] mod
  net/minecraft/item/ItemFireball.java               |   2 +-
  net/minecraft/item/ItemFishingRod.java             |   4 +-
  net/minecraft/item/ItemFlintAndSteel.java          |   2 +-
- net/minecraft/item/ItemGlassBottle.java            |  10 +-
+ net/minecraft/item/ItemGlassBottle.java            |  12 +-
  net/minecraft/item/ItemHoe.java                    |   8 +-
- net/minecraft/item/ItemLilyPad.java                |  16 +-
+ net/minecraft/item/ItemLilyPad.java                |  18 +-
  net/minecraft/item/ItemMap.java                    |   6 +-
  net/minecraft/item/ItemMinecart.java               |   4 +-
  net/minecraft/item/ItemMonsterPlacer.java          |  14 +-
@@ -451,8 +457,8 @@ Subject: [PATCH] mod
  net/minecraft/nbt/JsonToNBT.java                   |   2 +-
  net/minecraft/nbt/NBTTagCompound.java              |   7 +-
  net/minecraft/network/EnumConnectionState.java     |  42 +-
- net/minecraft/network/NetHandlerPlayServer.java    |  83 ++--
- net/minecraft/network/NetworkManager.java          | 334 +++++++-------
+ net/minecraft/network/NetHandlerPlayServer.java    | 103 +++--
+ net/minecraft/network/NetworkManager.java          | 328 +++++++------
  net/minecraft/network/NetworkSystem.java           |  11 +-
  net/minecraft/network/PacketBuffer.java            |   6 +-
  .../network/play/INetHandlerPlayClient.java        |  12 +-
@@ -479,7 +485,7 @@ Subject: [PATCH] mod
  net/minecraft/pathfinding/PathEntity.java          |  10 +-
  net/minecraft/pathfinding/PathNavigate.java        |  22 +-
  net/minecraft/pathfinding/PathNavigateClimber.java |   2 +-
- net/minecraft/pathfinding/PathNavigateGround.java  |  16 +-
+ net/minecraft/pathfinding/PathNavigateGround.java  |  20 +-
  net/minecraft/pathfinding/PathNavigateSwimmer.java |  18 +-
  net/minecraft/pathfinding/PathPoint.java           |   2 +-
  net/minecraft/potion/PotionEffect.java             |  12 +-
@@ -497,7 +503,7 @@ Subject: [PATCH] mod
  .../server/management/LowerStringMap.java          |   4 +-
  net/minecraft/server/management/PlayerManager.java |   2 +-
  .../server/management/PlayerProfileCache.java      |   6 +-
- .../management/ServerConfigurationManager.java     |  32 +-
+ .../management/ServerConfigurationManager.java     |  34 +-
  .../server/network/NetHandlerHandshakeTCP.java     |   8 +-
  .../server/network/NetHandlerLoginServer.java      |  16 +-
  net/minecraft/stats/Achievement.java               |   2 +-
@@ -547,7 +553,7 @@ Subject: [PATCH] mod
  net/minecraft/world/Explosion.java                 |  18 +-
  net/minecraft/world/SpawnerAnimals.java            |  19 +-
  net/minecraft/world/Teleporter.java                |  22 +-
- net/minecraft/world/World.java                     | 187 ++++----
+ net/minecraft/world/World.java                     | 193 ++++----
  net/minecraft/world/WorldManager.java              |  12 +-
  net/minecraft/world/WorldProvider.java             |  10 +-
  net/minecraft/world/WorldProviderEnd.java          |   8 +-
@@ -588,7 +594,7 @@ Subject: [PATCH] mod
  .../world/gen/feature/WorldGenBlockBlob.java       |   8 +-
  .../world/gen/feature/WorldGenCactus.java          |   2 +-
  .../world/gen/feature/WorldGenCanopyTree.java      |  22 +-
- net/minecraft/world/gen/feature/WorldGenClay.java  |   4 +-
+ net/minecraft/world/gen/feature/WorldGenClay.java  |   6 +-
  .../world/gen/feature/WorldGenDeadBush.java        |   8 +-
  .../world/gen/feature/WorldGenDesertWells.java     |   8 +-
  .../world/gen/feature/WorldGenDoublePlant.java     |   4 +-
@@ -601,7 +607,7 @@ Subject: [PATCH] mod
  .../world/gen/feature/WorldGenHugeTrees.java       |  18 +-
  .../world/gen/feature/WorldGenIcePath.java         |   4 +-
  .../world/gen/feature/WorldGenIceSpike.java        |  16 +-
- net/minecraft/world/gen/feature/WorldGenLakes.java |  14 +-
+ net/minecraft/world/gen/feature/WorldGenLakes.java |  18 +-
  .../world/gen/feature/WorldGenLiquids.java         |  22 +-
  .../world/gen/feature/WorldGenMegaJungle.java      |  42 +-
  .../world/gen/feature/WorldGenMegaPineTree.java    |  34 +-
@@ -609,7 +615,7 @@ Subject: [PATCH] mod
  .../world/gen/feature/WorldGenMinable.java         |   2 +-
  .../world/gen/feature/WorldGenPumpkin.java         |   2 +-
  net/minecraft/world/gen/feature/WorldGenReed.java  |   6 +-
- net/minecraft/world/gen/feature/WorldGenSand.java  |   2 +-
+ net/minecraft/world/gen/feature/WorldGenSand.java  |   4 +-
  .../world/gen/feature/WorldGenSavannaTree.java     |  30 +-
  net/minecraft/world/gen/feature/WorldGenShrub.java |  12 +-
  .../world/gen/feature/WorldGenSpikes.java          |   6 +-
@@ -630,10 +636,11 @@ Subject: [PATCH] mod
  .../structure/StructureOceanMonumentPieces.java    |   2 +-
  .../gen/structure/StructureStrongholdPieces.java   |  60 +--
  .../gen/structure/StructureVillagePieces.java      | 214 ++++-----
- .../world/pathfinder/WalkNodeProcessor.java        |   8 +-
+ .../world/pathfinder/SwimNodeProcessor.java        |   2 +-
+ .../world/pathfinder/WalkNodeProcessor.java        |  10 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 629 files changed, 7305 insertions(+), 5985 deletions(-)
+ 636 files changed, 7377 insertions(+), 6095 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -660,7 +667,7 @@ Subject: [PATCH] mod
  create mode 100644 net/minecraft/util/Vec3d.java
 
 diff --git a/net/minecraft/block/Block.java b/net/minecraft/block/Block.java
-index d8fe39f..833f76b 100644
+index d8fe39f..f169da2 100644
 --- a/net/minecraft/block/Block.java
 +++ b/net/minecraft/block/Block.java
 @@ -3,6 +3,7 @@ package net.minecraft.block;
@@ -834,6 +841,21 @@ index d8fe39f..833f76b 100644
      {
          return motion;
      }
+@@ -1200,10 +1215,10 @@ public class Block
+         registerBlock(5, "planks", var1);
+         registerBlock(6, "sapling", (new BlockSapling()).setHardness(0.0F).setStepSound(soundTypeGrass).setUnlocalizedName("sapling"));
+         registerBlock(7, "bedrock", (new Block(Material.rock)).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(soundTypePiston).setUnlocalizedName("bedrock").disableStats().setCreativeTab(CreativeTabs.tabBlock));
+-        registerBlock(8, "flowing_water", (new BlockDynamicLiquid(Material.water)).setHardness(100.0F).setLightOpacity(3).setUnlocalizedName("water").disableStats());
+-        registerBlock(9, "water", (new BlockStaticLiquid(Material.water)).setHardness(100.0F).setLightOpacity(3).setUnlocalizedName("water").disableStats());
+-        registerBlock(10, "flowing_lava", (new BlockDynamicLiquid(Material.lava)).setHardness(100.0F).setLightLevel(1.0F).setUnlocalizedName("lava").disableStats());
+-        registerBlock(11, "lava", (new BlockStaticLiquid(Material.lava)).setHardness(100.0F).setLightLevel(1.0F).setUnlocalizedName("lava").disableStats());
++        registerBlock(8, "flowing_water", (new BlockDynamicLiquid(Material.WATER)).setHardness(100.0F).setLightOpacity(3).setUnlocalizedName("water").disableStats());
++        registerBlock(9, "water", (new BlockStaticLiquid(Material.WATER)).setHardness(100.0F).setLightOpacity(3).setUnlocalizedName("water").disableStats());
++        registerBlock(10, "flowing_lava", (new BlockDynamicLiquid(Material.LAVA)).setHardness(100.0F).setLightLevel(1.0F).setUnlocalizedName("lava").disableStats());
++        registerBlock(11, "lava", (new BlockStaticLiquid(Material.LAVA)).setHardness(100.0F).setLightLevel(1.0F).setUnlocalizedName("lava").disableStats());
+         registerBlock(12, "sand", (new BlockSand()).setHardness(0.5F).setStepSound(soundTypeSand).setUnlocalizedName("sand"));
+         registerBlock(13, "gravel", (new BlockGravel()).setHardness(0.6F).setStepSound(soundTypeGravel).setUnlocalizedName("gravel"));
+         registerBlock(14, "gold_ore", (new BlockOre()).setHardness(3.0F).setResistance(5.0F).setStepSound(soundTypePiston).setUnlocalizedName("oreGold"));
 @@ -1409,7 +1424,7 @@ public class Block
          {
              var14 = (Block)var13.next();
@@ -1693,9 +1715,18 @@ index cf340b3..1625e03 100644
                      if (worldIn.isRemote)
                      {
 diff --git a/net/minecraft/block/BlockDynamicLiquid.java b/net/minecraft/block/BlockDynamicLiquid.java
-index 426af25..8869b65 100644
+index 426af25..1cb1c6f 100644
 --- a/net/minecraft/block/BlockDynamicLiquid.java
 +++ b/net/minecraft/block/BlockDynamicLiquid.java
+@@ -31,7 +31,7 @@ public class BlockDynamicLiquid extends BlockLiquid
+         int var5 = ((Integer)state.getValue(LEVEL)).intValue();
+         byte var6 = 1;
+ 
+-        if (this.blockMaterial == Material.lava && !worldIn.provider.func_177500_n())
++        if (this.blockMaterial == Material.LAVA && !worldIn.provider.func_177500_n())
+         {
+             var6 = 2;
+         }
 @@ -57,9 +57,9 @@ public class BlockDynamicLiquid extends BlockLiquid
                  var14 = -1;
              }
@@ -1708,15 +1739,27 @@ index 426af25..8869b65 100644
  
                  if (var16 >= 8)
                  {
-@@ -73,7 +73,7 @@ public class BlockDynamicLiquid extends BlockLiquid
+@@ -71,9 +71,9 @@ public class BlockDynamicLiquid extends BlockLiquid
+                 }
+             }
  
-             if (this.field_149815_a >= 2 && this.blockMaterial == Material.water)
+-            if (this.field_149815_a >= 2 && this.blockMaterial == Material.water)
++            if (this.field_149815_a >= 2 && this.blockMaterial == Material.WATER)
              {
 -                IBlockState var17 = worldIn.getBlockState(pos.offsetDown());
 +                IBlockState var17 = worldIn.getBlockState(pos.down());
  
                  if (var17.getBlock().getMaterial().isSolid())
                  {
+@@ -85,7 +85,7 @@ public class BlockDynamicLiquid extends BlockLiquid
+                 }
+             }
+ 
+-            if (this.blockMaterial == Material.lava && var5 < 8 && var14 < 8 && var14 > var5 && rand.nextInt(4) != 0)
++            if (this.blockMaterial == Material.LAVA && var5 < 8 && var14 < 8 && var14 > var5 && rand.nextInt(4) != 0)
+             {
+                 var7 *= 4;
+             }
 @@ -116,27 +116,27 @@ public class BlockDynamicLiquid extends BlockLiquid
              this.func_180690_f(worldIn, pos, state);
          }
@@ -1728,7 +1771,7 @@ index 426af25..8869b65 100644
 +        if (this.func_176373_h(worldIn, pos.down(), var13))
          {
 -            if (this.blockMaterial == Material.lava && worldIn.getBlockState(pos.offsetDown()).getBlock().getMaterial() == Material.water)
-+            if (this.blockMaterial == Material.lava && worldIn.getBlockState(pos.down()).getBlock().getMaterial() == Material.water)
++            if (this.blockMaterial == Material.LAVA && worldIn.getBlockState(pos.down()).getBlock().getMaterial() == Material.WATER)
              {
 -                worldIn.setBlockState(pos.offsetDown(), Blocks.stone.getDefaultState());
 -                this.func_180688_d(worldIn, pos.offsetDown());
@@ -1753,15 +1796,18 @@ index 426af25..8869b65 100644
          {
              Set var15 = this.func_176376_e(worldIn, pos);
              var16 = var5 + var6;
-@@ -165,7 +165,7 @@ public class BlockDynamicLiquid extends BlockLiquid
+@@ -165,9 +165,9 @@ public class BlockDynamicLiquid extends BlockLiquid
      {
          if (this.func_176373_h(worldIn, p_176375_2_, p_176375_3_))
          {
 -            if (p_176375_3_.getBlock() != Blocks.air)
 +            if (p_176375_3_.getBlock() != Blocks.AIR)
              {
-                 if (this.blockMaterial == Material.lava)
+-                if (this.blockMaterial == Material.lava)
++                if (this.blockMaterial == Material.LAVA)
                  {
+                     this.func_180688_d(worldIn, p_176375_2_);
+                 }
 @@ -197,7 +197,7 @@ public class BlockDynamicLiquid extends BlockLiquid
  
                  if (!this.func_176372_g(worldIn, var8, var9) && (var9.getBlock().getMaterial() != this.blockMaterial || ((Integer)var9.getValue(LEVEL)).intValue() > 0))
@@ -1780,6 +1826,15 @@ index 426af25..8869b65 100644
                  {
                      var9 = this.func_176374_a(worldIn, var7, 1, var6.getOpposite());
                  }
+@@ -292,7 +292,7 @@ public class BlockDynamicLiquid extends BlockLiquid
+     private boolean func_176373_h(World worldIn, BlockPos p_176373_2_, IBlockState p_176373_3_)
+     {
+         Material var4 = p_176373_3_.getBlock().getMaterial();
+-        return var4 != this.blockMaterial && var4 != Material.lava && !this.func_176372_g(worldIn, p_176373_2_, p_176373_3_);
++        return var4 != this.blockMaterial && var4 != Material.LAVA && !this.func_176372_g(worldIn, p_176373_2_, p_176373_3_);
+     }
+ 
+     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
 diff --git a/net/minecraft/block/BlockEndPortalFrame.java b/net/minecraft/block/BlockEndPortalFrame.java
 index 9da61f4..b6d0c32 100644
 --- a/net/minecraft/block/BlockEndPortalFrame.java
@@ -1831,7 +1886,7 @@ index 53a504a..79c04dd 100644
                  return true;
              }
 diff --git a/net/minecraft/block/BlockFalling.java b/net/minecraft/block/BlockFalling.java
-index a4e1499..b3d6cd3 100644
+index a4e1499..ea4cfcb 100644
 --- a/net/minecraft/block/BlockFalling.java
 +++ b/net/minecraft/block/BlockFalling.java
 @@ -45,7 +45,7 @@ public class BlockFalling extends Block
@@ -1865,12 +1920,12 @@ index a4e1499..b3d6cd3 100644
          Block var2 = worldIn.getBlockState(pos).getBlock();
          Material var3 = var2.blockMaterial;
 -        return var2 == Blocks.fire || var3 == Material.air || var3 == Material.water || var3 == Material.lava;
-+        return var2 == Blocks.fire || var3 == Material.AIR || var3 == Material.water || var3 == Material.lava;
++        return var2 == Blocks.fire || var3 == Material.AIR || var3 == Material.WATER || var3 == Material.LAVA;
      }
  
      public void onEndFalling(World worldIn, BlockPos pos) {}
 diff --git a/net/minecraft/block/BlockFarmland.java b/net/minecraft/block/BlockFarmland.java
-index 190fdf1..2d22653 100644
+index 190fdf1..f9418ad 100644
 --- a/net/minecraft/block/BlockFarmland.java
 +++ b/net/minecraft/block/BlockFarmland.java
 @@ -49,7 +49,7 @@ public class BlockFarmland extends Block
@@ -1909,6 +1964,15 @@ index 190fdf1..2d22653 100644
          return var3 instanceof BlockCrops || var3 instanceof BlockStem;
      }
  
+@@ -109,7 +109,7 @@ public class BlockFarmland extends Block
+ 
+             var4 = (BlockPos.MutableBlockPos)var3.next();
+         }
+-        while (worldIn.getBlockState(var4).getBlock().getMaterial() != Material.water);
++        while (worldIn.getBlockState(var4).getBlock().getMaterial() != Material.WATER);
+ 
+         return true;
+     }
 @@ -118,9 +118,9 @@ public class BlockFarmland extends Block
      {
          super.onNeighborBlockChange(worldIn, pos, state, neighborBlock);
@@ -2577,10 +2641,10 @@ index b56d368..dc593d0 100644
      }
  
 diff --git a/net/minecraft/block/BlockLilyPad.java b/net/minecraft/block/BlockLilyPad.java
-index 8156a1e..b170743 100644
+index 8156a1e..71e2aeb 100644
 --- a/net/minecraft/block/BlockLilyPad.java
 +++ b/net/minecraft/block/BlockLilyPad.java
-@@ -62,14 +62,14 @@ public class BlockLilyPad extends BlockBush
+@@ -62,15 +62,15 @@ public class BlockLilyPad extends BlockBush
       */
      protected boolean canPlaceBlockOn(Block ground)
      {
@@ -2593,12 +2657,14 @@ index 8156a1e..b170743 100644
          if (p_180671_2_.getY() >= 0 && p_180671_2_.getY() < 256)
          {
 -            IBlockState var4 = worldIn.getBlockState(p_180671_2_.offsetDown());
+-            return var4.getBlock().getMaterial() == Material.water && ((Integer)var4.getValue(BlockLiquid.LEVEL)).intValue() == 0;
 +            IBlockState var4 = worldIn.getBlockState(p_180671_2_.down());
-             return var4.getBlock().getMaterial() == Material.water && ((Integer)var4.getValue(BlockLiquid.LEVEL)).intValue() == 0;
++            return var4.getBlock().getMaterial() == Material.WATER && ((Integer)var4.getValue(BlockLiquid.LEVEL)).intValue() == 0;
          }
          else
+         {
 diff --git a/net/minecraft/block/BlockLiquid.java b/net/minecraft/block/BlockLiquid.java
-index be12b92..e15cd66 100644
+index be12b92..ee73f37 100644
 --- a/net/minecraft/block/BlockLiquid.java
 +++ b/net/minecraft/block/BlockLiquid.java
 @@ -2,6 +2,7 @@ package net.minecraft.block;
@@ -2625,17 +2691,23 @@ index be12b92..e15cd66 100644
  
  public abstract class BlockLiquid extends Block
  {
-@@ -35,7 +40,9 @@ public abstract class BlockLiquid extends Block
+@@ -35,12 +40,14 @@ public abstract class BlockLiquid extends Block
  
      public boolean isPassable(IBlockAccess blockAccess, BlockPos pos)
      {
 -        return this.blockMaterial != Material.lava;
 +		// TODO: Client
 +		return WurstClient.INSTANCE.mods.xRayMod.isEnabled() ? true
-+			: this.blockMaterial != Material.lava;
++			: this.blockMaterial != Material.LAVA;
      }
  
      public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass)
+     {
+-        return this.blockMaterial == Material.water ? BiomeColorHelper.func_180288_c(worldIn, pos) : 16777215;
++        return this.blockMaterial == Material.WATER ? BiomeColorHelper.func_180288_c(worldIn, pos) : 16777215;
+     }
+ 
+     /**
 @@ -79,7 +86,9 @@ public abstract class BlockLiquid extends Block
  
      public boolean canCollideCheck(IBlockState state, boolean p_176209_2_)
@@ -2699,7 +2771,14 @@ index be12b92..e15cd66 100644
      {
          return motion.add(this.func_180687_h(worldIn, pos));
      }
-@@ -218,7 +231,7 @@ public abstract class BlockLiquid extends Block
+@@ -212,13 +225,13 @@ public abstract class BlockLiquid extends Block
+      */
+     public int tickRate(World worldIn)
+     {
+-        return this.blockMaterial == Material.water ? 5 : (this.blockMaterial == Material.lava ? (worldIn.provider.getHasNoSky() ? 10 : 30) : 0);
++        return this.blockMaterial == Material.WATER ? 5 : (this.blockMaterial == Material.LAVA ? (worldIn.provider.getHasNoSky() ? 10 : 30) : 0);
+     }
+ 
      public int getMixedBrightnessForBlock(IBlockAccess worldIn, BlockPos pos)
      {
          int var3 = worldIn.getCombinedLight(pos, 0);
@@ -2708,12 +2787,30 @@ index be12b92..e15cd66 100644
          int var5 = var3 & 255;
          int var6 = var4 & 255;
          int var7 = var3 >> 16 & 255;
+@@ -228,7 +241,7 @@ public abstract class BlockLiquid extends Block
+ 
+     public EnumWorldBlockLayer getBlockLayer()
+     {
+-        return this.blockMaterial == Material.water ? EnumWorldBlockLayer.TRANSLUCENT : EnumWorldBlockLayer.SOLID;
++        return this.blockMaterial == Material.WATER ? EnumWorldBlockLayer.TRANSLUCENT : EnumWorldBlockLayer.SOLID;
+     }
+ 
+     public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+@@ -237,7 +250,7 @@ public abstract class BlockLiquid extends Block
+         double var7 = (double)pos.getY();
+         double var9 = (double)pos.getZ();
+ 
+-        if (this.blockMaterial == Material.water)
++        if (this.blockMaterial == Material.WATER)
+         {
+             int var11 = ((Integer)state.getValue(LEVEL)).intValue();
+ 
 @@ -254,7 +267,7 @@ public abstract class BlockLiquid extends Block
              }
          }
  
 -        if (this.blockMaterial == Material.lava && worldIn.getBlockState(pos.offsetUp()).getBlock().getMaterial() == Material.air && !worldIn.getBlockState(pos.offsetUp()).getBlock().isOpaqueCube())
-+        if (this.blockMaterial == Material.lava && worldIn.getBlockState(pos.up()).getBlock().getMaterial() == Material.AIR && !worldIn.getBlockState(pos.up()).getBlock().isOpaqueCube())
++        if (this.blockMaterial == Material.LAVA && worldIn.getBlockState(pos.up()).getBlock().getMaterial() == Material.AIR && !worldIn.getBlockState(pos.up()).getBlock().isOpaqueCube())
          {
              if (rand.nextInt(100) == 0)
              {
@@ -2729,6 +2826,15 @@ index be12b92..e15cd66 100644
  
              if (!var19.blocksMovement() && !var19.isLiquid())
              {
+@@ -281,7 +294,7 @@ public abstract class BlockLiquid extends Block
+                 double var14 = var7 - 1.05D;
+                 double var16 = var9 + (double)rand.nextFloat();
+ 
+-                if (this.blockMaterial == Material.water)
++                if (this.blockMaterial == Material.WATER)
+                 {
+                     worldIn.spawnParticle(EnumParticleTypes.DRIP_WATER, var12, var14, var16, 0.0D, 0.0D, 0.0D, new int[0]);
+                 }
 @@ -295,7 +308,7 @@ public abstract class BlockLiquid extends Block
  
      public static double func_180689_a(IBlockAccess p_180689_0_, BlockPos p_180689_1_, Material p_180689_2_)
@@ -2738,6 +2844,24 @@ index be12b92..e15cd66 100644
          return var3.xCoord == 0.0D && var3.zCoord == 0.0D ? -1000.0D : Math.atan2(var3.zCoord, var3.xCoord) - (Math.PI / 2D);
      }
  
+@@ -311,7 +324,7 @@ public abstract class BlockLiquid extends Block
+ 
+     public boolean func_176365_e(World worldIn, BlockPos p_176365_2_, IBlockState p_176365_3_)
+     {
+-        if (this.blockMaterial == Material.lava)
++        if (this.blockMaterial == Material.LAVA)
+         {
+             boolean var4 = false;
+             EnumFacing[] var5 = EnumFacing.values();
+@@ -321,7 +334,7 @@ public abstract class BlockLiquid extends Block
+             {
+                 EnumFacing var8 = var5[var7];
+ 
+-                if (var8 != EnumFacing.DOWN && worldIn.getBlockState(p_176365_2_.offset(var8)).getBlock().getMaterial() == Material.water)
++                if (var8 != EnumFacing.DOWN && worldIn.getBlockState(p_176365_2_.offset(var8)).getBlock().getMaterial() == Material.WATER)
+                 {
+                     var4 = true;
+                     break;
 @@ -334,7 +347,7 @@ public abstract class BlockLiquid extends Block
  
                  if (var9.intValue() == 0)
@@ -2747,28 +2871,36 @@ index be12b92..e15cd66 100644
                      this.func_180688_d(worldIn, p_176365_2_);
                      return true;
                  }
-@@ -389,11 +402,11 @@ public abstract class BlockLiquid extends Block
+@@ -387,13 +400,13 @@ public abstract class BlockLiquid extends Block
+ 
+     public static BlockDynamicLiquid getDynamicLiquidForMaterial(Material p_176361_0_)
      {
-         if (p_176361_0_ == Material.water)
+-        if (p_176361_0_ == Material.water)
++        if (p_176361_0_ == Material.WATER)
          {
 -            return Blocks.flowing_water;
 +            return Blocks.FLOWING_WATER;
          }
-         else if (p_176361_0_ == Material.lava)
+-        else if (p_176361_0_ == Material.lava)
++        else if (p_176361_0_ == Material.LAVA)
          {
 -            return Blocks.flowing_lava;
 +            return Blocks.FLOWING_LAVA;
          }
          else
          {
-@@ -405,11 +418,11 @@ public abstract class BlockLiquid extends Block
+@@ -403,13 +416,13 @@ public abstract class BlockLiquid extends Block
+ 
+     public static BlockStaticLiquid getStaticLiquidForMaterial(Material p_176363_0_)
      {
-         if (p_176363_0_ == Material.water)
+-        if (p_176363_0_ == Material.water)
++        if (p_176363_0_ == Material.WATER)
          {
 -            return Blocks.water;
 +            return Blocks.WATER;
          }
-         else if (p_176363_0_ == Material.lava)
+-        else if (p_176363_0_ == Material.lava)
++        else if (p_176363_0_ == Material.LAVA)
          {
 -            return Blocks.lava;
 +            return Blocks.LAVA;
@@ -3822,7 +3954,7 @@ index 37ef8f7..37e695f 100644
      }
  
 diff --git a/net/minecraft/block/BlockReed.java b/net/minecraft/block/BlockReed.java
-index 9abbba2..78bdf32 100644
+index 9abbba2..e0b32b1 100644
 --- a/net/minecraft/block/BlockReed.java
 +++ b/net/minecraft/block/BlockReed.java
 @@ -33,13 +33,13 @@ public class BlockReed extends Block
@@ -3872,7 +4004,7 @@ index 9abbba2..78bdf32 100644
                  var5 = (EnumFacing)var4.next();
              }
 -            while (worldIn.getBlockState(pos.offset(var5).offsetDown()).getBlock().getMaterial() != Material.water);
-+            while (worldIn.getBlockState(pos.offset(var5).down()).getBlock().getMaterial() != Material.water);
++            while (worldIn.getBlockState(pos.offset(var5).down()).getBlock().getMaterial() != Material.WATER);
  
              return true;
          }
@@ -4072,7 +4204,7 @@ index 973d27c..514d455 100644
          entityIn.motionZ *= 0.4D;
      }
 diff --git a/net/minecraft/block/BlockSponge.java b/net/minecraft/block/BlockSponge.java
-index 50725a2..151ca3d 100644
+index 50725a2..2749088 100644
 --- a/net/minecraft/block/BlockSponge.java
 +++ b/net/minecraft/block/BlockSponge.java
 @@ -57,7 +57,7 @@ public class BlockSponge extends Block
@@ -4084,9 +4216,12 @@ index 50725a2..151ca3d 100644
          }
      }
  
-@@ -84,7 +84,7 @@ public class BlockSponge extends Block
+@@ -82,9 +82,9 @@ public class BlockSponge extends Block
+                 EnumFacing var12 = var9[var11];
+                 BlockPos var13 = var7.offset(var12);
  
-                 if (worldIn.getBlockState(var13).getBlock().getMaterial() == Material.water)
+-                if (worldIn.getBlockState(var13).getBlock().getMaterial() == Material.water)
++                if (worldIn.getBlockState(var13).getBlock().getMaterial() == Material.WATER)
                  {
 -                    worldIn.setBlockState(var13, Blocks.air.getDefaultState(), 2);
 +                    worldIn.setBlockState(var13, Blocks.AIR.getDefaultState(), 2);
@@ -4558,9 +4693,27 @@ index 3c2eab4..9e6bf28 100644
              this.dropBlockAsItem(worldIn, pos, state, 0);
              worldIn.setBlockToAir(pos);
 diff --git a/net/minecraft/block/BlockStaticLiquid.java b/net/minecraft/block/BlockStaticLiquid.java
-index 473934a..de5a7c0 100644
+index 473934a..7ca6b2b 100644
 --- a/net/minecraft/block/BlockStaticLiquid.java
 +++ b/net/minecraft/block/BlockStaticLiquid.java
+@@ -17,7 +17,7 @@ public class BlockStaticLiquid extends BlockLiquid
+         super(p_i45429_1_);
+         this.setTickRandomly(false);
+ 
+-        if (p_i45429_1_ == Material.lava)
++        if (p_i45429_1_ == Material.LAVA)
+         {
+             this.setTickRandomly(true);
+         }
+@@ -40,7 +40,7 @@ public class BlockStaticLiquid extends BlockLiquid
+ 
+     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+     {
+-        if (this.blockMaterial == Material.lava)
++        if (this.blockMaterial == Material.LAVA)
+         {
+             if (worldIn.getGameRules().getGameRuleBooleanValue("doFireTick"))
+             {
 @@ -55,7 +55,7 @@ public class BlockStaticLiquid extends BlockLiquid
                          var6 = var6.add(rand.nextInt(3) - 1, 1, rand.nextInt(3) - 1);
                          Block var8 = worldIn.getBlockState(var6).getBlock();
@@ -4926,10 +5079,10 @@ index e08752e..0220fd7 100644
      boolean canUseBonemeal(World worldIn, Random p_180670_2_, BlockPos p_180670_3_, IBlockState p_180670_4_);
  
 diff --git a/net/minecraft/block/material/Material.java b/net/minecraft/block/material/Material.java
-index 9d2852c..499254c 100644
+index 9d2852c..7348ce6 100644
 --- a/net/minecraft/block/material/Material.java
 +++ b/net/minecraft/block/material/Material.java
-@@ -2,7 +2,7 @@ package net.minecraft.block.material;
+@@ -2,15 +2,15 @@ package net.minecraft.block.material;
  
  public class Material
  {
@@ -4938,6 +5091,16 @@ index 9d2852c..499254c 100644
      public static final Material grass = new Material(MapColor.grassColor);
      public static final Material ground = new Material(MapColor.dirtColor);
      public static final Material wood = (new Material(MapColor.woodColor)).setBurning();
+     public static final Material rock = (new Material(MapColor.stoneColor)).setRequiresTool();
+     public static final Material iron = (new Material(MapColor.ironColor)).setRequiresTool();
+     public static final Material anvil = (new Material(MapColor.ironColor)).setRequiresTool().setImmovableMobility();
+-    public static final Material water = (new MaterialLiquid(MapColor.waterColor)).setNoPushMobility();
+-    public static final Material lava = (new MaterialLiquid(MapColor.tntColor)).setNoPushMobility();
++    public static final Material WATER = (new MaterialLiquid(MapColor.waterColor)).setNoPushMobility();
++    public static final Material LAVA = (new MaterialLiquid(MapColor.tntColor)).setNoPushMobility();
+     public static final Material leaves = (new Material(MapColor.foliageColor)).setBurning().setTranslucent().setNoPushMobility();
+     public static final Material plants = (new MaterialLogic(MapColor.foliageColor)).setNoPushMobility();
+     public static final Material vine = (new MaterialLogic(MapColor.foliageColor)).setBurning().setNoPushMobility().setReplaceable();
 diff --git a/net/minecraft/block/state/BlockPistonStructureHelper.java b/net/minecraft/block/state/BlockPistonStructureHelper.java
 index 1ad7b61..ccd2385 100644
 --- a/net/minecraft/block/state/BlockPistonStructureHelper.java
@@ -6454,7 +6617,7 @@ index 4b48cd3..05fa973 100644
  
          if (var9 > 0.1F)
 diff --git a/net/minecraft/client/entity/EntityPlayerSP.java b/net/minecraft/client/entity/EntityPlayerSP.java
-index 58f696b..488df8e 100644
+index 58f696b..1701296 100644
 --- a/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/net/minecraft/client/entity/EntityPlayerSP.java
 @@ -10,14 +10,7 @@ import net.minecraft.client.gui.GuiMerchant;
@@ -6491,14 +6654,13 @@ index 58f696b..488df8e 100644
  import net.minecraft.potion.Potion;
  import net.minecraft.stats.StatBase;
  import net.minecraft.stats.StatFileWriter;
-@@ -51,10 +37,15 @@ import net.minecraft.util.MovementInput;
+@@ -51,10 +37,14 @@ import net.minecraft.util.MovementInput;
  import net.minecraft.util.ResourceLocation;
  import net.minecraft.world.IInteractionObject;
  import net.minecraft.world.World;
 +import tk.wurst_client.WurstClient;
 +import tk.wurst_client.events.ChatOutputEvent;
 +import tk.wurst_client.events.UpdateEvent;
-+import tk.wurst_client.features.mods.JesusMod;
 +import tk.wurst_client.utils.RotationUtils;
  
  public class EntityPlayerSP extends AbstractClientPlayer
@@ -6508,7 +6670,7 @@ index 58f696b..488df8e 100644
      private final StatFileWriter field_146108_bO;
      private double field_175172_bI;
      private double field_175166_bJ;
-@@ -95,7 +86,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -95,7 +85,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
      public EntityPlayerSP(Minecraft mcIn, World worldIn, NetHandlerPlayClient p_i46278_3_, StatFileWriter p_i46278_4_)
      {
          super(worldIn, p_i46278_3_.func_175105_e());
@@ -6517,7 +6679,7 @@ index 58f696b..488df8e 100644
          this.field_146108_bO = p_i46278_4_;
          this.mc = mcIn;
          this.dimension = 0;
-@@ -134,21 +125,37 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -134,21 +124,37 @@ public class EntityPlayerSP extends AbstractClientPlayer
      {
          if (this.worldObj.isBlockLoaded(new BlockPos(this.posX, 0.0D, this.posZ)))
          {
@@ -6559,7 +6721,7 @@ index 58f696b..488df8e 100644
      {
          boolean var1 = this.isSprinting();
  
-@@ -156,11 +163,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -156,11 +162,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
          {
              if (var1)
              {
@@ -6573,7 +6735,7 @@ index 58f696b..488df8e 100644
              }
  
              this.field_175171_bO = var1;
-@@ -172,11 +179,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -172,11 +178,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
          {
              if (var2)
              {
@@ -6587,7 +6749,7 @@ index 58f696b..488df8e 100644
              }
  
              this.field_175170_bN = var2;
-@@ -184,36 +191,94 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -184,36 +190,49 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
          if (this.func_175160_A())
          {
@@ -6612,56 +6774,11 @@ index 58f696b..488df8e 100644
 +			if(WurstClient.INSTANCE.mods.remoteViewMod.isActive()
 +				|| WurstClient.INSTANCE.mods.freecamMod.isActive()
 +				|| (WurstClient.INSTANCE.mods.potionSaverMod.isActive()
-+					&& !getActivePotionEffects().isEmpty() && motionX == 0 && motionZ == 0))
-+            {}else if(WurstClient.INSTANCE.mods.jesusMod.isActive()
-+				&& WurstClient.INSTANCE.mods.jesusMod.isOverWater()
-+				&& !mc.player.isInWater()
-+				&& !(mc.player.fallDistance > 3F))
++					&& !getActivePotionEffects().isEmpty() && motionX == 0
++					&& motionZ == 0))
 +			{
-+				if(!var13)
-+					if(var14)
-+						this.connection
-+							.sendPacket(new CPacketPlayer.Rotation(
-+								yaw, pitch, this.onGround));
-+					else
-+						this.connection.sendPacket(new CPacketPlayer(
-+							this.onGround));
-+				else if(mc.player.movementInput == null)
-+				{}else
-+				{
-+					JesusMod jesusMod = WurstClient.INSTANCE.mods.jesusMod;
-+					jesusMod.time++;
-+					if(jesusMod.time >= jesusMod.delay)
-+					{
-+						final double x = mc.player.posX;
-+						final double y = mc.player.posY;
-+						final double z = mc.player.posZ;
-+						final float pitch2 = mc.player.rotationPitch;
-+						final float yaw2 = mc.player.rotationYaw;
-+						if(mc.player.ticksExisted % 2 == 0)
-+							mc.player.connection
-+								.sendPacket(new CPacketPlayer.PositionRotation(
-+									x, y - 0.05, z, yaw2, pitch2, true));
-+						else
-+							mc.player.connection
-+								.sendPacket(new CPacketPlayer.PositionRotation(
-+									x, y + 0.05, z, yaw2, pitch2, true));
-+					}else if(var13 && var14)
-+					{
-+						this.connection
-+							.sendPacket(new CPacketPlayer.PositionRotation(
-+								this.posX, this.getEntityBoundingBox().minY,
-+								this.posZ, yaw, pitch, this.onGround));
-+					}else
-+					{
-+						this.connection
-+							.sendPacket(new CPacketPlayer.Position(
-+								this.posX, this.getEntityBoundingBox().minY,
-+								this.posZ, this.onGround));
-+					}
-+				}
 +				
-+			}else if(this.ridingEntity == null)
++            }else if(this.ridingEntity == null)
              {
                  if (var13 && var14)
                  {
@@ -6681,9 +6798,9 @@ index 58f696b..488df8e 100644
              else
              {
 -                    this.sendQueue.addToSendQueue(new C03PacketPlayer(this.onGround));
--                }
 +                    this.connection.sendPacket(new CPacketPlayer(this.onGround));
                  }
+-            }
 -            else
 +            }else
              {
@@ -6692,7 +6809,7 @@ index 58f696b..488df8e 100644
                  var13 = false;
              }
  
-@@ -240,8 +305,8 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -240,8 +259,8 @@ public class EntityPlayerSP extends AbstractClientPlayer
       */
      public EntityItem dropOneItem(boolean p_71040_1_)
      {
@@ -6703,7 +6820,7 @@ index 58f696b..488df8e 100644
          return null;
      }
  
-@@ -255,21 +320,43 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -255,21 +274,43 @@ public class EntityPlayerSP extends AbstractClientPlayer
       */
      public void sendChatMessage(String p_71165_1_)
      {
@@ -6752,7 +6869,7 @@ index 58f696b..488df8e 100644
      }
  
      /**
-@@ -289,7 +376,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -289,7 +330,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
       */
      public void closeScreen()
      {
@@ -6761,7 +6878,7 @@ index 58f696b..488df8e 100644
          this.func_175159_q();
      }
  
-@@ -353,7 +440,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -353,7 +394,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
       */
      public void sendPlayerAbilities()
      {
@@ -6770,7 +6887,7 @@ index 58f696b..488df8e 100644
      }
  
      public boolean func_175144_cb()
-@@ -363,12 +450,12 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -363,12 +404,12 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
      protected void sendHorseJump()
      {
@@ -6785,7 +6902,7 @@ index 58f696b..488df8e 100644
      }
  
      public void func_175158_f(String p_175158_1_)
-@@ -408,25 +495,25 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -408,25 +449,25 @@ public class EntityPlayerSP extends AbstractClientPlayer
                  byte var12 = -1;
                  double var13 = 9999.0D;
  
@@ -6815,7 +6932,7 @@ index 58f696b..488df8e 100644
                  {
                      var13 = 1.0D - var10;
                      var12 = 5;
-@@ -461,7 +548,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -461,7 +502,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
      private boolean func_175162_d(BlockPos p_175162_1_)
      {
@@ -6824,7 +6941,7 @@ index 58f696b..488df8e 100644
      }
  
      /**
-@@ -738,7 +825,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -738,7 +779,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
          boolean var4 = this.movementInput.moveForward >= var3;
          this.movementInput.updatePlayerMoveState();
  
@@ -7905,7 +8022,7 @@ index 4d52ca9..5c9d8fd 100644
          this.field_147083_w = p_i1092_2_;
          this.allowUserInput = false;
 diff --git a/net/minecraft/client/gui/GuiIngame.java b/net/minecraft/client/gui/GuiIngame.java
-index 12b2457..7185b7d 100644
+index 12b2457..6ce621a 100644
 --- a/net/minecraft/client/gui/GuiIngame.java
 +++ b/net/minecraft/client/gui/GuiIngame.java
 @@ -1,13 +1,15 @@
@@ -8152,9 +8269,12 @@ index 12b2457..7185b7d 100644
                      {
                          return true;
                      }
-@@ -876,7 +876,7 @@ public class GuiIngame extends Gui
+@@ -874,9 +874,9 @@ public class GuiIngame extends Gui
  
-             if (var2.isInsideOfMaterial(Material.water))
+             this.mc.mcProfiler.endStartSection("air");
+ 
+-            if (var2.isInsideOfMaterial(Material.water))
++            if (var2.isInsideOfMaterial(Material.WATER))
              {
 -                var23 = this.mc.thePlayer.getAir();
 +                var23 = this.mc.player.getAir();
@@ -13409,7 +13529,7 @@ index d6a17db..7506221 100644
  import org.apache.logging.log4j.Logger;
  
 diff --git a/net/minecraft/client/network/NetHandlerPlayClient.java b/net/minecraft/client/network/NetHandlerPlayClient.java
-index 2b1d59a..233b8e5 100644
+index 2b1d59a..1a567d3 100644
 --- a/net/minecraft/client/network/NetHandlerPlayClient.java
 +++ b/net/minecraft/client/network/NetHandlerPlayClient.java
 @@ -1,39 +1,24 @@
@@ -13575,7 +13695,7 @@ index 2b1d59a..233b8e5 100644
  import net.minecraft.potion.PotionEffect;
  import net.minecraft.realms.DisconnectedRealmsScreen;
  import net.minecraft.scoreboard.IScoreObjectiveCriteria;
-@@ -186,32 +81,25 @@ import net.minecraft.scoreboard.Team;
+@@ -186,32 +81,27 @@ import net.minecraft.scoreboard.Team;
  import net.minecraft.stats.Achievement;
  import net.minecraft.stats.AchievementList;
  import net.minecraft.stats.StatBase;
@@ -13608,6 +13728,8 @@ index 2b1d59a..233b8e5 100644
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
  
++import tk.wurst_client.WurstClient;
++import tk.wurst_client.events.PacketOutputEvent;
 +import tk.wurst_client.gui.main.GuiWurstMainMenu;
 +
 +import com.google.common.collect.Maps;
@@ -13618,7 +13740,7 @@ index 2b1d59a..233b8e5 100644
  public class NetHandlerPlayClient implements INetHandlerPlayClient
  {
      private static final Logger logger = LogManager.getLogger();
-@@ -286,11 +174,11 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -286,11 +176,11 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
          this.clientWorldController = new WorldClient(this, new WorldSettings(0L, packetIn.func_149198_e(), false, packetIn.func_149195_d(), packetIn.func_149196_i()), packetIn.func_149194_f(), packetIn.func_149192_g(), this.gameController.mcProfiler);
          this.gameController.gameSettings.difficulty = packetIn.func_149192_g();
          this.gameController.loadWorld(this.clientWorldController);
@@ -13633,7 +13755,7 @@ index 2b1d59a..233b8e5 100644
          this.gameController.playerController.setGameType(packetIn.func_149198_e());
          this.gameController.gameSettings.sendSettingsToServer();
          this.netManager.sendPacket(new C17PacketCustomPayload("MC|Brand", (new PacketBuffer(Unpooled.buffer())).writeString(ClientBrandRetriever.getClientModName())));
-@@ -465,12 +353,12 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -465,12 +355,12 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
      /**
       * Handles globally visible entities. Used in vanilla for lightning bolts
       */
@@ -13650,7 +13772,7 @@ index 2b1d59a..233b8e5 100644
          EntityLightningBolt var8 = null;
  
          if (packetIn.func_149053_g() == 1)
-@@ -480,9 +368,9 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -480,9 +370,9 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
  
          if (var8 != null)
          {
@@ -13663,7 +13785,7 @@ index 2b1d59a..233b8e5 100644
              var8.rotationYaw = 0.0F;
              var8.rotationPitch = 0.0F;
              var8.setEntityId(packetIn.func_149052_c());
-@@ -540,7 +428,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -540,7 +430,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
          double var6 = (double)packetIn.func_148946_h() / 32.0D;
          float var8 = (float)(packetIn.func_148941_i() * 360) / 256.0F;
          float var9 = (float)(packetIn.func_148945_j() * 360) / 256.0F;
@@ -13672,7 +13794,7 @@ index 2b1d59a..233b8e5 100644
          var10.prevPosX = var10.lastTickPosX = (double)(var10.serverPosX = packetIn.func_148942_f());
          var10.prevPosY = var10.lastTickPosY = (double)(var10.serverPosY = packetIn.func_148949_g());
          var10.prevPosZ = var10.lastTickPosZ = (double)(var10.serverPosZ = packetIn.func_148946_h());
-@@ -606,7 +494,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -606,7 +496,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
  
          if (packetIn.func_149385_c() >= 0 && packetIn.func_149385_c() < InventoryPlayer.getHotbarSize())
          {
@@ -13681,7 +13803,7 @@ index 2b1d59a..233b8e5 100644
          }
      }
  
-@@ -674,7 +562,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -674,7 +564,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
      public void handlePlayerPosLook(S08PacketPlayerPosLook packetIn)
      {
          PacketThreadUtil.func_180031_a(packetIn, this, this.gameController);
@@ -13690,7 +13812,7 @@ index 2b1d59a..233b8e5 100644
          double var3 = packetIn.func_148932_c();
          double var5 = packetIn.func_148928_d();
          double var7 = packetIn.func_148933_e();
-@@ -719,13 +607,13 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -719,13 +609,13 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
          }
  
          var2.setPositionAndRotation(var3, var5, var7, var9, var10);
@@ -13708,7 +13830,7 @@ index 2b1d59a..233b8e5 100644
              this.doneLoadingTerrain = true;
              this.gameController.displayGuiScreen((GuiScreen)null);
          }
-@@ -815,11 +703,11 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -815,12 +705,24 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
          }
          else
          {
@@ -13716,13 +13838,26 @@ index 2b1d59a..233b8e5 100644
 +            this.gameController.displayGuiScreen(new GuiDisconnected(new GuiMultiplayer(new GuiWurstMainMenu()), "disconnect.lost", reason));
          }
      }
- 
+     
 -    public void addToSendQueue(Packet p_147297_1_)
++	// TODO: Client
++	public void sendPacketBypass(Packet packet)
+ 	{
++		this.netManager.sendPacket(packet);
++	}
++	
 +    public void sendPacket(Packet p_147297_1_)
-     {
++    {
++		// TODO: Client
++		PacketOutputEvent event = new PacketOutputEvent(p_147297_1_);
++		WurstClient.INSTANCE.events.fire(event);
++		if(event.isCancelled())
++			return;
++		
          this.netManager.sendPacket(p_147297_1_);
      }
-@@ -832,7 +720,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+ 
+@@ -832,7 +734,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
  
          if (var3 == null)
          {
@@ -13731,7 +13866,7 @@ index 2b1d59a..233b8e5 100644
          }
  
          if (var2 != null)
-@@ -882,7 +770,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -882,7 +784,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
              if (packetIn.func_148977_d() == 0)
              {
                  EntityLivingBase var3 = (EntityLivingBase)var2;
@@ -13740,7 +13875,7 @@ index 2b1d59a..233b8e5 100644
              }
              else if (packetIn.func_148977_d() == 1)
              {
-@@ -926,7 +814,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -926,7 +828,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
          double var6 = (double)packetIn.func_149029_h() / 32.0D;
          float var8 = (float)(packetIn.func_149028_l() * 360) / 256.0F;
          float var9 = (float)(packetIn.func_149030_m() * 360) / 256.0F;
@@ -13749,7 +13884,7 @@ index 2b1d59a..233b8e5 100644
          var10.serverPosX = packetIn.func_149023_f();
          var10.serverPosY = packetIn.func_149034_g();
          var10.serverPosZ = packetIn.func_149029_h();
-@@ -960,15 +848,15 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -960,15 +862,15 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
      public void handleTimeUpdate(S03PacketTimeUpdate packetIn)
      {
          PacketThreadUtil.func_180031_a(packetIn, this, this.gameController);
@@ -13769,7 +13904,7 @@ index 2b1d59a..233b8e5 100644
      }
  
      public void handleEntityAttach(S1BPacketEntityAttach packetIn)
-@@ -981,9 +869,9 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -981,9 +883,9 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
          {
              boolean var4 = false;
  
@@ -13781,7 +13916,7 @@ index 2b1d59a..233b8e5 100644
  
                  if (var3 instanceof EntityBoat)
                  {
-@@ -1050,29 +938,29 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1050,29 +952,29 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
      public void handleUpdateHealth(S06PacketUpdateHealth packetIn)
      {
          PacketThreadUtil.func_180031_a(packetIn, this, this.gameController);
@@ -13818,7 +13953,7 @@ index 2b1d59a..233b8e5 100644
              this.gameController.displayGuiScreen(new GuiDownloadTerrain(this));
          }
  
-@@ -1086,11 +974,11 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1086,11 +988,11 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
      public void handleExplosion(S27PacketExplosion packetIn)
      {
          PacketThreadUtil.func_180031_a(packetIn, this, this.gameController);
@@ -13834,7 +13969,7 @@ index 2b1d59a..233b8e5 100644
      }
  
      /**
-@@ -1100,7 +988,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1100,7 +1002,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
      public void handleOpenWindow(S2DPacketOpenWindow packetIn)
      {
          PacketThreadUtil.func_180031_a(packetIn, this, this.gameController);
@@ -13843,7 +13978,7 @@ index 2b1d59a..233b8e5 100644
  
          if ("minecraft:container".equals(packetIn.func_148902_e()))
          {
-@@ -1141,7 +1029,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1141,7 +1043,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
      public void handleSetSlot(S2FPacketSetSlot packetIn)
      {
          PacketThreadUtil.func_180031_a(packetIn, this, this.gameController);
@@ -13852,7 +13987,7 @@ index 2b1d59a..233b8e5 100644
  
          if (packetIn.func_149175_c() == -1)
          {
-@@ -1183,7 +1071,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1183,7 +1085,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
      {
          PacketThreadUtil.func_180031_a(packetIn, this, this.gameController);
          Container var2 = null;
@@ -13861,7 +13996,7 @@ index 2b1d59a..233b8e5 100644
  
          if (packetIn.func_148889_c() == 0)
          {
-@@ -1196,7 +1084,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1196,7 +1098,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
  
          if (var2 != null && !packetIn.func_148888_e())
          {
@@ -13870,7 +14005,7 @@ index 2b1d59a..233b8e5 100644
          }
      }
  
-@@ -1206,7 +1094,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1206,7 +1108,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
      public void handleWindowItems(S30PacketWindowItems packetIn)
      {
          PacketThreadUtil.func_180031_a(packetIn, this, this.gameController);
@@ -13879,7 +14014,7 @@ index 2b1d59a..233b8e5 100644
  
          if (packetIn.func_148911_c() == 0)
          {
-@@ -1233,7 +1121,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1233,7 +1135,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
              ((TileEntity)var2).setPos(packetIn.func_179777_a());
          }
  
@@ -13888,7 +14023,7 @@ index 2b1d59a..233b8e5 100644
      }
  
      /**
-@@ -1244,9 +1132,9 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1244,9 +1146,9 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
          PacketThreadUtil.func_180031_a(packetIn, this, this.gameController);
          boolean var2 = false;
  
@@ -13900,7 +14035,7 @@ index 2b1d59a..233b8e5 100644
  
              if (var3 instanceof TileEntitySign)
              {
-@@ -1262,9 +1150,9 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1262,9 +1164,9 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
              }
          }
  
@@ -13912,7 +14047,7 @@ index 2b1d59a..233b8e5 100644
          }
      }
  
-@@ -1276,9 +1164,9 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1276,9 +1178,9 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
      {
          PacketThreadUtil.func_180031_a(packetIn, this, this.gameController);
  
@@ -13924,7 +14059,7 @@ index 2b1d59a..233b8e5 100644
              int var3 = packetIn.getTileEntityType();
  
              if (var3 == 1 && var2 instanceof TileEntityMobSpawner || var3 == 2 && var2 instanceof TileEntityCommandBlock || var3 == 3 && var2 instanceof TileEntityBeacon || var3 == 4 && var2 instanceof TileEntitySkull || var3 == 5 && var2 instanceof TileEntityFlowerPot || var3 == 6 && var2 instanceof TileEntityBanner)
-@@ -1294,7 +1182,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1294,7 +1196,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
      public void handleWindowProperty(S31PacketWindowProperty packetIn)
      {
          PacketThreadUtil.func_180031_a(packetIn, this, this.gameController);
@@ -13933,7 +14068,7 @@ index 2b1d59a..233b8e5 100644
  
          if (var2.openContainer != null && var2.openContainer.windowId == packetIn.func_149182_c())
          {
-@@ -1319,7 +1207,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1319,7 +1221,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
      public void handleCloseWindow(S2EPacketCloseWindow packetIn)
      {
          PacketThreadUtil.func_180031_a(packetIn, this, this.gameController);
@@ -13942,7 +14077,7 @@ index 2b1d59a..233b8e5 100644
      }
  
      /**
-@@ -1330,7 +1218,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1330,7 +1232,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
      public void handleBlockAction(S24PacketBlockAction packetIn)
      {
          PacketThreadUtil.func_180031_a(packetIn, this, this.gameController);
@@ -13951,7 +14086,7 @@ index 2b1d59a..233b8e5 100644
      }
  
      /**
-@@ -1339,7 +1227,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1339,7 +1241,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
      public void handleBlockBreakAnim(S25PacketBlockBreakAnim packetIn)
      {
          PacketThreadUtil.func_180031_a(packetIn, this, this.gameController);
@@ -13960,7 +14095,7 @@ index 2b1d59a..233b8e5 100644
      }
  
      public void handleMapChunkBulk(S26PacketMapChunkBulk packetIn)
-@@ -1366,7 +1254,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1366,7 +1268,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
      public void handleChangeGameState(S2BPacketChangeGameState packetIn)
      {
          PacketThreadUtil.func_180031_a(packetIn, this, this.gameController);
@@ -13969,7 +14104,7 @@ index 2b1d59a..233b8e5 100644
          int var3 = packetIn.func_149138_c();
          float var4 = packetIn.func_149137_d();
          int var5 = MathHelper.floor_float(var4 + 0.5F);
-@@ -1441,22 +1329,22 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1441,22 +1343,22 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
      public void handleMaps(S34PacketMaps packetIn)
      {
          PacketThreadUtil.func_180031_a(packetIn, this, this.gameController);
@@ -13996,7 +14131,7 @@ index 2b1d59a..233b8e5 100644
          }
      }
  
-@@ -1470,7 +1358,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1470,7 +1372,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
          StatBase var5;
          int var6;
  
@@ -14005,7 +14140,7 @@ index 2b1d59a..233b8e5 100644
          {
              Entry var4 = (Entry)var3.next();
              var5 = (StatBase)var4.getKey();
-@@ -1478,7 +1366,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1478,7 +1380,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
  
              if (var5.isAchievement() && var6 > 0)
              {
@@ -14014,7 +14149,7 @@ index 2b1d59a..233b8e5 100644
                  {
                      Achievement var7 = (Achievement)var5;
                      this.gameController.guiAchievement.displayAchievement(var7);
-@@ -1530,7 +1418,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1530,7 +1432,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
          if (p_175098_1_.field_179776_a == S42PacketCombatEvent.Event.END_COMBAT)
          {
              long var4 = (long)(1000 * p_175098_1_.field_179772_d / 20);
@@ -14023,7 +14158,7 @@ index 2b1d59a..233b8e5 100644
              this.gameController.getTwitchStream().func_176026_a(var6, 0L - var4, 0L);
          }
          else if (p_175098_1_.field_179776_a == S42PacketCombatEvent.Event.ENTITY_DIED)
-@@ -1549,8 +1437,8 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1549,8 +1451,8 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
      public void func_175101_a(S41PacketServerDifficulty p_175101_1_)
      {
          PacketThreadUtil.func_180031_a(p_175101_1_, this, this.gameController);
@@ -14034,7 +14169,7 @@ index 2b1d59a..233b8e5 100644
      }
  
      public void func_175094_a(S43PacketCamera p_175094_1_)
-@@ -1642,7 +1530,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1642,7 +1544,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
                  if (packetIn.func_179768_b() == S38PacketPlayerListItem.Action.ADD_PLAYER)
                  {
                      var4 = new NetworkPlayerInfo(var3);
@@ -14043,7 +14178,7 @@ index 2b1d59a..233b8e5 100644
                  }
  
                  if (var4 != null)
-@@ -1650,16 +1538,16 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1650,16 +1552,16 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
                      switch (NetHandlerPlayClient.SwitchAction.field_178884_b[packetIn.func_179768_b().ordinal()])
                      {
                          case 1:
@@ -14064,7 +14199,7 @@ index 2b1d59a..233b8e5 100644
                              break;
  
                          case 4:
-@@ -1672,13 +1560,13 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1672,13 +1574,13 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
  
      public void handleKeepAlive(S00PacketKeepAlive packetIn)
      {
@@ -14080,7 +14215,7 @@ index 2b1d59a..233b8e5 100644
          var2.capabilities.isFlying = packetIn.isFlying();
          var2.capabilities.isCreativeMode = packetIn.isCreativeMode();
          var2.capabilities.disableDamage = packetIn.isInvulnerable();
-@@ -1702,10 +1590,10 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1702,10 +1604,10 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
          }
      }
  
@@ -14093,7 +14228,7 @@ index 2b1d59a..233b8e5 100644
      }
  
      public void func_175095_a(S48PacketResourcePackSend p_175095_1_)
-@@ -1847,7 +1735,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1847,7 +1749,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
                  int var3 = var2.readInt();
                  GuiScreen var4 = this.gameController.currentScreen;
  
@@ -14102,7 +14237,7 @@ index 2b1d59a..233b8e5 100644
                  {
                      IMerchant var5 = ((GuiMerchant)var4).getMerchant();
                      MerchantRecipeList var6 = MerchantRecipeList.func_151390_b(var2);
-@@ -1865,15 +1753,15 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -1865,15 +1767,15 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
          }
          else if ("MC|Brand".equals(packetIn.getChannelName()))
          {
@@ -14121,7 +14256,7 @@ index 2b1d59a..233b8e5 100644
              }
          }
      }
-@@ -2121,7 +2009,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -2121,7 +2023,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
          return this.netManager;
      }
  
@@ -14130,7 +14265,7 @@ index 2b1d59a..233b8e5 100644
      {
          return this.playerInfoMap.values();
      }
-@@ -2145,7 +2033,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+@@ -2145,7 +2047,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
  
              var3 = (NetworkPlayerInfo)var2.next();
          }
@@ -14440,6 +14575,19 @@ index a5b95d5..039a5e6 100644
          p_180434_1_.addVertexWithUV((double)(var14 - p_180434_4_ * var13 - p_180434_7_ * var13), (double)(var15 - p_180434_5_ * var13), (double)(var16 - p_180434_6_ * var13 - p_180434_8_ * var13), (double)var9, (double)var12);
          p_180434_1_.addVertexWithUV((double)(var14 - p_180434_4_ * var13 + p_180434_7_ * var13), (double)(var15 + p_180434_5_ * var13), (double)(var16 - p_180434_6_ * var13 + p_180434_8_ * var13), (double)var9, (double)var11);
          p_180434_1_.addVertexWithUV((double)(var14 + p_180434_4_ * var13 + p_180434_7_ * var13), (double)(var15 + p_180434_5_ * var13), (double)(var16 + p_180434_6_ * var13 + p_180434_8_ * var13), (double)var10, (double)var11);
+diff --git a/net/minecraft/client/particle/EntityBubbleFX.java b/net/minecraft/client/particle/EntityBubbleFX.java
+index 66087c8..8e0158d 100644
+--- a/net/minecraft/client/particle/EntityBubbleFX.java
++++ b/net/minecraft/client/particle/EntityBubbleFX.java
+@@ -37,7 +37,7 @@ public class EntityBubbleFX extends EntityFX
+         this.motionY *= 0.8500000238418579D;
+         this.motionZ *= 0.8500000238418579D;
+ 
+-        if (this.worldObj.getBlockState(new BlockPos(this)).getBlock().getMaterial() != Material.water)
++        if (this.worldObj.getBlockState(new BlockPos(this)).getBlock().getMaterial() != Material.WATER)
+         {
+             this.setDead();
+         }
 diff --git a/net/minecraft/client/particle/EntityCloudFX.java b/net/minecraft/client/particle/EntityCloudFX.java
 index 0117c05..e77a0b5 100644
 --- a/net/minecraft/client/particle/EntityCloudFX.java
@@ -14497,6 +14645,73 @@ index 4c5c7a2..3576d64 100644
          p_180434_1_.addVertexWithUV((double)(var14 - p_180434_4_ * var13 - p_180434_7_ * var13), (double)(var15 - p_180434_5_ * var13), (double)(var16 - p_180434_6_ * var13 - p_180434_8_ * var13), (double)var9, (double)var12);
          p_180434_1_.addVertexWithUV((double)(var14 - p_180434_4_ * var13 + p_180434_7_ * var13), (double)(var15 + p_180434_5_ * var13), (double)(var16 - p_180434_6_ * var13 + p_180434_8_ * var13), (double)var9, (double)var11);
          p_180434_1_.addVertexWithUV((double)(var14 + p_180434_4_ * var13 + p_180434_7_ * var13), (double)(var15 + p_180434_5_ * var13), (double)(var16 + p_180434_6_ * var13 + p_180434_8_ * var13), (double)var10, (double)var11);
+diff --git a/net/minecraft/client/particle/EntityDropParticleFX.java b/net/minecraft/client/particle/EntityDropParticleFX.java
+index eb1b08b..eadf97b 100644
+--- a/net/minecraft/client/particle/EntityDropParticleFX.java
++++ b/net/minecraft/client/particle/EntityDropParticleFX.java
+@@ -22,7 +22,7 @@ public class EntityDropParticleFX extends EntityFX
+         super(worldIn, p_i1203_2_, p_i1203_4_, p_i1203_6_, 0.0D, 0.0D, 0.0D);
+         this.motionX = this.motionY = this.motionZ = 0.0D;
+ 
+-        if (p_i1203_8_ == Material.water)
++        if (p_i1203_8_ == Material.WATER)
+         {
+             this.particleRed = 0.0F;
+             this.particleGreen = 0.0F;
+@@ -46,7 +46,7 @@ public class EntityDropParticleFX extends EntityFX
+ 
+     public int getBrightnessForRender(float p_70070_1_)
+     {
+-        return this.materialType == Material.water ? super.getBrightnessForRender(p_70070_1_) : 257;
++        return this.materialType == Material.WATER ? super.getBrightnessForRender(p_70070_1_) : 257;
+     }
+ 
+     /**
+@@ -54,7 +54,7 @@ public class EntityDropParticleFX extends EntityFX
+      */
+     public float getBrightness(float p_70013_1_)
+     {
+-        return this.materialType == Material.water ? super.getBrightness(p_70013_1_) : 1.0F;
++        return this.materialType == Material.WATER ? super.getBrightness(p_70013_1_) : 1.0F;
+     }
+ 
+     /**
+@@ -66,7 +66,7 @@ public class EntityDropParticleFX extends EntityFX
+         this.prevPosY = this.posY;
+         this.prevPosZ = this.posZ;
+ 
+-        if (this.materialType == Material.water)
++        if (this.materialType == Material.WATER)
+         {
+             this.particleRed = 0.2F;
+             this.particleGreen = 0.3F;
+@@ -105,7 +105,7 @@ public class EntityDropParticleFX extends EntityFX
+ 
+         if (this.onGround)
+         {
+-            if (this.materialType == Material.water)
++            if (this.materialType == Material.WATER)
+             {
+                 this.setDead();
+                 this.worldObj.spawnParticle(EnumParticleTypes.WATER_SPLASH, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D, new int[0]);
+@@ -147,7 +147,7 @@ public class EntityDropParticleFX extends EntityFX
+ 
+         public EntityFX func_178902_a(int p_178902_1_, World worldIn, double p_178902_3_, double p_178902_5_, double p_178902_7_, double p_178902_9_, double p_178902_11_, double p_178902_13_, int ... p_178902_15_)
+         {
+-            return new EntityDropParticleFX(worldIn, p_178902_3_, p_178902_5_, p_178902_7_, Material.lava);
++            return new EntityDropParticleFX(worldIn, p_178902_3_, p_178902_5_, p_178902_7_, Material.LAVA);
+         }
+     }
+ 
+@@ -157,7 +157,7 @@ public class EntityDropParticleFX extends EntityFX
+ 
+         public EntityFX func_178902_a(int p_178902_1_, World worldIn, double p_178902_3_, double p_178902_5_, double p_178902_7_, double p_178902_9_, double p_178902_11_, double p_178902_13_, int ... p_178902_15_)
+         {
+-            return new EntityDropParticleFX(worldIn, p_178902_3_, p_178902_5_, p_178902_7_, Material.water);
++            return new EntityDropParticleFX(worldIn, p_178902_3_, p_178902_5_, p_178902_7_, Material.WATER);
+         }
+     }
+ }
 diff --git a/net/minecraft/client/particle/EntityFX.java b/net/minecraft/client/particle/EntityFX.java
 index c531492..9628006 100644
 --- a/net/minecraft/client/particle/EntityFX.java
@@ -14684,6 +14899,19 @@ index 3c9f4e4..bfa7f1c 100644
          super.func_180434_a(p_180434_1_, p_180434_2_, p_180434_3_, p_180434_4_, p_180434_5_, p_180434_6_, p_180434_7_, p_180434_8_);
      }
  
+diff --git a/net/minecraft/client/particle/EntitySuspendFX.java b/net/minecraft/client/particle/EntitySuspendFX.java
+index a789814..dceb85c 100644
+--- a/net/minecraft/client/particle/EntitySuspendFX.java
++++ b/net/minecraft/client/particle/EntitySuspendFX.java
+@@ -33,7 +33,7 @@ public class EntitySuspendFX extends EntityFX
+         this.prevPosZ = this.posZ;
+         this.moveEntity(this.motionX, this.motionY, this.motionZ);
+ 
+-        if (this.worldObj.getBlockState(new BlockPos(this)).getBlock().getMaterial() != Material.water)
++        if (this.worldObj.getBlockState(new BlockPos(this)).getBlock().getMaterial() != Material.WATER)
+         {
+             this.setDead();
+         }
 diff --git a/net/minecraft/client/renderer/ActiveRenderInfo.java b/net/minecraft/client/renderer/ActiveRenderInfo.java
 index 0410897..e1f99ed 100644
 --- a/net/minecraft/client/renderer/ActiveRenderInfo.java
@@ -14757,10 +14985,16 @@ index 0410897..e1f99ed 100644
          return field_178811_e;
      }
 diff --git a/net/minecraft/client/renderer/BlockFluidRenderer.java b/net/minecraft/client/renderer/BlockFluidRenderer.java
-index 69db7af..3354e41 100644
+index 69db7af..6254492 100644
 --- a/net/minecraft/client/renderer/BlockFluidRenderer.java
 +++ b/net/minecraft/client/renderer/BlockFluidRenderer.java
-@@ -40,9 +40,9 @@ public class BlockFluidRenderer
+@@ -35,14 +35,14 @@ public class BlockFluidRenderer
+     {
+         BlockLiquid var5 = (BlockLiquid)p_178270_2_.getBlock();
+         var5.setBlockBoundsBasedOnState(p_178270_1_, p_178270_3_);
+-        TextureAtlasSprite[] var6 = var5.getMaterial() == Material.lava ? this.field_178272_a : this.field_178271_b;
++        TextureAtlasSprite[] var6 = var5.getMaterial() == Material.LAVA ? this.field_178272_a : this.field_178271_b;
+         int var7 = var5.colorMultiplier(p_178270_1_, p_178270_3_);
          float var8 = (float)(var7 >> 16 & 255) / 255.0F;
          float var9 = (float)(var7 >> 8 & 255) / 255.0F;
          float var10 = (float)(var7 & 255) / 255.0F;
@@ -14961,7 +15195,7 @@ index 33c3df8..6a0c707 100644
              private static final String __OBFID = "CL_00002524";
              protected ModelResourceLocation func_178132_a(IBlockState p_178132_1_)
 diff --git a/net/minecraft/client/renderer/EntityRenderer.java b/net/minecraft/client/renderer/EntityRenderer.java
-index 9f404dc..e4e1263 100644
+index 9f404dc..01cf3c5 100644
 --- a/net/minecraft/client/renderer/EntityRenderer.java
 +++ b/net/minecraft/client/renderer/EntityRenderer.java
 @@ -1,11 +1,11 @@
@@ -15134,15 +15368,18 @@ index 9f404dc..e4e1263 100644
              }
  
              if (var3 instanceof EntityLivingBase && ((EntityLivingBase)var3).getHealth() <= 0.0F)
-@@ -545,7 +558,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -545,9 +558,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
                  var4 /= (1.0F - 500.0F / (var5 + 500.0F)) * 2.0F + 1.0F;
              }
  
 -            Block var6 = ActiveRenderInfo.func_180786_a(this.mc.theWorld, var3, p_78481_1_);
 +            Block var6 = ActiveRenderInfo.func_180786_a(this.mc.world, var3, p_78481_1_);
  
-             if (var6.getMaterial() == Material.water)
+-            if (var6.getMaterial() == Material.water)
++            if (var6.getMaterial() == Material.WATER)
              {
+                 var4 = var4 * 60.0F / 70.0F;
+             }
 @@ -622,7 +635,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
              if (!this.mc.gameSettings.debugCamEnable)
              {
@@ -15339,6 +15576,24 @@ index 9f404dc..e4e1263 100644
  
          if (p_175068_1_ == 0 || p_175068_1_ == 2)
          {
+@@ -1386,7 +1408,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
+             GlStateManager.popMatrix();
+             GlStateManager.pushMatrix();
+ 
+-            if (this.mc.objectMouseOver != null && var9.isInsideOfMaterial(Material.water) && var7)
++            if (this.mc.objectMouseOver != null && var9.isInsideOfMaterial(Material.WATER) && var7)
+             {
+                 var16 = (EntityPlayer)var9;
+                 GlStateManager.disableAlpha();
+@@ -1399,7 +1421,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
+         GlStateManager.matrixMode(5888);
+         GlStateManager.popMatrix();
+ 
+-        if (var7 && this.mc.objectMouseOver != null && !var9.isInsideOfMaterial(Material.water))
++        if (var7 && this.mc.objectMouseOver != null && !var9.isInsideOfMaterial(Material.WATER))
+         {
+             var16 = (EntityPlayer)var9;
+             GlStateManager.disableAlpha();
 @@ -1470,6 +1492,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
  
          this.mc.mcProfiler.endStartSection("hand");
@@ -15376,9 +15631,12 @@ index 9f404dc..e4e1263 100644
                  Block var18 = var3.getBlockState(var17).getBlock();
  
                  if (var15.getY() <= var4.getY() + var5 && var15.getY() >= var4.getY() - var5 && var16.canSpawnLightningBolt() && var16.func_180626_a(var15) >= 0.15F)
-@@ -1544,9 +1569,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1542,11 +1567,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
+                     float var19 = this.random.nextFloat();
+                     float var20 = this.random.nextFloat();
  
-                     if (var18.getMaterial() == Material.lava)
+-                    if (var18.getMaterial() == Material.lava)
++                    if (var18.getMaterial() == Material.LAVA)
                      {
 -                        this.mc.theWorld.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, (double)((float)var15.getX() + var19), (double)((float)var15.getY() + 0.1F) - var18.getBlockBoundsMinY(), (double)((float)var15.getZ() + var20), 0.0D, 0.0D, 0.0D, new int[0]);
 +                        this.mc.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, (double)((float)var15.getX() + var19), (double)((float)var15.getY() + 0.1F) - var18.getBlockBoundsMinY(), (double)((float)var15.getZ() + var20), 0.0D, 0.0D, 0.0D, new int[0]);
@@ -15499,7 +15757,7 @@ index 9f404dc..e4e1263 100644
              var13 = (float)var3.getLook(p_78466_1_).dotProduct(var12);
  
              if (var13 < 0.0F)
-@@ -1823,11 +1850,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1823,16 +1850,16 @@ public class EntityRenderer implements IResourceManagerReloadListener
              this.field_175081_S *= var20;
          }
  
@@ -15513,6 +15771,21 @@ index 9f404dc..e4e1263 100644
              this.field_175080_Q = (float)var22.xCoord;
              this.field_175082_R = (float)var22.yCoord;
              this.field_175081_S = (float)var22.zCoord;
+         }
+-        else if (var21.getMaterial() == Material.water)
++        else if (var21.getMaterial() == Material.WATER)
+         {
+             var13 = (float)EnchantmentHelper.func_180319_a(var3) * 0.2F;
+ 
+@@ -1845,7 +1872,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
+             this.field_175082_R = 0.02F + var13;
+             this.field_175081_S = 0.2F + var13;
+         }
+-        else if (var21.getMaterial() == Material.lava)
++        else if (var21.getMaterial() == Material.LAVA)
+         {
+             this.field_175080_Q = 0.6F;
+             this.field_175082_R = 0.1F;
 @@ -1858,8 +1885,12 @@ public class EntityRenderer implements IResourceManagerReloadListener
          this.field_175081_S *= var13;
          double var23 = (var3.lastTickPosY + (var3.posY - var3.lastTickPosY) * (double)p_78466_1_) * var2.provider.getVoidFogYFactor();
@@ -15545,6 +15818,24 @@ index 9f404dc..e4e1263 100644
              var6 = 5.0F;
              int var7 = ((EntityLivingBase)var3).getActivePotionEffect(Potion.blindness).getDuration();
  
+@@ -1983,7 +2018,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
+             GlStateManager.setFog(2048);
+             GlStateManager.setFogDensity(0.1F);
+         }
+-        else if (var5.getMaterial() == Material.water)
++        else if (var5.getMaterial() == Material.WATER)
+         {
+             GlStateManager.setFog(2048);
+ 
+@@ -1996,7 +2031,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
+                 GlStateManager.setFogDensity(0.1F - (float)EnchantmentHelper.func_180319_a(var3) * 0.03F);
+             }
+         }
+-        else if (var5.getMaterial() == Material.lava)
++        else if (var5.getMaterial() == Material.LAVA)
+         {
+             GlStateManager.setFog(2048);
+             GlStateManager.setFogDensity(2.0F);
 @@ -2022,7 +2057,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                  GL11.glFogi(34138, 34139);
              }
@@ -15651,7 +15942,7 @@ index a2263ad..77057af 100644
          if (var3 == null)
          {
 diff --git a/net/minecraft/client/renderer/ItemRenderer.java b/net/minecraft/client/renderer/ItemRenderer.java
-index 255b3ae..42eec57 100644
+index 255b3ae..d36ed6f 100644
 --- a/net/minecraft/client/renderer/ItemRenderer.java
 +++ b/net/minecraft/client/renderer/ItemRenderer.java
 @@ -98,7 +98,7 @@ public class ItemRenderer
@@ -15815,7 +16106,7 @@ index 255b3ae..42eec57 100644
 +        if (!this.mc.player.isSpectator())
          {
 -            if (this.mc.thePlayer.isInsideOfMaterial(Material.water))
-+            if (this.mc.player.isInsideOfMaterial(Material.water))
++            if (this.mc.player.isInsideOfMaterial(Material.WATER))
              {
                  this.renderWaterOverlayTexture(p_78447_1_);
              }
@@ -19655,7 +19946,7 @@ index 6bd900a..cdf03c7 100644
  
      /**
 diff --git a/net/minecraft/entity/Entity.java b/net/minecraft/entity/Entity.java
-index 7865119..d02133d 100644
+index 7865119..7e1a8e5 100644
 --- a/net/minecraft/entity/Entity.java
 +++ b/net/minecraft/entity/Entity.java
 @@ -5,6 +5,7 @@ import java.util.List;
@@ -19724,6 +20015,15 @@ index 7865119..d02133d 100644
      private boolean isOutsideBorder;
  
      /**
+@@ -304,7 +313,7 @@ public abstract class Entity implements ICommandSender
+             {
+                 this.setPosition(this.posX, this.posY, this.posZ);
+ 
+-                if (this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox()).isEmpty())
++                if (this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty())
+                 {
+                     break;
+                 }
 @@ -376,7 +385,7 @@ public abstract class Entity implements ICommandSender
          float var4 = this.rotationYaw;
          this.rotationYaw = (float)((double)this.rotationYaw + (double)yaw * 0.15D);
@@ -19733,6 +20033,15 @@ index 7865119..d02133d 100644
          this.prevRotationPitch += this.rotationPitch - var3;
          this.prevRotationYaw += this.rotationYaw - var4;
      }
+@@ -570,7 +579,7 @@ public abstract class Entity implements ICommandSender
+ 
+     private boolean func_174809_b(AxisAlignedBB p_174809_1_)
+     {
+-        return this.worldObj.getCollidingBoundingBoxes(this, p_174809_1_).isEmpty() && !this.worldObj.isAnyLiquid(p_174809_1_);
++        return this.worldObj.getCollisionBoxes(this, p_174809_1_).isEmpty() && !this.worldObj.isAnyLiquid(p_174809_1_);
+     }
+ 
+     /**
 @@ -578,8 +587,21 @@ public abstract class Entity implements ICommandSender
       */
      public void moveEntity(double x, double y, double z)
@@ -19756,7 +20065,7 @@ index 7865119..d02133d 100644
              this.func_174826_a(this.getEntityBoundingBox().offset(x, y, z));
              this.func_174829_m();
          }
-@@ -604,7 +626,12 @@ public abstract class Entity implements ICommandSender
+@@ -604,13 +626,18 @@ public abstract class Entity implements ICommandSender
              double var13 = x;
              double var15 = y;
              double var17 = z;
@@ -19770,6 +20079,49 @@ index 7865119..d02133d 100644
  
              if (var19)
              {
+                 double var20;
+ 
+-                for (var20 = 0.05D; x != 0.0D && this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox().offset(x, -1.0D, 0.0D)).isEmpty(); var13 = x)
++                for (var20 = 0.05D; x != 0.0D && this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox().offset(x, -1.0D, 0.0D)).isEmpty(); var13 = x)
+                 {
+                     if (x < var20 && x >= -var20)
+                     {
+@@ -626,7 +653,7 @@ public abstract class Entity implements ICommandSender
+                     }
+                 }
+ 
+-                for (; z != 0.0D && this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox().offset(0.0D, -1.0D, z)).isEmpty(); var17 = z)
++                for (; z != 0.0D && this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox().offset(0.0D, -1.0D, z)).isEmpty(); var17 = z)
+                 {
+                     if (z < var20 && z >= -var20)
+                     {
+@@ -642,7 +669,7 @@ public abstract class Entity implements ICommandSender
+                     }
+                 }
+ 
+-                for (; x != 0.0D && z != 0.0D && this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox().offset(x, -1.0D, z)).isEmpty(); var17 = z)
++                for (; x != 0.0D && z != 0.0D && this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox().offset(x, -1.0D, z)).isEmpty(); var17 = z)
+                 {
+                     if (x < var20 && x >= -var20)
+                     {
+@@ -674,7 +701,7 @@ public abstract class Entity implements ICommandSender
+                 }
+             }
+ 
+-            List var53 = this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox().addCoord(x, y, z));
++            List var53 = this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox().addCoord(x, y, z));
+             AxisAlignedBB var21 = this.getEntityBoundingBox();
+             AxisAlignedBB var23;
+ 
+@@ -710,7 +737,7 @@ public abstract class Entity implements ICommandSender
+                 AxisAlignedBB var29 = this.getEntityBoundingBox();
+                 this.func_174826_a(var21);
+                 y = (double)this.stepHeight;
+-                List var30 = this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox().addCoord(var13, y, var17));
++                List var30 = this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox().addCoord(var13, y, var17));
+                 AxisAlignedBB var31 = this.getEntityBoundingBox();
+                 AxisAlignedBB var32 = var31.addCoord(var13, 0.0D, var17);
+                 double var33 = y;
 @@ -816,14 +843,14 @@ public abstract class Entity implements ICommandSender
              BlockPos var26 = new BlockPos(var57, var58, var59);
              Block var60 = this.worldObj.getBlockState(var26).getBlock();
@@ -19821,6 +20173,15 @@ index 7865119..d02133d 100644
              this.playSound(var3.getStepSound(), var3.getVolume() * 0.15F, var3.getFrequency());
          }
          else if (!p_180429_2_.getMaterial().isLiquid())
+@@ -1095,7 +1122,7 @@ public abstract class Entity implements ICommandSender
+      */
+     public boolean handleWaterMovement()
+     {
+-        if (this.worldObj.handleMaterialAcceleration(this.getEntityBoundingBox().expand(0.0D, -0.4000000059604645D, 0.0D).contract(0.001D, 0.001D, 0.001D), Material.water, this))
++        if (this.worldObj.handleMaterialAcceleration(this.getEntityBoundingBox().expand(0.0D, -0.4000000059604645D, 0.0D).contract(0.001D, 0.001D, 0.001D), Material.WATER, this))
+         {
+             if (!this.inWater && !this.firstUpdate)
+             {
 @@ -1119,7 +1146,7 @@ public abstract class Entity implements ICommandSender
       */
      protected void resetHeight()
@@ -19830,6 +20191,15 @@ index 7865119..d02133d 100644
  
          if (var1 > 1.0F)
          {
+@@ -1200,7 +1227,7 @@ public abstract class Entity implements ICommandSender
+ 
+     public boolean func_180799_ab()
+     {
+-        return this.worldObj.isMaterialInBB(this.getEntityBoundingBox().expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), Material.lava);
++        return this.worldObj.isMaterialInBB(this.getEntityBoundingBox().expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), Material.LAVA);
+     }
+ 
+     /**
 @@ -1212,7 +1239,7 @@ public abstract class Entity implements ICommandSender
  
          if (var4 >= 1.0E-4F)
@@ -19947,6 +20317,15 @@ index 7865119..d02133d 100644
          return this.worldObj.rayTraceBlocks(var4, var6, false, false, true);
      }
  
+@@ -2001,7 +2028,7 @@ public abstract class Entity implements ICommandSender
+     {
+         this.setPosition(p_180426_1_, p_180426_3_, p_180426_5_);
+         this.setRotation(p_180426_7_, p_180426_8_);
+-        List var11 = this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox().contract(0.03125D, 0.0D, 0.03125D));
++        List var11 = this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox().contract(0.03125D, 0.0D, 0.03125D));
+ 
+         if (!var11.isEmpty())
+         {
 @@ -2031,7 +2058,7 @@ public abstract class Entity implements ICommandSender
      /**
       * returns a (normalized) vector of where this entity is looking
@@ -20149,9 +20528,18 @@ index 7e300c7..c1212b6 100644
          if (var7 > 1.0F)
          {
 diff --git a/net/minecraft/entity/EntityHanging.java b/net/minecraft/entity/EntityHanging.java
-index da1efce..739fdf5 100644
+index da1efce..57daac6 100644
 --- a/net/minecraft/entity/EntityHanging.java
 +++ b/net/minecraft/entity/EntityHanging.java
+@@ -113,7 +113,7 @@ public abstract class EntityHanging extends Entity
+      */
+     public boolean onValidSurface()
+     {
+-        if (!this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox()).isEmpty())
++        if (!this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty())
+         {
+             return false;
+         }
 @@ -128,7 +128,7 @@ public abstract class EntityHanging extends Entity
              {
                  for (int var6 = 0; var6 < var2; ++var6)
@@ -20171,7 +20559,7 @@ index da1efce..739fdf5 100644
          return this.field_174860_b;
      }
 diff --git a/net/minecraft/entity/EntityLiving.java b/net/minecraft/entity/EntityLiving.java
-index 6e5f3cb..da2289a 100644
+index 6e5f3cb..dcbffda 100644
 --- a/net/minecraft/entity/EntityLiving.java
 +++ b/net/minecraft/entity/EntityLiving.java
 @@ -676,7 +676,7 @@ public abstract class EntityLiving extends EntityLivingBase
@@ -20192,8 +20580,17 @@ index 6e5f3cb..da2289a 100644
  
          if (var4 > p_70663_3_)
          {
+@@ -716,7 +716,7 @@ public abstract class EntityLiving extends EntityLivingBase
+      */
+     public boolean handleLavaMovement()
+     {
+-        return this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox(), this) && this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.worldObj.isAnyLiquid(this.getEntityBoundingBox());
++        return this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox(), this) && this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.worldObj.isAnyLiquid(this.getEntityBoundingBox());
+     }
+ 
+     /**
 diff --git a/net/minecraft/entity/EntityLivingBase.java b/net/minecraft/entity/EntityLivingBase.java
-index 80f1f20..29c3056 100644
+index 80f1f20..38c1eab 100644
 --- a/net/minecraft/entity/EntityLivingBase.java
 +++ b/net/minecraft/entity/EntityLivingBase.java
 @@ -1,12 +1,18 @@
@@ -20233,6 +20630,15 @@ index 80f1f20..29c3056 100644
              {
                  double var9 = (double)Math.min(0.2F + var8 / 15.0F, 10.0F);
  
+@@ -287,7 +293,7 @@ public abstract class EntityLivingBase extends Entity
+ 
+         boolean var7 = var1 && ((EntityPlayer)this).capabilities.disableDamage;
+ 
+-        if (this.isEntityAlive() && this.isInsideOfMaterial(Material.water))
++        if (this.isEntityAlive() && this.isInsideOfMaterial(Material.WATER))
+         {
+             if (!this.canBreatheUnderwater() && !this.isPotionActive(Potion.waterBreathing.id) && !var7)
+             {
 @@ -850,7 +856,7 @@ public abstract class EntityLivingBase extends Entity
  
      public void setHealth(float p_70606_1_)
@@ -20292,6 +20698,15 @@ index 80f1f20..29c3056 100644
      {
          if (!this.isSwingInProgress || this.swingProgressInt >= this.getArmSwingAnimationEnd() / 2 || this.swingProgressInt < 0)
          {
+@@ -1526,7 +1532,7 @@ public abstract class EntityLivingBase extends Entity
+                             return;
+                         }
+ 
+-                        if (World.doesBlockHaveSolidTopSurface(this.worldObj, new BlockPos(var12, (int)this.posY - 1, var13)) || this.worldObj.getBlockState(new BlockPos(var12, (int)this.posY - 1, var13)).getBlock().getMaterial() == Material.water)
++                        if (World.doesBlockHaveSolidTopSurface(this.worldObj, new BlockPos(var12, (int)this.posY - 1, var13)) || this.worldObj.getBlockState(new BlockPos(var12, (int)this.posY - 1, var13)).getBlock().getMaterial() == Material.WATER)
+                         {
+                             var3 = this.posX + (double)var10;
+                             var5 = this.posY + 1.0D;
 @@ -1555,7 +1561,13 @@ public abstract class EntityLivingBase extends Entity
       */
      protected void jump()
@@ -20449,22 +20864,24 @@ index 14079cc..2cb4fd4 100644
                  private static final String __OBFID = "CL_00001432";
                  public String call()
 diff --git a/net/minecraft/entity/EnumCreatureType.java b/net/minecraft/entity/EnumCreatureType.java
-index 6d8767c..02a97f2 100644
+index 6d8767c..0d092ca 100644
 --- a/net/minecraft/entity/EnumCreatureType.java
 +++ b/net/minecraft/entity/EnumCreatureType.java
-@@ -8,9 +8,9 @@ import net.minecraft.entity.passive.EntityWaterMob;
+@@ -8,10 +8,10 @@ import net.minecraft.entity.passive.EntityWaterMob;
  
  public enum EnumCreatureType
  {
 -    MONSTER(IMob.class, 70, Material.air, false, false),
 -    CREATURE(EntityAnimal.class, 10, Material.air, true, true),
 -    AMBIENT(EntityAmbientCreature.class, 15, Material.air, true, false),
+-    WATER_CREATURE(EntityWaterMob.class, 5, Material.water, true, false);
 +    MONSTER(IMob.class, 70, Material.AIR, false, false),
 +    CREATURE(EntityAnimal.class, 10, Material.AIR, true, true),
 +    AMBIENT(EntityAmbientCreature.class, 15, Material.AIR, true, false),
-     WATER_CREATURE(EntityWaterMob.class, 5, Material.water, true, false);
++    WATER_CREATURE(EntityWaterMob.class, 5, Material.WATER, true, false);
  
      /**
+      * The root class of creatures associated with this EnumCreatureType (IMobs for aggressive creatures, EntityAnimals
 diff --git a/net/minecraft/entity/ai/EntityAIArrowAttack.java b/net/minecraft/entity/ai/EntityAIArrowAttack.java
 index 1bbd940..086964e 100644
 --- a/net/minecraft/entity/ai/EntityAIArrowAttack.java
@@ -21339,9 +21756,18 @@ index 98a6280..71e70e7 100644
  
                  this.contents[var1] = null;
 diff --git a/net/minecraft/entity/item/EntityBoat.java b/net/minecraft/entity/item/EntityBoat.java
-index 4d2f4d6..163c4ff 100644
+index 4d2f4d6..c0d62cf 100644
 --- a/net/minecraft/entity/item/EntityBoat.java
 +++ b/net/minecraft/entity/item/EntityBoat.java
+@@ -255,7 +255,7 @@ public class EntityBoat extends Entity
+             double var7 = this.getEntityBoundingBox().minY + (this.getEntityBoundingBox().maxY - this.getEntityBoundingBox().minY) * (double)(var4 + 1) / (double)var1 - 0.125D;
+             AxisAlignedBB var9 = new AxisAlignedBB(this.getEntityBoundingBox().minX, var5, this.getEntityBoundingBox().minZ, this.getEntityBoundingBox().maxX, var7, this.getEntityBoundingBox().maxZ);
+ 
+-            if (this.worldObj.isAABBInMaterial(var9, Material.water))
++            if (this.worldObj.isAABBInMaterial(var9, Material.WATER))
+             {
+                 var2 += 1.0D / (double)var1;
+             }
 @@ -303,7 +303,7 @@ public class EntityBoat extends Entity
                  var6 = this.posX + (this.boatX - this.posX) / (double)this.boatPosRotationIncrements;
                  var8 = this.posY + (this.boatY - this.posY) / (double)this.boatPosRotationIncrements;
@@ -21380,7 +21806,7 @@ index 4d2f4d6..163c4ff 100644
              }
          }
 -        else if (this.worldObj.getBlockState((new BlockPos(this)).offsetDown()).getBlock().getMaterial() != Material.water && p_180433_1_ < 0.0D)
-+        else if (this.worldObj.getBlockState((new BlockPos(this)).down()).getBlock().getMaterial() != Material.water && p_180433_1_ < 0.0D)
++        else if (this.worldObj.getBlockState((new BlockPos(this)).down()).getBlock().getMaterial() != Material.WATER && p_180433_1_ < 0.0D)
          {
              this.fallDistance = (float)((double)this.fallDistance - p_180433_1_);
          }
@@ -21525,7 +21951,7 @@ index 8977fe5..d7ae4c3 100644
  
          for (this.rotationPitch = (float)(Math.atan2(this.motionY, (double)var1) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
 diff --git a/net/minecraft/entity/item/EntityItem.java b/net/minecraft/entity/item/EntityItem.java
-index b9cb46c..0c075db 100644
+index b9cb46c..92429b0 100644
 --- a/net/minecraft/entity/item/EntityItem.java
 +++ b/net/minecraft/entity/item/EntityItem.java
 @@ -71,7 +71,7 @@ public class EntityItem extends Entity
@@ -21537,6 +21963,24 @@ index b9cb46c..0c075db 100644
      }
  
      protected void entityInit()
+@@ -107,7 +107,7 @@ public class EntityItem extends Entity
+ 
+             if (var1 || this.ticksExisted % 25 == 0)
+             {
+-                if (this.worldObj.getBlockState(new BlockPos(this)).getBlock().getMaterial() == Material.lava)
++                if (this.worldObj.getBlockState(new BlockPos(this)).getBlock().getMaterial() == Material.LAVA)
+                 {
+                     this.motionY = 0.20000000298023224D;
+                     this.motionX = (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
+@@ -252,7 +252,7 @@ public class EntityItem extends Entity
+      */
+     public boolean handleWaterMovement()
+     {
+-        if (this.worldObj.handleMaterialAcceleration(this.getEntityBoundingBox(), Material.water, this))
++        if (this.worldObj.handleMaterialAcceleration(this.getEntityBoundingBox(), Material.WATER, this))
+         {
+             if (!this.inWater && !this.firstUpdate)
+             {
 @@ -374,12 +374,12 @@ public class EntityItem extends Entity
  
              if (this.delayBeforeCanPickup == 0 && (this.owner == null || 6000 - this.age <= 200 || this.owner.equals(entityIn.getName())) && entityIn.inventory.addItemStackToInventory(var2))
@@ -21839,7 +22283,7 @@ index e007b61..8d723ef 100644
  
      /**
 diff --git a/net/minecraft/entity/item/EntityXPOrb.java b/net/minecraft/entity/item/EntityXPOrb.java
-index 86b170d..413891e 100644
+index 86b170d..c5ea353 100644
 --- a/net/minecraft/entity/item/EntityXPOrb.java
 +++ b/net/minecraft/entity/item/EntityXPOrb.java
 @@ -65,7 +65,7 @@ public class EntityXPOrb extends Entity
@@ -21851,6 +22295,15 @@ index 86b170d..413891e 100644
          int var3 = super.getBrightnessForRender(p_70070_1_);
          int var4 = var3 & 255;
          int var5 = var3 >> 16 & 255;
+@@ -96,7 +96,7 @@ public class EntityXPOrb extends Entity
+         this.prevPosZ = this.posZ;
+         this.motionY -= 0.029999999329447746D;
+ 
+-        if (this.worldObj.getBlockState(new BlockPos(this)).getBlock().getMaterial() == Material.lava)
++        if (this.worldObj.getBlockState(new BlockPos(this)).getBlock().getMaterial() == Material.LAVA)
+         {
+             this.motionY = 0.20000000298023224D;
+             this.motionX = (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
 @@ -117,7 +117,7 @@ public class EntityXPOrb extends Entity
              this.xpTargetColor = this.xpColor;
          }
@@ -21860,6 +22313,15 @@ index 86b170d..413891e 100644
          {
              this.closestPlayer = null;
          }
+@@ -170,7 +170,7 @@ public class EntityXPOrb extends Entity
+      */
+     public boolean handleWaterMovement()
+     {
+-        return this.worldObj.handleMaterialAcceleration(this.getEntityBoundingBox(), Material.water, this);
++        return this.worldObj.handleMaterialAcceleration(this.getEntityBoundingBox(), Material.WATER, this);
+     }
+ 
+     /**
 diff --git a/net/minecraft/entity/monster/EntityBlaze.java b/net/minecraft/entity/monster/EntityBlaze.java
 index feb447f..ffff61f 100644
 --- a/net/minecraft/entity/monster/EntityBlaze.java
@@ -21887,7 +22349,7 @@ index 54af8de..f668861 100644
              if (!this.worldObj.isRemote)
              {
 diff --git a/net/minecraft/entity/monster/EntityEnderman.java b/net/minecraft/entity/monster/EntityEnderman.java
-index 37bd1eb..c8573ca 100644
+index 37bd1eb..02eb620 100644
 --- a/net/minecraft/entity/monster/EntityEnderman.java
 +++ b/net/minecraft/entity/monster/EntityEnderman.java
 @@ -36,7 +36,7 @@ import net.minecraft.util.EntityDamageSource;
@@ -21928,6 +22390,15 @@ index 37bd1eb..c8573ca 100644
                  Block var17 = this.worldObj.getBlockState(var16).getBlock();
  
                  if (var17.getMaterial().blocksMovement())
+@@ -259,7 +259,7 @@ public class EntityEnderman extends EntityMob
+             {
+                 super.setPositionAndUpdate(this.posX, this.posY, this.posZ);
+ 
+-                if (this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.worldObj.isAnyLiquid(this.getEntityBoundingBox()))
++                if (this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.worldObj.isAnyLiquid(this.getEntityBoundingBox()))
+                 {
+                     var13 = true;
+                 }
 @@ -419,17 +419,17 @@ public class EntityEnderman extends EntityMob
  
      static
@@ -22005,7 +22476,7 @@ index 37bd1eb..c8573ca 100644
          }
      }
 diff --git a/net/minecraft/entity/monster/EntityGhast.java b/net/minecraft/entity/monster/EntityGhast.java
-index efd2b33..d4fdd6d 100644
+index efd2b33..f8ec5dc 100644
 --- a/net/minecraft/entity/monster/EntityGhast.java
 +++ b/net/minecraft/entity/monster/EntityGhast.java
 @@ -17,7 +17,7 @@ import net.minecraft.util.AxisAlignedBB;
@@ -22035,8 +22506,17 @@ index efd2b33..d4fdd6d 100644
  
                      if (this.func_179926_b(this.posX, this.posY, this.posZ, var7))
                      {
+@@ -394,7 +394,7 @@ public class EntityGhast extends EntityFlying implements IMob
+             {
+                 var15 = var15.offset(var9, var11, var13);
+ 
+-                if (!this.field_179927_g.worldObj.getCollidingBoundingBoxes(this.field_179927_g, var15).isEmpty())
++                if (!this.field_179927_g.worldObj.getCollisionBoxes(this.field_179927_g, var15).isEmpty())
+                 {
+                     return false;
+                 }
 diff --git a/net/minecraft/entity/monster/EntityGuardian.java b/net/minecraft/entity/monster/EntityGuardian.java
-index 15327d6..6192f75 100644
+index 15327d6..e6e2f45 100644
 --- a/net/minecraft/entity/monster/EntityGuardian.java
 +++ b/net/minecraft/entity/monster/EntityGuardian.java
 @@ -33,7 +33,7 @@ import net.minecraft.util.BlockPos;
@@ -22048,6 +22528,15 @@ index 15327d6..6192f75 100644
  import net.minecraft.util.WeightedRandom;
  import net.minecraft.util.WeightedRandomFishable;
  import net.minecraft.world.EnumDifficulty;
+@@ -279,7 +279,7 @@ public class EntityGuardian extends EntityMob
+ 
+     public float func_180484_a(BlockPos p_180484_1_)
+     {
+-        return this.worldObj.getBlockState(p_180484_1_).getBlock().getMaterial() == Material.water ? 10.0F + this.worldObj.getLightBrightness(p_180484_1_) - 0.5F : super.func_180484_a(p_180484_1_);
++        return this.worldObj.getBlockState(p_180484_1_).getBlock().getMaterial() == Material.WATER ? 10.0F + this.worldObj.getLightBrightness(p_180484_1_) - 0.5F : super.func_180484_a(p_180484_1_);
+     }
+ 
+     /**
 @@ -301,7 +301,7 @@ public class EntityGuardian extends EntityMob
                      this.worldObj.playSound(this.posX, this.posY, this.posZ, "mob.guardian.flop", 1.0F, 1.0F, false);
                  }
@@ -22066,6 +22555,15 @@ index 15327d6..6192f75 100644
  
                  for (int var2 = 0; var2 < 2; ++var2)
                  {
+@@ -510,7 +510,7 @@ public class EntityGuardian extends EntityMob
+      */
+     public boolean handleLavaMovement()
+     {
+-        return this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox(), this) && this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox()).isEmpty();
++        return this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox(), this) && this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty();
+     }
+ 
+     /**
 @@ -683,7 +683,7 @@ public class EntityGuardian extends EntityMob
                  double var3 = this.posY - this.field_179930_g.posY;
                  double var5 = this.posZ - this.field_179930_g.posZ;
@@ -22097,6 +22595,32 @@ index 370e827..ae039ca 100644
          }
  
          var4 = 3 + this.rand.nextInt(3);
+diff --git a/net/minecraft/entity/monster/EntityMagmaCube.java b/net/minecraft/entity/monster/EntityMagmaCube.java
+index 6662216..cee85b4 100644
+--- a/net/minecraft/entity/monster/EntityMagmaCube.java
++++ b/net/minecraft/entity/monster/EntityMagmaCube.java
+@@ -36,7 +36,7 @@ public class EntityMagmaCube extends EntitySlime
+      */
+     public boolean handleLavaMovement()
+     {
+-        return this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox(), this) && this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.worldObj.isAnyLiquid(this.getEntityBoundingBox());
++        return this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox(), this) && this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.worldObj.isAnyLiquid(this.getEntityBoundingBox());
+     }
+ 
+     /**
+diff --git a/net/minecraft/entity/monster/EntityPigZombie.java b/net/minecraft/entity/monster/EntityPigZombie.java
+index 3f7fbda..19e5077 100644
+--- a/net/minecraft/entity/monster/EntityPigZombie.java
++++ b/net/minecraft/entity/monster/EntityPigZombie.java
+@@ -117,7 +117,7 @@ public class EntityPigZombie extends EntityZombie
+      */
+     public boolean handleLavaMovement()
+     {
+-        return this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox(), this) && this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.worldObj.isAnyLiquid(this.getEntityBoundingBox());
++        return this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox(), this) && this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.worldObj.isAnyLiquid(this.getEntityBoundingBox());
+     }
+ 
+     /**
 diff --git a/net/minecraft/entity/monster/EntitySilverfish.java b/net/minecraft/entity/monster/EntitySilverfish.java
 index 5ea795d..8cc773f 100644
 --- a/net/minecraft/entity/monster/EntitySilverfish.java
@@ -22154,9 +22678,18 @@ index fe0b032..87d2c15 100644
          this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
          this.worldObj.spawnEntityInWorld(var3);
 diff --git a/net/minecraft/entity/monster/EntityWitch.java b/net/minecraft/entity/monster/EntityWitch.java
-index f95ccbc..a0b41d0 100644
+index f95ccbc..3f816c1 100644
 --- a/net/minecraft/entity/monster/EntityWitch.java
 +++ b/net/minecraft/entity/monster/EntityWitch.java
+@@ -149,7 +149,7 @@ public class EntityWitch extends EntityMob implements IRangedAttackMob
+             {
+                 short var5 = -1;
+ 
+-                if (this.rand.nextFloat() < 0.15F && this.isInsideOfMaterial(Material.water) && !this.isPotionActive(Potion.waterBreathing))
++                if (this.rand.nextFloat() < 0.15F && this.isInsideOfMaterial(Material.WATER) && !this.isPotionActive(Potion.waterBreathing))
+                 {
+                     var5 = 8237;
+                 }
 @@ -262,7 +262,7 @@ public class EntityWitch extends EntityMob implements IRangedAttackMob
              double var6 = p_82196_1_.posX + p_82196_1_.motionX - this.posX;
              double var8 = var4 - this.posY;
@@ -22166,6 +22699,19 @@ index f95ccbc..a0b41d0 100644
  
              if (var12 >= 8.0F && !p_82196_1_.isPotionActive(Potion.moveSlowdown))
              {
+diff --git a/net/minecraft/entity/monster/EntityZombie.java b/net/minecraft/entity/monster/EntityZombie.java
+index 6deb690..86a8653 100644
+--- a/net/minecraft/entity/monster/EntityZombie.java
++++ b/net/minecraft/entity/monster/EntityZombie.java
+@@ -275,7 +275,7 @@ public class EntityZombie extends EntityMob
+                     {
+                         var7.setPosition((double)var9, (double)var10, (double)var11);
+ 
+-                        if (!this.worldObj.func_175636_b((double)var9, (double)var10, (double)var11, 7.0D) && this.worldObj.checkNoEntityCollision(var7.getEntityBoundingBox(), var7) && this.worldObj.getCollidingBoundingBoxes(var7, var7.getEntityBoundingBox()).isEmpty() && !this.worldObj.isAnyLiquid(var7.getEntityBoundingBox()))
++                        if (!this.worldObj.func_175636_b((double)var9, (double)var10, (double)var11, 7.0D) && this.worldObj.checkNoEntityCollision(var7.getEntityBoundingBox(), var7) && this.worldObj.getCollisionBoxes(var7, var7.getEntityBoundingBox()).isEmpty() && !this.worldObj.isAnyLiquid(var7.getEntityBoundingBox()))
+                         {
+                             this.worldObj.spawnEntityInWorld(var7);
+                             var7.setAttackTarget(var3);
 diff --git a/net/minecraft/entity/passive/EntityAnimal.java b/net/minecraft/entity/passive/EntityAnimal.java
 index 37991fb..7c52024 100644
 --- a/net/minecraft/entity/passive/EntityAnimal.java
@@ -22307,9 +22853,18 @@ index 235217b..e3703e5 100644
  
                  var2.damageItem(1, p_70085_1_);
 diff --git a/net/minecraft/entity/passive/EntityOcelot.java b/net/minecraft/entity/passive/EntityOcelot.java
-index 2f84c12..f1de718 100644
+index 2f84c12..688014a 100644
 --- a/net/minecraft/entity/passive/EntityOcelot.java
 +++ b/net/minecraft/entity/passive/EntityOcelot.java
+@@ -312,7 +312,7 @@ public class EntityOcelot extends EntityTameable
+      */
+     public boolean handleLavaMovement()
+     {
+-        if (this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox(), this) && this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.worldObj.isAnyLiquid(this.getEntityBoundingBox()))
++        if (this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox(), this) && this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.worldObj.isAnyLiquid(this.getEntityBoundingBox()))
+         {
+             BlockPos var1 = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
+ 
 @@ -321,9 +321,9 @@ public class EntityOcelot extends EntityTameable
                  return false;
              }
@@ -22379,9 +22934,18 @@ index c5ffed3..e88509e 100644
                  var3 = var4.getBlock();
  
 diff --git a/net/minecraft/entity/passive/EntitySquid.java b/net/minecraft/entity/passive/EntitySquid.java
-index 55f7792..0dbf5c1 100644
+index 55f7792..f062b3d 100644
 --- a/net/minecraft/entity/passive/EntitySquid.java
 +++ b/net/minecraft/entity/passive/EntitySquid.java
+@@ -125,7 +125,7 @@ public class EntitySquid extends EntityWaterMob
+      */
+     public boolean isInWater()
+     {
+-        return this.worldObj.handleMaterialAcceleration(this.getEntityBoundingBox().expand(0.0D, -0.6000000238418579D, 0.0D), Material.water, this);
++        return this.worldObj.handleMaterialAcceleration(this.getEntityBoundingBox().expand(0.0D, -0.6000000238418579D, 0.0D), Material.WATER, this);
+     }
+ 
+     /**
 @@ -193,7 +193,7 @@ public class EntitySquid extends EntityWaterMob
                  this.motionZ = (double)(this.randomMotionVecZ * this.randomMotionSpeed);
              }
@@ -22447,7 +23011,7 @@ index b1345a2..9026ae0 100644
              if (this.timeWolfIsShaking == 0.0F)
              {
 diff --git a/net/minecraft/entity/player/EntityPlayer.java b/net/minecraft/entity/player/EntityPlayer.java
-index 04f22d7..478d142 100644
+index 04f22d7..efbab75 100644
 --- a/net/minecraft/entity/player/EntityPlayer.java
 +++ b/net/minecraft/entity/player/EntityPlayer.java
 @@ -1,17 +1,19 @@
@@ -22642,6 +23206,15 @@ index 04f22d7..478d142 100644
          super.onDeath(cause);
          this.setSize(0.2F, 0.2F);
          this.setPosition(this.posX, this.posY, this.posZ);
+@@ -950,7 +960,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+             var2 *= var5;
+         }
+ 
+-        if (this.isInsideOfMaterial(Material.water) && !EnchantmentHelper.getAquaAffinityModifier(this))
++        if (this.isInsideOfMaterial(Material.WATER) && !EnchantmentHelper.getAquaAffinityModifier(this))
+         {
+             var2 /= 5.0F;
+         }
 @@ -1216,7 +1226,7 @@ public abstract class EntityPlayer extends EntityLivingBase
  
      public boolean interactWith(Entity p_70998_1_)
@@ -22669,9 +23242,12 @@ index 04f22d7..478d142 100644
                  boolean var5 = !var3.isSolid() && !var3.isLiquid();
                  boolean var6 = !var4.isSolid() && !var4.isLiquid();
                  return var5 && var6 ? p_180467_1_ : null;
-@@ -1806,7 +1816,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -1804,9 +1814,9 @@ public abstract class EntityPlayer extends EntityLivingBase
+         {
+             int var7;
  
-             if (this.isInsideOfMaterial(Material.water))
+-            if (this.isInsideOfMaterial(Material.water))
++            if (this.isInsideOfMaterial(Material.WATER))
              {
 -                var7 = Math.round(MathHelper.sqrt_double(p_71000_1_ * p_71000_1_ + p_71000_3_ * p_71000_3_ + p_71000_5_ * p_71000_5_) * 100.0F);
 +                var7 = Math.round(MathHelper.sqrt(p_71000_1_ * p_71000_1_ + p_71000_3_ * p_71000_3_ + p_71000_5_ * p_71000_5_) * 100.0F);
@@ -22791,7 +23367,7 @@ index 04f22d7..478d142 100644
  
      public boolean func_175146_a(LockCode p_175146_1_)
 diff --git a/net/minecraft/entity/player/EntityPlayerMP.java b/net/minecraft/entity/player/EntityPlayerMP.java
-index 385fbff..8bddfc9 100644
+index 385fbff..fc4dff2 100644
 --- a/net/minecraft/entity/player/EntityPlayerMP.java
 +++ b/net/minecraft/entity/player/EntityPlayerMP.java
 @@ -3,13 +3,16 @@ package net.minecraft.entity.player;
@@ -22828,6 +23404,15 @@ index 385fbff..8bddfc9 100644
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
  
+@@ -195,7 +199,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
+         this.stepHeight = 0.0F;
+         this.func_174828_a(var5, 0.0F, 0.0F);
+ 
+-        while (!worldIn.getCollidingBoundingBoxes(this, this.getEntityBoundingBox()).isEmpty() && this.posY < 255.0D)
++        while (!worldIn.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty() && this.posY < 255.0D)
+         {
+             this.setPosition(this.posX, this.posY + 1.0D, this.posZ);
+         }
 @@ -642,7 +646,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
  
      public boolean func_174827_a(EntityPlayerMP p_174827_1_)
@@ -23227,7 +23812,7 @@ index 088f1f6..8a5a6c6 100644
                  if (var3 != null)
                  {
 diff --git a/net/minecraft/entity/projectile/EntityFishHook.java b/net/minecraft/entity/projectile/EntityFishHook.java
-index 36ee8af..9c27785 100644
+index 36ee8af..bad39e2 100644
 --- a/net/minecraft/entity/projectile/EntityFishHook.java
 +++ b/net/minecraft/entity/projectile/EntityFishHook.java
 @@ -21,9 +21,9 @@ import net.minecraft.util.BlockPos;
@@ -23329,6 +23914,15 @@ index 36ee8af..9c27785 100644
                  this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
  
                  for (this.rotationPitch = (float)(Math.atan2(this.motionY, (double)var31) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
+@@ -346,7 +346,7 @@ public class EntityFishHook extends Entity
+                     var19 = var14.minY + var15 * (double)(var35 + 1) / (double)var33;
+                     AxisAlignedBB var21 = new AxisAlignedBB(var14.minX, var17, var14.minZ, var14.maxX, var19, var14.maxZ);
+ 
+-                    if (this.worldObj.isAABBInMaterial(var21, Material.water))
++                    if (this.worldObj.isAABBInMaterial(var21, Material.WATER))
+                     {
+                         var34 += 1.0D / (double)var33;
+                     }
 @@ -356,7 +356,7 @@ public class EntityFishHook extends Entity
                  {
                      WorldServer var36 = (WorldServer)this.worldObj;
@@ -23996,17 +24590,40 @@ index 9e34ddd..310196c 100644
              double_stone_slab2 = (BlockSlab)getRegisteredBlock("double_stone_slab2");
              stone_slab2 = (BlockSlab)getRegisteredBlock("stone_slab2");
 diff --git a/net/minecraft/init/Bootstrap.java b/net/minecraft/init/Bootstrap.java
-index 244dc25..a517244 100644
+index 244dc25..da481a1 100644
 --- a/net/minecraft/init/Bootstrap.java
 +++ b/net/minecraft/init/Bootstrap.java
-@@ -222,7 +222,7 @@ public class Bootstrap
+@@ -216,13 +216,13 @@ public class Bootstrap
+                 Material var12 = var4.getBlockState(var11).getBlock().getMaterial();
+                 double var13;
+ 
+-                if (Material.water.equals(var12))
++                if (Material.WATER.equals(var12))
+                 {
+                     var13 = 1.0D;
                  }
                  else
                  {
 -                    if (!Material.air.equals(var12) || !Material.water.equals(var4.getBlockState(var11.offsetDown()).getBlock().getMaterial()))
-+                    if (!Material.AIR.equals(var12) || !Material.water.equals(var4.getBlockState(var11.down()).getBlock().getMaterial()))
++                    if (!Material.AIR.equals(var12) || !Material.WATER.equals(var4.getBlockState(var11.down()).getBlock().getMaterial()))
                      {
                          return this.field_150842_b.dispense(source, stack);
+                     }
+@@ -276,13 +276,13 @@ public class Bootstrap
+                 Material var7 = var6.getMaterial();
+                 Item var8;
+ 
+-                if (Material.water.equals(var7) && var6 instanceof BlockLiquid && ((Integer)var5.getValue(BlockLiquid.LEVEL)).intValue() == 0)
++                if (Material.WATER.equals(var7) && var6 instanceof BlockLiquid && ((Integer)var5.getValue(BlockLiquid.LEVEL)).intValue() == 0)
+                 {
+                     var8 = Items.water_bucket;
+                 }
+                 else
+                 {
+-                    if (!Material.lava.equals(var7) || !(var6 instanceof BlockLiquid) || ((Integer)var5.getValue(BlockLiquid.LEVEL)).intValue() != 0)
++                    if (!Material.LAVA.equals(var7) || !(var6 instanceof BlockLiquid) || ((Integer)var5.getValue(BlockLiquid.LEVEL)).intValue() != 0)
+                     {
+                         return super.dispenseStack(source, stack);
                      }
 diff --git a/net/minecraft/init/Items.java b/net/minecraft/init/Items.java
 index c80fdd0..6b71eb4 100644
@@ -24566,7 +25183,7 @@ index 1e879a4..71443c0 100644
              p_179222_3_ = EnumFacing.UP;
          }
 diff --git a/net/minecraft/item/ItemBoat.java b/net/minecraft/item/ItemBoat.java
-index 5d85765..91dbed2 100644
+index 5d85765..7eb0f6e 100644
 --- a/net/minecraft/item/ItemBoat.java
 +++ b/net/minecraft/item/ItemBoat.java
 @@ -10,8 +10,8 @@ import net.minecraft.stats.StatList;
@@ -24609,7 +25226,7 @@ index 5d85765..91dbed2 100644
              boolean var26 = false;
              float var27 = 1.0F;
              List var28 = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getEntityBoundingBox().addCoord(var25.xCoord * var21, var25.yCoord * var21, var25.zCoord * var21).expand((double)var27, (double)var27, (double)var27));
-@@ -79,13 +79,13 @@ public class ItemBoat extends Item
+@@ -79,19 +79,19 @@ public class ItemBoat extends Item
              }
              else
              {
@@ -24627,8 +25244,15 @@ index 5d85765..91dbed2 100644
                      }
  
                      EntityBoat var34 = new EntityBoat(worldIn, (double)((float)var33.getX() + 0.5F), (double)((float)var33.getY() + 1.0F), (double)((float)var33.getZ() + 0.5F));
+                     var34.rotationYaw = (float)(((MathHelper.floor_double((double)(playerIn.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3) - 1) * 90);
+ 
+-                    if (!worldIn.getCollidingBoundingBoxes(var34, var34.getEntityBoundingBox().expand(-0.1D, -0.1D, -0.1D)).isEmpty())
++                    if (!worldIn.getCollisionBoxes(var34, var34.getEntityBoundingBox().expand(-0.1D, -0.1D, -0.1D)).isEmpty())
+                     {
+                         return itemStackIn;
+                     }
 diff --git a/net/minecraft/item/ItemBucket.java b/net/minecraft/item/ItemBucket.java
-index 37b6e24..1f8e9af 100644
+index 37b6e24..29fc30b 100644
 --- a/net/minecraft/item/ItemBucket.java
 +++ b/net/minecraft/item/ItemBucket.java
 @@ -11,7 +11,7 @@ import net.minecraft.init.Items;
@@ -24672,6 +25296,23 @@ index 37b6e24..1f8e9af 100644
                      {
                          return itemStackIn;
                      }
+@@ -60,14 +60,14 @@ public class ItemBucket extends Item
+                     IBlockState var7 = worldIn.getBlockState(var6);
+                     Material var8 = var7.getBlock().getMaterial();
+ 
+-                    if (var8 == Material.water && ((Integer)var7.getValue(BlockLiquid.LEVEL)).intValue() == 0)
++                    if (var8 == Material.WATER && ((Integer)var7.getValue(BlockLiquid.LEVEL)).intValue() == 0)
+                     {
+                         worldIn.setBlockToAir(var6);
+                         playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
+                         return this.func_150910_a(itemStackIn, playerIn, Items.water_bucket);
+                     }
+ 
+-                    if (var8 == Material.lava && ((Integer)var7.getValue(BlockLiquid.LEVEL)).intValue() == 0)
++                    if (var8 == Material.LAVA && ((Integer)var7.getValue(BlockLiquid.LEVEL)).intValue() == 0)
+                     {
+                         worldIn.setBlockToAir(var6);
+                         playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
 @@ -76,14 +76,14 @@ public class ItemBucket extends Item
                  }
                  else
@@ -24863,7 +25504,7 @@ index 34951a3..ff1fb7d 100644
                  worldIn.playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, "fire.ignite", 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
                  worldIn.setBlockState(pos, Blocks.fire.getDefaultState());
 diff --git a/net/minecraft/item/ItemGlassBottle.java b/net/minecraft/item/ItemGlassBottle.java
-index 482de16..bb0f648 100644
+index 482de16..7fe9ac6 100644
 --- a/net/minecraft/item/ItemGlassBottle.java
 +++ b/net/minecraft/item/ItemGlassBottle.java
 @@ -6,7 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
@@ -24884,7 +25525,7 @@ index 482de16..bb0f648 100644
  
          if (var4 == null)
          {
-@@ -31,16 +31,16 @@ public class ItemGlassBottle extends Item
+@@ -31,21 +31,21 @@ public class ItemGlassBottle extends Item
          }
          else
          {
@@ -24904,6 +25545,12 @@ index 482de16..bb0f648 100644
                  {
                      return itemStackIn;
                  }
+ 
+-                if (worldIn.getBlockState(var5).getBlock().getMaterial() == Material.water)
++                if (worldIn.getBlockState(var5).getBlock().getMaterial() == Material.WATER)
+                 {
+                     --itemStackIn.stackSize;
+                     playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
 diff --git a/net/minecraft/item/ItemHoe.java b/net/minecraft/item/ItemHoe.java
 index fffb912..6a8d515 100644
 --- a/net/minecraft/item/ItemHoe.java
@@ -24936,7 +25583,7 @@ index fffb912..6a8d515 100644
                  }
              }
 diff --git a/net/minecraft/item/ItemLilyPad.java b/net/minecraft/item/ItemLilyPad.java
-index 8fdbbed..04d6812 100644
+index 8fdbbed..35873fd 100644
 --- a/net/minecraft/item/ItemLilyPad.java
 +++ b/net/minecraft/item/ItemLilyPad.java
 @@ -8,7 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
@@ -24982,7 +25629,8 @@ index 8fdbbed..04d6812 100644
 +                BlockPos var6 = var5.up();
                  IBlockState var7 = worldIn.getBlockState(var5);
  
-                 if (var7.getBlock().getMaterial() == Material.water && ((Integer)var7.getValue(BlockLiquid.LEVEL)).intValue() == 0 && worldIn.isAirBlock(var6))
+-                if (var7.getBlock().getMaterial() == Material.water && ((Integer)var7.getValue(BlockLiquid.LEVEL)).intValue() == 0 && worldIn.isAirBlock(var6))
++                if (var7.getBlock().getMaterial() == Material.WATER && ((Integer)var7.getValue(BlockLiquid.LEVEL)).intValue() == 0 && worldIn.isAirBlock(var6))
                  {
 -                    worldIn.setBlockState(var6, Blocks.waterlily.getDefaultState());
 +                    worldIn.setBlockState(var6, Blocks.WATERLILY.getDefaultState());
@@ -25780,7 +26428,7 @@ index 65e3465..c4a1825 100644
              this.registerPacket(EnumPacketDirection.SERVERBOUND, C12PacketUpdateSign.class);
              this.registerPacket(EnumPacketDirection.SERVERBOUND, C13PacketPlayerAbilities.class);
 diff --git a/net/minecraft/network/NetHandlerPlayServer.java b/net/minecraft/network/NetHandlerPlayServer.java
-index 3301ef8..2edd273 100644
+index 3301ef8..77f22de 100644
 --- a/net/minecraft/network/NetHandlerPlayServer.java
 +++ b/net/minecraft/network/NetHandlerPlayServer.java
 @@ -2,9 +2,11 @@ package net.minecraft.network;
@@ -25867,6 +26515,61 @@ index 3301ef8..2edd273 100644
      {
          PacketThreadUtil.func_180031_a(packetIn, this, this.playerEntity.getServerForPlayer());
          WorldServer var2 = this.serverController.worldServerForDimension(this.playerEntity.dimension);
+@@ -224,9 +229,9 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
+             double var5 = this.playerEntity.posY;
+             double var7 = this.playerEntity.posZ;
+             double var9 = 0.0D;
+-            double var11 = packetIn.getPositionX() - this.lastPosX;
+-            double var13 = packetIn.getPositionY() - this.lastPosY;
+-            double var15 = packetIn.getPositionZ() - this.lastPosZ;
++            double var11 = packetIn.getX() - this.lastPosX;
++            double var13 = packetIn.getY() - this.lastPosY;
++            double var15 = packetIn.getZ() - this.lastPosZ;
+ 
+             if (packetIn.func_149466_j())
+             {
+@@ -312,18 +317,18 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
+                 float var25 = this.playerEntity.rotationYaw;
+                 float var26 = this.playerEntity.rotationPitch;
+ 
+-                if (packetIn.func_149466_j() && packetIn.getPositionY() == -999.0D)
++                if (packetIn.func_149466_j() && packetIn.getY() == -999.0D)
+                 {
+                     packetIn.func_149469_a(false);
+                 }
+ 
+                 if (packetIn.func_149466_j())
+                 {
+-                    var19 = packetIn.getPositionX();
+-                    var21 = packetIn.getPositionY();
+-                    var23 = packetIn.getPositionZ();
++                    var19 = packetIn.getX();
++                    var21 = packetIn.getY();
++                    var23 = packetIn.getZ();
+ 
+-                    if (Math.abs(packetIn.getPositionX()) > 3.0E7D || Math.abs(packetIn.getPositionZ()) > 3.0E7D)
++                    if (Math.abs(packetIn.getX()) > 3.0E7D || Math.abs(packetIn.getZ()) > 3.0E7D)
+                     {
+                         this.kickPlayerFromServer("Illegal position");
+                         return;
+@@ -360,7 +365,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
+                 }
+ 
+                 float var41 = 0.0625F;
+-                boolean var42 = var2.getCollidingBoundingBoxes(this.playerEntity, this.playerEntity.getEntityBoundingBox().contract((double)var41, (double)var41, (double)var41)).isEmpty();
++                boolean var42 = var2.getCollisionBoxes(this.playerEntity, this.playerEntity.getEntityBoundingBox().contract((double)var41, (double)var41, (double)var41)).isEmpty();
+ 
+                 if (this.playerEntity.onGround && !packetIn.func_149465_i() && var29 > 0.0D)
+                 {
+@@ -393,7 +398,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
+ 
+                 if (!this.playerEntity.noClip)
+                 {
+-                    boolean var46 = var2.getCollidingBoundingBoxes(this.playerEntity, this.playerEntity.getEntityBoundingBox().contract((double)var41, (double)var41, (double)var41)).isEmpty();
++                    boolean var46 = var2.getCollisionBoxes(this.playerEntity, this.playerEntity.getEntityBoundingBox().contract((double)var41, (double)var41, (double)var41)).isEmpty();
+ 
+                     if (var42 && (var45 || !var46) && !this.playerEntity.isPlayerSleeping())
+                     {
 @@ -483,7 +488,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
       * initiated, 1: reinitiated, 2? , 3-4 drop item (respectively without or with player control), 5: stopped; x,y,z,
       * side clicked on;)
@@ -26114,7 +26817,7 @@ index 3301ef8..2edd273 100644
              catch (NoSuchFieldError var1)
              {
 diff --git a/net/minecraft/network/NetworkManager.java b/net/minecraft/network/NetworkManager.java
-index ee166ff..72d465f 100644
+index ee166ff..a9627db 100644
 --- a/net/minecraft/network/NetworkManager.java
 +++ b/net/minecraft/network/NetworkManager.java
 @@ -1,17 +1,7 @@
@@ -26311,7 +27014,7 @@ index ee166ff..72d465f 100644
              {
                  ;
              }
-@@ -149,110 +158,103 @@ public class NetworkManager extends SimpleChannelInboundHandler
+@@ -149,110 +158,97 @@ public class NetworkManager extends SimpleChannelInboundHandler
      }
  
      /**
@@ -26338,12 +27041,6 @@ index ee166ff..72d465f 100644
 -            this.dispatchPacket(packetIn, (GenericFutureListener[])null);
 -        }
 -        else
-+		// TODO: Client
-+		PacketOutputEvent event = new PacketOutputEvent(packetIn);
-+		WurstClient.INSTANCE.events.fire(event);
-+		if(event.isCancelled())
-+			return;
-+		
 +		if(channel != null && channel.isOpen())
          {
 -            this.outboundPacketsQueue.add(new NetworkManager.InboundHandlerTuplePacketListener(packetIn, (GenericFutureListener[])null));
@@ -26468,7 +27165,7 @@ index ee166ff..72d465f 100644
          }
      }
  
-@@ -261,14 +263,12 @@ public class NetworkManager extends SimpleChannelInboundHandler
+@@ -261,14 +257,12 @@ public class NetworkManager extends SimpleChannelInboundHandler
       */
      public void processReceivedPackets()
      {
@@ -26487,7 +27184,7 @@ index ee166ff..72d465f 100644
      }
  
      /**
-@@ -276,47 +276,50 @@ public class NetworkManager extends SimpleChannelInboundHandler
+@@ -276,47 +270,50 @@ public class NetworkManager extends SimpleChannelInboundHandler
       */
      public SocketAddress getRemoteAddress()
      {
@@ -26549,7 +27246,7 @@ index ee166ff..72d465f 100644
                  {
                      ;
                  }
-@@ -325,61 +328,64 @@ public class NetworkManager extends SimpleChannelInboundHandler
+@@ -325,61 +322,64 @@ public class NetworkManager extends SimpleChannelInboundHandler
                  {
                      p_initChannel_1_.config().setOption(ChannelOption.TCP_NODELAY, Boolean.valueOf(false));
                  }
@@ -26629,7 +27326,7 @@ index ee166ff..72d465f 100644
      }
  
      /**
-@@ -387,7 +393,7 @@ public class NetworkManager extends SimpleChannelInboundHandler
+@@ -387,7 +387,7 @@ public class NetworkManager extends SimpleChannelInboundHandler
       */
      public INetHandler getNetHandler()
      {
@@ -26638,7 +27335,7 @@ index ee166ff..72d465f 100644
      }
  
      /**
-@@ -395,7 +401,7 @@ public class NetworkManager extends SimpleChannelInboundHandler
+@@ -395,7 +395,7 @@ public class NetworkManager extends SimpleChannelInboundHandler
       */
      public IChatComponent getExitMessage()
      {
@@ -26647,7 +27344,7 @@ index ee166ff..72d465f 100644
      }
  
      /**
-@@ -403,62 +409,47 @@ public class NetworkManager extends SimpleChannelInboundHandler
+@@ -403,62 +403,47 @@ public class NetworkManager extends SimpleChannelInboundHandler
       */
      public void disableAutoRead()
      {
@@ -26729,7 +27426,7 @@ index ee166ff..72d465f 100644
      protected void channelRead0(ChannelHandlerContext p_channelRead0_1_, Object p_channelRead0_2_)
      {
          this.channelRead0(p_channelRead0_1_, (Packet)p_channelRead0_2_);
-@@ -468,12 +459,11 @@ public class NetworkManager extends SimpleChannelInboundHandler
+@@ -468,12 +453,11 @@ public class NetworkManager extends SimpleChannelInboundHandler
      {
          private final Packet packet;
          private final GenericFutureListener[] futureListeners;
@@ -27768,7 +28465,7 @@ index 0000000..fa87e8c
 +}
 diff --git a/net/minecraft/network/play/client/CPacketPlayer.java b/net/minecraft/network/play/client/CPacketPlayer.java
 new file mode 100644
-index 0000000..8e3be88
+index 0000000..695c8a7
 --- /dev/null
 +++ b/net/minecraft/network/play/client/CPacketPlayer.java
 @@ -0,0 +1,229 @@
@@ -27823,17 +28520,17 @@ index 0000000..8e3be88
 +        data.writeByte(this.field_149474_g ? 1 : 0);
 +    }
 +
-+    public double getPositionX()
++    public double getX()
 +    {
 +        return this.x;
 +    }
 +
-+    public double getPositionY()
++    public double getY()
 +    {
 +        return this.y;
 +    }
 +
-+    public double getPositionZ()
++    public double getZ()
 +    {
 +        return this.z;
 +    }
@@ -29004,7 +29701,7 @@ index be16317..1190f08 100644
                      this.theEntity.getMoveHelper().setMoveTo((double)this.field_179696_f.getX(), (double)this.field_179696_f.getY(), (double)this.field_179696_f.getZ(), this.speed);
                  }
 diff --git a/net/minecraft/pathfinding/PathNavigateGround.java b/net/minecraft/pathfinding/PathNavigateGround.java
-index fc0b163..8d8bb97 100644
+index fc0b163..5a164e4 100644
 --- a/net/minecraft/pathfinding/PathNavigateGround.java
 +++ b/net/minecraft/pathfinding/PathNavigateGround.java
 @@ -9,7 +9,7 @@ import net.minecraft.entity.passive.EntityChicken;
@@ -29055,12 +29752,24 @@ index fc0b163..8d8bb97 100644
      {
          int var12 = p_179683_1_ - p_179683_4_ / 2;
          int var13 = p_179683_3_ - p_179683_6_ / 2;
-@@ -206,7 +206,7 @@ public class PathNavigateGround extends PathNavigate
+@@ -206,17 +206,17 @@ public class PathNavigateGround extends PathNavigate
                          Block var20 = this.worldObj.getBlockState(new BlockPos(var14, p_179683_2_ - 1, var15)).getBlock();
                          Material var21 = var20.getMaterial();
  
 -                        if (var21 == Material.air)
 +                        if (var21 == Material.AIR)
+                         {
+                             return false;
+                         }
+ 
+-                        if (var21 == Material.water && !this.theEntity.isInWater())
++                        if (var21 == Material.WATER && !this.theEntity.isInWater())
+                         {
+                             return false;
+                         }
+ 
+-                        if (var21 == Material.lava)
++                        if (var21 == Material.LAVA)
                          {
                              return false;
                          }
@@ -29783,7 +30492,7 @@ index f2e269d..1b805fd 100644
          finally
          {
 diff --git a/net/minecraft/server/management/ServerConfigurationManager.java b/net/minecraft/server/management/ServerConfigurationManager.java
-index 156b1aa..6f78c2d 100644
+index 156b1aa..fe3a7ab 100644
 --- a/net/minecraft/server/management/ServerConfigurationManager.java
 +++ b/net/minecraft/server/management/ServerConfigurationManager.java
 @@ -4,7 +4,9 @@ import com.google.common.collect.Lists;
@@ -29849,6 +30558,15 @@ index 156b1aa..6f78c2d 100644
              }
  
              return var4;
+@@ -503,7 +517,7 @@ public abstract class ServerConfigurationManager
+ 
+         var8.theChunkProviderServer.loadChunk((int)var7.posX >> 4, (int)var7.posZ >> 4);
+ 
+-        while (!var8.getCollidingBoundingBoxes(var7, var7.getEntityBoundingBox()).isEmpty() && var7.posY < 256.0D)
++        while (!var8.getCollisionBoxes(var7, var7.getEntityBoundingBox()).isEmpty() && var7.posY < 256.0D)
+         {
+             var7.setPosition(var7.posX, var7.posY + 1.0D, var7.posZ);
+         }
 @@ -563,8 +577,8 @@ public abstract class ServerConfigurationManager
  
          if (entityIn.dimension == -1)
@@ -32592,7 +33310,7 @@ index fc9a24e..91953aa 100644
              }
  
 diff --git a/net/minecraft/world/World.java b/net/minecraft/world/World.java
-index 18e9ecf..3338707 100644
+index 18e9ecf..a9333c4 100644
 --- a/net/minecraft/world/World.java
 +++ b/net/minecraft/world/World.java
 @@ -3,6 +3,7 @@ package net.minecraft.world;
@@ -32924,6 +33642,18 @@ index 18e9ecf..3338707 100644
                          }
                      }
                  }
+@@ -1261,9 +1263,9 @@ public abstract class World implements IBlockAccess
+      * Returns a list of bounding boxes that collide with aabb excluding the passed in entity's collision. Args: entity,
+      * aabb
+      */
+-    public List getCollidingBoundingBoxes(Entity p_72945_1_, AxisAlignedBB p_72945_2_)
++    public List<AxisAlignedBB> getCollisionBoxes(Entity p_72945_1_, AxisAlignedBB p_72945_2_)
+     {
+-        ArrayList var3 = Lists.newArrayList();
++        ArrayList<AxisAlignedBB> var3 = Lists.<AxisAlignedBB>newArrayList();
+         int var4 = MathHelper.floor_double(p_72945_2_.minX);
+         int var5 = MathHelper.floor_double(p_72945_2_.maxX + 1.0D);
+         int var6 = MathHelper.floor_double(p_72945_2_.minY);
 @@ -1296,7 +1298,7 @@ public abstract class World implements IBlockAccess
  
                          if (!this.getWorldBorder().contains(var13) && var15)
@@ -33137,6 +33867,15 @@ index 18e9ecf..3338707 100644
  
                      if (!var7)
                      {
+@@ -2725,7 +2724,7 @@ public abstract class World implements IBlockAccess
+ 
+     private boolean func_175696_F(BlockPos p_175696_1_)
+     {
+-        return this.getBlockState(p_175696_1_).getBlock().getMaterial() == Material.water;
++        return this.getBlockState(p_175696_1_).getBlock().getMaterial() == Material.WATER;
+     }
+ 
+     public boolean func_175708_f(BlockPos p_175708_1_, boolean p_175708_2_)
 @@ -2747,7 +2746,7 @@ public abstract class World implements IBlockAccess
              {
                  Block var5 = this.getBlockState(p_175708_1_).getBlock();
@@ -34713,7 +35452,7 @@ index 35a76f4..fe7f6b0 100644
          var0.getWorldFeatures().put("village", Maps.newHashMap());
          return var0;
 diff --git a/net/minecraft/world/gen/MapGenCaves.java b/net/minecraft/world/gen/MapGenCaves.java
-index a16d623..c908871 100644
+index a16d623..6c1d551 100644
 --- a/net/minecraft/world/gen/MapGenCaves.java
 +++ b/net/minecraft/world/gen/MapGenCaves.java
 @@ -141,7 +141,7 @@ public class MapGenCaves extends MapGenBase
@@ -34766,7 +35505,7 @@ index a16d623..c908871 100644
      protected boolean func_175793_a(IBlockState p_175793_1_, IBlockState p_175793_2_)
      {
 -        return p_175793_1_.getBlock() == Blocks.stone ? true : (p_175793_1_.getBlock() == Blocks.dirt ? true : (p_175793_1_.getBlock() == Blocks.grass ? true : (p_175793_1_.getBlock() == Blocks.hardened_clay ? true : (p_175793_1_.getBlock() == Blocks.stained_hardened_clay ? true : (p_175793_1_.getBlock() == Blocks.sandstone ? true : (p_175793_1_.getBlock() == Blocks.red_sandstone ? true : (p_175793_1_.getBlock() == Blocks.mycelium ? true : (p_175793_1_.getBlock() == Blocks.snow_layer ? true : (p_175793_1_.getBlock() == Blocks.sand || p_175793_1_.getBlock() == Blocks.gravel) && p_175793_2_.getBlock().getMaterial() != Material.water))))))));
-+        return p_175793_1_.getBlock() == Blocks.STONE ? true : (p_175793_1_.getBlock() == Blocks.DIRT ? true : (p_175793_1_.getBlock() == Blocks.GRASS ? true : (p_175793_1_.getBlock() == Blocks.HARDENED_CLAY ? true : (p_175793_1_.getBlock() == Blocks.stained_hardened_clay ? true : (p_175793_1_.getBlock() == Blocks.SANDSTONE ? true : (p_175793_1_.getBlock() == Blocks.RED_SANDSTONE ? true : (p_175793_1_.getBlock() == Blocks.mycelium ? true : (p_175793_1_.getBlock() == Blocks.SNOW_LAYER ? true : (p_175793_1_.getBlock() == Blocks.SAND || p_175793_1_.getBlock() == Blocks.GRAVEL) && p_175793_2_.getBlock().getMaterial() != Material.water))))))));
++        return p_175793_1_.getBlock() == Blocks.STONE ? true : (p_175793_1_.getBlock() == Blocks.DIRT ? true : (p_175793_1_.getBlock() == Blocks.GRASS ? true : (p_175793_1_.getBlock() == Blocks.HARDENED_CLAY ? true : (p_175793_1_.getBlock() == Blocks.stained_hardened_clay ? true : (p_175793_1_.getBlock() == Blocks.SANDSTONE ? true : (p_175793_1_.getBlock() == Blocks.RED_SANDSTONE ? true : (p_175793_1_.getBlock() == Blocks.mycelium ? true : (p_175793_1_.getBlock() == Blocks.SNOW_LAYER ? true : (p_175793_1_.getBlock() == Blocks.SAND || p_175793_1_.getBlock() == Blocks.GRAVEL) && p_175793_2_.getBlock().getMaterial() != Material.WATER))))))));
      }
  
      protected void func_180701_a(World worldIn, int p_180701_2_, int p_180701_3_, int p_180701_4_, int p_180701_5_, ChunkPrimer p_180701_6_)
@@ -35104,10 +35843,10 @@ index 91a4e12..dafe90a 100644
      }
  }
 diff --git a/net/minecraft/world/gen/feature/WorldGenClay.java b/net/minecraft/world/gen/feature/WorldGenClay.java
-index a8df194..374c3bf 100644
+index a8df194..717d9d8 100644
 --- a/net/minecraft/world/gen/feature/WorldGenClay.java
 +++ b/net/minecraft/world/gen/feature/WorldGenClay.java
-@@ -17,7 +17,7 @@ public class WorldGenClay extends WorldGenerator
+@@ -17,13 +17,13 @@ public class WorldGenClay extends WorldGenerator
  
      public WorldGenClay(int p_i2011_1_)
      {
@@ -35116,6 +35855,13 @@ index a8df194..374c3bf 100644
          this.numberOfBlocks = p_i2011_1_;
      }
  
+     public boolean generate(World worldIn, Random p_180709_2_, BlockPos p_180709_3_)
+     {
+-        if (worldIn.getBlockState(p_180709_3_).getBlock().getMaterial() != Material.water)
++        if (worldIn.getBlockState(p_180709_3_).getBlock().getMaterial() != Material.WATER)
+         {
+             return false;
+         }
 @@ -46,7 +46,7 @@ public class WorldGenClay extends WorldGenerator
                              BlockPos var11 = new BlockPos(var6, var10, var7);
                              Block var12 = worldIn.getBlockState(var11).getBlock();
@@ -35564,7 +36310,7 @@ index 6e637fc..bf0170b 100644
                                  }
  
 diff --git a/net/minecraft/world/gen/feature/WorldGenLakes.java b/net/minecraft/world/gen/feature/WorldGenLakes.java
-index 30ef2e0..c83febe 100644
+index 30ef2e0..03c8812 100644
 --- a/net/minecraft/world/gen/feature/WorldGenLakes.java
 +++ b/net/minecraft/world/gen/feature/WorldGenLakes.java
 @@ -21,7 +21,7 @@ public class WorldGenLakes extends WorldGenerator
@@ -35612,7 +36358,16 @@ index 30ef2e0..c83febe 100644
                                  }
                              }
                          }
-@@ -150,7 +150,7 @@ public class WorldGenLakes extends WorldGenerator
+@@ -138,7 +138,7 @@ public class WorldGenLakes extends WorldGenerator
+                 }
+             }
+ 
+-            if (this.field_150556_a.getMaterial() == Material.lava)
++            if (this.field_150556_a.getMaterial() == Material.LAVA)
+             {
+                 for (var6 = 0; var6 < 16; ++var6)
+                 {
+@@ -150,14 +150,14 @@ public class WorldGenLakes extends WorldGenerator
  
                              if (var32 && (var8 < 4 || p_180709_2_.nextInt(2) != 0) && worldIn.getBlockState(p_180709_3_.add(var6, var8, var30)).getBlock().getMaterial().isSolid())
                              {
@@ -35621,6 +36376,14 @@ index 30ef2e0..c83febe 100644
                              }
                          }
                      }
+                 }
+             }
+ 
+-            if (this.field_150556_a.getMaterial() == Material.water)
++            if (this.field_150556_a.getMaterial() == Material.WATER)
+             {
+                 for (var6 = 0; var6 < 16; ++var6)
+                 {
 @@ -167,7 +167,7 @@ public class WorldGenLakes extends WorldGenerator
  
                          if (worldIn.func_175675_v(p_180709_3_.add(var6, var31, var30)))
@@ -35952,7 +36715,7 @@ index a2394aa..8276f44 100644
                  worldIn.setBlockState(var5, Blocks.pumpkin.getDefaultState().withProperty(BlockPumpkin.AGE, EnumFacing.Plane.HORIZONTAL.random(p_180709_2_)), 2);
              }
 diff --git a/net/minecraft/world/gen/feature/WorldGenReed.java b/net/minecraft/world/gen/feature/WorldGenReed.java
-index c8cab27..202c651 100644
+index c8cab27..e9e645b 100644
 --- a/net/minecraft/world/gen/feature/WorldGenReed.java
 +++ b/net/minecraft/world/gen/feature/WorldGenReed.java
 @@ -18,9 +18,9 @@ public class WorldGenReed extends WorldGenerator
@@ -35963,7 +36726,7 @@ index c8cab27..202c651 100644
 +                BlockPos var6 = var5.down();
  
 -                if (worldIn.getBlockState(var6.offsetWest()).getBlock().getMaterial() == Material.water || worldIn.getBlockState(var6.offsetEast()).getBlock().getMaterial() == Material.water || worldIn.getBlockState(var6.offsetNorth()).getBlock().getMaterial() == Material.water || worldIn.getBlockState(var6.offsetSouth()).getBlock().getMaterial() == Material.water)
-+                if (worldIn.getBlockState(var6.west()).getBlock().getMaterial() == Material.water || worldIn.getBlockState(var6.east()).getBlock().getMaterial() == Material.water || worldIn.getBlockState(var6.north()).getBlock().getMaterial() == Material.water || worldIn.getBlockState(var6.south()).getBlock().getMaterial() == Material.water)
++                if (worldIn.getBlockState(var6.west()).getBlock().getMaterial() == Material.WATER || worldIn.getBlockState(var6.east()).getBlock().getMaterial() == Material.WATER || worldIn.getBlockState(var6.north()).getBlock().getMaterial() == Material.WATER || worldIn.getBlockState(var6.south()).getBlock().getMaterial() == Material.WATER)
                  {
                      int var7 = 2 + p_180709_2_.nextInt(p_180709_2_.nextInt(3) + 1);
  
@@ -35977,9 +36740,18 @@ index c8cab27..202c651 100644
                      }
                  }
 diff --git a/net/minecraft/world/gen/feature/WorldGenSand.java b/net/minecraft/world/gen/feature/WorldGenSand.java
-index 4e6bb4c..7883399 100644
+index 4e6bb4c..27402fc 100644
 --- a/net/minecraft/world/gen/feature/WorldGenSand.java
 +++ b/net/minecraft/world/gen/feature/WorldGenSand.java
+@@ -23,7 +23,7 @@ public class WorldGenSand extends WorldGenerator
+ 
+     public boolean generate(World worldIn, Random p_180709_2_, BlockPos p_180709_3_)
+     {
+-        if (worldIn.getBlockState(p_180709_3_).getBlock().getMaterial() != Material.water)
++        if (worldIn.getBlockState(p_180709_3_).getBlock().getMaterial() != Material.WATER)
+         {
+             return false;
+         }
 @@ -46,7 +46,7 @@ public class WorldGenSand extends WorldGenerator
                              BlockPos var11 = new BlockPos(var6, var10, var7);
                              Block var12 = worldIn.getBlockState(var11).getBlock();
@@ -36145,7 +36917,7 @@ index d7f232a..3948cfe 100644
          }
          else
 diff --git a/net/minecraft/world/gen/feature/WorldGenSwamp.java b/net/minecraft/world/gen/feature/WorldGenSwamp.java
-index 97454d2..767c7f5 100644
+index 97454d2..28c56bb 100644
 --- a/net/minecraft/world/gen/feature/WorldGenSwamp.java
 +++ b/net/minecraft/world/gen/feature/WorldGenSwamp.java
 @@ -21,7 +21,7 @@ public class WorldGenSwamp extends WorldGenAbstractTree
@@ -36153,7 +36925,7 @@ index 97454d2..767c7f5 100644
          int var4;
  
 -        for (var4 = p_180709_2_.nextInt(4) + 5; worldIn.getBlockState(p_180709_3_.offsetDown()).getBlock().getMaterial() == Material.water; p_180709_3_ = p_180709_3_.offsetDown())
-+        for (var4 = p_180709_2_.nextInt(4) + 5; worldIn.getBlockState(p_180709_3_.down()).getBlock().getMaterial() == Material.water; p_180709_3_ = p_180709_3_.down())
++        for (var4 = p_180709_2_.nextInt(4) + 5; worldIn.getBlockState(p_180709_3_.down()).getBlock().getMaterial() == Material.WATER; p_180709_3_ = p_180709_3_.down())
          {
              ;
          }
@@ -38249,8 +39021,21 @@ index 8592d62..8dc6119 100644
              {
                  this.func_175811_a(worldIn, Blocks.stone_stairs.getStateFromMeta(this.getMetadataWithOffset(Blocks.stone_stairs, 3)), 1, 0, -1, p_74875_3_);
              }
+diff --git a/net/minecraft/world/pathfinder/SwimNodeProcessor.java b/net/minecraft/world/pathfinder/SwimNodeProcessor.java
+index 1887caa..ed5b70e 100644
+--- a/net/minecraft/world/pathfinder/SwimNodeProcessor.java
++++ b/net/minecraft/world/pathfinder/SwimNodeProcessor.java
+@@ -70,7 +70,7 @@ public class SwimNodeProcessor extends NodeProcessor
+                     BlockPos var8 = new BlockPos(var5, var6, var7);
+                     Block var9 = this.field_176169_a.getBlockState(var8).getBlock();
+ 
+-                    if (var9.getMaterial() != Material.water)
++                    if (var9.getMaterial() != Material.WATER)
+                     {
+                         return 0;
+                     }
 diff --git a/net/minecraft/world/pathfinder/WalkNodeProcessor.java b/net/minecraft/world/pathfinder/WalkNodeProcessor.java
-index abb7761..3762a4d 100644
+index abb7761..479a130 100644
 --- a/net/minecraft/world/pathfinder/WalkNodeProcessor.java
 +++ b/net/minecraft/world/pathfinder/WalkNodeProcessor.java
 @@ -43,7 +43,7 @@ public class WalkNodeProcessor extends NodeProcessor
@@ -38284,6 +39069,15 @@ index abb7761..3762a4d 100644
 +                            if (!(p_176170_1_.worldObj.getBlockState(var12).getBlock() instanceof BlockRailBase) && !(p_176170_1_.worldObj.getBlockState(var12.down()).getBlock() instanceof BlockRailBase))
                              {
                                  return -3;
+                             }
+@@ -231,7 +231,7 @@ public class WalkNodeProcessor extends NodeProcessor
+ 
+                             Material var18 = var17.getMaterial();
+ 
+-                            if (var18 != Material.lava)
++                            if (var18 != Material.LAVA)
+                             {
+                                 return 0;
                              }
 diff --git a/net/minecraft/world/storage/MapData.java b/net/minecraft/world/storage/MapData.java
 index dab3892..d01daec 100644
