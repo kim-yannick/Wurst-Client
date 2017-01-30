@@ -7,15 +7,12 @@
  */
 package tk.wurst_client.features.mods;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketPlayer;
-import net.minecraft.network.play.client.CPacketPlayerDigging;
-import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.features.Feature;
+import tk.wurst_client.utils.InventoryUtils;
 
 @Mod.Info(
 	description = "Turns your bow into a machine gun.\n"
@@ -41,25 +38,30 @@ public class FastBowMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(mc.player.getHealth() > 0
-			&& (mc.player.onGround
-				|| Minecraft.getMinecraft().player.capabilities.isCreativeMode)
-			&& mc.player.inventory.getCurrentItem() != null
-			&& mc.player.inventory.getCurrentItem().getItem() instanceof ItemBow
-			&& mc.gameSettings.keyBindUseItem.pressed)
-		{
-			mc.playerController.processRightClick(mc.player, mc.world,
-				mc.player.inventory.getCurrentItem());
-			mc.player.inventory.getCurrentItem().getItem().onItemRightClick(
-				mc.player.inventory.getCurrentItem(), mc.world, mc.player);
-			for(int i = 0; i < 20; i++)
-				mc.player.connection.sendPacket(new CPacketPlayer(false));
-			Minecraft.getMinecraft().getNetHandler()
-				.sendPacket(new CPacketPlayerDigging(Action.RELEASE_USE_ITEM,
-					new BlockPos(0, 0, 0), EnumFacing.DOWN));
-			mc.player.inventory.getCurrentItem().getItem().onPlayerStoppedUsing(
-				mc.player.inventory.getCurrentItem(), mc.world, mc.player, 10);
-		}
+		// check if right-clicking
+		if(!mc.gameSettings.keyBindUseItem.pressed)
+			return;
+		
+		// check fly-kick
+		if(!mc.player.onGround && !mc.player.capabilities.isCreativeMode)
+			return;
+		
+		// check health
+		if(mc.player.getHealth() <= 0)
+			return;
+		
+		// check held item
+		ItemStack stack = mc.player.inventory.getCurrentItem();
+		if(InventoryUtils.isEmptySlot(stack)
+			|| !(stack.getItem() instanceof ItemBow))
+			return;
+		
+		mc.playerController.processRightClick(mc.player, mc.world, stack);
+		
+		for(int i = 0; i < 20; i++)
+			mc.player.connection.sendPacket(new CPacketPlayer(false));
+		
+		mc.playerController.onStoppedUsingItem(mc.player);
 	}
 	
 	@Override
