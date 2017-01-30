@@ -20,7 +20,7 @@ import tk.wurst_client.utils.InventoryUtils;
 	name = "FastBow",
 	tags = "RapidFire, BowSpam, fast bow, rapid fire, bow spam",
 	help = "Mods/FastBow")
-@Mod.Bypasses
+@Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
 public class FastBowMod extends Mod implements UpdateListener
 {
 	@Override
