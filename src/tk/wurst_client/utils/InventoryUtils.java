@@ -8,6 +8,7 @@
 package tk.wurst_client.utils;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 
@@ -36,5 +37,20 @@ public class InventoryUtils
 	public static boolean isEmptySlot(ItemStack slot)
 	{
 		return slot == null;
+	}
+	
+	public static boolean checkHeldItem(ItemValidator validator)
+	{
+		ItemStack stack = mc.player.inventory.getCurrentItem();
+		
+		if(isEmptySlot(stack))
+			return false;
+		
+		return validator.isValid(stack.getItem());
+	}
+	
+	public static interface ItemValidator
+	{
+		public boolean isValid(Item item);
 	}
 }
