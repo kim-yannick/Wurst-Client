@@ -18,7 +18,6 @@ import net.minecraft.block.BlockChest;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
 import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
 import net.minecraft.util.AxisAlignedBB;
@@ -75,23 +74,6 @@ public final class BlockUtils
 			pos);
 	}
 	
-	private static void processRightClickBlock(BlockPos pos, EnumFacing side,
-		Vec3d hitVec)
-	{
-		mc.playerController.processRightClickBlock(mc.player, mc.world,
-			mc.player.getCurrentEquippedItem(), pos, side, hitVec);
-	}
-	
-	private static void swingArmClient()
-	{
-		mc.player.swingArm();
-	}
-	
-	private static void swingArmPacket()
-	{
-		mc.player.connection.sendPacket(new CPacketAnimation());
-	}
-	
 	public static boolean placeBlockLegit(BlockPos pos)
 	{
 		Vec3d eyesPos = RotationUtils.getEyesPos();
@@ -126,8 +108,8 @@ public final class BlockUtils
 			RotationUtils.faceVectorPacketInstant(hitVec);
 			
 			// place block
-			processRightClickBlock(neighbor, side.getOpposite(), hitVec);
-			swingArmClient();
+			PlayerUtils.processRightClickBlock(neighbor, side.getOpposite(), hitVec);
+			PlayerUtils.swingArmClient();
 			mc.rightClickDelayTimer = 4;
 			
 			return true;
@@ -157,7 +139,7 @@ public final class BlockUtils
 				continue;
 			
 			// place block
-			processRightClickBlock(neighbor, side.getOpposite(), hitVec);
+			PlayerUtils.processRightClickBlock(neighbor, side.getOpposite(), hitVec);
 			
 			return true;
 		}
@@ -233,7 +215,7 @@ public final class BlockUtils
 				return false;
 			
 			// swing arm
-			swingArmPacket();
+			PlayerUtils.swingArmPacket();
 			
 			return true;
 		}
@@ -322,7 +304,7 @@ public final class BlockUtils
 				return false;
 			
 			// swing arm
-			swingArmPacket();
+			PlayerUtils.swingArmPacket();
 			
 			return true;
 		}
@@ -385,8 +367,8 @@ public final class BlockUtils
 				return true;
 			
 			// place block
-			processRightClickBlock(pos, side, hitVec);
-			swingArmClient();
+			PlayerUtils.processRightClickBlock(pos, side, hitVec);
+			PlayerUtils.swingArmClient();
 			mc.rightClickDelayTimer = 4;
 			
 			return true;
@@ -416,7 +398,7 @@ public final class BlockUtils
 				continue;
 			
 			// place block
-			processRightClickBlock(pos, side, hitVec);
+			PlayerUtils.processRightClickBlock(pos, side, hitVec);
 			
 			return true;
 		}
