@@ -16,6 +16,7 @@ import tk.wurst_client.settings.SliderSetting;
 import tk.wurst_client.settings.SliderSetting.ValueDisplay;
 import tk.wurst_client.utils.EntityUtils;
 import tk.wurst_client.utils.EntityUtils.TargetSettings;
+import tk.wurst_client.utils.PlayerUtils;
 
 @Mod.Info(description = "Automatically attacks the entity you're looking at.",
 	name = "TriggerBot",
@@ -121,7 +122,7 @@ public class TriggerBotMod extends Mod implements UpdateListener
 		wurst.mods.blockHitMod.doBlock();
 		
 		// attack entity
-		mc.player.swingArm();
+		PlayerUtils.swingArmClient();
 		mc.player.connection.sendPacket(new CPacketUseEntity(
 			mc.objectMouseOver.entityHit, CPacketUseEntity.Action.ATTACK));
 		

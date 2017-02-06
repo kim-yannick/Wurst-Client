@@ -18,6 +18,7 @@ import tk.wurst_client.settings.SliderSetting;
 import tk.wurst_client.settings.SliderSetting.ValueDisplay;
 import tk.wurst_client.utils.EntityUtils;
 import tk.wurst_client.utils.EntityUtils.TargetSettings;
+import tk.wurst_client.utils.PlayerUtils;
 import tk.wurst_client.utils.RotationUtils;
 
 @Mod.Info(
@@ -159,7 +160,7 @@ public class TpAuraMod extends Mod implements UpdateListener
 		RotationUtils.faceEntityPacket(entity);
 		
 		// attack entity
-		mc.player.swingArm();
+		PlayerUtils.swingArmClient();
 		mc.player.connection.sendPacket(
 			new CPacketUseEntity(entity, CPacketUseEntity.Action.ATTACK));
 		

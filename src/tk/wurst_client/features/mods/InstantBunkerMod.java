@@ -18,6 +18,7 @@ import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.features.special_features.YesCheatSpf.BypassLevel;
 import tk.wurst_client.utils.BlockUtils;
+import tk.wurst_client.utils.PlayerUtils;
 import tk.wurst_client.utils.RenderUtils;
 
 @Mod.Info(description = "Instantly builds a small bunker around you.",
@@ -89,7 +90,7 @@ public class InstantBunkerMod extends Mod
 			for(BlockPos pos : positions)
 				if(BlockUtils.getMaterial(pos) == Material.AIR)
 					BlockUtils.placeBlockSimple(pos);
-			mc.player.swingArm();
+			PlayerUtils.swingArmClient();
 			setEnabled(false);
 			return;
 		}

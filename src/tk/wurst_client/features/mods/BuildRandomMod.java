@@ -15,6 +15,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.features.Feature;
 import tk.wurst_client.features.special_features.YesCheatSpf.BypassLevel;
 import tk.wurst_client.utils.BlockUtils;
+import tk.wurst_client.utils.PlayerUtils;
 
 @Mod.Info(description = "Places random blocks around you.",
 	name = "BuildRandom",
@@ -90,7 +91,7 @@ public class BuildRandomMod extends Mod implements UpdateListener
 			if(!BlockUtils.placeBlockSimple(pos))
 				return false;
 			
-			mc.player.swingArm();
+			PlayerUtils.swingArmClient();
 			mc.rightClickDelayTimer = 4;
 		}
 		

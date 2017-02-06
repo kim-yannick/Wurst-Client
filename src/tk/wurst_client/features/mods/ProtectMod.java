@@ -12,6 +12,7 @@ import net.minecraft.network.play.client.CPacketUseEntity;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.utils.EntityUtils;
 import tk.wurst_client.utils.EntityUtils.TargetSettings;
+import tk.wurst_client.utils.PlayerUtils;
 import tk.wurst_client.utils.RotationUtils;
 
 @Mod.Info(
@@ -196,7 +197,7 @@ public class ProtectMod extends Mod implements UpdateListener
 			wurst.mods.blockHitMod.doBlock();
 			
 			// attack enemy
-			mc.player.swingArm();
+			PlayerUtils.swingArmClient();
 			mc.player.connection.sendPacket(new CPacketUseEntity(enemy,
 				CPacketUseEntity.Action.ATTACK));
 			
