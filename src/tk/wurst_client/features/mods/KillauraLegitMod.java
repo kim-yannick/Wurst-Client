@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -46,7 +46,7 @@ public class KillauraLegitMod extends Mod implements UpdateListener
 					range.unlock();
 					fov.unlock();
 				}
-			};
+			}
 		};
 	public SliderSetting speed =
 		new SliderSetting("Speed", 12, 0.1, 12, 0.1, ValueDisplay.DECIMAL);
@@ -82,25 +82,21 @@ public class KillauraLegitMod extends Mod implements UpdateListener
 	@Override
 	public Feature[] getSeeAlso()
 	{
-		return new Feature[]{wurst.special.targetSpf,
-			wurst.mods.killauraMod, wurst.mods.multiAuraMod,
-			wurst.mods.clickAuraMod, wurst.mods.triggerBotMod};
+		return new Feature[]{wurst.special.targetSpf, wurst.mods.killauraMod,
+			wurst.mods.multiAuraMod, wurst.mods.clickAuraMod,
+			wurst.mods.triggerBotMod};
 	}
 	
 	@Override
 	public void onEnable()
 	{
-		// TODO: Clean up this mess!
-		if(wurst.mods.killauraMod.isEnabled())
-			wurst.mods.killauraMod.setEnabled(false);
-		if(wurst.mods.multiAuraMod.isEnabled())
-			wurst.mods.multiAuraMod.setEnabled(false);
-		if(wurst.mods.clickAuraMod.isEnabled())
-			wurst.mods.clickAuraMod.setEnabled(false);
-		if(wurst.mods.tpAuraMod.isEnabled())
-			wurst.mods.tpAuraMod.setEnabled(false);
-		if(wurst.mods.triggerBotMod.isEnabled())
-			wurst.mods.triggerBotMod.setEnabled(false);
+		// disable other killauras
+		wurst.mods.killauraMod.setEnabled(false);
+		wurst.mods.multiAuraMod.setEnabled(false);
+		wurst.mods.clickAuraMod.setEnabled(false);
+		wurst.mods.tpAuraMod.setEnabled(false);
+		wurst.mods.triggerBotMod.setEnabled(false);
+		
 		wurst.events.add(UpdateListener.class, this);
 	}
 	
