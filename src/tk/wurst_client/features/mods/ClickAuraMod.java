@@ -43,7 +43,7 @@ public class ClickAuraMod extends Mod implements UpdateListener
 					speed.lockToValue(killaura.speed.getValue());
 					range.lockToValue(killaura.range.getValue());
 					fov.lockToValue(killaura.fov.getValue());
-					hitThroughWalls.lock(killaura.hitThroughWalls.isChecked());
+					hitThroughWalls.lock(killaura.hitThroughWalls);
 				}else
 				{
 					speed.unlock();
@@ -184,7 +184,7 @@ public class ClickAuraMod extends Mod implements UpdateListener
 			case GHOST_MODE:
 				speed.lockToMax(12);
 				range.lockToMax(4.25);
-				hitThroughWalls.lock(false);
+				hitThroughWalls.lock(() -> false);
 				break;
 		}
 	}

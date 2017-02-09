@@ -111,7 +111,7 @@ public class AutoEatMod extends Mod implements UpdateListener
 		switch(bypassLevel)
 		{
 			case GHOST_MODE:
-				ignoreScreen.lock(false);
+				ignoreScreen.lock(() -> false);
 				break;
 			
 			default:

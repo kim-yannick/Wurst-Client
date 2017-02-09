@@ -44,7 +44,7 @@ public class MultiAuraMod extends Mod implements UpdateListener
 					speed.lockToValue(killaura.speed.getValue());
 					range.lockToValue(killaura.range.getValue());
 					fov.lockToValue(killaura.fov.getValue());
-					hitThroughWalls.lock(killaura.hitThroughWalls.isChecked());
+					hitThroughWalls.lock(killaura.hitThroughWalls);
 				}else
 				{
 					speed.unlock();
