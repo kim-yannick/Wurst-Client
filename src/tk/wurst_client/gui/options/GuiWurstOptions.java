@@ -1,15 +1,13 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 package tk.wurst_client.gui.options;
 
-import java.util.ArrayList;
-
-import com.google.common.collect.Lists;
+import java.util.Arrays;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -43,7 +41,7 @@ public class GuiWurstOptions extends GuiScreen
 		"Manager for the blocks that X-Ray will\n" + "show.",
 		"The Zoom Manager allows you to\n" + "change the zoom key, how far it\n"
 			+ "will zoom in and more.",
-		"", "", "", "", "", "Frequently Asked Questions", ""};
+		"", "", "", "", "", "", ""};
 	private boolean autoMaximize;
 	
 	public GuiWurstOptions(GuiScreen par1GuiScreen)
@@ -89,7 +87,6 @@ public class GuiWurstOptions extends GuiScreen
 		// / 4 + 96 - 16, 100, 20, "???"));
 		// this.buttonList.add(new GuiButton(10, this.width / 2 - 50,
 		// this.height / 4 + 120 - 16, 100, 20, "???"));
-		
 		buttonList.add(new GuiButton(11, width / 2 + 54, height / 4 + 24 - 16,
 			100, 20, "Official Website"));
 		buttonList.add(new GuiButton(12, width / 2 + 54, height / 4 + 48 - 16,
@@ -97,11 +94,10 @@ public class GuiWurstOptions extends GuiScreen
 		buttonList.add(new GuiButton(13, width / 2 + 54, height / 4 + 72 - 16,
 			100, 20, "Twitter Page"));
 		buttonList.add(new GuiButton(14, width / 2 + 54, height / 4 + 96 - 16,
-			100, 20, "FAQ"));
-		buttonList.add(new GuiButton(15, width / 2 + 54, height / 4 + 120 - 16,
-			100, 20, "Bug Tracker"));
-		
-		((GuiButton)buttonList.get(3)).enabled = !Minecraft.IS_RUNNING_ON_MAC;
+			100, 20, "Discord Server"));
+		// buttonList.add(new GuiButton(15, width / 2 + 54, height / 4 + 120 -
+		// 16, 100, 20, "???"));
+		buttonList.get(3).enabled = !Minecraft.IS_RUNNING_ON_MAC;
 	}
 	
 	@Override
@@ -182,26 +178,18 @@ public class GuiWurstOptions extends GuiScreen
 			}else if(clickedButton.id == 11)
 			{
 				MiscUtils.openLink("https://www.wurst-client.tk/");
-				WurstClient.INSTANCE.analytics.trackEvent("options",
-					"wurst website");
 			}else if(clickedButton.id == 12)
 			{
-				MiscUtils.openLink("https://www.wurst-client.tk/youtube");
-				WurstClient.INSTANCE.analytics.trackEvent("options",
-					"youtube channel");
+				MiscUtils.openLink("https://www.wurst-client.tk/youtube/");
 			}else if(clickedButton.id == 13)
 			{
-				MiscUtils.openLink("https://www.wurst-client.tk/twitter");
-				WurstClient.INSTANCE.analytics.trackEvent("options", "twitter");
+				MiscUtils.openLink("https://www.wurst-client.tk/twitter/");
 			}else if(clickedButton.id == 14)
 			{
-				MiscUtils.openLink("https://www.wurst-client.tk/faq/");
-				WurstClient.INSTANCE.analytics.trackEvent("options", "faq");
+				MiscUtils.openLink("https://www.wurst-client.tk/discord/");
 			}else if(clickedButton.id == 15)
 			{
-				MiscUtils.openLink("https://www.wurst-client.tk/bugs/");
-				WurstClient.INSTANCE.analytics.trackEvent("options",
-					"bug tracker");
+				
 			}
 	}
 	
@@ -227,17 +215,16 @@ public class GuiWurstOptions extends GuiScreen
 			height / 4 + 24 - 28, 0xcccccc);
 		drawCenteredString(fontRendererObj, "Managers", width / 2,
 			height / 4 + 24 - 28, 0xcccccc);
-		drawCenteredString(fontRendererObj, "Online", width / 2 + 104,
+		drawCenteredString(fontRendererObj, "Links", width / 2 + 104,
 			height / 4 + 24 - 28, 0xcccccc);
 		super.drawScreen(par1, par2, par3);
 		for(int i = 0; i < buttonList.size(); i++)
 		{
-			GuiButton button = (GuiButton)buttonList.get(i);
+			GuiButton button = buttonList.get(i);
 			if(button.isMouseOver() && !toolTips[button.id].isEmpty())
 			{
-				ArrayList toolTip =
-					Lists.newArrayList(toolTips[button.id].split("\n"));
-				drawHoveringText(toolTip, par1, par2);
+				drawHoveringText(Arrays.asList(toolTips[button.id].split("\n")),
+					par1, par2);
 				break;
 			}
 		}
