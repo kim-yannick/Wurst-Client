@@ -42,8 +42,8 @@ public class FightBotMod extends Mod implements UpdateListener
 				if(isChecked())
 				{
 					KillauraMod killaura = wurst.mods.killauraMod;
-					speed.lockToValue(killaura.speed.getValue());
-					range.lockToValue(killaura.range.getValue());
+					speed.lock(killaura.speed);
+					range.lock(killaura.range);
 				}else
 				{
 					speed.unlock();
@@ -176,17 +176,17 @@ public class FightBotMod extends Mod implements UpdateListener
 			default:
 			case OFF:
 			case MINEPLEX:
-				speed.unlock();
-				range.unlock();
-				distance.unlock();
+				speed.resetUsableMax();
+				range.resetUsableMax();
+				distance.resetUsableMax();
 				break;
 			case ANTICHEAT:
 			case OLDER_NCP:
 			case LATEST_NCP:
 			case GHOST_MODE:
-				speed.lockToMax(12);
-				range.lockToMax(4.25);
-				distance.lockToMax(4.25);
+				speed.setUsableMax(12);
+				range.setUsableMax(4.25);
+				distance.setUsableMax(4.25);
 				break;
 		}
 	}

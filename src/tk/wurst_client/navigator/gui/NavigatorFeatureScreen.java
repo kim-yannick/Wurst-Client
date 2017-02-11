@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -20,6 +20,7 @@ import java.util.TreeSet;
 
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import tk.wurst_client.WurstClient;
 import tk.wurst_client.features.Feature;
@@ -33,7 +34,7 @@ import tk.wurst_client.utils.RenderUtils;
 
 public class NavigatorFeatureScreen extends NavigatorScreen
 {
-	private Feature item;
+	private Feature feature;
 	private NavigatorMainScreen parent;
 	private ButtonData activeButton;
 	private GuiButton primaryButton;
@@ -43,10 +44,9 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 	private ArrayList<SliderSetting> sliders = new ArrayList<>();
 	private ArrayList<CheckboxSetting> checkboxes = new ArrayList<>();
 	
-	public NavigatorFeatureScreen(Feature item,
-		NavigatorMainScreen parent)
+	public NavigatorFeatureScreen(Feature feature, NavigatorMainScreen parent)
 	{
-		this.item = item;
+		this.feature = feature;
 		this.parent = parent;
 	}
 	
@@ -60,18 +60,18 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		switch(button.id)
 		{
 			case 0:
-				item.doPrimaryAction();
-				primaryButton.displayString = item.getPrimaryAction();
+				feature.doPrimaryAction();
+				primaryButton.displayString = feature.getPrimaryAction();
 				break;
 			case 1:
 				MiscUtils.openLink("https://www.wurst-client.tk/wiki/"
-					+ item.getHelpPage() + "/");
+					+ feature.getHelpPage() + "/");
 				wurst.navigator.analytics.trackEvent("help", "open",
-					item.getName());
+					feature.getName());
 				break;
 		}
 		
-		wurst.navigator.addPreference(item.getName());
+		wurst.navigator.addPreference(feature.getName());
 		wurst.files.saveNavigatorData();
 	}
 	
@@ -81,9 +81,9 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		buttonDatas.clear();
 		
 		// primary button
-		String primaryAction = item.getPrimaryAction();
+		String primaryAction = feature.getPrimaryAction();
 		boolean hasPrimaryAction = !primaryAction.isEmpty();
-		boolean hasHelp = !item.getHelpPage().isEmpty();
+		boolean hasHelp = !feature.getHelpPage().isEmpty();
 		if(hasPrimaryAction)
 		{
 			primaryButton = new GuiButton(0, width / 2 - 151, height - 65,
@@ -98,10 +98,10 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 					height - 65, hasPrimaryAction ? 149 : 302, 20, "Help"));
 		
 		// type
-		text = "Type: " + item.getType();
+		text = "Type: " + feature.getType();
 		
 		// description
-		String description = item.getDescription();
+		String description = feature.getDescription();
 		if(!description.isEmpty())
 			text += "\n\nDescription:\n" + description;
 		
@@ -109,7 +109,7 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		Rectangle area = new Rectangle(middleX - 154, 60, 308, height - 103);
 		
 		// settings
-		ArrayList<Setting> settings = item.getSettings();
+		ArrayList<Setting> settings = feature.getSettings();
 		if(!settings.isEmpty())
 		{
 			text += "\n\nSettings:";
@@ -121,7 +121,7 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		
 		// keybinds
 		ArrayList<PossibleKeybind> possibleKeybinds =
-			item.getPossibleKeybinds();
+			feature.getPossibleKeybinds();
 		if(!possibleKeybinds.isEmpty())
 		{
 			// heading
@@ -152,7 +152,6 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 			boolean noKeybindsSet = true;
 			for(Entry<String, TreeSet<String>> entry : WurstClient.INSTANCE.keybinds
 				.entrySet())
-			{
 				for(String command : entry.getValue())
 				{
 					String keybindDescription =
@@ -167,7 +166,6 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 							new PossibleKeybind(command, keybindDescription));
 					}
 				}
-			}
 			if(noKeybindsSet)
 				text += "\nNone";
 			else
@@ -190,15 +188,14 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		}
 		
 		// see also
-		Feature[] seeAlso = item.getSeeAlso();
+		Feature[] seeAlso = feature.getSeeAlso();
 		if(seeAlso.length != 0)
 		{
 			text += "\n\nSee also:";
-			for(int i = 0; i < seeAlso.length; i++)
+			for(Feature seeAlsoFeature : seeAlso)
 			{
 				int y = 60 + getTextHeight() + 2;
-				Feature seeAlsoItem = seeAlso[i];
-				String name = seeAlsoItem.getName();
+				String name = seeAlsoFeature.getName();
 				text += "\n- " + name;
 				buttonDatas.add(new ButtonData(middleX - 148, y,
 					Fonts.segoe15.getStringWidth(name) + 1, 8, "", 0x404040)
@@ -207,7 +204,7 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 					public void press()
 					{
 						mc.displayGuiScreen(
-							new NavigatorFeatureScreen(seeAlsoItem, parent));
+							new NavigatorFeatureScreen(seeAlsoFeature, parent));
 					}
 				});
 			}
@@ -242,7 +239,7 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 					new ResourceLocation("gui.button.press"), 1.0F));
 			activeButton.press();
 			WurstClient wurst = WurstClient.INSTANCE;
-			wurst.navigator.addPreference(item.getName());
+			wurst.navigator.addPreference(feature.getName());
 			wurst.files.saveNavigatorData();
 			return;
 		}
@@ -268,7 +265,7 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 			{
 				checkbox.toggle();
 				WurstClient wurst = WurstClient.INSTANCE;
-				wurst.navigator.addPreference(item.getName());
+				wurst.navigator.addPreference(feature.getName());
 				wurst.files.saveNavigatorData();
 				return;
 			}
@@ -283,17 +280,13 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		if(sliding != -1)
 		{
 			// percentage from mouse location (not the actual percentage!)
-			float mousePercentage = (x - (middleX - 150)) / 298F;
-			if(mousePercentage > 1F)
-				mousePercentage = 1F;
-			else if(mousePercentage < 0F)
-				mousePercentage = 0F;
+			float mousePercentage =
+				MathHelper.clamp((x - (middleX - 150)) / 298F, 0, 1);
 			
 			// update slider value
 			SliderSetting slider = sliders.get(sliding);
-			slider.setValue((long)((slider.getMaximum() - slider.getMinimum())
-				* mousePercentage / slider.getIncrement()) * 1e6
-				* slider.getIncrement() / 1e6 + slider.getMinimum());
+			slider.setValue(
+				slider.getMinimum() + slider.getRange() * mousePercentage);
 		}
 	}
 	
@@ -305,7 +298,7 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 			WurstClient wurst = WurstClient.INSTANCE;
 			sliding = -1;
 			
-			wurst.navigator.addPreference(item.getName());
+			wurst.navigator.addPreference(feature.getName());
 			wurst.files.saveNavigatorData();
 		}
 	}
@@ -320,7 +313,7 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 	protected void onRender(int mouseX, int mouseY, float partialTicks)
 	{
 		// title bar
-		drawCenteredString(Fonts.segoe22, item.getName(), middleX, 32,
+		drawCenteredString(Fonts.segoe22, feature.getName(), middleX, 32,
 			0xffffff);
 		glDisable(GL_TEXTURE_2D);
 		
@@ -346,18 +339,28 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 			setColorToForeground();
 			drawEngravedBox(x1, y1, x2, y2);
 			
+			int width = x2 - x1;
+			
 			// lock
-			boolean renderAsDisabled = slider.isDisabled() || (slider.isLocked()
-				&& slider.getLockMinX() == slider.getLockMaxX());
-			if(!renderAsDisabled && slider.isLocked())
+			boolean renderAsDisabled = slider.isDisabled() || slider.isLocked();
+			if(!renderAsDisabled && slider.isLimited())
 			{
 				glColor4f(0.75F, 0.125F, 0.125F, 0.25F);
-				drawQuads(x1, y1, x1 + slider.getLockMinX(), y2);
-				drawQuads(x1 + slider.getLockMaxX(), y1, x2, y2);
+				
+				double ratio = width / slider.getRange();
+				
+				drawQuads(x1, y1, (int)(x1
+					+ ratio * (slider.getUsableMin() - slider.getMinimum())),
+					y2);
+				drawQuads(
+					(int)(x2 + ratio
+						* (slider.getUsableMax() - slider.getMaximum())),
+					y1, x2, y2);
 			}
 			
 			// knob
-			x1 = bgx1 + slider.getX();
+			float percentage = slider.getPercentage();
+			x1 = bgx1 + (int)((width - 6) * percentage) + 1;
 			x2 = x1 + 8;
 			y1 -= 2;
 			y2 += 2;
@@ -365,8 +368,8 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 				glColor4f(0.5F, 0.5F, 0.5F, 0.75F);
 			else
 			{
-				float percentage = slider.getPercentage();
-				glColor4f(percentage, 1F - percentage, 0F, 0.75F);
+				float factor = 2 * percentage;
+				glColor4f(factor, 2 - factor, 0F, 0.75F);
 			}
 			drawBox(x1, y1, x2, y2);
 			
@@ -485,7 +488,7 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		// buttons below scissor box
 		for(int i = 0; i < buttonList.size(); i++)
 		{
-			GuiButton button = (GuiButton)buttonList.get(i);
+			GuiButton button = buttonList.get(i);
 			
 			// positions
 			int x1 = button.xPosition;
@@ -496,8 +499,8 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 			// color
 			boolean hovering =
 				mouseX >= x1 && mouseX <= x2 && mouseY >= y1 && mouseY <= y2;
-			if(item.isEnabled() && button.id == 0)
-				if(item.isBlocked())
+			if(feature.isEnabled() && button.id == 0)
+				if(feature.isBlocked())
 					glColor4f(hovering ? 1F : 0.875F, 0F, 0F, 0.25F);
 				else
 					glColor4f(0F, hovering ? 1F : 0.875F, 0F, 0.25F);
@@ -521,9 +524,9 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		glDisable(GL_BLEND);
 	}
 	
-	public Feature getItem()
+	public Feature getFeature()
 	{
-		return item;
+		return feature;
 	}
 	
 	public int getMiddleX()

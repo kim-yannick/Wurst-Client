@@ -34,8 +34,8 @@ public class TriggerBotMod extends Mod implements UpdateListener
 				if(isChecked())
 				{
 					KillauraMod killaura = wurst.mods.killauraMod;
-					speed.lockToValue(killaura.speed.getValue());
-					range.lockToValue(killaura.range.getValue());
+					speed.lock(killaura.speed);
+					range.lock(killaura.range);
 				}else
 				{
 					speed.unlock();
@@ -68,26 +68,21 @@ public class TriggerBotMod extends Mod implements UpdateListener
 	@Override
 	public Feature[] getSeeAlso()
 	{
-		return new Feature[]{wurst.special.targetSpf,
-			wurst.mods.killauraMod, wurst.mods.killauraLegitMod,
-			wurst.mods.multiAuraMod, wurst.mods.clickAuraMod,
-			wurst.mods.criticalsMod};
+		return new Feature[]{wurst.special.targetSpf, wurst.mods.killauraMod,
+			wurst.mods.killauraLegitMod, wurst.mods.multiAuraMod,
+			wurst.mods.clickAuraMod, wurst.mods.criticalsMod};
 	}
 	
 	@Override
 	public void onEnable()
 	{
-		// TODO: Clean up this mess!
-		if(wurst.mods.killauraMod.isEnabled())
-			wurst.mods.killauraMod.setEnabled(false);
-		if(wurst.mods.killauraLegitMod.isEnabled())
-			wurst.mods.killauraLegitMod.setEnabled(false);
-		if(wurst.mods.multiAuraMod.isEnabled())
-			wurst.mods.multiAuraMod.setEnabled(false);
-		if(wurst.mods.clickAuraMod.isEnabled())
-			wurst.mods.clickAuraMod.setEnabled(false);
-		if(wurst.mods.tpAuraMod.isEnabled())
-			wurst.mods.tpAuraMod.setEnabled(false);
+		// disable other killauras
+		wurst.mods.killauraMod.setEnabled(false);
+		wurst.mods.killauraLegitMod.setEnabled(false);
+		wurst.mods.multiAuraMod.setEnabled(false);
+		wurst.mods.clickAuraMod.setEnabled(false);
+		wurst.mods.tpAuraMod.setEnabled(false);
+		
 		wurst.events.add(UpdateListener.class, this);
 	}
 	
@@ -138,18 +133,18 @@ public class TriggerBotMod extends Mod implements UpdateListener
 			default:
 			case OFF:
 			case MINEPLEX:
-				speed.unlock();
-				range.unlock();
+				speed.resetUsableMax();
+				range.resetUsableMax();
 				break;
 			case ANTICHEAT:
 			case OLDER_NCP:
 			case LATEST_NCP:
-				speed.lockToMax(12);
-				range.lockToMax(4.25);
+				speed.setUsableMax(12);
+				range.setUsableMax(4.25);
 				break;
 			case GHOST_MODE:
-				speed.lockToMax(12);
-				range.lockToMax(4.25);
+				speed.setUsableMax(12);
+				range.setUsableMax(4.25);
 				break;
 		}
 	}
