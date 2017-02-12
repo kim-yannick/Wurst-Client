@@ -23,6 +23,7 @@ import tk.wurst_client.settings.SliderSetting.ValueDisplay;
 import tk.wurst_client.utils.BlockUtils;
 import tk.wurst_client.utils.ClickType;
 import tk.wurst_client.utils.InventoryUtils;
+import tk.wurst_client.utils.PlayerUtils;
 
 @Mod.Info(
 	description = "Automatically eats soup if your health is lower than or equal to the set value.\n"
@@ -119,8 +120,7 @@ public class AutoSoupMod extends Mod implements UpdateListener
 			
 			// eat soup
 			mc.gameSettings.keyBindUseItem.pressed = true;
-			mc.playerController.processRightClick(mc.player, mc.world,
-				mc.player.getCurrentEquippedItem());
+			PlayerUtils.processRightClick();
 			
 			return;
 		}
