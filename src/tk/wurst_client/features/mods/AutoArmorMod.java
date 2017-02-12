@@ -77,7 +77,7 @@ public class AutoArmorMod extends Mod implements UpdateListener
 				continue;
 			
 			ItemArmor armor = (ItemArmor)stack.getItem();
-			int armorType = 3 - armor.armorType;
+			int armorType = InventoryUtils.getArmorType(armor);
 			int armorValue = armor.damageReduceAmount;
 			
 			if(armorValue > bestArmorValues[armorType])
