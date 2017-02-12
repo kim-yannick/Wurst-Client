@@ -52,9 +52,8 @@ public class ChestEspMod extends Mod implements UpdateListener, RenderListener
 	private int totalChests;
 	
 	private TileEntityChest openChest;
-	private final LinkedHashSet<TileEntityChest> emptyChests =
-		new LinkedHashSet<>();
-	private final LinkedHashSet<TileEntityChest> nonEmptyChests =
+	private final LinkedHashSet<BlockPos> emptyChests = new LinkedHashSet<>();
+	private final LinkedHashSet<BlockPos> nonEmptyChests =
 		new LinkedHashSet<>();
 	
 	@Override
@@ -125,18 +124,18 @@ public class ChestEspMod extends Mod implements UpdateListener, RenderListener
 				else if(chest.adjacentChestZNeg != null)
 					bb = bb.union(BlockUtils
 						.getBoundingBox(chest.adjacentChestZNeg.getPos()));
-				
+
 				boolean trapped = chest.getChestType() == 1;
 				
 				// add to appropriate list
-				if(emptyChests.contains(chest))
+				if(emptyChests.contains(chest.getPos()))
 				{
 					if(trapped)
 						trappedEmpty.add(bb);
 					else
 						basicEmpty.add(bb);
 					
-				}else if(nonEmptyChests.contains(chest))
+				}else if(nonEmptyChests.contains(chest.getPos()))
 				{
 					if(trapped)
 						trappedNotEmpty.add(bb);
@@ -255,18 +254,19 @@ public class ChestEspMod extends Mod implements UpdateListener, RenderListener
 				break;
 			}
 		
+		BlockPos pos = openChest.getPos();
 		if(empty)
 		{
-			if(!emptyChests.contains(openChest))
-				emptyChests.add(openChest);
+			if(!emptyChests.contains(pos))
+				emptyChests.add(pos);
 			
-			nonEmptyChests.remove(openChest);
+			nonEmptyChests.remove(pos);
 		}else
 		{
-			if(!nonEmptyChests.contains(openChest))
-				nonEmptyChests.add(openChest);
+			if(!nonEmptyChests.contains(pos))
+				nonEmptyChests.add(pos);
 			
-			emptyChests.remove(openChest);
+			emptyChests.remove(pos);
 		}
 		
 		openChest = null;
