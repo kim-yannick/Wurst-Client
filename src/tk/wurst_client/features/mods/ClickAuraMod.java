@@ -8,7 +8,7 @@
 package tk.wurst_client.features.mods;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.network.play.client.CPacketUseEntity;
+import tk.wurst_client.WurstClient;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.features.Feature;
 import tk.wurst_client.features.special_features.YesCheatSpf.BypassLevel;
@@ -40,12 +40,19 @@ public class ClickAuraMod extends Mod implements UpdateListener
 				if(isChecked())
 				{
 					KillauraMod killaura = wurst.mods.killauraMod;
+					
+					if(useCooldown != null)
+						useCooldown.lock(killaura.useCooldown);
+					
 					speed.lock(killaura.speed);
 					range.lock(killaura.range);
 					fov.lock(killaura.fov);
 					hitThroughWalls.lock(killaura.hitThroughWalls);
 				}else
 				{
+					if(useCooldown != null)
+						useCooldown.unlock();
+					
 					speed.unlock();
 					range.unlock();
 					fov.unlock();
@@ -53,6 +60,16 @@ public class ClickAuraMod extends Mod implements UpdateListener
 				}
 			}
 		};
+	public final CheckboxSetting useCooldown =
+		WurstClient.MINECRAFT_VERSION.equals("1.8") ? null
+			: new CheckboxSetting("Use Attack Cooldown as Speed", true)
+			{
+				@Override
+				public void update()
+				{
+					speed.setDisabled(isChecked());
+				}
+			};
 	public final SliderSetting speed =
 		new SliderSetting("Speed", 20, 0.1, 20, 0.1, ValueDisplay.DECIMAL);
 	public final SliderSetting range =
@@ -87,6 +104,10 @@ public class ClickAuraMod extends Mod implements UpdateListener
 	public void initSettings()
 	{
 		settings.add(useKillaura);
+		
+		if(useCooldown != null)
+			settings.add(useCooldown);
+		
 		settings.add(speed);
 		settings.add(range);
 		settings.add(fov);
@@ -131,8 +152,10 @@ public class ClickAuraMod extends Mod implements UpdateListener
 		if(!mc.gameSettings.keyBindAttack.pressed)
 			return;
 		
-		// check timer
-		if(!hasTimePassedS(speed.getValueF()))
+		// check timer / cooldown
+		if((useCooldown != null && useCooldown.isChecked())
+			? PlayerUtils.getCooldown() < 1
+			: !hasTimePassedS(speed.getValueF()))
 			return;
 		
 		// set entity
@@ -140,23 +163,15 @@ public class ClickAuraMod extends Mod implements UpdateListener
 		if(entity == null)
 			return;
 		
-		// AutoSword
-		wurst.mods.autoSwordMod.setSlot();
-		
-		// Criticals
-		wurst.mods.criticalsMod.doCritical();
-		
-		// BlockHit
-		wurst.mods.blockHitMod.doBlock();
+		// prepare attack
+		EntityUtils.prepareAttack();
 		
 		// face entity
 		if(!RotationUtils.faceEntityPacket(entity))
 			return;
 		
 		// attack entity
-		PlayerUtils.swingArmClient();
-		mc.player.connection.sendPacket(
-			new CPacketUseEntity(entity, CPacketUseEntity.Action.ATTACK));
+		EntityUtils.attackEntity(entity);
 		
 		// reset timer
 		updateLastMS();
@@ -174,6 +189,7 @@ public class ClickAuraMod extends Mod implements UpdateListener
 				range.resetUsableMax();
 				hitThroughWalls.unlock();
 				break;
+			
 			case ANTICHEAT:
 			case OLDER_NCP:
 			case LATEST_NCP:
@@ -181,6 +197,7 @@ public class ClickAuraMod extends Mod implements UpdateListener
 				range.setUsableMax(4.25);
 				hitThroughWalls.unlock();
 				break;
+			
 			case GHOST_MODE:
 				speed.setUsableMax(12);
 				range.setUsableMax(4.25);
