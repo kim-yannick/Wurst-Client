@@ -8,7 +8,7 @@
 package tk.wurst_client.utils;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ITextComponent;
 import net.minecraft.util.TextComponentString;
 
 public class ChatUtils
@@ -20,7 +20,7 @@ public class ChatUtils
 		ChatUtils.enabled = enabled;
 	}
 	
-	public static void component(IChatComponent component)
+	public static void component(ITextComponent component)
 	{
 		if(enabled)
 			Minecraft.getMinecraft().ingameGUI.getChatGUI()

@@ -7,7 +7,7 @@
  */
 package tk.wurst_client.features.mods;
 
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ITextComponent;
 
 @Mod.Info(
 	description = "Instantly writes whatever text you want on every sign\n"
@@ -16,10 +16,13 @@ import net.minecraft.util.IChatComponent;
 	name = "AutoSign",
 	tags = "auto sign",
 	help = "Mods/AutoSign")
-@Mod.Bypasses
+@Mod.Bypasses(ghostMode = false,
+	latestNCP = false,
+	olderNCP = false,
+	antiCheat = false)
 public class AutoSignMod extends Mod
 {
-	public IChatComponent[] signText;
+	public ITextComponent[] signText;
 	
 	@Override
 	public void onEnable()

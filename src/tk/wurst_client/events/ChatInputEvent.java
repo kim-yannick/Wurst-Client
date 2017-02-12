@@ -11,26 +11,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.gui.ChatLine;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ITextComponent;
 import tk.wurst_client.events.listeners.ChatInputListener;
 
 public class ChatInputEvent extends CancellableEvent<ChatInputListener>
 {
-	private IChatComponent component;
+	private ITextComponent component;
 	private List<ChatLine> chatLines;
 	
-	public ChatInputEvent(IChatComponent component, List<ChatLine> chatLines)
+	public ChatInputEvent(ITextComponent component, List<ChatLine> chatLines)
 	{
 		this.component = component;
 		this.chatLines = chatLines;
 	}
 	
-	public IChatComponent getComponent()
+	public ITextComponent getComponent()
 	{
 		return component;
 	}
 	
-	public void setComponent(IChatComponent component)
+	public void setComponent(ITextComponent component)
 	{
 		this.component = component;
 	}
