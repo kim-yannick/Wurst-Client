@@ -32,6 +32,12 @@ public class PlayerUtils
 		return 1;
 	}
 	
+	public static void processRightClick()
+	{
+		mc.playerController.processRightClick(mc.player, mc.world,
+			mc.player.getCurrentEquippedItem());
+	}
+	
 	static void processRightClickBlock(BlockPos pos, EnumFacing side,
 		Vec3d hitVec)
 	{
