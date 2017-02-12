@@ -1,13 +1,13 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 package tk.wurst_client.features.mods;
 
-import net.minecraft.network.play.client.CPacketUseEntity;
+import tk.wurst_client.WurstClient;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.features.Feature;
 import tk.wurst_client.features.special_features.YesCheatSpf.BypassLevel;
@@ -34,15 +34,32 @@ public class TriggerBotMod extends Mod implements UpdateListener
 				if(isChecked())
 				{
 					KillauraMod killaura = wurst.mods.killauraMod;
+					
+					if(useCooldown != null)
+						useCooldown.lock(killaura.useCooldown);
+					
 					speed.lock(killaura.speed);
 					range.lock(killaura.range);
 				}else
 				{
+					if(useCooldown != null)
+						useCooldown.unlock();
+					
 					speed.unlock();
 					range.unlock();
 				}
-			};
+			}
 		};
+	public CheckboxSetting useCooldown =
+		WurstClient.MINECRAFT_VERSION.equals("1.8") ? null
+			: new CheckboxSetting("Use Attack Cooldown as Speed", true)
+			{
+				@Override
+				public void update()
+				{
+					speed.setDisabled(isChecked());
+				}
+			};
 	public SliderSetting speed =
 		new SliderSetting("Speed", 20, 0.1, 20, 0.1, ValueDisplay.DECIMAL);
 	public SliderSetting range =
@@ -61,6 +78,10 @@ public class TriggerBotMod extends Mod implements UpdateListener
 	public void initSettings()
 	{
 		settings.add(useKillaura);
+		
+		if(useCooldown != null)
+			settings.add(useCooldown);
+		
 		settings.add(speed);
 		settings.add(range);
 	}
@@ -98,8 +119,10 @@ public class TriggerBotMod extends Mod implements UpdateListener
 		// update timer
 		updateMS();
 		
-		// check timer
-		if(!hasTimePassedS(speed.getValueF()))
+		// check timer / cooldown
+		if((useCooldown != null && useCooldown.isChecked())
+			? PlayerUtils.getCooldown() < 1
+			: !hasTimePassedS(speed.getValueF()))
 			return;
 		
 		// check entity
@@ -107,19 +130,11 @@ public class TriggerBotMod extends Mod implements UpdateListener
 			.isCorrectEntity(mc.objectMouseOver.entityHit, targetSettings))
 			return;
 		
-		// AutoSword
-		wurst.mods.autoSwordMod.setSlot();
-		
-		// Criticals
-		wurst.mods.criticalsMod.doCritical();
-		
-		// BlockHit
-		wurst.mods.blockHitMod.doBlock();
+		// prepare attack
+		EntityUtils.prepareAttack();
 		
 		// attack entity
-		PlayerUtils.swingArmClient();
-		mc.player.connection.sendPacket(new CPacketUseEntity(
-			mc.objectMouseOver.entityHit, CPacketUseEntity.Action.ATTACK));
+		EntityUtils.attackEntity(mc.objectMouseOver.entityHit);
 		
 		// reset timer
 		updateLastMS();
@@ -136,12 +151,10 @@ public class TriggerBotMod extends Mod implements UpdateListener
 				speed.resetUsableMax();
 				range.resetUsableMax();
 				break;
+			
 			case ANTICHEAT:
 			case OLDER_NCP:
 			case LATEST_NCP:
-				speed.setUsableMax(12);
-				range.setUsableMax(4.25);
-				break;
 			case GHOST_MODE:
 				speed.setUsableMax(12);
 				range.setUsableMax(4.25);
