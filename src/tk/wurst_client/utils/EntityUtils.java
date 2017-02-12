@@ -22,13 +22,34 @@ import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.passive.EntityAmbientCreature;
 import net.minecraft.entity.passive.EntityWaterMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.play.client.CPacketUseEntity;
 import tk.wurst_client.WurstClient;
 
 public class EntityUtils
 {
+	private static final WurstClient wurst = WurstClient.INSTANCE;
 	private static final Minecraft mc = Minecraft.getMinecraft();
 	
 	public static final TargetSettings DEFAULT_SETTINGS = new TargetSettings();
+	
+	public static void prepareAttack()
+	{
+		// AutoSword
+		wurst.mods.autoSwordMod.setSlot();
+		
+		// Criticals
+		wurst.mods.criticalsMod.doCritical();
+		
+		// BlockHit
+		wurst.mods.blockHitMod.doBlock();
+	}
+	
+	public static void attackEntity(Entity entity)
+	{
+		PlayerUtils.swingArmClient();
+		mc.player.connection.sendPacket(
+			new CPacketUseEntity(entity, CPacketUseEntity.Action.ATTACK));
+	}
 	
 	public static boolean isCorrectEntity(Entity en, TargetSettings settings)
 	{
