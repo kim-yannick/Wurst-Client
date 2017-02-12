@@ -10,6 +10,7 @@ package tk.wurst_client.features.mods;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.potion.Potion;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.utils.MobEffects;
 
 @Mod.Info(description = "Blocks bad potion effects.",
 	name = "AntiPotion",
@@ -18,9 +19,10 @@ import tk.wurst_client.events.listeners.UpdateListener;
 @Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
 public class AntiPotionMod extends Mod implements UpdateListener
 {
-	private final Potion[] blockedEffects = new Potion[]{Potion.hunger,
-		Potion.moveSlowdown, Potion.digSlowdown, Potion.harm, Potion.confusion,
-		Potion.blindness, Potion.weakness, Potion.wither, Potion.poison};
+	private final Potion[] blockedEffects = new Potion[]{MobEffects.HUNGER,
+		MobEffects.SLOWNESS, MobEffects.MINING_FATIGUE,
+		MobEffects.INSTANT_DAMAGE, MobEffects.NAUSEA, MobEffects.BLINDNESS,
+		MobEffects.WEAKNESS, MobEffects.WITHER, MobEffects.POISON};
 	
 	@Override
 	public void onEnable()
