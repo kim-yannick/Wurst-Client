@@ -27,6 +27,11 @@ public class PlayerUtils
 		mc.player.connection.sendPacket(new CPacketAnimation());
 	}
 	
+	public static float getCooldown()
+	{
+		return 1;
+	}
+	
 	static void processRightClickBlock(BlockPos pos, EnumFacing side,
 		Vec3d hitVec)
 	{

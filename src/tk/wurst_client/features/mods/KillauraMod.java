@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -8,7 +8,7 @@
 package tk.wurst_client.features.mods;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.network.play.client.CPacketUseEntity;
+import tk.wurst_client.WurstClient;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.features.Feature;
 import tk.wurst_client.features.special_features.TargetSpf;
@@ -31,6 +31,16 @@ import tk.wurst_client.utils.RotationUtils;
 @Mod.Bypasses
 public class KillauraMod extends Mod implements UpdateListener
 {
+	public final CheckboxSetting useCooldown =
+		WurstClient.MINECRAFT_VERSION.equals("1.8") ? null
+			: new CheckboxSetting("Use Attack Cooldown as Speed", true)
+			{
+				@Override
+				public void update()
+				{
+					speed.setDisabled(isChecked());
+				}
+			};
 	public final SliderSetting speed =
 		new SliderSetting("Speed", 20, 0.1, 20, 0.1, ValueDisplay.DECIMAL);
 	public final SliderSetting range =
@@ -171,10 +181,14 @@ public class KillauraMod extends Mod implements UpdateListener
 	@Override
 	public void initSettings()
 	{
+		if(useCooldown != null)
+			settings.add(useCooldown);
+		
 		settings.add(speed);
 		settings.add(range);
 		settings.add(fov);
 		settings.add(hitThroughWalls);
+		
 		settings.add(useTarget);
 		settings.add(players);
 		settings.add(animals);
@@ -221,8 +235,10 @@ public class KillauraMod extends Mod implements UpdateListener
 		// update timer
 		updateMS();
 		
-		// check timer
-		if(!hasTimePassedS(speed.getValueF()))
+		// check timer / cooldown
+		if((useCooldown != null && useCooldown.isChecked())
+			? PlayerUtils.getCooldown() < 1
+			: !hasTimePassedS(speed.getValueF()))
 			return;
 		
 		// set entity
@@ -236,17 +252,13 @@ public class KillauraMod extends Mod implements UpdateListener
 		// Criticals
 		wurst.mods.criticalsMod.doCritical();
 		
-		// BlockHit
-		wurst.mods.blockHitMod.doBlock();
-		
 		// face entity
 		if(!RotationUtils.faceEntityPacket(entity))
 			return;
 		
 		// attack entity
+		mc.playerController.attackEntity(mc.player, entity);
 		PlayerUtils.swingArmClient();
-		mc.player.connection.sendPacket(
-			new CPacketUseEntity(entity, CPacketUseEntity.Action.ATTACK));
 		
 		// reset timer
 		updateLastMS();
@@ -260,10 +272,11 @@ public class KillauraMod extends Mod implements UpdateListener
 			default:
 			case OFF:
 			case MINEPLEX:
-				speed.unlock();
-				range.unlock();
+				speed.resetUsableMax();
+				range.resetUsableMax();
 				hitThroughWalls.unlock();
 				break;
+			
 			case ANTICHEAT:
 			case OLDER_NCP:
 			case LATEST_NCP:
@@ -271,6 +284,7 @@ public class KillauraMod extends Mod implements UpdateListener
 				range.setUsableMax(4.25);
 				hitThroughWalls.unlock();
 				break;
+			
 			case GHOST_MODE:
 				speed.setUsableMax(12);
 				range.setUsableMax(4.25);
