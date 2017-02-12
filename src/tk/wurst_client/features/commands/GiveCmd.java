@@ -117,7 +117,8 @@ public class GiveCmd extends Cmd
 			// custom item
 			
 			// id/name
-			item = (Item)Item.itemRegistry.getObject(new ResourceLocation(args[0]));
+			item = (Item)Item.itemRegistry
+				.getObject(new ResourceLocation(args[0]));
 			if(item == null && MiscUtils.isInteger(args[0]))
 				item = Item.getItemById(Integer.parseInt(args[0]));
 			if(item == null)

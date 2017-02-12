@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -198,8 +198,8 @@ public class ProtectMod extends Mod implements UpdateListener
 			
 			// attack enemy
 			PlayerUtils.swingArmClient();
-			mc.player.connection.sendPacket(new CPacketUseEntity(enemy,
-				CPacketUseEntity.Action.ATTACK));
+			mc.player.connection.sendPacket(
+				new CPacketUseEntity(enemy, CPacketUseEntity.Action.ATTACK));
 			
 			// reset timer
 			updateLastMS();

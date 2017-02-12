@@ -204,7 +204,7 @@ public class ServerHook
 	{
 		return lastServer.getServerData();
 	}
-
+	
 	public static int getProtocolVersion()
 	{
 		ServerData server = lastServer.getServerData();

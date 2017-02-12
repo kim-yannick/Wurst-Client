@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -59,14 +59,12 @@ public class StepMod extends Mod implements UpdateListener
 				&& canStep() && !mc.player.movementInput.jump
 				&& mc.player.isCollidedHorizontally)
 			{
-				mc.getNetHandler()
-					.sendPacket(new Position(mc.player.posX,
-						mc.player.posY + 0.42D, mc.player.posZ,
-						mc.player.onGround));
-				mc.getNetHandler()
-					.sendPacket(new Position(mc.player.posX,
-						mc.player.posY + 0.753D, mc.player.posZ,
-						mc.player.onGround));
+				mc.getNetHandler().sendPacket(
+					new Position(mc.player.posX, mc.player.posY + 0.42D,
+						mc.player.posZ, mc.player.onGround));
+				mc.getNetHandler().sendPacket(
+					new Position(mc.player.posX, mc.player.posY + 0.753D,
+						mc.player.posZ, mc.player.onGround));
 				mc.player.setPosition(mc.player.posX, mc.player.posY + 1D,
 					mc.player.posZ);
 			}

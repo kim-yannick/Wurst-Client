@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -227,9 +227,9 @@ public class PathFinder
 	{
 		Material material = BlockUtils.getMaterial(pos);
 		Block block = BlockUtils.getBlock(pos);
-		return (material.blocksMovement() && !(block instanceof BlockSign))
-			|| block instanceof BlockLadder || (jesus
-				&& (material == Material.WATER || material == Material.LAVA));
+		return material.blocksMovement() && !(block instanceof BlockSign)
+			|| block instanceof BlockLadder || jesus
+				&& (material == Material.WATER || material == Material.LAVA);
 	}
 	
 	private boolean canGoThrough(BlockPos pos)
@@ -333,8 +333,8 @@ public class PathFinder
 	
 	private boolean canFlyAt(BlockPos pos)
 	{
-		return flying
-			|| !noSlowdownActive && BlockUtils.getMaterial(pos) == Material.WATER;
+		return flying || !noSlowdownActive
+			&& BlockUtils.getMaterial(pos) == Material.WATER;
 	}
 	
 	private boolean canClimbUpAt(BlockPos pos)
@@ -388,7 +388,8 @@ public class PathFinder
 			cost *= 4.539515393656079F;
 		
 		// soul sand
-		if(!canFlyAt(next) && BlockUtils.getBlock(next.down()) instanceof BlockSoulSand)
+		if(!canFlyAt(next)
+			&& BlockUtils.getBlock(next.down()) instanceof BlockSoulSand)
 			cost *= 2.5F;
 		
 		return cost;
@@ -399,8 +400,7 @@ public class PathFinder
 		float dx = Math.abs(pos.getX() - goal.getX());
 		float dy = Math.abs(pos.getY() - goal.getY());
 		float dz = Math.abs(pos.getZ() - goal.getZ());
-		return 1.001F
-			* ((dx + dy + dz) - 0.5857864376269049F * Math.min(dx, dz));
+		return 1.001F * (dx + dy + dz - 0.5857864376269049F * Math.min(dx, dz));
 	}
 	
 	public PathPos getCurrentPos()

@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -26,9 +26,10 @@ public class AltRenderer
 	{
 		try
 		{
-			AbstractClientPlayer.getDownloadImageSkin(
-				AbstractClientPlayer.getLocationSkin(name), name).loadTexture(
-				Minecraft.getMinecraft().getResourceManager());
+			AbstractClientPlayer
+				.getDownloadImageSkin(
+					AbstractClientPlayer.getLocationSkin(name), name)
+				.loadTexture(Minecraft.getMinecraft().getResourceManager());
 			Minecraft.getMinecraft().getTextureManager()
 				.bindTexture(AbstractClientPlayer.getLocationSkin(name));
 			Tessellator var3 = Tessellator.getInstance();
@@ -80,14 +81,15 @@ public class AltRenderer
 	{
 		try
 		{
-			AbstractClientPlayer.getDownloadImageSkin(
-				AbstractClientPlayer.getLocationSkin(name), name).loadTexture(
-				Minecraft.getMinecraft().getResourceManager());
+			AbstractClientPlayer
+				.getDownloadImageSkin(
+					AbstractClientPlayer.getLocationSkin(name), name)
+				.loadTexture(Minecraft.getMinecraft().getResourceManager());
 			Minecraft.getMinecraft().getTextureManager()
 				.bindTexture(AbstractClientPlayer.getLocationSkin(name));
-			boolean slim =
-				DefaultPlayerSkin.getModelNameFromUUID(
-					EntityPlayer.getUUIDFromPlayerName(name)).equals("slim");
+			boolean slim = DefaultPlayerSkin
+				.getModelNameFromUUID(EntityPlayer.getUUIDFromPlayerName(name))
+				.equals("slim");
 			Tessellator var3 = Tessellator.getInstance();
 			WorldRenderer var4 = var3.getWorldRenderer();
 			glEnable(GL_BLEND);
@@ -104,8 +106,8 @@ public class AltRenderer
 			var4.startDrawingQuads();
 			var4.addVertexWithUV((double)x + 0, y + h, 0,
 				(float)(u + 0) * 0.00390625F, (float)(v + fh) * 0.00390625F);
-			var4.addVertexWithUV(x + w, y + h, 0,
-				(float)(u + fw) * 0.00390625F, (float)(v + fh) * 0.00390625F);
+			var4.addVertexWithUV(x + w, y + h, 0, (float)(u + fw) * 0.00390625F,
+				(float)(v + fh) * 0.00390625F);
 			var4.addVertexWithUV(x + w, (double)y + 0, 0,
 				(float)(u + fw) * 0.00390625F, (float)(v + 0) * 0.00390625F);
 			var4.addVertexWithUV((double)x + 0, (double)y + 0, 0,
@@ -123,8 +125,8 @@ public class AltRenderer
 			var4.startDrawingQuads();
 			var4.addVertexWithUV((double)x + 0, y + h, 0,
 				(float)(u + 0) * 0.00390625F, (float)(v + fh) * 0.00390625F);
-			var4.addVertexWithUV(x + w, y + h, 0,
-				(float)(u + fw) * 0.00390625F, (float)(v + fh) * 0.00390625F);
+			var4.addVertexWithUV(x + w, y + h, 0, (float)(u + fw) * 0.00390625F,
+				(float)(v + fh) * 0.00390625F);
 			var4.addVertexWithUV(x + w, (double)y + 0, 0,
 				(float)(u + fw) * 0.00390625F, (float)(v + 0) * 0.00390625F);
 			var4.addVertexWithUV((double)x + 0, (double)y + 0, 0,
@@ -142,8 +144,8 @@ public class AltRenderer
 			var4.startDrawingQuads();
 			var4.addVertexWithUV((double)x + 0, y + h, 0,
 				(float)(u + 0) * 0.00390625F, (float)(v + fh) * 0.00390625F);
-			var4.addVertexWithUV(x + w, y + h, 0,
-				(float)(u + fw) * 0.00390625F, (float)(v + fh) * 0.00390625F);
+			var4.addVertexWithUV(x + w, y + h, 0, (float)(u + fw) * 0.00390625F,
+				(float)(v + fh) * 0.00390625F);
 			var4.addVertexWithUV(x + w, (double)y + 0, 0,
 				(float)(u + fw) * 0.00390625F, (float)(v + 0) * 0.00390625F);
 			var4.addVertexWithUV((double)x + 0, (double)y + 0, 0,
@@ -161,8 +163,8 @@ public class AltRenderer
 			var4.startDrawingQuads();
 			var4.addVertexWithUV((double)x + 0, y + h, 0,
 				(float)(u + 0) * 0.00390625F, (float)(v + fh) * 0.00390625F);
-			var4.addVertexWithUV(x + w, y + h, 0,
-				(float)(u + fw) * 0.00390625F, (float)(v + fh) * 0.00390625F);
+			var4.addVertexWithUV(x + w, y + h, 0, (float)(u + fw) * 0.00390625F,
+				(float)(v + fh) * 0.00390625F);
 			var4.addVertexWithUV(x + w, (double)y + 0, 0,
 				(float)(u + fw) * 0.00390625F, (float)(v + 0) * 0.00390625F);
 			var4.addVertexWithUV((double)x + 0, (double)y + 0, 0,
@@ -180,8 +182,8 @@ public class AltRenderer
 			var4.startDrawingQuads();
 			var4.addVertexWithUV((double)x + 0, y + h, 0,
 				(float)(u + 0) * 0.00390625F, (float)(v + fh) * 0.00390625F);
-			var4.addVertexWithUV(x + w, y + h, 0,
-				(float)(u + fw) * 0.00390625F, (float)(v + fh) * 0.00390625F);
+			var4.addVertexWithUV(x + w, y + h, 0, (float)(u + fw) * 0.00390625F,
+				(float)(v + fh) * 0.00390625F);
 			var4.addVertexWithUV(x + w, (double)y + 0, 0,
 				(float)(u + fw) * 0.00390625F, (float)(v + 0) * 0.00390625F);
 			var4.addVertexWithUV((double)x + 0, (double)y + 0, 0,
@@ -199,8 +201,8 @@ public class AltRenderer
 			var4.startDrawingQuads();
 			var4.addVertexWithUV((double)x + 0, y + h, 0,
 				(float)(u + 0) * 0.00390625F, (float)(v + fh) * 0.00390625F);
-			var4.addVertexWithUV(x + w, y + h, 0,
-				(float)(u + fw) * 0.00390625F, (float)(v + fh) * 0.00390625F);
+			var4.addVertexWithUV(x + w, y + h, 0, (float)(u + fw) * 0.00390625F,
+				(float)(v + fh) * 0.00390625F);
 			var4.addVertexWithUV(x + w, (double)y + 0, 0,
 				(float)(u + fw) * 0.00390625F, (float)(v + 0) * 0.00390625F);
 			var4.addVertexWithUV((double)x + 0, (double)y + 0, 0,
@@ -256,8 +258,8 @@ public class AltRenderer
 			var4.startDrawingQuads();
 			var4.addVertexWithUV((double)x + 0, y + h, 0,
 				(float)(u + 0) * 0.00390625F, (float)(v + fh) * 0.00390625F);
-			var4.addVertexWithUV(x + w, y + h, 0,
-				(float)(u + fw) * 0.00390625F, (float)(v + fh) * 0.00390625F);
+			var4.addVertexWithUV(x + w, y + h, 0, (float)(u + fw) * 0.00390625F,
+				(float)(v + fh) * 0.00390625F);
 			var4.addVertexWithUV(x + w, (double)y + 0, 0,
 				(float)(u + fw) * 0.00390625F, (float)(v + 0) * 0.00390625F);
 			var4.addVertexWithUV((double)x + 0, (double)y + 0, 0,
@@ -275,8 +277,8 @@ public class AltRenderer
 			var4.startDrawingQuads();
 			var4.addVertexWithUV((double)x + 0, y + h, 0,
 				(float)(u + 0) * 0.00390625F, (float)(v + fh) * 0.00390625F);
-			var4.addVertexWithUV(x + w, y + h, 0,
-				(float)(u + fw) * 0.00390625F, (float)(v + fh) * 0.00390625F);
+			var4.addVertexWithUV(x + w, y + h, 0, (float)(u + fw) * 0.00390625F,
+				(float)(v + fh) * 0.00390625F);
 			var4.addVertexWithUV(x + w, (double)y + 0, 0,
 				(float)(u + fw) * 0.00390625F, (float)(v + 0) * 0.00390625F);
 			var4.addVertexWithUV((double)x + 0, (double)y + 0, 0,
@@ -332,14 +334,15 @@ public class AltRenderer
 	{
 		try
 		{
-			AbstractClientPlayer.getDownloadImageSkin(
-				AbstractClientPlayer.getLocationSkin(name), name).loadTexture(
-				Minecraft.getMinecraft().getResourceManager());
+			AbstractClientPlayer
+				.getDownloadImageSkin(
+					AbstractClientPlayer.getLocationSkin(name), name)
+				.loadTexture(Minecraft.getMinecraft().getResourceManager());
 			Minecraft.getMinecraft().getTextureManager()
 				.bindTexture(AbstractClientPlayer.getLocationSkin(name));
-			boolean slim =
-				DefaultPlayerSkin.getModelNameFromUUID(
-					EntityPlayer.getUUIDFromPlayerName(name)).equals("slim");
+			boolean slim = DefaultPlayerSkin
+				.getModelNameFromUUID(EntityPlayer.getUUIDFromPlayerName(name))
+				.equals("slim");
 			Tessellator var3 = Tessellator.getInstance();
 			WorldRenderer var4 = var3.getWorldRenderer();
 			glEnable(GL_BLEND);
@@ -356,8 +359,8 @@ public class AltRenderer
 			var4.startDrawingQuads();
 			var4.addVertexWithUV((double)x + 0, y + h, 0,
 				(float)(u + 0) * 0.00390625F, (float)(v + fh) * 0.00390625F);
-			var4.addVertexWithUV(x + w, y + h, 0,
-				(float)(u + fw) * 0.00390625F, (float)(v + fh) * 0.00390625F);
+			var4.addVertexWithUV(x + w, y + h, 0, (float)(u + fw) * 0.00390625F,
+				(float)(v + fh) * 0.00390625F);
 			var4.addVertexWithUV(x + w, (double)y + 0, 0,
 				(float)(u + fw) * 0.00390625F, (float)(v + 0) * 0.00390625F);
 			var4.addVertexWithUV((double)x + 0, (double)y + 0, 0,
@@ -375,8 +378,8 @@ public class AltRenderer
 			var4.startDrawingQuads();
 			var4.addVertexWithUV((double)x + 0, y + h, 0,
 				(float)(u + 0) * 0.00390625F, (float)(v + fh) * 0.00390625F);
-			var4.addVertexWithUV(x + w, y + h, 0,
-				(float)(u + fw) * 0.00390625F, (float)(v + fh) * 0.00390625F);
+			var4.addVertexWithUV(x + w, y + h, 0, (float)(u + fw) * 0.00390625F,
+				(float)(v + fh) * 0.00390625F);
 			var4.addVertexWithUV(x + w, (double)y + 0, 0,
 				(float)(u + fw) * 0.00390625F, (float)(v + 0) * 0.00390625F);
 			var4.addVertexWithUV((double)x + 0, (double)y + 0, 0,
@@ -394,8 +397,8 @@ public class AltRenderer
 			var4.startDrawingQuads();
 			var4.addVertexWithUV((double)x + 0, y + h, 0,
 				(float)(u + 0) * 0.00390625F, (float)(v + fh) * 0.00390625F);
-			var4.addVertexWithUV(x + w, y + h, 0,
-				(float)(u + fw) * 0.00390625F, (float)(v + fh) * 0.00390625F);
+			var4.addVertexWithUV(x + w, y + h, 0, (float)(u + fw) * 0.00390625F,
+				(float)(v + fh) * 0.00390625F);
 			var4.addVertexWithUV(x + w, (double)y + 0, 0,
 				(float)(u + fw) * 0.00390625F, (float)(v + 0) * 0.00390625F);
 			var4.addVertexWithUV((double)x + 0, (double)y + 0, 0,
@@ -413,8 +416,8 @@ public class AltRenderer
 			var4.startDrawingQuads();
 			var4.addVertexWithUV((double)x + 0, y + h, 0,
 				(float)(u + 0) * 0.00390625F, (float)(v + fh) * 0.00390625F);
-			var4.addVertexWithUV(x + w, y + h, 0,
-				(float)(u + fw) * 0.00390625F, (float)(v + fh) * 0.00390625F);
+			var4.addVertexWithUV(x + w, y + h, 0, (float)(u + fw) * 0.00390625F,
+				(float)(v + fh) * 0.00390625F);
 			var4.addVertexWithUV(x + w, (double)y + 0, 0,
 				(float)(u + fw) * 0.00390625F, (float)(v + 0) * 0.00390625F);
 			var4.addVertexWithUV((double)x + 0, (double)y + 0, 0,
@@ -432,8 +435,8 @@ public class AltRenderer
 			var4.startDrawingQuads();
 			var4.addVertexWithUV((double)x + 0, y + h, 0,
 				(float)(u + 0) * 0.00390625F, (float)(v + fh) * 0.00390625F);
-			var4.addVertexWithUV(x + w, y + h, 0,
-				(float)(u + fw) * 0.00390625F, (float)(v + fh) * 0.00390625F);
+			var4.addVertexWithUV(x + w, y + h, 0, (float)(u + fw) * 0.00390625F,
+				(float)(v + fh) * 0.00390625F);
 			var4.addVertexWithUV(x + w, (double)y + 0, 0,
 				(float)(u + fw) * 0.00390625F, (float)(v + 0) * 0.00390625F);
 			var4.addVertexWithUV((double)x + 0, (double)y + 0, 0,
@@ -451,8 +454,8 @@ public class AltRenderer
 			var4.startDrawingQuads();
 			var4.addVertexWithUV((double)x + 0, y + h, 0,
 				(float)(u + 0) * 0.00390625F, (float)(v + fh) * 0.00390625F);
-			var4.addVertexWithUV(x + w, y + h, 0,
-				(float)(u + fw) * 0.00390625F, (float)(v + fh) * 0.00390625F);
+			var4.addVertexWithUV(x + w, y + h, 0, (float)(u + fw) * 0.00390625F,
+				(float)(v + fh) * 0.00390625F);
 			var4.addVertexWithUV(x + w, (double)y + 0, 0,
 				(float)(u + fw) * 0.00390625F, (float)(v + 0) * 0.00390625F);
 			var4.addVertexWithUV((double)x + 0, (double)y + 0, 0,
@@ -508,8 +511,8 @@ public class AltRenderer
 			var4.startDrawingQuads();
 			var4.addVertexWithUV((double)x + 0, y + h, 0,
 				(float)(u + 0) * 0.00390625F, (float)(v + fh) * 0.00390625F);
-			var4.addVertexWithUV(x + w, y + h, 0,
-				(float)(u + fw) * 0.00390625F, (float)(v + fh) * 0.00390625F);
+			var4.addVertexWithUV(x + w, y + h, 0, (float)(u + fw) * 0.00390625F,
+				(float)(v + fh) * 0.00390625F);
 			var4.addVertexWithUV(x + w, (double)y + 0, 0,
 				(float)(u + fw) * 0.00390625F, (float)(v + 0) * 0.00390625F);
 			var4.addVertexWithUV((double)x + 0, (double)y + 0, 0,
@@ -527,8 +530,8 @@ public class AltRenderer
 			var4.startDrawingQuads();
 			var4.addVertexWithUV((double)x + 0, y + h, 0,
 				(float)(u + 0) * 0.00390625F, (float)(v + fh) * 0.00390625F);
-			var4.addVertexWithUV(x + w, y + h, 0,
-				(float)(u + fw) * 0.00390625F, (float)(v + fh) * 0.00390625F);
+			var4.addVertexWithUV(x + w, y + h, 0, (float)(u + fw) * 0.00390625F,
+				(float)(v + fh) * 0.00390625F);
 			var4.addVertexWithUV(x + w, (double)y + 0, 0,
 				(float)(u + fw) * 0.00390625F, (float)(v + 0) * 0.00390625F);
 			var4.addVertexWithUV((double)x + 0, (double)y + 0, 0,

@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -17,9 +17,9 @@ import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.ClickEvent.Action;
-import net.minecraft.util.TextComponentString;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ReportedException;
+import net.minecraft.util.TextComponentString;
 import tk.wurst_client.WurstClient;
 import tk.wurst_client.events.ChatOutputEvent;
 import tk.wurst_client.events.listeners.ChatOutputListener;
@@ -28,8 +28,8 @@ import tk.wurst_client.utils.ChatUtils;
 
 public class CmdManager implements ChatOutputListener
 {
-	private final TreeMap<String, Cmd> cmds = new TreeMap<String, Cmd>(
-		new Comparator<String>()
+	private final TreeMap<String, Cmd> cmds =
+		new TreeMap<>(new Comparator<String>()
 		{
 			@Override
 			public int compare(String o1, String o2)
@@ -127,8 +127,8 @@ public class CmdManager implements ChatOutputListener
 				}catch(SyntaxError e)
 				{
 					if(e.getMessage() != null)
-						ChatUtils.message("§4Syntax error:§r "
-							+ e.getMessage());
+						ChatUtils
+							.message("§4Syntax error:§r " + e.getMessage());
 					else
 						ChatUtils.message("§4Syntax error!§r");
 					cmd.printSyntax();
@@ -141,8 +141,8 @@ public class CmdManager implements ChatOutputListener
 						CrashReport.makeCrashReport(e, "Running Wurst command");
 					CrashReportCategory crashReportCategory =
 						crashReport.makeCategory("Affected command");
-					crashReportCategory.setDetail(
-						"Command input", new Callable()
+					crashReportCategory.setDetail("Command input",
+						new Callable()
 						{
 							@Override
 							public String call() throws Exception
@@ -159,19 +159,17 @@ public class CmdManager implements ChatOutputListener
 					case ".legit":
 						TextComponentString link =
 							new TextComponentString("more info");
-						link.getStyle()
-							.setColor(EnumChatFormatting.AQUA)
-							.setClickEvent(
-								new ClickEvent(Action.OPEN_URL,
-									"https://www.wurst-client.tk/wiki/Commands/say/"));
+						link.getStyle().setColor(EnumChatFormatting.AQUA)
+							.setClickEvent(new ClickEvent(Action.OPEN_URL,
+								"https://www.wurst-client.tk/wiki/Commands/say/"));
 						
-						ChatUtils
-							.component(new TextComponentString("Try using .say (")
+						ChatUtils.component(
+							new TextComponentString("Try using .say (")
 								.appendSibling(link).appendText(")"));
 						break;
 					default:
-						ChatUtils.error("\"." + commandName
-							+ "\" is not a valid command.");
+						ChatUtils.error(
+							"\"." + commandName + "\" is not a valid command.");
 						break;
 				}
 		}

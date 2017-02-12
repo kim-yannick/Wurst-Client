@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -35,8 +35,8 @@ public class GuiOpSign extends GuiScreen
 	public void initGui()
 	{
 		Keyboard.enableRepeatEvents(true);
-		buttonList.add(new GuiButton(0, width / 2 - 100, height / 3 * 2, 98,
-			20, "Done"));
+		buttonList.add(
+			new GuiButton(0, width / 2 - 100, height / 3 * 2, 98, 20, "Done"));
 		buttonList.add(new GuiButton(1, width / 2 - 100, height / 3 * 2 + 24,
 			200, 20, "Cancel"));
 		buttonList.add(new GuiButton(2, width / 2 + 2, height / 3 * 2, 98, 20,
@@ -45,8 +45,8 @@ public class GuiOpSign extends GuiScreen
 			new GuiTextField(0, fontRendererObj, width / 2 - 100, 60, 200, 20);
 		commandBox.setMaxStringLength(100);
 		commandBox.setFocused(true);
-		commandBox.setText("/op "
-			+ Minecraft.getMinecraft().session.getUsername());
+		commandBox
+			.setText("/op " + Minecraft.getMinecraft().session.getUsername());
 		commandBox.setCursorPosition(0);
 		commandBox.setSelectionPos(commandBox.getText().length());
 		WurstClient.INSTANCE.analytics.trackPageView("/opsign", "OP Sign");
@@ -71,8 +71,8 @@ public class GuiOpSign extends GuiScreen
 				WurstClient.INSTANCE.analytics.trackEvent("opsign", "cancel");
 				break;
 			case 2:
-				MiscUtils
-					.openLink("https://www.wurst-client.tk/wiki/Mods/OP-Sign_(Force_OP)");
+				MiscUtils.openLink(
+					"https://www.wurst-client.tk/wiki/Mods/OP-Sign_(Force_OP)");
 				break;
 		}
 	}
@@ -97,7 +97,8 @@ public class GuiOpSign extends GuiScreen
 	}
 	
 	/**
-	 * "Called when the screen is unloaded. Used to disable keyboard repeat events."
+	 * "Called when the screen is unloaded. Used to disable keyboard repeat
+	 * events."
 	 */
 	@Override
 	public void onGuiClosed()
@@ -111,8 +112,7 @@ public class GuiOpSign extends GuiScreen
 	 * @throws IOException
 	 */
 	@Override
-	protected void mouseClicked(int par1, int par2, int par3)
-		throws IOException
+	protected void mouseClicked(int par1, int par2, int par3) throws IOException
 	{
 		super.mouseClicked(par1, par2, par3);
 		commandBox.mouseClicked(par1, par2, par3);
@@ -128,8 +128,8 @@ public class GuiOpSign extends GuiScreen
 			"This command will be executed once", width / 2, 90, 10526880);
 		drawCenteredString(fontRendererObj,
 			"you place & right click on a sign.", width / 2, 100, 10526880);
-		drawCenteredString(fontRendererObj,
-			"§cOnly works on servers running§r", width / 2, 110, 10526880);
+		drawCenteredString(fontRendererObj, "§cOnly works on servers running§r",
+			width / 2, 110, 10526880);
 		drawCenteredString(fontRendererObj,
 			"§c§lMinecraft 1.8 - 1.8.5 without Spigot!§r", width / 2, 120,
 			10526880);

@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -57,8 +57,8 @@ public abstract class GuiWurstSlot
 		field_148151_d = par2;
 	}
 	
-	public void func_148122_a(int p_148122_1_, int p_148122_2_,
-		int p_148122_3_, int p_148122_4_)
+	public void func_148122_a(int p_148122_1_, int p_148122_2_, int p_148122_3_,
+		int p_148122_4_)
 	{
 		field_148155_a = p_148122_1_;
 		field_148158_l = p_148122_2_;
@@ -113,13 +113,12 @@ public abstract class GuiWurstSlot
 	{
 		int var3 = field_148152_e + field_148155_a / 2 - func_148139_c() / 2;
 		int var4 = field_148152_e + field_148155_a / 2 + func_148139_c() / 2;
-		int var5 =
-			p_148124_2_ - field_148153_b - field_148160_j + (int)field_148169_q
-				- 4;
+		int var5 = p_148124_2_ - field_148153_b - field_148160_j
+			+ (int)field_148169_q - 4;
 		int var6 = var5 / field_148149_f;
 		return p_148124_1_ < func_148137_d() && p_148124_1_ >= var3
-			&& p_148124_1_ <= var4 && var6 >= 0 && var5 >= 0
-			&& var6 < getSize() ? var6 : -1;
+			&& p_148124_1_ <= var4 && var6 >= 0 && var5 >= 0 && var6 < getSize()
+				? var6 : -1;
 	}
 	
 	public void registerScrollButtons(int p_148134_1_, int p_148134_2_)
@@ -209,18 +208,16 @@ public abstract class GuiWurstSlot
 					{
 						int var8 = field_148155_a / 2 - func_148139_c() / 2;
 						var9 = field_148155_a / 2 + func_148139_c() / 2;
-						var10 =
-							p_148128_2_ - field_148153_b - field_148160_j
-								+ (int)field_148169_q - 4;
+						var10 = p_148128_2_ - field_148153_b - field_148160_j
+							+ (int)field_148169_q - 4;
 						int var11 = var10 / field_148149_f;
 						
 						if(p_148128_1_ >= var8 && p_148128_1_ <= var9
 							&& var11 >= 0 && var10 >= 0 && var11 < var4)
 						{
-							boolean var12 =
-								var11 == field_148168_r
-									&& Minecraft.getSystemTime()
-										- field_148167_s < 250L;
+							boolean var12 = var11 == field_148168_r
+								&& Minecraft.getSystemTime()
+									- field_148167_s < 250L;
 							elementClicked(var11, var12, p_148128_1_,
 								p_148128_2_);
 							field_148168_r = var11;
@@ -242,7 +239,9 @@ public abstract class GuiWurstSlot
 								var19 = 1;
 							
 							var13 =
-								(int)((float)((field_148154_c - field_148153_b) * (field_148154_c - field_148153_b)) / (float)func_148138_e());
+								(int)((float)((field_148154_c - field_148153_b)
+									* (field_148154_c - field_148153_b))
+									/ (float)func_148138_e());
 							
 							if(var13 < 32)
 								var13 = 32;
@@ -274,7 +273,7 @@ public abstract class GuiWurstSlot
 				{
 					for(; !field_148161_k.gameSettings.touchscreen
 						&& Mouse.next(); field_148161_k.currentScreen
-						.handleMouseInput())
+							.handleMouseInput())
 					{
 						int var7 = Mouse.getEventDWheel();
 						
@@ -306,14 +305,18 @@ public abstract class GuiWurstSlot
 		float var16 = 32.0F;
 		wr.startDrawingQuads();
 		wr.setColorOpaque_I(2105376);
-		wr.addVertexWithUV(field_148152_e, field_148154_c, 0.0D, field_148152_e
-			/ var16, (field_148154_c + (int)field_148169_q) / var16);
-		wr.addVertexWithUV(field_148151_d, field_148154_c, 0.0D, field_148151_d
-			/ var16, (field_148154_c + (int)field_148169_q) / var16);
-		wr.addVertexWithUV(field_148151_d, field_148153_b, 0.0D, field_148151_d
-			/ var16, (field_148153_b + (int)field_148169_q) / var16);
-		wr.addVertexWithUV(field_148152_e, field_148153_b, 0.0D, field_148152_e
-			/ var16, (field_148153_b + (int)field_148169_q) / var16);
+		wr.addVertexWithUV(field_148152_e, field_148154_c, 0.0D,
+			field_148152_e / var16,
+			(field_148154_c + (int)field_148169_q) / var16);
+		wr.addVertexWithUV(field_148151_d, field_148154_c, 0.0D,
+			field_148151_d / var16,
+			(field_148154_c + (int)field_148169_q) / var16);
+		wr.addVertexWithUV(field_148151_d, field_148153_b, 0.0D,
+			field_148151_d / var16,
+			(field_148153_b + (int)field_148169_q) / var16);
+		wr.addVertexWithUV(field_148152_e, field_148153_b, 0.0D,
+			field_148152_e / var16,
+			(field_148153_b + (int)field_148169_q) / var16);
 		ts.draw();
 		var9 = field_148152_e + field_148155_a / 2 - func_148139_c() / 2 + 2;
 		var10 = field_148153_b + 4 - (int)field_148169_q;
@@ -355,9 +358,8 @@ public abstract class GuiWurstSlot
 		
 		if(var19 > 0)
 		{
-			var13 =
-				(field_148154_c - field_148153_b)
-					* (field_148154_c - field_148153_b) / func_148138_e();
+			var13 = (field_148154_c - field_148153_b)
+				* (field_148154_c - field_148153_b) / func_148138_e();
 			
 			if(var13 < 32)
 				var13 = 32;
@@ -433,18 +435,18 @@ public abstract class GuiWurstSlot
 			{
 				if(field_148166_t && isSelected(var7))
 				{
-					int var10 =
-						field_148152_e + field_148155_a / 2 - func_148139_c()
-							/ 2;
-					int var11 =
-						field_148152_e + field_148155_a / 2 + func_148139_c()
-							/ 2;
+					int var10 = field_148152_e + field_148155_a / 2
+						- func_148139_c() / 2;
+					int var11 = field_148152_e + field_148155_a / 2
+						+ func_148139_c() / 2;
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 					GL11.glDisable(GL11.GL_TEXTURE_2D);
 					wr.startDrawingQuads();
 					wr.setColorOpaque_I(8421504);
-					wr.addVertexWithUV(var10, var8 + var9 + 2, 0.0D, 0.0D, 1.0D);
-					wr.addVertexWithUV(var11, var8 + var9 + 2, 0.0D, 1.0D, 1.0D);
+					wr.addVertexWithUV(var10, var8 + var9 + 2, 0.0D, 0.0D,
+						1.0D);
+					wr.addVertexWithUV(var11, var8 + var9 + 2, 0.0D, 1.0D,
+						1.0D);
 					wr.addVertexWithUV(var11, var8 - 2, 0.0D, 1.0D, 0.0D);
 					wr.addVertexWithUV(var10, var8 - 2, 0.0D, 0.0D, 0.0D);
 					wr.setColorOpaque_I(0);
@@ -479,15 +481,15 @@ public abstract class GuiWurstSlot
 		float var6 = 32.0F;
 		wr.startDrawingQuads();
 		wr.setColorRGBA_I(4210752, p_148136_4_);
-		wr.addVertexWithUV(field_148152_e, p_148136_2_, 0.0D, 0.0D, p_148136_2_
-			/ var6);
+		wr.addVertexWithUV(field_148152_e, p_148136_2_, 0.0D, 0.0D,
+			p_148136_2_ / var6);
 		wr.addVertexWithUV(field_148152_e + field_148155_a, p_148136_2_, 0.0D,
 			field_148155_a / var6, p_148136_2_ / var6);
 		wr.setColorRGBA_I(4210752, p_148136_3_);
 		wr.addVertexWithUV(field_148152_e + field_148155_a, p_148136_1_, 0.0D,
 			field_148155_a / var6, p_148136_1_ / var6);
-		wr.addVertexWithUV(field_148152_e, p_148136_1_, 0.0D, 0.0D, p_148136_1_
-			/ var6);
+		wr.addVertexWithUV(field_148152_e, p_148136_1_, 0.0D, 0.0D,
+			p_148136_1_ / var6);
 		ts.draw();
 	}
 	

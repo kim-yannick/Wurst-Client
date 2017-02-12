@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -65,12 +65,10 @@ public class FrameHook
 		InputStream icon32 = null;
 		try
 		{
-			icon16 =
-				mcDefaultResourcePack.func_152780_c(new ResourceLocation(
-					"icons/icon_16x16.png"));
-			icon32 =
-				mcDefaultResourcePack.func_152780_c(new ResourceLocation(
-					"icons/icon_32x32.png"));
+			icon16 = mcDefaultResourcePack
+				.func_152780_c(new ResourceLocation("icons/icon_16x16.png"));
+			icon32 = mcDefaultResourcePack
+				.func_152780_c(new ResourceLocation("icons/icon_32x32.png"));
 			ArrayList<BufferedImage> icons = new ArrayList<>();
 			icons.add(ImageIO.read(icon16));
 			icons.add(ImageIO.read(icon32));
@@ -91,9 +89,8 @@ public class FrameHook
 	
 	private static boolean isAutoMaximize()
 	{
-		File autoMaximizeFile =
-			new File(Minecraft.getMinecraft().mcDataDir
-				+ "/wurst/automaximize.json");
+		File autoMaximizeFile = new File(
+			Minecraft.getMinecraft().mcDataDir + "/wurst/automaximize.json");
 		boolean autoMaximizeEnabled = false;
 		if(!autoMaximizeFile.exists())
 			createAutoMaximizeFile(autoMaximizeFile);

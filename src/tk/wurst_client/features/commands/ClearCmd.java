@@ -1,13 +1,15 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 package tk.wurst_client.features.commands;
 
-@Cmd.Info(description = "Clears the chat completely.", name = "clear", syntax = {})
+@Cmd.Info(description = "Clears the chat completely.",
+	name = "clear",
+	syntax = {})
 public class ClearCmd extends Cmd
 {
 	@Override

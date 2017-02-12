@@ -104,8 +104,8 @@ public class GuiWurstMainMenu extends GuiMainMenu
 		
 		// adjust position of options, quit & language buttons
 		for(int i = 3; i <= 5; i++)
-			((GuiButton)buttonList.get(i)).yPosition =
-				Math.min(((GuiButton)buttonList.get(i)).yPosition, height - 56);
+			buttonList.get(i).yPosition =
+				Math.min(buttonList.get(i).yPosition, height - 56);
 		
 		// notice
 		noticeWidth1 = fontRendererObj.getStringWidth(noticeText);
@@ -113,7 +113,7 @@ public class GuiWurstMainMenu extends GuiMainMenu
 			fontRendererObj.getStringWidth(GuiMainMenu.MORE_INFO_TEXT);
 		int noticeWidth = Math.max(noticeWidth1, noticeWidth2);
 		noticeX1 = (width - noticeWidth) / 2;
-		noticeY1 = ((GuiButton)buttonList.get(0)).yPosition - 24;
+		noticeY1 = buttonList.get(0).yPosition - 24;
 		noticeX2 = noticeX1 + noticeWidth;
 		noticeY2 = noticeY1 + 24;
 		
@@ -352,7 +352,7 @@ public class GuiWurstMainMenu extends GuiMainMenu
 		// tooltips
 		for(int i = 0; i < buttonList.size(); i++)
 		{
-			GuiButton button = (GuiButton)buttonList.get(i);
+			GuiButton button = buttonList.get(i);
 			if(button.isMouseOver())
 			{
 				ArrayList<String> tooltip = new ArrayList<>();
@@ -389,8 +389,8 @@ public class GuiWurstMainMenu extends GuiMainMenu
 				1428160512);
 			drawString(fontRendererObj, noticeText, noticeX1, noticeY1, -1);
 			drawString(fontRendererObj, GuiMainMenu.MORE_INFO_TEXT,
-				(width - noticeWidth2) / 2,
-				((GuiButton)buttonList.get(0)).yPosition - 12, -1);
+				(width - noticeWidth2) / 2, buttonList.get(0).yPosition - 12,
+				-1);
 		}
 	}
 	

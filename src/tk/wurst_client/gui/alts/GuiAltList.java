@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -26,8 +26,8 @@ public class GuiAltList extends GuiWurstSlot
 {
 	public GuiAltList(Minecraft mc, GuiAlts prevMenu)
 	{
-		super(mc, prevMenu.width, prevMenu.height, 36,
-			prevMenu.height - 56, 30);
+		super(mc, prevMenu.width, prevMenu.height, 36, prevMenu.height - 56,
+			30);
 		
 		this.mc = mc;
 		this.prevMenu = prevMenu;
@@ -35,7 +35,7 @@ public class GuiAltList extends GuiWurstSlot
 	
 	private int selectedSlot;
 	private Minecraft mc;
-	public static ArrayList<Alt> alts = new ArrayList<Alt>();
+	public static ArrayList<Alt> alts = new ArrayList<>();
 	public static int premiumAlts;
 	public static int crackedAlts;
 	private GuiAlts prevMenu;
@@ -49,11 +49,11 @@ public class GuiAltList extends GuiWurstSlot
 			{
 				if(o1 == null || o2 == null)
 					return 0;
-				return o1.getNameOrEmail().compareToIgnoreCase(
-					o2.getNameOrEmail());
+				return o1.getNameOrEmail()
+					.compareToIgnoreCase(o2.getNameOrEmail());
 			}
 		});
-		ArrayList<Alt> newAlts = new ArrayList<Alt>();
+		ArrayList<Alt> newAlts = new ArrayList<>();
 		premiumAlts = 0;
 		crackedAlts = 0;
 		for(int i = 0; i < alts.size(); i++)
@@ -101,7 +101,8 @@ public class GuiAltList extends GuiWurstSlot
 	}
 	
 	@Override
-	protected void elementClicked(int var1, boolean doubleClick, int var3, int var4)
+	protected void elementClicked(int var1, boolean doubleClick, int var3,
+		int var4)
 	{
 		selectedSlot = var1;
 		if(doubleClick)

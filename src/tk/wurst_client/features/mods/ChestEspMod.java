@@ -124,7 +124,7 @@ public class ChestEspMod extends Mod implements UpdateListener, RenderListener
 				else if(chest.adjacentChestZNeg != null)
 					bb = bb.union(BlockUtils
 						.getBoundingBox(chest.adjacentChestZNeg.getPos()));
-
+				
 				boolean trapped = chest.getChestType() == 1;
 				
 				// add to appropriate list
@@ -142,13 +142,10 @@ public class ChestEspMod extends Mod implements UpdateListener, RenderListener
 					else
 						basicNotEmpty.add(bb);
 					
-				}else
-				{
-					if(trapped)
-						trappedNew.add(bb);
-					else
-						basicNew.add(bb);
-				}
+				}else if(trapped)
+					trappedNew.add(bb);
+				else
+					basicNew.add(bb);
 				
 				continue;
 			}

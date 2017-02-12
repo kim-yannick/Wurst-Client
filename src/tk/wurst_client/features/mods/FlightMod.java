@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -99,8 +99,8 @@ public class FlightMod extends Mod implements UpdateListener
 			if(y < minY)
 				y = minY;
 			
-			Position packet = new Position(
-				mc.player.posX, y, mc.player.posZ, true);
+			Position packet =
+				new Position(mc.player.posX, y, mc.player.posZ, true);
 			mc.player.connection.sendPacket(packet);
 		}
 		
@@ -110,8 +110,8 @@ public class FlightMod extends Mod implements UpdateListener
 			if(y > mc.player.posY)
 				y = mc.player.posY;
 			
-			Position packet = new Position(
-				mc.player.posX, y, mc.player.posZ, true);
+			Position packet =
+				new Position(mc.player.posX, y, mc.player.posZ, true);
 			mc.player.connection.sendPacket(packet);
 		}
 	}
@@ -137,12 +137,10 @@ public class FlightMod extends Mod implements UpdateListener
 			double startZ = mc.player.posZ;
 			for(int i = 0; i < 4; i++)
 			{
+				mc.player.connection.sendPacket(new CPacketPlayer.Position(
+					startX, startY + 1.01, startZ, false));
 				mc.player.connection.sendPacket(
-					new CPacketPlayer.Position(startX,
-						startY + 1.01, startZ, false));
-				mc.player.connection.sendPacket(
-					new CPacketPlayer.Position(startX, startY,
-						startZ, false));
+					new CPacketPlayer.Position(startX, startY, startZ, false));
 			}
 			mc.player.jump();
 		}

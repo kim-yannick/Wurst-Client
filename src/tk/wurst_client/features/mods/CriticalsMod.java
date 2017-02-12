@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -42,8 +42,7 @@ public class CriticalsMod extends Mod implements LeftClickListener
 	@Override
 	public Feature[] getSeeAlso()
 	{
-		return new Feature[]{wurst.mods.killauraMod,
-			wurst.mods.triggerBotMod};
+		return new Feature[]{wurst.mods.killauraMod, wurst.mods.triggerBotMod};
 	}
 	
 	@Override
@@ -73,7 +72,6 @@ public class CriticalsMod extends Mod implements LeftClickListener
 		if(!mc.player.isInWater()
 			&& !mc.player.isInsideOfMaterial(Material.LAVA)
 			&& mc.player.onGround)
-		{
 			switch(mode)
 			{
 				case 0:
@@ -87,17 +85,13 @@ public class CriticalsMod extends Mod implements LeftClickListener
 					double posZ = mc.player.posZ;
 					NetHandlerPlayClient sendQueue = mc.player.connection;
 					
-					sendQueue.sendPacket(new Position(posX,
-						posY + 0.0625D, posZ, true));
 					sendQueue.sendPacket(
-						new Position(posX, posY, posZ, false));
-					sendQueue.sendPacket(new Position(posX,
-						posY + 1.1E-5D, posZ, false));
+						new Position(posX, posY + 0.0625D, posZ, true));
+					sendQueue.sendPacket(new Position(posX, posY, posZ, false));
 					sendQueue.sendPacket(
-						new Position(posX, posY, posZ, false));
+						new Position(posX, posY + 1.1E-5D, posZ, false));
+					sendQueue.sendPacket(new Position(posX, posY, posZ, false));
 					break;
 			}
-			
-		}
 	}
 }

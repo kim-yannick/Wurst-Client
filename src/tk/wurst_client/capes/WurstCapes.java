@@ -1,6 +1,6 @@
 /*
  * Copyright © 2014 - 2017 | Wurst-Imperium | All rights reserved.
- * 
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -40,19 +40,17 @@ public class WurstCapes
 		if(capes == null)
 			try
 			{
-				HttpsURLConnection connection =
-					(HttpsURLConnection)new URL(
-						"https://www.wurst-client.tk/api/v1/capes.json")
+				HttpsURLConnection connection = (HttpsURLConnection)new URL(
+					"https://www.wurst-client.tk/api/v1/capes.json")
 						.openConnection();
 				connection.connect();
-				capes =
-					JsonUtils.jsonParser.parse(
-						new InputStreamReader(connection.getInputStream()))
-						.getAsJsonObject();
+				capes = JsonUtils.jsonParser
+					.parse(new InputStreamReader(connection.getInputStream()))
+					.getAsJsonObject();
 			}catch(Exception e)
 			{
-				System.err
-					.println("[Wurst] Failed to load capes from wurst-client.tk!");
+				System.err.println(
+					"[Wurst] Failed to load capes from wurst-client.tk!");
 				e.printStackTrace();
 				return;
 			}

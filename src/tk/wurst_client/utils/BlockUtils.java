@@ -108,7 +108,8 @@ public final class BlockUtils
 			RotationUtils.faceVectorPacketInstant(hitVec);
 			
 			// place block
-			PlayerUtils.processRightClickBlock(neighbor, side.getOpposite(), hitVec);
+			PlayerUtils.processRightClickBlock(neighbor, side.getOpposite(),
+				hitVec);
 			PlayerUtils.swingArmClient();
 			mc.rightClickDelayTimer = 4;
 			
@@ -139,7 +140,8 @@ public final class BlockUtils
 				continue;
 			
 			// place block
-			PlayerUtils.processRightClickBlock(neighbor, side.getOpposite(), hitVec);
+			PlayerUtils.processRightClickBlock(neighbor, side.getOpposite(),
+				hitVec);
 			
 			return true;
 		}
@@ -438,7 +440,6 @@ public final class BlockUtils
 					boolean canBeClicked = canBeClicked(current);
 					
 					if(ignoreVisibility || !canBeClicked)
-					{
 						// add neighbors
 						for(EnumFacing facing : EnumFacing.values())
 						{
@@ -450,7 +451,6 @@ public final class BlockUtils
 							queue.add(next);
 							visited.add(next);
 						}
-					}
 					
 					// check if block is valid
 					if(canBeClicked && validator.isValid(current))
