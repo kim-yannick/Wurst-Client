@@ -9,12 +9,12 @@ package tk.wurst_client.features.mods;
 
 import net.minecraft.network.play.client.CPacketChatMessage;
 import net.minecraft.network.play.client.CPacketPlayer;
-import net.minecraft.network.play.client.CPacketUseEntity;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.features.Feature;
 import tk.wurst_client.settings.ModeSetting;
 import tk.wurst_client.settings.SliderSetting;
 import tk.wurst_client.settings.SliderSetting.ValueDisplay;
+import tk.wurst_client.utils.EntityUtils;
 
 @Mod.Info(
 	description = "Automatically leaves the server when your health is low.\n"
@@ -94,8 +94,7 @@ public class AutoLeaveMod extends Mod implements UpdateListener
 				break;
 			
 			case 3:
-				mc.player.connection.sendPacket(new CPacketUseEntity(mc.player,
-					CPacketUseEntity.Action.ATTACK));
+				EntityUtils.sendAttackPacket(mc.player);
 				break;
 		}
 		

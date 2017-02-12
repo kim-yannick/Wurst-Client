@@ -47,6 +47,11 @@ public class EntityUtils
 	public static void attackEntity(Entity entity)
 	{
 		PlayerUtils.swingArmClient();
+		sendAttackPacket(entity);
+	}
+	
+	public static void sendAttackPacket(Entity entity)
+	{
 		mc.player.connection.sendPacket(
 			new CPacketUseEntity(entity, CPacketUseEntity.Action.ATTACK));
 	}
