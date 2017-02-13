@@ -1,6 +1,6 @@
-From 3fac5722ce8d917413e2b4e6296547f424a1b0df Mon Sep 17 00:00:00 2001
+From 4556429208b4fcbd8f531dc175ba7706ec898b59 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Mon, 13 Feb 2017 12:59:53 +0100
+Date: Mon, 13 Feb 2017 13:08:45 +0100
 Subject: [PATCH] mod
 
 ---
@@ -227,7 +227,7 @@ Subject: [PATCH] mod
  .../client/renderer/ActiveRenderInfo.java          |  16 +-
  .../client/renderer/BlockFluidRenderer.java        |  26 +-
  .../client/renderer/BlockModelRenderer.java        |  10 +-
- .../client/renderer/BlockModelShapes.java          |  36 +-
+ .../client/renderer/BlockModelShapes.java          |  38 +-
  net/minecraft/client/renderer/EntityRenderer.java  | 209 +++++----
  .../client/renderer/ImageBufferDownload.java       |   6 +-
  .../client/renderer/InventoryEffectRenderer.java   |  10 +-
@@ -250,7 +250,7 @@ Subject: [PATCH] mod
  .../client/renderer/entity/RenderFallingBlock.java |   7 +-
  .../client/renderer/entity/RenderFish.java         |  10 +-
  .../client/renderer/entity/RenderGuardian.java     |  18 +-
- .../client/renderer/entity/RenderItem.java         | 216 ++++-----
+ .../client/renderer/entity/RenderItem.java         | 218 ++++-----
  .../renderer/entity/RenderLightningBolt.java       |   2 +-
  .../client/renderer/entity/RenderLiving.java       |   8 +-
  .../client/renderer/entity/RenderManager.java      |  25 +-
@@ -343,7 +343,7 @@ Subject: [PATCH] mod
  net/minecraft/entity/EntityHanging.java            |   6 +-
  net/minecraft/entity/EntityLiving.java             |   6 +-
  net/minecraft/entity/EntityLivingBase.java         |  62 ++-
- .../entity/EntityMinecartCommandBlock.java         |  14 +-
+ .../entity/EntityMinecartCommandBlock.java         |  16 +-
  net/minecraft/entity/EntityTracker.java            |   5 +-
  net/minecraft/entity/EnumCreatureType.java         |   8 +-
  net/minecraft/entity/IMerchant.java                |   4 +-
@@ -427,8 +427,8 @@ Subject: [PATCH] mod
  .../entity/projectile/EntityThrowable.java         |  32 +-
  .../entity/projectile/EntityWitherSkull.java       |   6 +-
  net/minecraft/event/HoverEvent.java                |   8 +-
- net/minecraft/init/Blocks.java                     | 180 ++++----
- net/minecraft/init/Bootstrap.java                  |   8 +-
+ net/minecraft/init/Blocks.java                     | 184 ++++----
+ net/minecraft/init/Bootstrap.java                  |  12 +-
  net/minecraft/init/Items.java                      |   4 +-
  net/minecraft/inventory/AnimalChest.java           |   4 +-
  net/minecraft/inventory/Container.java             |   2 +-
@@ -440,7 +440,7 @@ Subject: [PATCH] mod
  net/minecraft/inventory/InventoryLargeChest.java   |   8 +-
  net/minecraft/inventory/InventoryMerchant.java     |   8 +-
  net/minecraft/inventory/Slot.java                  |   7 +-
- net/minecraft/item/Item.java                       |  96 ++--
+ net/minecraft/item/Item.java                       |  98 ++--
  net/minecraft/item/ItemArmorStand.java             |   4 +-
  net/minecraft/item/ItemAxe.java                    |   2 +-
  net/minecraft/item/ItemBed.java                    |   4 +-
@@ -687,7 +687,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |  10 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 683 files changed, 8187 insertions(+), 6896 deletions(-)
+ 683 files changed, 8195 insertions(+), 6904 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -15827,7 +15827,7 @@ index 21be134..4884931 100644
              var7 = true;
          }
 diff --git a/net/minecraft/client/renderer/BlockModelShapes.java b/net/minecraft/client/renderer/BlockModelShapes.java
-index 33c3df8..6a0c707 100644
+index 33c3df8..90a2404 100644
 --- a/net/minecraft/client/renderer/BlockModelShapes.java
 +++ b/net/minecraft/client/renderer/BlockModelShapes.java
 @@ -93,12 +93,12 @@ public class BlockModelShapes
@@ -15861,7 +15861,8 @@ index 33c3df8..6a0c707 100644
          this.func_178121_a(Blocks.cactus, (new StateMap.Builder()).func_178442_a(new IProperty[] {BlockCactus.AGE_PROP}).build());
          this.func_178121_a(Blocks.reeds, (new StateMap.Builder()).func_178442_a(new IProperty[] {BlockReed.field_176355_a}).build());
          this.func_178121_a(Blocks.jukebox, (new StateMap.Builder()).func_178442_a(new IProperty[] {BlockJukebox.HAS_RECORD}).build());
-         this.func_178121_a(Blocks.command_block, (new StateMap.Builder()).func_178442_a(new IProperty[] {BlockCommandBlock.TRIGGERED_PROP}).build());
+-        this.func_178121_a(Blocks.command_block, (new StateMap.Builder()).func_178442_a(new IProperty[] {BlockCommandBlock.TRIGGERED_PROP}).build());
++        this.func_178121_a(Blocks.COMMAND_BLOCK, (new StateMap.Builder()).func_178442_a(new IProperty[] {BlockCommandBlock.TRIGGERED_PROP}).build());
          this.func_178121_a(Blocks.cobblestone_wall, (new StateMap.Builder()).func_178440_a(BlockWall.field_176255_P).func_178439_a("_wall").build());
 -        this.func_178121_a(Blocks.double_plant, (new StateMap.Builder()).func_178440_a(BlockDoublePlant.VARIANT_PROP).build());
 +        this.func_178121_a(Blocks.DOUBLE_PLANT, (new StateMap.Builder()).func_178440_a(BlockDoublePlant.VARIANT_PROP).build());
@@ -17866,7 +17867,7 @@ index ef1550c..7a5da44 100644
              double var31 = var29 * 1.41D;
              double var33 = 0.0D + Math.cos(var26 + 2.356194490192345D) * var31;
 diff --git a/net/minecraft/client/renderer/entity/RenderItem.java b/net/minecraft/client/renderer/entity/RenderItem.java
-index 3da61f1..86b2a41 100644
+index 3da61f1..3fa19f9 100644
 --- a/net/minecraft/client/renderer/entity/RenderItem.java
 +++ b/net/minecraft/client/renderer/entity/RenderItem.java
 @@ -3,6 +3,7 @@ package net.minecraft.client.renderer.entity;
@@ -18304,7 +18305,12 @@ index 3da61f1..86b2a41 100644
          this.registerItem(Items.mushroom_stew, "mushroom_stew");
          this.registerItem(Items.golden_sword, "golden_sword");
          this.registerItem(Items.golden_shovel, "golden_shovel");
-@@ -1070,10 +1072,10 @@ public class RenderItem implements IResourceManagerReloadListener
+@@ -1066,14 +1068,14 @@ public class RenderItem implements IResourceManagerReloadListener
+                 return new ModelResourceLocation("filled_map", "inventory");
+             }
+         });
+-        this.registerBlock(Blocks.command_block, "command_block");
++        this.registerBlock(Blocks.COMMAND_BLOCK, "command_block");
          this.registerItem(Items.fireworks, "fireworks");
          this.registerItem(Items.command_block_minecart, "command_block_minecart");
          this.registerBlock(Blocks.barrier, "barrier");
@@ -21940,7 +21946,7 @@ index 80f1f20..38c1eab 100644
          if (p_70676_1_ == 1.0F)
          {
 diff --git a/net/minecraft/entity/EntityMinecartCommandBlock.java b/net/minecraft/entity/EntityMinecartCommandBlock.java
-index f4488eb..b4a3468 100644
+index f4488eb..7936ac3 100644
 --- a/net/minecraft/entity/EntityMinecartCommandBlock.java
 +++ b/net/minecraft/entity/EntityMinecartCommandBlock.java
 @@ -8,8 +8,8 @@ import net.minecraft.entity.player.EntityPlayer;
@@ -21984,6 +21990,15 @@ index f4488eb..b4a3468 100644
      }
  
      /**
+@@ -94,7 +94,7 @@ public class EntityMinecartCommandBlock extends EntityMinecart
+ 
+     public IBlockState func_180457_u()
+     {
+-        return Blocks.command_block.getDefaultState();
++        return Blocks.COMMAND_BLOCK.getDefaultState();
+     }
+ 
+     public CommandBlockLogic func_145822_e()
 @@ -131,7 +131,7 @@ public class EntityMinecartCommandBlock extends EntityMinecart
          {
              try
@@ -22689,7 +22704,7 @@ index 428fb44..a49a1c2 100644
      }
  }
 diff --git a/net/minecraft/entity/boss/EntityDragon.java b/net/minecraft/entity/boss/EntityDragon.java
-index d971033..d496988 100644
+index d971033..ec661df 100644
 --- a/net/minecraft/entity/boss/EntityDragon.java
 +++ b/net/minecraft/entity/boss/EntityDragon.java
 @@ -24,7 +24,7 @@ import net.minecraft.util.EntityDamageSource;
@@ -22811,7 +22826,7 @@ index d971033..d496988 100644
 +                    if (var13.getMaterial() != Material.AIR)
                      {
 -                        if (var13 != Blocks.barrier && var13 != Blocks.obsidian && var13 != Blocks.end_stone && var13 != Blocks.bedrock && var13 != Blocks.command_block && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
-+                        if (var13 != Blocks.barrier && var13 != Blocks.OBSIDIAN && var13 != Blocks.end_stone && var13 != Blocks.BEDROCK && var13 != Blocks.command_block && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
++                        if (var13 != Blocks.barrier && var13 != Blocks.OBSIDIAN && var13 != Blocks.end_stone && var13 != Blocks.BEDROCK && var13 != Blocks.COMMAND_BLOCK && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
                          {
                              var9 = this.worldObj.setBlockToAir(new BlockPos(var10, var11, var12)) || var9;
                          }
@@ -22863,7 +22878,7 @@ index d971033..d496988 100644
  
      /**
 diff --git a/net/minecraft/entity/boss/EntityWither.java b/net/minecraft/entity/boss/EntityWither.java
-index 8dd15b6..bb37dcf 100644
+index 8dd15b6..18eebcf 100644
 --- a/net/minecraft/entity/boss/EntityWither.java
 +++ b/net/minecraft/entity/boss/EntityWither.java
 @@ -164,7 +164,7 @@ public class EntityWither extends EntityMob implements IBossDisplayData, IRanged
@@ -22889,7 +22904,7 @@ index 8dd15b6..bb37dcf 100644
                                  Block var11 = this.worldObj.getBlockState(new BlockPos(var20, var9, var10)).getBlock();
  
 -                                if (var11.getMaterial() != Material.air && var11 != Blocks.bedrock && var11 != Blocks.end_portal && var11 != Blocks.end_portal_frame && var11 != Blocks.command_block && var11 != Blocks.barrier)
-+                                if (var11.getMaterial() != Material.AIR && var11 != Blocks.BEDROCK && var11 != Blocks.end_portal && var11 != Blocks.end_portal_frame && var11 != Blocks.command_block && var11 != Blocks.barrier)
++                                if (var11.getMaterial() != Material.AIR && var11 != Blocks.BEDROCK && var11 != Blocks.end_portal && var11 != Blocks.end_portal_frame && var11 != Blocks.COMMAND_BLOCK && var11 != Blocks.barrier)
                                  {
                                      var17 = this.worldObj.destroyBlock(new BlockPos(var20, var9, var10), true) || var17;
                                  }
@@ -25555,7 +25570,7 @@ index d2dea91..deb1abd 100644
      /**
       * (abstract) Protected helper method to write subclass entity data to NBT.
 diff --git a/net/minecraft/entity/projectile/EntityWitherSkull.java b/net/minecraft/entity/projectile/EntityWitherSkull.java
-index 92eec77..0243e55 100644
+index 92eec77..e6e43c4 100644
 --- a/net/minecraft/entity/projectile/EntityWitherSkull.java
 +++ b/net/minecraft/entity/projectile/EntityWitherSkull.java
 @@ -7,7 +7,7 @@ import net.minecraft.potion.Potion;
@@ -25572,7 +25587,7 @@ index 92eec77..0243e55 100644
          float var5 = super.getExplosionResistance(p_180428_1_, worldIn, p_180428_3_, p_180428_4_);
  
 -        if (this.isInvulnerable() && p_180428_4_.getBlock() != Blocks.bedrock && p_180428_4_.getBlock() != Blocks.end_portal && p_180428_4_.getBlock() != Blocks.end_portal_frame && p_180428_4_.getBlock() != Blocks.command_block)
-+        if (this.isInvulnerable() && p_180428_4_.getBlock() != Blocks.BEDROCK && p_180428_4_.getBlock() != Blocks.end_portal && p_180428_4_.getBlock() != Blocks.end_portal_frame && p_180428_4_.getBlock() != Blocks.command_block)
++        if (this.isInvulnerable() && p_180428_4_.getBlock() != Blocks.BEDROCK && p_180428_4_.getBlock() != Blocks.end_portal && p_180428_4_.getBlock() != Blocks.end_portal_frame && p_180428_4_.getBlock() != Blocks.COMMAND_BLOCK)
          {
              var5 = Math.min(0.8F, var5);
          }
@@ -25618,7 +25633,7 @@ index 69b88d2..53e62da 100644
          return this.value;
      }
 diff --git a/net/minecraft/init/Blocks.java b/net/minecraft/init/Blocks.java
-index 9e34ddd..310196c 100644
+index 9e34ddd..c3a1c06 100644
 --- a/net/minecraft/init/Blocks.java
 +++ b/net/minecraft/init/Blocks.java
 @@ -36,49 +36,49 @@ import net.minecraft.util.ResourceLocation;
@@ -25778,6 +25793,15 @@ index 9e34ddd..310196c 100644
      public static final Block ender_chest;
      public static final BlockTripWireHook tripwire_hook;
      public static final Block tripwire;
+@@ -189,7 +189,7 @@ public class Blocks
+     public static final Block spruce_stairs;
+     public static final Block birch_stairs;
+     public static final Block jungle_stairs;
+-    public static final Block command_block;
++    public static final Block COMMAND_BLOCK;
+     public static final BlockBeacon beacon;
+     public static final Block cobblestone_wall;
+     public static final Block flower_pot;
 @@ -206,7 +206,7 @@ public class Blocks
      public static final BlockDaylightDetector daylight_detector;
      public static final BlockDaylightDetector daylight_detector_inverted;
@@ -25968,6 +25992,15 @@ index 9e34ddd..310196c 100644
              ender_chest = getRegisteredBlock("ender_chest");
              tripwire_hook = (BlockTripWireHook)getRegisteredBlock("tripwire_hook");
              tripwire = getRegisteredBlock("tripwire");
+@@ -405,7 +405,7 @@ public class Blocks
+             spruce_stairs = getRegisteredBlock("spruce_stairs");
+             birch_stairs = getRegisteredBlock("birch_stairs");
+             jungle_stairs = getRegisteredBlock("jungle_stairs");
+-            command_block = getRegisteredBlock("command_block");
++            COMMAND_BLOCK = getRegisteredBlock("command_block");
+             beacon = (BlockBeacon)getRegisteredBlock("beacon");
+             cobblestone_wall = getRegisteredBlock("cobblestone_wall");
+             flower_pot = getRegisteredBlock("flower_pot");
 @@ -422,7 +422,7 @@ public class Blocks
              daylight_detector = (BlockDaylightDetector)getRegisteredBlock("daylight_detector");
              daylight_detector_inverted = (BlockDaylightDetector)getRegisteredBlock("daylight_detector_inverted");
@@ -26002,7 +26035,7 @@ index 9e34ddd..310196c 100644
              double_stone_slab2 = (BlockSlab)getRegisteredBlock("double_stone_slab2");
              stone_slab2 = (BlockSlab)getRegisteredBlock("stone_slab2");
 diff --git a/net/minecraft/init/Bootstrap.java b/net/minecraft/init/Bootstrap.java
-index 244dc25..da481a1 100644
+index 244dc25..a0461ee 100644
 --- a/net/minecraft/init/Bootstrap.java
 +++ b/net/minecraft/init/Bootstrap.java
 @@ -216,13 +216,13 @@ public class Bootstrap
@@ -26037,6 +26070,24 @@ index 244dc25..da481a1 100644
                      {
                          return super.dispenseStack(source, stack);
                      }
+@@ -512,7 +512,7 @@ public class Bootstrap
+                 }
+             }
+         });
+-        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.getItemFromBlock(Blocks.command_block), new BehaviorDefaultDispenseItem()
++        BlockDispenser.dispenseBehaviorRegistry.putObject(Item.getItemFromBlock(Blocks.COMMAND_BLOCK), new BehaviorDefaultDispenseItem()
+         {
+             private static final String __OBFID = "CL_00002276";
+             protected ItemStack dispenseStack(IBlockSource source, ItemStack stack)
+@@ -524,7 +524,7 @@ public class Bootstrap
+                 {
+                     if (!var3.isRemote)
+                     {
+-                        IBlockState var5 = Blocks.command_block.getDefaultState().withProperty(BlockCommandBlock.TRIGGERED_PROP, Boolean.valueOf(false));
++                        IBlockState var5 = Blocks.COMMAND_BLOCK.getDefaultState().withProperty(BlockCommandBlock.TRIGGERED_PROP, Boolean.valueOf(false));
+                         var3.setBlockState(var4, var5, 3);
+                         ItemBlock.setTileEntityNBT(var3, var4, stack);
+                         var3.notifyNeighborsOfStateChange(source.getBlockPos(), source.getBlock());
 diff --git a/net/minecraft/init/Items.java b/net/minecraft/init/Items.java
 index c80fdd0..6b71eb4 100644
 --- a/net/minecraft/init/Items.java
@@ -26287,7 +26338,7 @@ index 15d5c72..ce20868 100644
          return null;
      }
 diff --git a/net/minecraft/item/Item.java b/net/minecraft/item/Item.java
-index 36aed35..45a061e 100644
+index 36aed35..49318a9 100644
 --- a/net/minecraft/item/Item.java
 +++ b/net/minecraft/item/Item.java
 @@ -36,11 +36,11 @@ import net.minecraft.potion.PotionHelper;
@@ -26518,7 +26569,7 @@ index 36aed35..45a061e 100644
          registerItemBlock(Blocks.nether_brick);
          registerItemBlock(Blocks.nether_brick_fence);
          registerItemBlock(Blocks.nether_brick_stairs);
-@@ -772,7 +772,7 @@ public class Item
+@@ -772,14 +772,14 @@ public class Item
          registerItemBlock(Blocks.redstone_lamp);
          registerItemBlock(Blocks.wooden_slab, (new ItemSlab(Blocks.wooden_slab, Blocks.wooden_slab, Blocks.double_wooden_slab)).setUnlocalizedName("woodSlab"));
          registerItemBlock(Blocks.sandstone_stairs);
@@ -26527,6 +26578,14 @@ index 36aed35..45a061e 100644
          registerItemBlock(Blocks.ender_chest);
          registerItemBlock(Blocks.tripwire_hook);
          registerItemBlock(Blocks.emerald_block);
+         registerItemBlock(Blocks.spruce_stairs);
+         registerItemBlock(Blocks.birch_stairs);
+         registerItemBlock(Blocks.jungle_stairs);
+-        registerItemBlock(Blocks.command_block);
++        registerItemBlock(Blocks.COMMAND_BLOCK);
+         registerItemBlock(Blocks.beacon);
+         registerItemBlock(Blocks.cobblestone_wall, (new ItemMultiTexture(Blocks.cobblestone_wall, Blocks.cobblestone_wall, new Function()
+         {
 @@ -800,7 +800,7 @@ public class Item
          registerItemBlock(Blocks.heavy_weighted_pressure_plate);
          registerItemBlock(Blocks.daylight_detector);

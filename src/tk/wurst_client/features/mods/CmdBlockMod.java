@@ -43,7 +43,7 @@ public class CmdBlockMod extends Mod
 	public void createCmdBlock(String cmd)
 	{
 		// generate cmd-block
-		ItemStack stack = new ItemStack(Blocks.command_block);
+		ItemStack stack = new ItemStack(Blocks.COMMAND_BLOCK);
 		NBTTagCompound nbtTagCompound = new NBTTagCompound();
 		nbtTagCompound.setTag("Command", new NBTTagString(cmd));
 		stack.writeToNBT(nbtTagCompound);
