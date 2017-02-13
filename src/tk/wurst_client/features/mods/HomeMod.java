@@ -29,6 +29,13 @@ public class HomeMod extends Mod implements UpdateListener, ChatInputListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(ChatInputListener.class, this);
+		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		if(disableTimer == 4)
@@ -36,13 +43,6 @@ public class HomeMod extends Mod implements UpdateListener, ChatInputListener
 		else if(disableTimer == 0)
 			mc.player.sendChatMessage("/home");
 		disableTimer++;
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(ChatInputListener.class, this);
-		wurst.events.remove(UpdateListener.class, this);
 	}
 	
 	@Override
