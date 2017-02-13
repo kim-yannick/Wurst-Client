@@ -13,7 +13,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	name = "FastLadder",
 	tags = "FastClimb, fast ladder, fast climb",
 	help = "Mods/FastLadder")
-@Mod.Bypasses
+@Mod.Bypasses(ghostMode = false)
 public class FastLadderMod extends Mod implements UpdateListener
 {
 	@Override
@@ -23,15 +23,15 @@ public class FastLadderMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		if(mc.player.isOnLadder() && mc.player.isCollidedHorizontally)
 			mc.player.motionY = 0.2872;
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
 	}
 }
