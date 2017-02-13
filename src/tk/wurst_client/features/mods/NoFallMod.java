@@ -15,7 +15,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	name = "NoFall",
 	tags = "no fall",
 	help = "Mods/NoFall")
-@Mod.Bypasses
+@Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
 public class NoFallMod extends Mod implements UpdateListener
 {
 	@Override
@@ -25,15 +25,15 @@ public class NoFallMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		if(mc.player.fallDistance > 2)
 			mc.player.connection.sendPacket(new CPacketPlayer(true));
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
 	}
 }
