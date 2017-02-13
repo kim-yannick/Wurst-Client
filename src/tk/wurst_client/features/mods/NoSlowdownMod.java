@@ -15,7 +15,10 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	name = "NoSlowdown",
 	tags = "no slowdown, no slow down",
 	help = "Mods/NoSlowdown")
-@Mod.Bypasses
+@Mod.Bypasses(ghostMode = false,
+	latestNCP = false,
+	olderNCP = false,
+	antiCheat = false)
 public class NoSlowdownMod extends Mod implements UpdateListener
 {
 	@Override
@@ -25,16 +28,16 @@ public class NoSlowdownMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		if(mc.player.onGround && mc.player.isInWater()
 			&& mc.gameSettings.keyBindJump.pressed)
 			mc.player.jump();
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
 	}
 }
