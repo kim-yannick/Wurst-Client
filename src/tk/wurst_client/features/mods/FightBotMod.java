@@ -12,7 +12,7 @@ import org.lwjgl.input.Keyboard;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
-import net.minecraft.network.play.client.CPacketUseEntity;
+import tk.wurst_client.WurstClient;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.features.Feature;
 import tk.wurst_client.features.special_features.YesCheatSpf.BypassLevel;
@@ -42,15 +42,32 @@ public class FightBotMod extends Mod implements UpdateListener
 				if(isChecked())
 				{
 					KillauraMod killaura = wurst.mods.killauraMod;
+					
+					if(useCooldown != null)
+						useCooldown.lock(killaura.useCooldown);
+					
 					speed.lock(killaura.speed);
 					range.lock(killaura.range);
 				}else
 				{
+					if(useCooldown != null)
+						useCooldown.unlock();
+					
 					speed.unlock();
 					range.unlock();
 				}
-			};
+			}
 		};
+	public CheckboxSetting useCooldown =
+		WurstClient.MINECRAFT_VERSION.equals("1.8") ? null
+			: new CheckboxSetting("Use Attack Cooldown as Speed", true)
+			{
+				@Override
+				public void update()
+				{
+					speed.setDisabled(isChecked());
+				}
+			};
 	public SliderSetting speed =
 		new SliderSetting("Speed", 20, 0.1, 20, 0.1, ValueDisplay.DECIMAL);
 	public SliderSetting range =
@@ -72,6 +89,10 @@ public class FightBotMod extends Mod implements UpdateListener
 	public void initSettings()
 	{
 		settings.add(useKillaura);
+		
+		if(useCooldown != null)
+			settings.add(useCooldown);
+		
 		settings.add(speed);
 		settings.add(range);
 		settings.add(distance);
@@ -140,27 +161,21 @@ public class FightBotMod extends Mod implements UpdateListener
 		if(!RotationUtils.faceEntityClient(entity))
 			return;
 		
-		// check timer
-		if(!hasTimePassedS(speed.getValueF()))
+		// check timer / cooldown
+		if(useCooldown != null && useCooldown.isChecked()
+			? PlayerUtils.getCooldown() < 1
+			: !hasTimePassedS(speed.getValueF()))
 			return;
 		
 		// check range
 		if(!EntityUtils.isCorrectEntity(entity, attackSettings))
 			return;
 		
-		// AutoSword
-		wurst.mods.autoSwordMod.setSlot();
-		
-		// Criticals
-		wurst.mods.criticalsMod.doCritical();
-		
-		// BlockHit
-		wurst.mods.blockHitMod.doBlock();
+		// prepare attack
+		EntityUtils.prepareAttack();
 		
 		// attack entity
-		PlayerUtils.swingArmClient();
-		mc.player.connection.sendPacket(
-			new CPacketUseEntity(entity, CPacketUseEntity.Action.ATTACK));
+		EntityUtils.attackEntity(entity);
 		
 		// reset timer
 		updateLastMS();
@@ -178,6 +193,7 @@ public class FightBotMod extends Mod implements UpdateListener
 				range.resetUsableMax();
 				distance.resetUsableMax();
 				break;
+			
 			case ANTICHEAT:
 			case OLDER_NCP:
 			case LATEST_NCP:
