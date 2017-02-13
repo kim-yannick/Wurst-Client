@@ -1,6 +1,6 @@
-From ad841fdc78beabf4909b057db6bab01592ccf8f3 Mon Sep 17 00:00:00 2001
+From 3fac5722ce8d917413e2b4e6296547f424a1b0df Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Mon, 13 Feb 2017 12:48:08 +0100
+Date: Mon, 13 Feb 2017 12:59:53 +0100
 Subject: [PATCH] mod
 
 ---
@@ -92,9 +92,9 @@ Subject: [PATCH] mod
  .../client/audio/MovingSoundMinecart.java          |   6 +-
  .../client/audio/MovingSoundMinecartRiding.java    |   4 +-
  net/minecraft/client/audio/SoundManager.java       |  12 +-
- .../client/entity/AbstractClientPlayer.java        |  19 +-
+ .../client/entity/AbstractClientPlayer.java        |  21 +-
  .../client/entity/EntityOtherPlayerMP.java         |   8 +-
- net/minecraft/client/entity/EntityPlayerSP.java    | 159 ++++---
+ net/minecraft/client/entity/EntityPlayerSP.java    | 163 ++++---
  net/minecraft/client/gui/ChatLine.java             |   8 +-
  net/minecraft/client/gui/FontRenderer.java         |  53 ++-
  net/minecraft/client/gui/Gui.java                  |   8 +-
@@ -412,7 +412,7 @@ Subject: [PATCH] mod
  net/minecraft/entity/passive/EntitySquid.java      |   4 +-
  net/minecraft/entity/passive/EntityVillager.java   |  14 +-
  net/minecraft/entity/passive/EntityWolf.java       |   2 +-
- net/minecraft/entity/player/EntityPlayer.java      | 124 ++---
+ net/minecraft/entity/player/EntityPlayer.java      | 130 +++---
  net/minecraft/entity/player/EntityPlayerMP.java    |  34 +-
  .../entity/player/EnumPlayerModelParts.java        |   6 +-
  net/minecraft/entity/player/InventoryPlayer.java   |  13 +-
@@ -537,7 +537,7 @@ Subject: [PATCH] mod
  net/minecraft/server/MinecraftServer.java          |  27 +-
  .../server/integrated/IntegratedServer.java        |  17 +-
  net/minecraft/server/management/BanEntry.java      |  25 +-
- .../server/management/ItemInWorldManager.java      |  12 +-
+ .../server/management/ItemInWorldManager.java      |  14 +-
  .../server/management/LowerStringMap.java          |   4 +-
  net/minecraft/server/management/PlayerManager.java |   2 +-
  .../server/management/PlayerProfileCache.java      |   6 +-
@@ -687,7 +687,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |  10 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 683 files changed, 8180 insertions(+), 6889 deletions(-)
+ 683 files changed, 8187 insertions(+), 6896 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -5263,7 +5263,7 @@ index 0875566..d98e274 100644
  
                  if (OpenGlHelper.isFramebufferEnabled())
 diff --git a/net/minecraft/client/Minecraft.java b/net/minecraft/client/Minecraft.java
-index a9a0567..525c8ef 100644
+index a9a0567..596268a 100644
 --- a/net/minecraft/client/Minecraft.java
 +++ b/net/minecraft/client/Minecraft.java
 @@ -1,17 +1,15 @@
@@ -5753,7 +5753,7 @@ index a9a0567..525c8ef 100644
          }
  
 -        if (this.leftClickCounter <= 0 && !this.thePlayer.isUsingItem())
-+        if (this.leftClickCounter <= 0 && !this.player.isUsingItem())
++        if (this.leftClickCounter <= 0 && !this.player.isHandActive())
          {
 -            if (leftClick && this.objectMouseOver != null && this.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
 +            if (leftClick && this.objectMouseOver != null && this.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK)
@@ -6059,7 +6059,7 @@ index a9a0567..525c8ef 100644
              }
  
 -            if (this.thePlayer.isUsingItem())
-+            if (this.player.isUsingItem())
++            if (this.player.isHandActive())
              {
                  if (!this.gameSettings.keyBindUseItem.getIsKeyPressed())
                  {
@@ -6073,7 +6073,7 @@ index a9a0567..525c8ef 100644
              }
  
 -            if (this.gameSettings.keyBindUseItem.getIsKeyPressed() && this.rightClickDelayTimer == 0 && !this.thePlayer.isUsingItem())
-+            if (this.gameSettings.keyBindUseItem.getIsKeyPressed() && this.rightClickDelayTimer == 0 && !this.player.isUsingItem())
++            if (this.gameSettings.keyBindUseItem.getIsKeyPressed() && this.rightClickDelayTimer == 0 && !this.player.isHandActive())
              {
                  this.rightClickMouse();
              }
@@ -6619,7 +6619,7 @@ index 387c172..94036ec 100644
  
      /**
 diff --git a/net/minecraft/client/entity/AbstractClientPlayer.java b/net/minecraft/client/entity/AbstractClientPlayer.java
-index a073d5e..9ebe058 100644
+index a073d5e..2586810 100644
 --- a/net/minecraft/client/entity/AbstractClientPlayer.java
 +++ b/net/minecraft/client/entity/AbstractClientPlayer.java
 @@ -1,7 +1,7 @@
@@ -6685,6 +6685,15 @@ index a073d5e..9ebe058 100644
      }
  
      public float func_175156_o()
+@@ -109,7 +116,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
+             var1 = 1.0F;
+         }
+ 
+-        if (this.isUsingItem() && this.getItemInUse().getItem() == Items.bow)
++        if (this.isHandActive() && this.getItemInUse().getItem() == Items.bow)
+         {
+             int var3 = this.getItemInUseDuration();
+             float var4 = (float)var3 / 20.0F;
 diff --git a/net/minecraft/client/entity/EntityOtherPlayerMP.java b/net/minecraft/client/entity/EntityOtherPlayerMP.java
 index 4b48cd3..266368a 100644
 --- a/net/minecraft/client/entity/EntityOtherPlayerMP.java
@@ -6726,7 +6735,7 @@ index 4b48cd3..266368a 100644
          Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(message);
      }
 diff --git a/net/minecraft/client/entity/EntityPlayerSP.java b/net/minecraft/client/entity/EntityPlayerSP.java
-index 58f696b..807fb4a 100644
+index 58f696b..5f2f911 100644
 --- a/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/net/minecraft/client/entity/EntityPlayerSP.java
 @@ -10,14 +10,7 @@ import net.minecraft.client.gui.GuiMerchant;
@@ -7082,11 +7091,29 @@ index 58f696b..807fb4a 100644
  
 -        if (this.isUsingItem() && !this.isRiding())
 +        //TODO: Client
-+        if (this.isUsingItem() && !this.isRiding()
++        if (this.isHandActive() && !this.isRiding()
 +        	&& !WurstClient.INSTANCE.mods.noSlowdownMod.isActive())
          {
              this.movementInput.moveStrafe *= 0.2F;
              this.movementInput.moveForward *= 0.2F;
+@@ -751,7 +796,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+         this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, this.getEntityBoundingBox().minY + 0.5D, this.posZ + (double)this.width * 0.35D);
+         boolean var5 = (float)this.getFoodStats().getFoodLevel() > 6.0F || this.capabilities.allowFlying;
+ 
+-        if (this.onGround && !var2 && !var4 && this.movementInput.moveForward >= var3 && !this.isSprinting() && var5 && !this.isUsingItem() && !this.isPotionActive(Potion.blindness))
++        if (this.onGround && !var2 && !var4 && this.movementInput.moveForward >= var3 && !this.isSprinting() && var5 && !this.isHandActive() && !this.isPotionActive(Potion.blindness))
+         {
+             if (this.sprintToggleTimer <= 0 && !this.mc.gameSettings.keyBindSprint.getIsKeyPressed())
+             {
+@@ -763,7 +808,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+             }
+         }
+ 
+-        if (!this.isSprinting() && this.movementInput.moveForward >= var3 && var5 && !this.isUsingItem() && !this.isPotionActive(Potion.blindness) && this.mc.gameSettings.keyBindSprint.getIsKeyPressed())
++        if (!this.isSprinting() && this.movementInput.moveForward >= var3 && var5 && !this.isHandActive() && !this.isPotionActive(Potion.blindness) && this.mc.gameSettings.keyBindSprint.getIsKeyPressed())
+         {
+             this.setSprinting(true);
+         }
 diff --git a/net/minecraft/client/gui/ChatLine.java b/net/minecraft/client/gui/ChatLine.java
 index 9056a9b..0bd71c7 100644
 --- a/net/minecraft/client/gui/ChatLine.java
@@ -24242,7 +24269,7 @@ index b1345a2..9026ae0 100644
              if (this.timeWolfIsShaking == 0.0F)
              {
 diff --git a/net/minecraft/entity/player/EntityPlayer.java b/net/minecraft/entity/player/EntityPlayer.java
-index 04f22d7..28ead25 100644
+index 04f22d7..94dd975 100644
 --- a/net/minecraft/entity/player/EntityPlayer.java
 +++ b/net/minecraft/entity/player/EntityPlayer.java
 @@ -1,17 +1,19 @@
@@ -24309,6 +24336,33 @@ index 04f22d7..28ead25 100644
  
      /** Boolean value indicating weather a player is sleeping or not */
      protected boolean sleeping;
+@@ -222,7 +228,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+     /**
+      * Checks if the entity is currently using an item (e.g., bow, food, sword) by holding down the useItemButton
+      */
+-    public boolean isUsingItem()
++    public boolean isHandActive()
+     {
+         return this.itemInUse != null;
+     }
+@@ -232,7 +238,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+      */
+     public int getItemInUseDuration()
+     {
+-        return this.isUsingItem() ? this.itemInUse.getMaxItemUseDuration() - this.itemInUseCount : 0;
++        return this.isHandActive() ? this.itemInUse.getMaxItemUseDuration() - this.itemInUseCount : 0;
+     }
+ 
+     public void stopUsingItem()
+@@ -258,7 +264,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+ 
+     public boolean isBlocking()
+     {
+-        return this.isUsingItem() && this.itemInUse.getItem().getItemUseAction(this.itemInUse) == EnumAction.BLOCK;
++        return this.isHandActive() && this.itemInUse.getItem().getItemUseAction(this.itemInUse) == EnumAction.BLOCK;
+     }
+ 
+     /**
 @@ -266,9 +272,9 @@ public abstract class EntityPlayer extends EntityLivingBase
       */
      public void onUpdate()
@@ -32679,7 +32733,7 @@ index ef94be8..1238292 100644
      }
  }
 diff --git a/net/minecraft/server/management/ItemInWorldManager.java b/net/minecraft/server/management/ItemInWorldManager.java
-index 50c82ce..b24ee4f 100644
+index 50c82ce..713dc65 100644
 --- a/net/minecraft/server/management/ItemInWorldManager.java
 +++ b/net/minecraft/server/management/ItemInWorldManager.java
 @@ -104,7 +104,7 @@ public class ItemInWorldManager
@@ -32734,6 +32788,15 @@ index 50c82ce..b24ee4f 100644
              {
                  return false;
              }
+@@ -364,7 +364,7 @@ public class ItemInWorldManager
+                     p_73085_1_.inventory.mainInventory[p_73085_1_.inventory.currentItem] = null;
+                 }
+ 
+-                if (!p_73085_1_.isUsingItem())
++                if (!p_73085_1_.isHandActive())
+                 {
+                     ((EntityPlayerMP)p_73085_1_).sendContainerToPlayer(p_73085_1_.inventoryContainer);
+                 }
 diff --git a/net/minecraft/server/management/LowerStringMap.java b/net/minecraft/server/management/LowerStringMap.java
 index ad3e8b6..fb1628e 100644
 --- a/net/minecraft/server/management/LowerStringMap.java
