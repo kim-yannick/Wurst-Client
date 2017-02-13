@@ -14,22 +14,19 @@ import tk.wurst_client.settings.SliderSetting.ValueDisplay;
 	name = "HighJump",
 	tags = "high jump",
 	help = "Mods/HighJump")
-@Mod.Bypasses
+@Mod.Bypasses(ghostMode = false,
+	latestNCP = false,
+	olderNCP = false,
+	antiCheat = false,
+	mineplex = false)
 public class HighJumpMod extends Mod
 {
-	public int jumpHeight = 6;
+	public final SliderSetting height =
+		new SliderSetting("Height", 6, 1, 100, 1, ValueDisplay.INTEGER);
 	
 	@Override
 	public void initSettings()
 	{
-		settings.add(new SliderSetting("Height", jumpHeight, 1, 100, 1,
-			ValueDisplay.INTEGER)
-		{
-			@Override
-			public void update()
-			{
-				jumpHeight = (int)getValue();
-			}
-		});
+		settings.add(height);
 	}
 }

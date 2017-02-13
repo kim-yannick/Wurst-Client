@@ -1,6 +1,6 @@
-From ad4511de25a29c8a634e376279df65e6440dc0f3 Mon Sep 17 00:00:00 2001
+From 2e4ecc40b24e30c381fce76873189beac7f717fe Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Mon, 13 Feb 2017 13:18:27 +0100
+Date: Mon, 13 Feb 2017 13:44:04 +0100
 Subject: [PATCH] mod
 
 ---
@@ -342,7 +342,7 @@ Subject: [PATCH] mod
  net/minecraft/entity/EntityFlying.java             |   2 +-
  net/minecraft/entity/EntityHanging.java            |   6 +-
  net/minecraft/entity/EntityLiving.java             |   6 +-
- net/minecraft/entity/EntityLivingBase.java         |  62 ++-
+ net/minecraft/entity/EntityLivingBase.java         |  59 ++-
  .../entity/EntityMinecartCommandBlock.java         |  16 +-
  net/minecraft/entity/EntityTracker.java            |   5 +-
  net/minecraft/entity/EnumCreatureType.java         |   8 +-
@@ -688,7 +688,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |  10 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 684 files changed, 8218 insertions(+), 6927 deletions(-)
+ 684 files changed, 8216 insertions(+), 6926 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -21752,7 +21752,7 @@ index 6e5f3cb..dcbffda 100644
  
      /**
 diff --git a/net/minecraft/entity/EntityLivingBase.java b/net/minecraft/entity/EntityLivingBase.java
-index 80f1f20..38c1eab 100644
+index 80f1f20..879ffab 100644
 --- a/net/minecraft/entity/EntityLivingBase.java
 +++ b/net/minecraft/entity/EntityLivingBase.java
 @@ -1,12 +1,18 @@
@@ -21869,22 +21869,19 @@ index 80f1f20..38c1eab 100644
                          {
                              var3 = this.posX + (double)var10;
                              var5 = this.posY + 1.0D;
-@@ -1555,7 +1561,13 @@ public abstract class EntityLivingBase extends Entity
-      */
-     protected void jump()
+@@ -1557,6 +1563,11 @@ public abstract class EntityLivingBase extends Entity
      {
--        this.motionY = (double)this.func_175134_bD();
-+    	
+ 		this.motionY = (double)this.func_175134_bD();
+ 		
 +		// TODO: Client
 +		HighJumpMod highJumpMod = WurstClient.INSTANCE.mods.highJumpMod;
-+		this.motionY =
-+			(double)this.func_175134_bD()
-+				+ (this instanceof EntityPlayer && highJumpMod.isActive()
-+					? highJumpMod.jumpHeight * 0.1F : 0F);
- 
++		if(this instanceof EntityPlayer && highJumpMod.isActive())
++			this.motionY += highJumpMod.height.getValueF() * 0.1F;
++		
          if (this.isPotionActive(Potion.jump))
          {
-@@ -1598,8 +1610,14 @@ public abstract class EntityLivingBase extends Entity
+             this.motionY += (double)((float)(this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F);
+@@ -1598,8 +1609,14 @@ public abstract class EntityLivingBase extends Entity
              float var5;
              float var6;
  
@@ -21900,7 +21897,7 @@ index 80f1f20..38c1eab 100644
                  var8 = this.posY;
                  var5 = 0.8F;
                  var6 = 0.02F;
-@@ -1679,8 +1697,8 @@ public abstract class EntityLivingBase extends Entity
+@@ -1679,8 +1696,8 @@ public abstract class EntityLivingBase extends Entity
                  if (this.isOnLadder())
                  {
                      var6 = 0.15F;
@@ -21911,7 +21908,7 @@ index 80f1f20..38c1eab 100644
                      this.fallDistance = 0.0F;
  
                      if (this.motionY < -0.15D)
-@@ -1728,7 +1746,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -1728,7 +1745,7 @@ public abstract class EntityLivingBase extends Entity
          this.prevLimbSwingAmount = this.limbSwingAmount;
          var8 = this.posX - this.prevPosX;
          double var9 = this.posZ - this.prevPosZ;
@@ -21920,7 +21917,7 @@ index 80f1f20..38c1eab 100644
  
          if (var10 > 1.0F)
          {
-@@ -1902,9 +1920,9 @@ public abstract class EntityLivingBase extends Entity
+@@ -1902,9 +1919,9 @@ public abstract class EntityLivingBase extends Entity
  
      protected float func_110146_f(float p_110146_1_, float p_110146_2_)
      {
@@ -21932,7 +21929,7 @@ index 80f1f20..38c1eab 100644
          boolean var5 = var4 < -90.0F || var4 >= 90.0F;
  
          if (var4 < -75.0F)
-@@ -1948,7 +1966,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -1948,7 +1965,7 @@ public abstract class EntityLivingBase extends Entity
              double var1 = this.posX + (this.newPosX - this.posX) / (double)this.newPosRotationIncrements;
              double var3 = this.posY + (this.newPosY - this.posY) / (double)this.newPosRotationIncrements;
              double var5 = this.posZ + (this.newPosZ - this.posZ) / (double)this.newPosRotationIncrements;
@@ -21941,7 +21938,7 @@ index 80f1f20..38c1eab 100644
              this.rotationYaw = (float)((double)this.rotationYaw + var7 / (double)this.newPosRotationIncrements);
              this.rotationPitch = (float)((double)this.rotationPitch + (this.newRotationPitch - (double)this.rotationPitch) / (double)this.newPosRotationIncrements);
              --this.newPosRotationIncrements;
-@@ -2141,13 +2159,13 @@ public abstract class EntityLivingBase extends Entity
+@@ -2141,13 +2158,13 @@ public abstract class EntityLivingBase extends Entity
       */
      public boolean canEntityBeSeen(Entity p_70685_1_)
      {
@@ -21957,7 +21954,7 @@ index 80f1f20..38c1eab 100644
      {
          return this.getLook(1.0F);
      }
-@@ -2155,7 +2173,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -2155,7 +2172,7 @@ public abstract class EntityLivingBase extends Entity
      /**
       * interpolated look vector
       */
