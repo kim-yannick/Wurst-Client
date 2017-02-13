@@ -14,7 +14,7 @@ package tk.wurst_client.features.mods;
 	name = "GhostHand",
 	tags = "ghost hand",
 	help = "Mods/GhostHand")
-@Mod.Bypasses
+@Mod.Bypasses(ghostMode = false)
 public class GhostHandMod extends Mod
 {
 	@Override
