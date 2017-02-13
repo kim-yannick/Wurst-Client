@@ -1,6 +1,6 @@
-From 9d1117bdfcf00ddb3008291c9c097625ac2fd934 Mon Sep 17 00:00:00 2001
+From ad841fdc78beabf4909b057db6bab01592ccf8f3 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Sun, 12 Feb 2017 19:28:06 +0100
+Date: Mon, 13 Feb 2017 12:48:08 +0100
 Subject: [PATCH] mod
 
 ---
@@ -461,6 +461,7 @@ Subject: [PATCH] mod
  net/minecraft/item/ItemMinecart.java               |   4 +-
  net/minecraft/item/ItemMonsterPlacer.java          |  14 +-
  net/minecraft/item/ItemPickaxe.java                |   4 +-
+ net/minecraft/item/ItemPotion.java                 |   2 +-
  net/minecraft/item/ItemReed.java                   |   2 +-
  net/minecraft/item/ItemSeedFood.java               |   4 +-
  net/minecraft/item/ItemSeeds.java                  |   4 +-
@@ -686,7 +687,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |  10 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 682 files changed, 8179 insertions(+), 6888 deletions(-)
+ 683 files changed, 8180 insertions(+), 6889 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -27203,6 +27204,19 @@ index d078433..e4b7344 100644
      }
  
      public float getStrVsBlock(ItemStack stack, Block p_150893_2_)
+diff --git a/net/minecraft/item/ItemPotion.java b/net/minecraft/item/ItemPotion.java
+index d71b523..b03a2a1 100644
+--- a/net/minecraft/item/ItemPotion.java
++++ b/net/minecraft/item/ItemPotion.java
+@@ -45,7 +45,7 @@ public class ItemPotion extends Item
+     /**
+      * Returns a list of potion effects for the specified itemstack.
+      */
+-    public List getEffects(ItemStack p_77832_1_)
++    public List<PotionEffect> getEffects(ItemStack p_77832_1_)
+     {
+         if (p_77832_1_.hasTagCompound() && p_77832_1_.getTagCompound().hasKey("CustomPotionEffects", 9))
+         {
 diff --git a/net/minecraft/item/ItemReed.java b/net/minecraft/item/ItemReed.java
 index fb4e327..3a3a48d 100644
 --- a/net/minecraft/item/ItemReed.java
