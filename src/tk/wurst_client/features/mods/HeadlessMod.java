@@ -8,7 +8,7 @@
 package tk.wurst_client.features.mods;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.play.client.CPacketPlayer.Rotation;
+import net.minecraft.network.play.client.CPacketPlayer;
 import tk.wurst_client.events.listeners.UpdateListener;
 
 @Mod.Info(
@@ -17,7 +17,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	name = "Headless",
 	tags = "head less",
 	help = "Mods/Headless")
-@Mod.Bypasses
+@Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
 public class HeadlessMod extends Mod implements UpdateListener
 {
 	@Override
@@ -27,16 +27,16 @@ public class HeadlessMod extends Mod implements UpdateListener
 	}
 	
 	@Override
-	public void onUpdate()
-	{
-		mc.player.connection.sendPacket(
-			new Rotation(Minecraft.getMinecraft().player.rotationYaw, 180F,
-				Minecraft.getMinecraft().player.onGround));
-	}
-	
-	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
+	public void onUpdate()
+	{
+		mc.player.connection.sendPacket(new CPacketPlayer.Rotation(
+			Minecraft.getMinecraft().player.rotationYaw, 180F,
+			Minecraft.getMinecraft().player.onGround));
 	}
 }
