@@ -15,7 +15,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	name = "NoWeb",
 	tags = "no web",
 	help = "Mods/NoWeb")
-@Mod.Bypasses
+@Mod.Bypasses(ghostMode = false)
 public class NoWebMod extends Mod implements UpdateListener
 {
 	@Override
@@ -25,14 +25,14 @@ public class NoWebMod extends Mod implements UpdateListener
 	}
 	
 	@Override
-	public void onUpdate()
-	{
-		mc.player.isInWeb = false;
-	}
-	
-	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
+	public void onUpdate()
+	{
+		mc.player.isInWeb = false;
 	}
 }
