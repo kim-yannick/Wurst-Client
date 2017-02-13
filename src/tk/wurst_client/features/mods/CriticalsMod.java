@@ -10,7 +10,7 @@ package tk.wurst_client.features.mods;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.network.play.client.CPacketPlayer.Position;
+import net.minecraft.network.play.client.CPacketPlayer;
 import tk.wurst_client.events.LeftClickEvent;
 import tk.wurst_client.events.listeners.LeftClickListener;
 import tk.wurst_client.features.Feature;
@@ -20,7 +20,7 @@ import tk.wurst_client.settings.ModeSetting;
 	name = "Criticals",
 	tags = "Crits",
 	help = "Mods/Criticals")
-@Mod.Bypasses
+@Mod.Bypasses(ghostMode = false)
 public class CriticalsMod extends Mod implements LeftClickListener
 {
 	private int mode = 1;
@@ -83,14 +83,16 @@ public class CriticalsMod extends Mod implements LeftClickListener
 					double posX = mc.player.posX;
 					double posY = mc.player.posY;
 					double posZ = mc.player.posZ;
-					NetHandlerPlayClient sendQueue = mc.player.connection;
+					NetHandlerPlayClient connection = mc.player.connection;
 					
-					sendQueue.sendPacket(
-						new Position(posX, posY + 0.0625D, posZ, true));
-					sendQueue.sendPacket(new Position(posX, posY, posZ, false));
-					sendQueue.sendPacket(
-						new Position(posX, posY + 1.1E-5D, posZ, false));
-					sendQueue.sendPacket(new Position(posX, posY, posZ, false));
+					connection.sendPacket(new CPacketPlayer.Position(posX,
+						posY + 0.0625D, posZ, true));
+					connection.sendPacket(
+						new CPacketPlayer.Position(posX, posY, posZ, false));
+					connection.sendPacket(new CPacketPlayer.Position(posX,
+						posY + 1.1E-5D, posZ, false));
+					connection.sendPacket(
+						new CPacketPlayer.Position(posX, posY, posZ, false));
 					break;
 			}
 	}
