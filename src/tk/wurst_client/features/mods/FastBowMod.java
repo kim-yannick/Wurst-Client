@@ -13,6 +13,7 @@ import net.minecraft.network.play.client.CPacketPlayer;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.features.Feature;
 import tk.wurst_client.utils.InventoryUtils;
+import tk.wurst_client.utils.PlayerUtils;
 
 @Mod.Info(
 	description = "Turns your bow into a machine gun.\n"
@@ -56,7 +57,7 @@ public class FastBowMod extends Mod implements UpdateListener
 			|| !(stack.getItem() instanceof ItemBow))
 			return;
 		
-		mc.playerController.processRightClick(mc.player, mc.world, stack);
+		PlayerUtils.processRightClick();
 		
 		for(int i = 0; i < 20; i++)
 			mc.player.connection.sendPacket(new CPacketPlayer(false));
