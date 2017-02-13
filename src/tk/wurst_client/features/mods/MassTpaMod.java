@@ -37,7 +37,7 @@ public class MassTpaMod extends Mod implements UpdateListener, ChatInputListener
 	public void onEnable()
 	{
 		i = 0;
-		Iterator itr = mc.getNetHandler().getPlayerInfoMap().iterator();
+		Iterator itr = mc.player.connection.getPlayerInfoMap().iterator();
 		players = new ArrayList<>();
 		while(itr.hasNext())
 			players.add(StringUtils.stripControlCodes(
@@ -45,6 +45,13 @@ public class MassTpaMod extends Mod implements UpdateListener, ChatInputListener
 		Collections.shuffle(players, random);
 		wurst.events.add(ChatInputListener.class, this);
 		wurst.events.add(UpdateListener.class, this);
+	}
+	
+	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(ChatInputListener.class, this);
+		wurst.events.remove(UpdateListener.class, this);
 	}
 	
 	@Override
@@ -58,16 +65,9 @@ public class MassTpaMod extends Mod implements UpdateListener, ChatInputListener
 				mc.player.sendChatMessage("/tpa " + name);
 			updateLastMS();
 			i++;
-			if(i == players.size())
+			if(i >= players.size())
 				setEnabled(false);
 		}
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(ChatInputListener.class, this);
-		wurst.events.remove(UpdateListener.class, this);
 	}
 	
 	@Override
