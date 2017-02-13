@@ -47,12 +47,13 @@ public class FreecamMod extends Mod implements UpdateListener
 		mc.player.motionY = 0;
 		mc.player.motionZ = 0;
 		
-		mc.player.jumpMovementFactor = wurst.mods.flightMod.speed / 10F;
+		mc.player.jumpMovementFactor =
+			wurst.mods.flightMod.speed.getValueF() / 10F;
 		
 		if(mc.gameSettings.keyBindJump.pressed)
-			mc.player.motionY += wurst.mods.flightMod.speed;
+			mc.player.motionY += wurst.mods.flightMod.speed.getValue();
 		
 		if(mc.gameSettings.keyBindSneak.pressed)
-			mc.player.motionY -= wurst.mods.flightMod.speed;
+			mc.player.motionY -= wurst.mods.flightMod.speed.getValue();
 	}
 }
