@@ -23,6 +23,7 @@ import net.minecraft.entity.passive.EntityAmbientCreature;
 import net.minecraft.entity.passive.EntityWaterMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.CPacketUseEntity;
+import net.minecraft.tileentity.TileEntityChest;
 import tk.wurst_client.WurstClient;
 
 public class EntityUtils
@@ -54,6 +55,11 @@ public class EntityUtils
 	{
 		mc.player.connection.sendPacket(
 			new CPacketUseEntity(entity, CPacketUseEntity.Action.ATTACK));
+	}
+	
+	public static boolean isTrappedChest(TileEntityChest chest)
+	{
+		return chest.getChestType() == 1;
 	}
 	
 	public static boolean isCorrectEntity(Entity en, TargetSettings settings)

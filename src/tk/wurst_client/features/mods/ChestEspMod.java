@@ -24,6 +24,7 @@ import tk.wurst_client.events.listeners.RenderListener;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.features.Feature;
 import tk.wurst_client.utils.BlockUtils;
+import tk.wurst_client.utils.EntityUtils;
 import tk.wurst_client.utils.InventoryUtils;
 import tk.wurst_client.utils.RenderUtils;
 
@@ -125,7 +126,7 @@ public class ChestEspMod extends Mod implements UpdateListener, RenderListener
 					bb = bb.union(BlockUtils
 						.getBoundingBox(chest.adjacentChestZNeg.getPos()));
 				
-				boolean trapped = chest.getChestType() == 1;
+				boolean trapped = EntityUtils.isTrappedChest(chest);
 				
 				// add to appropriate list
 				if(emptyChests.contains(chest.getPos()))
