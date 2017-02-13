@@ -10,9 +10,9 @@ package tk.wurst_client.features.mods;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import tk.wurst_client.events.listeners.UpdateListener;
+import tk.wurst_client.utils.MobEffects;
+import tk.wurst_client.utils.PlayerUtils;
 
 @Mod.Info(description = "Thousands of colors!", name = "LSD", help = "Mods/LSD")
 @Mod.Bypasses
@@ -29,16 +29,16 @@ public class LsdMod extends Mod implements UpdateListener
 	public void onEnable()
 	{
 		if(OpenGlHelper.shadersSupported)
-			if(mc.func_175606_aa() instanceof EntityPlayer)
+			if(mc.getRenderViewEntity() instanceof EntityPlayer)
 			{
 				if(mc.entityRenderer.theShaderGroup != null)
 					mc.entityRenderer.theShaderGroup.deleteShaderGroup();
 				
 				mc.entityRenderer.shaderIndex = 19;
 				
-				if(mc.entityRenderer.shaderIndex != EntityRenderer.shaderCount)
-					mc.entityRenderer.func_175069_a(
-						EntityRenderer.shaderResourceLocations[19]);
+				if(mc.entityRenderer.shaderIndex != EntityRenderer.SHADER_COUNT)
+					mc.entityRenderer
+						.loadShader(EntityRenderer.SHADERS_TEXTURES[19]);
 				else
 					mc.entityRenderer.theShaderGroup = null;
 			}
@@ -46,24 +46,27 @@ public class LsdMod extends Mod implements UpdateListener
 	}
 	
 	@Override
-	public void onUpdate()
-	{
-		if(!OpenGlHelper.shadersSupported)
-			mc.player.addPotionEffect(
-				new PotionEffect(Potion.confusion.getId(), 10801220));
-		mc.gameSettings.smoothCamera = isEnabled();
-	}
-	
-	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
-		mc.player.removePotionEffect(Potion.confusion.getId());
+		
+		PlayerUtils.removePotionEffect(MobEffects.NAUSEA);
+		
 		if(mc.entityRenderer.theShaderGroup != null)
 		{
 			mc.entityRenderer.theShaderGroup.deleteShaderGroup();
 			mc.entityRenderer.theShaderGroup = null;
 		}
+		
 		mc.gameSettings.smoothCamera = false;
+	}
+	
+	@Override
+	public void onUpdate()
+	{
+		if(!OpenGlHelper.shadersSupported)
+			PlayerUtils.addPotionEffect(MobEffects.NAUSEA);
+		
+		mc.gameSettings.smoothCamera = isEnabled();
 	}
 }

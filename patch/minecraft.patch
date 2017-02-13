@@ -1,6 +1,6 @@
-From 2e4ecc40b24e30c381fce76873189beac7f717fe Mon Sep 17 00:00:00 2001
+From 622cabfa4949c3e4876c6b387019b07c5338a75f Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Mon, 13 Feb 2017 13:44:04 +0100
+Date: Mon, 13 Feb 2017 17:30:08 +0100
 Subject: [PATCH] mod
 
 ---
@@ -88,13 +88,13 @@ Subject: [PATCH] mod
  net/minecraft/block/material/Material.java         |   6 +-
  .../block/state/BlockPistonStructureHelper.java    |   6 +-
  net/minecraft/client/LoadingScreenRenderer.java    |  10 +-
- net/minecraft/client/Minecraft.java                | 507 +++++++++++----------
+ net/minecraft/client/Minecraft.java                | 511 +++++++++++----------
  .../client/audio/MovingSoundMinecart.java          |   6 +-
  .../client/audio/MovingSoundMinecartRiding.java    |   4 +-
  net/minecraft/client/audio/SoundManager.java       |  12 +-
  .../client/entity/AbstractClientPlayer.java        |  21 +-
  .../client/entity/EntityOtherPlayerMP.java         |   8 +-
- net/minecraft/client/entity/EntityPlayerSP.java    | 163 ++++---
+ net/minecraft/client/entity/EntityPlayerSP.java    | 165 ++++---
  net/minecraft/client/gui/ChatLine.java             |   8 +-
  net/minecraft/client/gui/FontRenderer.java         |  53 ++-
  net/minecraft/client/gui/Gui.java                  |   8 +-
@@ -116,7 +116,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/GuiFlatPresets.java       |  22 +-
  net/minecraft/client/gui/GuiGameOver.java          |  23 +-
  net/minecraft/client/gui/GuiHopper.java            |   2 +-
- net/minecraft/client/gui/GuiIngame.java            |  96 ++--
+ net/minecraft/client/gui/GuiIngame.java            | 104 ++---
  net/minecraft/client/gui/GuiIngameMenu.java        |  60 ++-
  net/minecraft/client/gui/GuiKeyBindingList.java    |   3 +
  net/minecraft/client/gui/GuiLanguage.java          |   3 +
@@ -132,7 +132,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/GuiOptionSlider.java      |   5 +-
  net/minecraft/client/gui/GuiOptions.java           |  24 +-
  net/minecraft/client/gui/GuiOptionsRowList.java    |   3 +
- net/minecraft/client/gui/GuiOverlayDebug.java      |  36 +-
+ net/minecraft/client/gui/GuiOverlayDebug.java      |  40 +-
  net/minecraft/client/gui/GuiPageButtonList.java    |   3 +
  net/minecraft/client/gui/GuiPlayerTabOverlay.java  |  46 +-
  net/minecraft/client/gui/GuiRenameWorld.java       |   3 +
@@ -187,14 +187,14 @@ Subject: [PATCH] mod
  .../client/gui/stream/GuiTwitchUserMode.java       |  42 +-
  net/minecraft/client/main/Main.java                |  21 +-
  net/minecraft/client/model/ModelBiped.java         |   2 +-
- net/minecraft/client/model/ModelGuardian.java      |  14 +-
+ net/minecraft/client/model/ModelGuardian.java      |  16 +-
  .../client/model/PositionTextureVertex.java        |   8 +-
  net/minecraft/client/model/TexturedQuad.java       |   8 +-
  .../client/multiplayer/GuiConnecting.java          |  14 +-
  .../client/multiplayer/PlayerControllerMP.java     | 185 ++++----
  net/minecraft/client/multiplayer/ServerData.java   |   8 +-
  net/minecraft/client/multiplayer/ServerList.java   |  16 +-
- net/minecraft/client/multiplayer/WorldClient.java  |  28 +-
+ net/minecraft/client/multiplayer/WorldClient.java  |  30 +-
  .../client/network/NetHandlerHandshakeMemory.java  |   4 +-
  .../client/network/NetHandlerLoginClient.java      |   9 +-
  .../client/network/NetHandlerPlayClient.java       | 324 +++++--------
@@ -210,7 +210,7 @@ Subject: [PATCH] mod
  .../client/particle/EntityDropParticleFX.java      |  14 +-
  net/minecraft/client/particle/EntityFX.java        |   4 +-
  .../client/particle/EntityFireworkOverlayFX.java   |   2 +-
- .../client/particle/EntityFireworkStarterFX.java   |   2 +-
+ .../client/particle/EntityFireworkStarterFX.java   |   4 +-
  net/minecraft/client/particle/EntityFlameFX.java   |   4 +-
  .../client/particle/EntityFootStepFX.java          |   2 +-
  net/minecraft/client/particle/EntityHeartFX.java   |   2 +-
@@ -228,19 +228,19 @@ Subject: [PATCH] mod
  .../client/renderer/BlockFluidRenderer.java        |  26 +-
  .../client/renderer/BlockModelRenderer.java        |  10 +-
  .../client/renderer/BlockModelShapes.java          |  40 +-
- net/minecraft/client/renderer/EntityRenderer.java  | 209 +++++----
+ net/minecraft/client/renderer/EntityRenderer.java  | 275 ++++++-----
  .../client/renderer/ImageBufferDownload.java       |   6 +-
  .../client/renderer/InventoryEffectRenderer.java   |  10 +-
  net/minecraft/client/renderer/ItemModelMesher.java |  15 +-
  net/minecraft/client/renderer/ItemRenderer.java    |  60 +--
  .../client/renderer/RegionRenderCache.java         |   2 +-
- net/minecraft/client/renderer/RenderGlobal.java    |  86 ++--
+ net/minecraft/client/renderer/RenderGlobal.java    | 136 +++---
  net/minecraft/client/renderer/RenderHelper.java    |   6 +-
  .../client/renderer/ThreadDownloadImageData.java   |   8 +-
  net/minecraft/client/renderer/WorldRenderer.java   |  86 ++--
  .../client/renderer/block/model/FaceBakery.java    |   2 +-
  .../renderer/block/model/ItemTransformVec3f.java   |  12 +-
- .../client/renderer/chunk/ChunkRenderWorker.java   |   3 +
+ .../client/renderer/chunk/ChunkRenderWorker.java   |   5 +-
  net/minecraft/client/renderer/chunk/VisGraph.java  |   4 +-
  .../renderer/culling/ClippingHelperImpl.java       |   2 +-
  net/minecraft/client/renderer/entity/Render.java   |  59 ++-
@@ -492,7 +492,7 @@ Subject: [PATCH] mod
  .../network/play/INetHandlerPlayServer.java        |  28 +-
  .../network/play/client/C01PacketChatMessage.java  |  59 ---
  .../network/play/client/C02PacketUseEntity.java    | 105 -----
- .../network/play/client/C03PacketPlayer.java       | 229 ----------
+ .../network/play/client/C03PacketPlayer.java       | 229 ---------
  .../play/client/C07PacketPlayerDigging.java        |  91 ----
  .../network/play/client/C0APacketAnimation.java    |  35 --
  .../network/play/client/C0BPacketEntityAction.java |  89 ----
@@ -502,7 +502,7 @@ Subject: [PATCH] mod
  .../network/play/client/CPacketChatMessage.java    |  59 +++
  .../client/CPacketCreativeInventoryAction.java     |  64 +++
  .../network/play/client/CPacketEntityAction.java   |  89 ++++
- .../network/play/client/CPacketPlayer.java         | 229 ++++++++++
+ .../network/play/client/CPacketPlayer.java         | 229 +++++++++
  .../network/play/client/CPacketPlayerDigging.java  |  91 ++++
  .../network/play/client/CPacketUseEntity.java      | 105 +++++
  .../network/play/server/S02PacketChat.java         |  18 +-
@@ -676,7 +676,7 @@ Subject: [PATCH] mod
  .../world/gen/feature/WorldGenWaterlily.java       |   4 +-
  .../gen/feature/WorldGeneratorBonusChest.java      |  26 +-
  net/minecraft/world/gen/layer/GenLayer.java        |   5 +-
- .../structure/ComponentScatteredFeaturePieces.java | 254 +++++------
+ .../structure/ComponentScatteredFeaturePieces.java | 254 +++++-----
  .../world/gen/structure/MapGenStructure.java       |   8 +-
  .../world/gen/structure/StructureComponent.java    |  24 +-
  .../gen/structure/StructureMineshaftPieces.java    |  78 ++--
@@ -688,7 +688,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |  10 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 684 files changed, 8216 insertions(+), 6926 deletions(-)
+ 684 files changed, 8287 insertions(+), 6997 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -5264,7 +5264,7 @@ index 0875566..d98e274 100644
  
                  if (OpenGlHelper.isFramebufferEnabled())
 diff --git a/net/minecraft/client/Minecraft.java b/net/minecraft/client/Minecraft.java
-index a9a0567..596268a 100644
+index a9a0567..bca85f6 100644
 --- a/net/minecraft/client/Minecraft.java
 +++ b/net/minecraft/client/Minecraft.java
 @@ -1,17 +1,15 @@
@@ -6013,6 +6013,15 @@ index a9a0567..596268a 100644
                          if (var1 == 1)
                          {
                              this.displayInGameMenu();
+@@ -2013,7 +2011,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+ 
+                             if (this.gameSettings.thirdPersonView == 0)
+                             {
+-                                this.entityRenderer.func_175066_a(this.func_175606_aa());
++                                this.entityRenderer.func_175066_a(this.getRenderViewEntity());
+                             }
+                             else if (this.gameSettings.thirdPersonView == 1)
+                             {
 @@ -2049,13 +2047,13 @@ public class Minecraft implements IThreadListener, IPlayerUsage
              {
                  if (this.gameSettings.keyBindsHotbar[var1].isPressed())
@@ -6481,6 +6490,15 @@ index a9a0567..596268a 100644
                              }
                          }
                          else
+@@ -3135,7 +3144,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+         return this.skinManager;
+     }
+ 
+-    public Entity func_175606_aa()
++    public Entity getRenderViewEntity()
+     {
+         return this.field_175622_Z;
+     }
 @@ -3273,11 +3282,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                  ;
              }
@@ -6736,7 +6754,7 @@ index 4b48cd3..266368a 100644
          Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(message);
      }
 diff --git a/net/minecraft/client/entity/EntityPlayerSP.java b/net/minecraft/client/entity/EntityPlayerSP.java
-index 58f696b..5f2f911 100644
+index 58f696b..951655c 100644
 --- a/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/net/minecraft/client/entity/EntityPlayerSP.java
 @@ -10,14 +10,7 @@ import net.minecraft.client.gui.GuiMerchant;
@@ -7086,6 +7104,15 @@ index 58f696b..5f2f911 100644
      {
          this.mc.ingameGUI.getChatGUI().printChatMessage(message);
      }
+@@ -658,7 +701,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+ 
+     protected boolean func_175160_A()
+     {
+-        return this.mc.func_175606_aa() == this;
++        return this.mc.getRenderViewEntity() == this;
+     }
+ 
+     /**
 @@ -738,7 +781,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
          boolean var4 = this.movementInput.moveForward >= var3;
          this.movementInput.updatePlayerMoveState();
@@ -8243,7 +8270,7 @@ index 4d52ca9..5c9d8fd 100644
          this.field_147083_w = p_i1092_2_;
          this.allowUserInput = false;
 diff --git a/net/minecraft/client/gui/GuiIngame.java b/net/minecraft/client/gui/GuiIngame.java
-index 12b2457..8e0df73 100644
+index 12b2457..095733b 100644
 --- a/net/minecraft/client/gui/GuiIngame.java
 +++ b/net/minecraft/client/gui/GuiIngame.java
 @@ -1,13 +1,15 @@
@@ -8399,6 +8426,20 @@ index 12b2457..8e0df73 100644
          {
              this.overlayPlayerList.func_175246_a(true);
              this.overlayPlayerList.func_175249_a(var3, var12, var16);
+@@ -350,11 +350,11 @@ public class GuiIngame extends Gui
+ 
+     protected void func_180479_a(ScaledResolution p_180479_1_, float p_180479_2_)
+     {
+-        if (this.mc.func_175606_aa() instanceof EntityPlayer)
++        if (this.mc.getRenderViewEntity() instanceof EntityPlayer)
+         {
+             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+             this.mc.getTextureManager().bindTexture(widgetsTexPath);
+-            EntityPlayer var3 = (EntityPlayer)this.mc.func_175606_aa();
++            EntityPlayer var3 = (EntityPlayer)this.mc.getRenderViewEntity();
+             int var4 = p_180479_1_.getScaledWidth() / 2;
+             float var5 = this.zLevel;
+             this.zLevel = -90.0F;
 @@ -383,7 +383,7 @@ public class GuiIngame extends Gui
      {
          this.mc.mcProfiler.startSection("jumpBar");
@@ -8490,6 +8531,18 @@ index 12b2457..8e0df73 100644
                      {
                          return true;
                      }
+@@ -604,9 +604,9 @@ public class GuiIngame extends Gui
+ 
+     private void func_180477_d(ScaledResolution p_180477_1_)
+     {
+-        if (this.mc.func_175606_aa() instanceof EntityPlayer)
++        if (this.mc.getRenderViewEntity() instanceof EntityPlayer)
+         {
+-            EntityPlayer var2 = (EntityPlayer)this.mc.func_175606_aa();
++            EntityPlayer var2 = (EntityPlayer)this.mc.getRenderViewEntity();
+             int var3 = MathHelper.ceiling_float_int(var2.getHealth());
+             boolean var4 = this.field_175191_F > (long)this.updateCounter && (this.field_175191_F - (long)this.updateCounter) / 3L % 2L == 1L;
+ 
 @@ -874,9 +874,9 @@ public class GuiIngame extends Gui
  
              this.mc.mcProfiler.endStartSection("air");
@@ -9764,7 +9817,7 @@ index eb3c8db..d69a453 100644
  
  public class GuiOptionsRowList extends GuiListExtended
 diff --git a/net/minecraft/client/gui/GuiOverlayDebug.java b/net/minecraft/client/gui/GuiOverlayDebug.java
-index ce8862a..61e44c3 100644
+index ce8862a..3ea2c12 100644
 --- a/net/minecraft/client/gui/GuiOverlayDebug.java
 +++ b/net/minecraft/client/gui/GuiOverlayDebug.java
 @@ -18,7 +18,7 @@ import net.minecraft.util.BlockPos;
@@ -9785,7 +9838,12 @@ index ce8862a..61e44c3 100644
      }
  
      protected void func_180798_a()
-@@ -99,12 +99,12 @@ public class GuiOverlayDebug extends Gui
+@@ -95,16 +95,16 @@ public class GuiOverlayDebug extends Gui
+ 
+     protected List call()
+     {
+-        BlockPos var1 = new BlockPos(this.mc.func_175606_aa().posX, this.mc.func_175606_aa().getEntityBoundingBox().minY, this.mc.func_175606_aa().posZ);
++        BlockPos var1 = new BlockPos(this.mc.getRenderViewEntity().posX, this.mc.getRenderViewEntity().getEntityBoundingBox().minY, this.mc.getRenderViewEntity().posZ);
  
          if (this.func_175236_d())
          {
@@ -9794,8 +9852,9 @@ index ce8862a..61e44c3 100644
          }
          else
          {
-             Entity var2 = this.mc.func_175606_aa();
+-            Entity var2 = this.mc.func_175606_aa();
 -            EnumFacing var3 = var2.func_174811_aO();
++            Entity var2 = this.mc.getRenderViewEntity();
 +            EnumFacing var3 = var2.getHorizontalFacing();
              String var4 = "Invalid";
  
@@ -9805,7 +9864,7 @@ index ce8862a..61e44c3 100644
              }
  
 -            ArrayList var5 = Lists.newArrayList(new String[] {"Minecraft 1.8 (" + this.mc.func_175600_c() + "/" + ClientBrandRetriever.getClientModName() + ")", this.mc.debug, this.mc.renderGlobal.getDebugInfoRenders(), this.mc.renderGlobal.getDebugInfoEntities(), "P: " + this.mc.effectRenderer.getStatistics() + ". T: " + this.mc.theWorld.getDebugLoadedEntities(), this.mc.theWorld.getProviderName(), "", String.format("XYZ: %.3f / %.5f / %.3f", new Object[]{Double.valueOf(this.mc.func_175606_aa().posX), Double.valueOf(this.mc.func_175606_aa().getEntityBoundingBox().minY), Double.valueOf(this.mc.func_175606_aa().posZ)}), String.format("Block: %d %d %d", new Object[]{Integer.valueOf(var1.getX()), Integer.valueOf(var1.getY()), Integer.valueOf(var1.getZ())}), String.format("Chunk: %d %d %d in %d %d %d", new Object[]{Integer.valueOf(var1.getX() & 15), Integer.valueOf(var1.getY() & 15), Integer.valueOf(var1.getZ() & 15), Integer.valueOf(var1.getX() >> 4), Integer.valueOf(var1.getY() >> 4), Integer.valueOf(var1.getZ() >> 4)}), String.format("Facing: %s (%s) (%.1f / %.1f)", new Object[]{var3, var4, Float.valueOf(MathHelper.wrapAngleTo180_float(var2.rotationYaw)), Float.valueOf(MathHelper.wrapAngleTo180_float(var2.rotationPitch))})});
-+            ArrayList var5 = Lists.newArrayList(new String[] {"Minecraft 1.8 (" + this.mc.func_175600_c() + "/" + ClientBrandRetriever.getClientModName() + ")", this.mc.debug, this.mc.renderGlobal.getDebugInfoRenders(), this.mc.renderGlobal.getDebugInfoEntities(), "P: " + this.mc.effectRenderer.getStatistics() + ". T: " + this.mc.world.getDebugLoadedEntities(), this.mc.world.getProviderName(), "", String.format("XYZ: %.3f / %.5f / %.3f", new Object[]{Double.valueOf(this.mc.func_175606_aa().posX), Double.valueOf(this.mc.func_175606_aa().getEntityBoundingBox().minY), Double.valueOf(this.mc.func_175606_aa().posZ)}), String.format("Block: %d %d %d", new Object[]{Integer.valueOf(var1.getX()), Integer.valueOf(var1.getY()), Integer.valueOf(var1.getZ())}), String.format("Chunk: %d %d %d in %d %d %d", new Object[]{Integer.valueOf(var1.getX() & 15), Integer.valueOf(var1.getY() & 15), Integer.valueOf(var1.getZ() & 15), Integer.valueOf(var1.getX() >> 4), Integer.valueOf(var1.getY() >> 4), Integer.valueOf(var1.getZ() >> 4)}), String.format("Facing: %s (%s) (%.1f / %.1f)", new Object[]{var3, var4, Float.valueOf(MathHelper.wrapDegrees(var2.rotationYaw)), Float.valueOf(MathHelper.wrapDegrees(var2.rotationPitch))})});
++            ArrayList var5 = Lists.newArrayList(new String[] {"Minecraft 1.8 (" + this.mc.func_175600_c() + "/" + ClientBrandRetriever.getClientModName() + ")", this.mc.debug, this.mc.renderGlobal.getDebugInfoRenders(), this.mc.renderGlobal.getDebugInfoEntities(), "P: " + this.mc.effectRenderer.getStatistics() + ". T: " + this.mc.world.getDebugLoadedEntities(), this.mc.world.getProviderName(), "", String.format("XYZ: %.3f / %.5f / %.3f", new Object[]{Double.valueOf(this.mc.getRenderViewEntity().posX), Double.valueOf(this.mc.getRenderViewEntity().getEntityBoundingBox().minY), Double.valueOf(this.mc.getRenderViewEntity().posZ)}), String.format("Block: %d %d %d", new Object[]{Integer.valueOf(var1.getX()), Integer.valueOf(var1.getY()), Integer.valueOf(var1.getZ())}), String.format("Chunk: %d %d %d in %d %d %d", new Object[]{Integer.valueOf(var1.getX() & 15), Integer.valueOf(var1.getY() & 15), Integer.valueOf(var1.getZ() & 15), Integer.valueOf(var1.getX() >> 4), Integer.valueOf(var1.getY() >> 4), Integer.valueOf(var1.getZ() >> 4)}), String.format("Facing: %s (%s) (%.1f / %.1f)", new Object[]{var3, var4, Float.valueOf(MathHelper.wrapDegrees(var2.rotationYaw)), Float.valueOf(MathHelper.wrapDegrees(var2.rotationPitch))})});
  
 -            if (this.mc.theWorld != null && this.mc.theWorld.isBlockLoaded(var1))
 +            if (this.mc.world.isBlockLoaded(var1))
@@ -13293,7 +13352,7 @@ index 7380782..11c296f 100644
              this.bipedRightArm.rotationPointX = -MathHelper.cos(this.bipedBody.rotateAngleY) * 5.0F;
              this.bipedLeftArm.rotationPointZ = -MathHelper.sin(this.bipedBody.rotateAngleY) * 5.0F;
 diff --git a/net/minecraft/client/model/ModelGuardian.java b/net/minecraft/client/model/ModelGuardian.java
-index 644f12a..bc4be19 100644
+index 644f12a..c5b278b 100644
 --- a/net/minecraft/client/model/ModelGuardian.java
 +++ b/net/minecraft/client/model/ModelGuardian.java
 @@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
@@ -13305,6 +13364,15 @@ index 644f12a..bc4be19 100644
  
  public class ModelGuardian extends ModelBase
  {
+@@ -93,7 +93,7 @@ public class ModelGuardian extends ModelBase
+         }
+ 
+         this.guardianEye.rotationPointZ = -8.25F;
+-        Object var26 = Minecraft.getMinecraft().func_175606_aa();
++        Object var26 = Minecraft.getMinecraft().getRenderViewEntity();
+ 
+         if (var8.func_175474_cn())
+         {
 @@ -102,8 +102,8 @@ public class ModelGuardian extends ModelBase
  
          if (var26 != null)
@@ -14015,7 +14083,7 @@ index 3931254..a5d71ef 100644
              }
          }
 diff --git a/net/minecraft/client/multiplayer/WorldClient.java b/net/minecraft/client/multiplayer/WorldClient.java
-index a637637..5b14f43 100644
+index a637637..1d16388 100644
 --- a/net/minecraft/client/multiplayer/WorldClient.java
 +++ b/net/minecraft/client/multiplayer/WorldClient.java
 @@ -1,10 +1,12 @@
@@ -14119,6 +14187,15 @@ index a637637..5b14f43 100644
          {
              private static final String __OBFID = "CL_00000886";
              public String call()
+@@ -434,7 +442,7 @@ public class WorldClient extends World
+      */
+     public void playSound(double x, double y, double z, String soundName, float volume, float pitch, boolean distanceDelay)
+     {
+-        double var11 = this.mc.func_175606_aa().getDistanceSq(x, y, z);
++        double var11 = this.mc.getRenderViewEntity().getDistanceSq(x, y, z);
+         PositionedSoundRecord var13 = new PositionedSoundRecord(new ResourceLocation(soundName), volume, pitch, (float)x, (float)y, (float)z);
+ 
+         if (distanceDelay && var11 > 100.0D)
 diff --git a/net/minecraft/client/network/NetHandlerHandshakeMemory.java b/net/minecraft/client/network/NetHandlerHandshakeMemory.java
 index e3c9a13..da4aab0 100644
 --- a/net/minecraft/client/network/NetHandlerHandshakeMemory.java
@@ -15419,9 +15496,18 @@ index e3e3adf..591c8c0 100644
          p_180434_1_.addVertexWithUV((double)(var14 - p_180434_4_ * var13 + p_180434_7_ * var13), (double)(var15 + p_180434_5_ * var13), (double)(var16 - p_180434_6_ * var13 + p_180434_8_ * var13), (double)var10, (double)var11);
          p_180434_1_.addVertexWithUV((double)(var14 + p_180434_4_ * var13 + p_180434_7_ * var13), (double)(var15 + p_180434_5_ * var13), (double)(var16 + p_180434_6_ * var13 + p_180434_8_ * var13), (double)var9, (double)var11);
 diff --git a/net/minecraft/client/particle/EntityFireworkStarterFX.java b/net/minecraft/client/particle/EntityFireworkStarterFX.java
-index a98391a..3bb38aa 100644
+index a98391a..d5ae8b9 100644
 --- a/net/minecraft/client/particle/EntityFireworkStarterFX.java
 +++ b/net/minecraft/client/particle/EntityFireworkStarterFX.java
+@@ -152,7 +152,7 @@ public class EntityFireworkStarterFX extends EntityFX
+     private boolean func_92037_i()
+     {
+         Minecraft var1 = Minecraft.getMinecraft();
+-        return var1 == null || var1.func_175606_aa() == null || var1.func_175606_aa().getDistanceSq(this.posX, this.posY, this.posZ) >= 256.0D;
++        return var1 == null || var1.getRenderViewEntity() == null || var1.getRenderViewEntity().getDistanceSq(this.posX, this.posY, this.posZ) >= 256.0D;
+     }
+ 
+     /**
 @@ -195,7 +195,7 @@ public class EntityFireworkStarterFX extends EntityFX
                      double var17 = (double)var15 + (this.rand.nextDouble() - this.rand.nextDouble()) * 0.5D;
                      double var19 = (double)var14 + (this.rand.nextDouble() - this.rand.nextDouble()) * 0.5D;
@@ -15931,7 +16017,7 @@ index 33c3df8..3bd82fa 100644
              private static final String __OBFID = "CL_00002524";
              protected ModelResourceLocation func_178132_a(IBlockState p_178132_1_)
 diff --git a/net/minecraft/client/renderer/EntityRenderer.java b/net/minecraft/client/renderer/EntityRenderer.java
-index 9f404dc..01cf3c5 100644
+index 9f404dc..1c11b50 100644
 --- a/net/minecraft/client/renderer/EntityRenderer.java
 +++ b/net/minecraft/client/renderer/EntityRenderer.java
 @@ -1,11 +1,11 @@
@@ -15982,21 +16068,22 @@ index 9f404dc..01cf3c5 100644
  public class EntityRenderer implements IResourceManagerReloadListener
  {
      private static final Logger logger = LogManager.getLogger();
-@@ -166,10 +163,18 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -166,17 +163,25 @@ public class EntityRenderer implements IResourceManagerReloadListener
      private double cameraZoom = 1.0D;
      private double cameraYaw;
      private double cameraPitch;
 -    private ShaderGroup theShaderGroup;
 -    private static final ResourceLocation[] shaderResourceLocations = new ResourceLocation[] {new ResourceLocation("shaders/post/notch.json"), new ResourceLocation("shaders/post/fxaa.json"), new ResourceLocation("shaders/post/art.json"), new ResourceLocation("shaders/post/bumpy.json"), new ResourceLocation("shaders/post/blobs2.json"), new ResourceLocation("shaders/post/pencil.json"), new ResourceLocation("shaders/post/color_convolve.json"), new ResourceLocation("shaders/post/deconverge.json"), new ResourceLocation("shaders/post/flip.json"), new ResourceLocation("shaders/post/invert.json"), new ResourceLocation("shaders/post/ntsc.json"), new ResourceLocation("shaders/post/outline.json"), new ResourceLocation("shaders/post/phosphor.json"), new ResourceLocation("shaders/post/scan_pincushion.json"), new ResourceLocation("shaders/post/sobel.json"), new ResourceLocation("shaders/post/bits.json"), new ResourceLocation("shaders/post/desaturate.json"), new ResourceLocation("shaders/post/green.json"), new ResourceLocation("shaders/post/blur.json"), new ResourceLocation("shaders/post/wobble.json"), new ResourceLocation("shaders/post/blobs.json"), new ResourceLocation("shaders/post/antialias.json"), new ResourceLocation("shaders/post/creeper.json"), new ResourceLocation("shaders/post/spider.json")};
+-    public static final int shaderCount = shaderResourceLocations.length;
+-    private int shaderIndex;
 +    
 +    //TODO: Client
 +    public ShaderGroup theShaderGroup;
 +    
 +    //TODO: Client
-+    public static final ResourceLocation[] shaderResourceLocations = new ResourceLocation[] {new ResourceLocation("shaders/post/notch.json"), new ResourceLocation("shaders/post/fxaa.json"), new ResourceLocation("shaders/post/art.json"), new ResourceLocation("shaders/post/bumpy.json"), new ResourceLocation("shaders/post/blobs2.json"), new ResourceLocation("shaders/post/pencil.json"), new ResourceLocation("shaders/post/color_convolve.json"), new ResourceLocation("shaders/post/deconverge.json"), new ResourceLocation("shaders/post/flip.json"), new ResourceLocation("shaders/post/invert.json"), new ResourceLocation("shaders/post/ntsc.json"), new ResourceLocation("shaders/post/outline.json"), new ResourceLocation("shaders/post/phosphor.json"), new ResourceLocation("shaders/post/scan_pincushion.json"), new ResourceLocation("shaders/post/sobel.json"), new ResourceLocation("shaders/post/bits.json"), new ResourceLocation("shaders/post/desaturate.json"), new ResourceLocation("shaders/post/green.json"), new ResourceLocation("shaders/post/blur.json"), new ResourceLocation("shaders/post/wobble.json"), new ResourceLocation("shaders/post/blobs.json"), new ResourceLocation("shaders/post/antialias.json"), new ResourceLocation("shaders/post/creeper.json"), new ResourceLocation("shaders/post/spider.json")};
++    public static final ResourceLocation[] SHADERS_TEXTURES = new ResourceLocation[] {new ResourceLocation("shaders/post/notch.json"), new ResourceLocation("shaders/post/fxaa.json"), new ResourceLocation("shaders/post/art.json"), new ResourceLocation("shaders/post/bumpy.json"), new ResourceLocation("shaders/post/blobs2.json"), new ResourceLocation("shaders/post/pencil.json"), new ResourceLocation("shaders/post/color_convolve.json"), new ResourceLocation("shaders/post/deconverge.json"), new ResourceLocation("shaders/post/flip.json"), new ResourceLocation("shaders/post/invert.json"), new ResourceLocation("shaders/post/ntsc.json"), new ResourceLocation("shaders/post/outline.json"), new ResourceLocation("shaders/post/phosphor.json"), new ResourceLocation("shaders/post/scan_pincushion.json"), new ResourceLocation("shaders/post/sobel.json"), new ResourceLocation("shaders/post/bits.json"), new ResourceLocation("shaders/post/desaturate.json"), new ResourceLocation("shaders/post/green.json"), new ResourceLocation("shaders/post/blur.json"), new ResourceLocation("shaders/post/wobble.json"), new ResourceLocation("shaders/post/blobs.json"), new ResourceLocation("shaders/post/antialias.json"), new ResourceLocation("shaders/post/creeper.json"), new ResourceLocation("shaders/post/spider.json")};
 +    
-     public static final int shaderCount = shaderResourceLocations.length;
--    private int shaderIndex;
++    public static final int SHADER_COUNT = SHADERS_TEXTURES.length;
 +    
 +    //TODO: Client
 +    public int shaderIndex;
@@ -16004,6 +16091,14 @@ index 9f404dc..01cf3c5 100644
      private boolean field_175083_ad;
      private int field_175084_ae;
      private static final String __OBFID = "CL_00000947";
+ 
+     public EntityRenderer(Minecraft mcIn, IResourceManager p_i45076_2_)
+     {
+-        this.shaderIndex = shaderCount;
++        this.shaderIndex = SHADER_COUNT;
+         this.field_175083_ad = false;
+         this.field_175084_ae = 0;
+         this.mc = mcIn;
 @@ -194,7 +199,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
              {
                  float var5 = (float)(var4 - 16);
@@ -16013,30 +16108,113 @@ index 9f404dc..01cf3c5 100644
                  this.field_175076_N[var3 << 5 | var4] = -var6 / var7;
                  this.field_175077_O[var3 << 5 | var4] = var5 / var7;
              }
+@@ -224,15 +229,15 @@ public class EntityRenderer implements IResourceManagerReloadListener
+ 
+             if (p_175066_1_ instanceof EntityCreeper)
+             {
+-                this.func_175069_a(new ResourceLocation("shaders/post/creeper.json"));
++                this.loadShader(new ResourceLocation("shaders/post/creeper.json"));
+             }
+             else if (p_175066_1_ instanceof EntitySpider)
+             {
+-                this.func_175069_a(new ResourceLocation("shaders/post/spider.json"));
++                this.loadShader(new ResourceLocation("shaders/post/spider.json"));
+             }
+             else if (p_175066_1_ instanceof EntityEnderman)
+             {
+-                this.func_175069_a(new ResourceLocation("shaders/post/invert.json"));
++                this.loadShader(new ResourceLocation("shaders/post/invert.json"));
+             }
+         }
+     }
+@@ -241,18 +246,18 @@ public class EntityRenderer implements IResourceManagerReloadListener
+     {
+         if (OpenGlHelper.shadersSupported)
+         {
+-            if (this.mc.func_175606_aa() instanceof EntityPlayer)
++            if (this.mc.getRenderViewEntity() instanceof EntityPlayer)
+             {
+                 if (this.theShaderGroup != null)
+                 {
+                     this.theShaderGroup.deleteShaderGroup();
+                 }
+ 
+-                this.shaderIndex = (this.shaderIndex + 1) % (shaderResourceLocations.length + 1);
++                this.shaderIndex = (this.shaderIndex + 1) % (SHADERS_TEXTURES.length + 1);
+ 
+-                if (this.shaderIndex != shaderCount)
++                if (this.shaderIndex != SHADER_COUNT)
+                 {
+-                    this.func_175069_a(shaderResourceLocations[this.shaderIndex]);
++                    this.loadShader(SHADERS_TEXTURES[this.shaderIndex]);
+                 }
+                 else
+                 {
 @@ -262,7 +267,8 @@ public class EntityRenderer implements IResourceManagerReloadListener
          }
      }
  
 -    private void func_175069_a(ResourceLocation p_175069_1_)
 +    //TODO: Client
-+    public void func_175069_a(ResourceLocation p_175069_1_)
++    public void loadShader(ResourceLocation p_175069_1_)
      {
          try
          {
-@@ -340,10 +346,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -273,13 +279,13 @@ public class EntityRenderer implements IResourceManagerReloadListener
+         catch (IOException var3)
+         {
+             logger.warn("Failed to load shader: " + p_175069_1_, var3);
+-            this.shaderIndex = shaderCount;
++            this.shaderIndex = SHADER_COUNT;
+             this.field_175083_ad = false;
+         }
+         catch (JsonSyntaxException var4)
+         {
+             logger.warn("Failed to load shader: " + p_175069_1_, var4);
+-            this.shaderIndex = shaderCount;
++            this.shaderIndex = SHADER_COUNT;
+             this.field_175083_ad = false;
+         }
+     }
+@@ -293,13 +299,13 @@ public class EntityRenderer implements IResourceManagerReloadListener
  
-         if (this.mc.func_175606_aa() == null)
+         this.theShaderGroup = null;
+ 
+-        if (this.shaderIndex != shaderCount)
++        if (this.shaderIndex != SHADER_COUNT)
+         {
+-            this.func_175069_a(shaderResourceLocations[this.shaderIndex]);
++            this.loadShader(SHADERS_TEXTURES[this.shaderIndex]);
+         }
+         else
+         {
+-            this.func_175066_a(this.mc.func_175606_aa());
++            this.func_175066_a(this.mc.getRenderViewEntity());
+         }
+     }
+ 
+@@ -338,12 +344,12 @@ public class EntityRenderer implements IResourceManagerReloadListener
+             this.mouseFilterYAxis.func_180179_a();
+         }
+ 
+-        if (this.mc.func_175606_aa() == null)
++        if (this.mc.getRenderViewEntity() == null)
          {
 -            this.mc.func_175607_a(this.mc.thePlayer);
 +            this.mc.func_175607_a(this.mc.player);
          }
  
 -        var1 = this.mc.theWorld.getLightBrightness(new BlockPos(this.mc.func_175606_aa()));
-+        var1 = this.mc.world.getLightBrightness(new BlockPos(this.mc.func_175606_aa()));
++        var1 = this.mc.world.getLightBrightness(new BlockPos(this.mc.getRenderViewEntity()));
          var2 = (float)this.mc.gameSettings.renderDistanceChunks / 32.0F;
          float var3 = var1 * (1.0F - var2) + var2;
          this.fogColor1 += (var3 - this.fogColor1) * 0.1F;
-@@ -396,14 +402,14 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -392,18 +398,18 @@ public class EntityRenderer implements IResourceManagerReloadListener
+      */
+     public void getMouseOver(float p_78473_1_)
+     {
+-        Entity var2 = this.mc.func_175606_aa();
++        Entity var2 = this.mc.getRenderViewEntity();
  
          if (var2 != null)
          {
@@ -16088,7 +16266,26 @@ index 9f404dc..01cf3c5 100644
  
                      if (this.pointedEntity instanceof EntityLivingBase || this.pointedEntity instanceof EntityItemFrame)
                      {
-@@ -536,7 +542,14 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -499,9 +505,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
+     {
+         float var1 = 1.0F;
+ 
+-        if (this.mc.func_175606_aa() instanceof AbstractClientPlayer)
++        if (this.mc.getRenderViewEntity() instanceof AbstractClientPlayer)
+         {
+-            AbstractClientPlayer var2 = (AbstractClientPlayer)this.mc.func_175606_aa();
++            AbstractClientPlayer var2 = (AbstractClientPlayer)this.mc.getRenderViewEntity();
+             var1 = var2.func_175156_o();
+         }
+ 
+@@ -530,13 +536,20 @@ public class EntityRenderer implements IResourceManagerReloadListener
+         }
+         else
+         {
+-            Entity var3 = this.mc.func_175606_aa();
++            Entity var3 = this.mc.getRenderViewEntity();
+             float var4 = 70.0F;
+ 
              if (p_78481_2_)
              {
                  var4 = this.mc.gameSettings.fovSetting;
@@ -16116,6 +16313,39 @@ index 9f404dc..01cf3c5 100644
              {
                  var4 = var4 * 60.0F / 70.0F;
              }
+@@ -558,9 +571,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
+ 
+     private void hurtCameraEffect(float p_78482_1_)
+     {
+-        if (this.mc.func_175606_aa() instanceof EntityLivingBase)
++        if (this.mc.getRenderViewEntity() instanceof EntityLivingBase)
+         {
+-            EntityLivingBase var2 = (EntityLivingBase)this.mc.func_175606_aa();
++            EntityLivingBase var2 = (EntityLivingBase)this.mc.getRenderViewEntity();
+             float var3 = (float)var2.hurtTime - p_78482_1_;
+             float var4;
+ 
+@@ -589,9 +602,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
+      */
+     private void setupViewBobbing(float p_78475_1_)
+     {
+-        if (this.mc.func_175606_aa() instanceof EntityPlayer)
++        if (this.mc.getRenderViewEntity() instanceof EntityPlayer)
+         {
+-            EntityPlayer var2 = (EntityPlayer)this.mc.func_175606_aa();
++            EntityPlayer var2 = (EntityPlayer)this.mc.getRenderViewEntity();
+             float var3 = var2.distanceWalkedModified - var2.prevDistanceWalkedModified;
+             float var4 = -(var2.distanceWalkedModified + var3 * p_78475_1_);
+             float var5 = var2.prevCameraYaw + (var2.cameraYaw - var2.prevCameraYaw) * p_78475_1_;
+@@ -608,7 +621,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
+      */
+     private void orientCamera(float p_78467_1_)
+     {
+-        Entity var2 = this.mc.func_175606_aa();
++        Entity var2 = this.mc.getRenderViewEntity();
+         float var3 = var2.getEyeHeight();
+         double var4 = var2.prevPosX + (var2.posX - var2.prevPosX) * (double)p_78467_1_;
+         double var6 = var2.prevPosY + (var2.posY - var2.prevPosY) * (double)p_78467_1_ + (double)var3;
 @@ -622,7 +635,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
              if (!this.mc.gameSettings.debugCamEnable)
              {
@@ -16167,6 +16397,15 @@ index 9f404dc..01cf3c5 100644
              {
                  var5 = 7;
              }
+@@ -833,7 +851,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
+                 this.setupViewBobbing(p_78476_1_);
+             }
+ 
+-            boolean var4 = this.mc.func_175606_aa() instanceof EntityLivingBase && ((EntityLivingBase)this.mc.func_175606_aa()).isPlayerSleeping();
++            boolean var4 = this.mc.getRenderViewEntity() instanceof EntityLivingBase && ((EntityLivingBase)this.mc.getRenderViewEntity()).isPlayerSleeping();
+ 
+             if (this.mc.gameSettings.thirdPersonView == 0 && !var4 && !this.mc.gameSettings.hideGUI && !this.mc.playerController.enableEverythingIsScrewedUpMode())
+             {
 @@ -899,7 +917,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
          if (this.lightmapUpdateNeeded)
          {
@@ -16249,7 +16488,15 @@ index 9f404dc..01cf3c5 100644
                      {
                          private static final String __OBFID = "CL_00000951";
                          public String call()
-@@ -1221,14 +1239,14 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1214,21 +1232,21 @@ public class EntityRenderer implements IResourceManagerReloadListener
+         }
+         else
+         {
+-            Entity var1 = this.mc.func_175606_aa();
++            Entity var1 = this.mc.getRenderViewEntity();
+             boolean var2 = var1 instanceof EntityPlayer && !this.mc.gameSettings.hideGUI;
+ 
+             if (var2 && !((EntityPlayer)var1).capabilities.allowEdit)
              {
                  ItemStack var3 = ((EntityPlayer)var1).getCurrentEquippedItem();
  
@@ -16268,18 +16515,24 @@ index 9f404dc..01cf3c5 100644
                      }
                      else
                      {
-@@ -1243,7 +1261,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1243,9 +1261,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
  
      private void func_175067_i(float p_175067_1_)
      {
 -        if (this.mc.gameSettings.showDebugInfo && !this.mc.gameSettings.hideGUI && !this.mc.thePlayer.func_175140_cp() && !this.mc.gameSettings.field_178879_v)
 +        if (this.mc.gameSettings.showDebugInfo && !this.mc.gameSettings.hideGUI && !this.mc.player.func_175140_cp() && !this.mc.gameSettings.field_178879_v)
          {
-             Entity var2 = this.mc.func_175606_aa();
+-            Entity var2 = this.mc.func_175606_aa();
++            Entity var2 = this.mc.getRenderViewEntity();
              GlStateManager.enableBlend();
-@@ -1272,11 +1290,15 @@ public class EntityRenderer implements IResourceManagerReloadListener
+             GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+             GL11.glLineWidth(1.0F);
+@@ -1270,13 +1288,17 @@ public class EntityRenderer implements IResourceManagerReloadListener
+     {
+         this.updateLightmap(p_78471_1_);
  
-         if (this.mc.func_175606_aa() == null)
+-        if (this.mc.func_175606_aa() == null)
++        if (this.mc.getRenderViewEntity() == null)
          {
 -            this.mc.func_175607_a(this.mc.thePlayer);
 +            this.mc.func_175607_a(this.mc.player);
@@ -16294,7 +16547,7 @@ index 9f404dc..01cf3c5 100644
          GlStateManager.enableAlpha();
          GlStateManager.alphaFunc(516, 0.5F);
          this.mc.mcProfiler.startSection("center");
-@@ -1311,7 +1333,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1311,12 +1333,12 @@ public class EntityRenderer implements IResourceManagerReloadListener
          GlStateManager.clear(16640);
          this.mc.mcProfiler.endStartSection("camera");
          this.setupCameraTransform(p_175068_2_, p_175068_1_);
@@ -16303,6 +16556,12 @@ index 9f404dc..01cf3c5 100644
          this.mc.mcProfiler.endStartSection("frustum");
          ClippingHelperImpl.getInstance();
          this.mc.mcProfiler.endStartSection("culling");
+         Frustrum var8 = new Frustrum();
+-        Entity var9 = this.mc.func_175606_aa();
++        Entity var9 = this.mc.getRenderViewEntity();
+         double var10 = var9.lastTickPosX + (var9.posX - var9.lastTickPosX) * (double)p_175068_2_;
+         double var12 = var9.lastTickPosY + (var9.posY - var9.lastTickPosY) * (double)p_175068_2_;
+         double var14 = var9.lastTickPosZ + (var9.posZ - var9.lastTickPosZ) * (double)p_175068_2_;
 @@ -1350,7 +1372,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
          this.mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
          RenderHelper.disableStandardItemLighting();
@@ -16349,11 +16608,13 @@ index 9f404dc..01cf3c5 100644
  
          if (!this.mc.gameSettings.fancyGraphics)
          {
-@@ -1512,7 +1537,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -1511,8 +1536,8 @@ public class EntityRenderer implements IResourceManagerReloadListener
+         if (var1 != 0.0F)
          {
              this.random.setSeed((long)this.rendererUpdateCount * 312987231L);
-             Entity var2 = this.mc.func_175606_aa();
+-            Entity var2 = this.mc.func_175606_aa();
 -            WorldClient var3 = this.mc.theWorld;
++            Entity var2 = this.mc.getRenderViewEntity();
 +            WorldClient var3 = this.mc.world;
              BlockPos var4 = new BlockPos(var2);
              byte var5 = 10;
@@ -16415,8 +16676,9 @@ index 9f404dc..01cf3c5 100644
          if (var2 > 0.0F)
          {
              this.func_180436_i();
-             Entity var3 = this.mc.func_175606_aa();
+-            Entity var3 = this.mc.func_175606_aa();
 -            WorldClient var4 = this.mc.theWorld;
++            Entity var3 = this.mc.getRenderViewEntity();
 +            WorldClient var4 = this.mc.world;
              int var5 = MathHelper.floor_double(var3.posX);
              int var6 = MathHelper.floor_double(var3.posY);
@@ -16470,12 +16732,13 @@ index 9f404dc..01cf3c5 100644
      private void updateFogColor(float p_78466_1_)
      {
 -        WorldClient var2 = this.mc.theWorld;
+-        Entity var3 = this.mc.func_175606_aa();
 +        WorldClient var2 = this.mc.world;
-         Entity var3 = this.mc.func_175606_aa();
++        Entity var3 = this.mc.getRenderViewEntity();
          float var4 = 0.25F + 0.75F * (float)this.mc.gameSettings.renderDistanceChunks / 32.0F;
          var4 = 1.0F - (float)Math.pow((double)var4, 0.25D);
 -        Vec3 var5 = var2.getSkyColor(this.mc.func_175606_aa(), p_78466_1_);
-+        Vec3d var5 = var2.getSkyColor(this.mc.func_175606_aa(), p_78466_1_);
++        Vec3d var5 = var2.getSkyColor(this.mc.getRenderViewEntity(), p_78466_1_);
          float var6 = (float)var5.xCoord;
          float var7 = (float)var5.yCoord;
          float var8 = (float)var5.zCoord;
@@ -16536,6 +16799,15 @@ index 9f404dc..01cf3c5 100644
              int var16 = ((EntityLivingBase)var3).getActivePotionEffect(Potion.blindness).getDuration();
  
              if (var16 < 20)
+@@ -1936,7 +1967,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
+      */
+     private void setupFog(int p_78468_1_, float p_78468_2_)
+     {
+-        Entity var3 = this.mc.func_175606_aa();
++        Entity var3 = this.mc.getRenderViewEntity();
+         boolean var4 = false;
+ 
+         if (var3 instanceof EntityPlayer)
 @@ -1947,11 +1978,15 @@ public class EntityRenderer implements IResourceManagerReloadListener
          GL11.glFog(GL11.GL_FOG_COLOR, this.setFogColorBuffer(this.field_175080_Q, this.field_175082_R, this.field_175081_S, 1.0F));
          GL11.glNormal3f(0.0F, -1.0F, 0.0F);
@@ -16904,7 +17176,7 @@ index c8a3c9a..56f5625 100644
      private int[] field_175634_h;
      private IBlockState[] field_175635_i;
 diff --git a/net/minecraft/client/renderer/RenderGlobal.java b/net/minecraft/client/renderer/RenderGlobal.java
-index db09dad..d9a2a8e 100644
+index db09dad..2ed5b16 100644
 --- a/net/minecraft/client/renderer/RenderGlobal.java
 +++ b/net/minecraft/client/renderer/RenderGlobal.java
 @@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
@@ -16965,16 +17237,46 @@ index db09dad..d9a2a8e 100644
              this.renderDistanceChunks = this.mc.gameSettings.renderDistanceChunks;
              boolean var1 = this.field_175005_X;
              this.field_175005_X = OpenGlHelper.func_176075_f();
-@@ -606,7 +610,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
+@@ -520,7 +524,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
+ 
+             if (this.theWorld != null)
+             {
+-                Entity var2 = this.mc.func_175606_aa();
++                Entity var2 = this.mc.getRenderViewEntity();
+ 
+                 if (var2 != null)
+                 {
+@@ -561,12 +565,12 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
+             double var6 = p_180446_1_.prevPosY + (p_180446_1_.posY - p_180446_1_.prevPosY) * (double)p_180446_3_;
+             double var8 = p_180446_1_.prevPosZ + (p_180446_1_.posZ - p_180446_1_.prevPosZ) * (double)p_180446_3_;
+             this.theWorld.theProfiler.startSection("prepare");
+-            TileEntityRendererDispatcher.instance.func_178470_a(this.theWorld, this.mc.getTextureManager(), this.mc.fontRendererObj, this.mc.func_175606_aa(), p_180446_3_);
+-            this.field_175010_j.func_180597_a(this.theWorld, this.mc.fontRendererObj, this.mc.func_175606_aa(), this.mc.pointedEntity, this.mc.gameSettings, p_180446_3_);
++            TileEntityRendererDispatcher.instance.func_178470_a(this.theWorld, this.mc.getTextureManager(), this.mc.fontRendererObj, this.mc.getRenderViewEntity(), p_180446_3_);
++            this.field_175010_j.func_180597_a(this.theWorld, this.mc.fontRendererObj, this.mc.getRenderViewEntity(), this.mc.pointedEntity, this.mc.gameSettings, p_180446_3_);
+             this.countEntitiesTotal = 0;
+             this.countEntitiesRendered = 0;
+             this.countEntitiesHidden = 0;
+-            Entity var10 = this.mc.func_175606_aa();
++            Entity var10 = this.mc.getRenderViewEntity();
+             double var11 = var10.lastTickPosX + (var10.posX - var10.lastTickPosX) * (double)p_180446_3_;
+             double var13 = var10.lastTickPosY + (var10.posY - var10.lastTickPosY) * (double)p_180446_3_;
+             double var15 = var10.lastTickPosZ + (var10.posZ - var10.lastTickPosZ) * (double)p_180446_3_;
+@@ -605,10 +609,10 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
+                 for (var18 = 0; var18 < var17.size(); ++var18)
                  {
                      var19 = (Entity)var17.get(var18);
-                     boolean var20 = this.mc.func_175606_aa() instanceof EntityLivingBase && ((EntityLivingBase)this.mc.func_175606_aa()).isPlayerSleeping();
+-                    boolean var20 = this.mc.func_175606_aa() instanceof EntityLivingBase && ((EntityLivingBase)this.mc.func_175606_aa()).isPlayerSleeping();
 -                    boolean var21 = var19.isInRangeToRender3d(var4, var6, var8) && (var19.ignoreFrustumCheck || p_180446_2_.isBoundingBoxInFrustum(var19.getEntityBoundingBox()) || var19.riddenByEntity == this.mc.thePlayer) && var19 instanceof EntityPlayer;
++                    boolean var20 = this.mc.getRenderViewEntity() instanceof EntityLivingBase && ((EntityLivingBase)this.mc.getRenderViewEntity()).isPlayerSleeping();
 +                    boolean var21 = var19.isInRangeToRender3d(var4, var6, var8) && (var19.ignoreFrustumCheck || p_180446_2_.isBoundingBoxInFrustum(var19.getEntityBoundingBox()) || var19.riddenByEntity == this.mc.player) && var19 instanceof EntityPlayer;
  
-                     if ((var19 != this.mc.func_175606_aa() || this.mc.gameSettings.thirdPersonView != 0 || var20) && var21)
+-                    if ((var19 != this.mc.func_175606_aa() || this.mc.gameSettings.thirdPersonView != 0 || var20) && var21)
++                    if ((var19 != this.mc.getRenderViewEntity() || this.mc.gameSettings.thirdPersonView != 0 || var20) && var21)
                      {
-@@ -639,7 +643,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
+                         this.field_175010_j.renderEntitySimple(var19, p_180446_3_);
+                     }
+@@ -639,13 +643,13 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                  while (var31.hasNext())
                  {
                      Entity var22 = (Entity)var31.next();
@@ -16983,6 +17285,14 @@ index db09dad..d9a2a8e 100644
  
                      if (var23)
                      {
+-                        boolean var24 = this.mc.func_175606_aa() instanceof EntityLivingBase ? ((EntityLivingBase)this.mc.func_175606_aa()).isPlayerSleeping() : false;
++                        boolean var24 = this.mc.getRenderViewEntity() instanceof EntityLivingBase ? ((EntityLivingBase)this.mc.getRenderViewEntity()).isPlayerSleeping() : false;
+ 
+-                        if (var22 == this.mc.func_175606_aa() && this.mc.gameSettings.thirdPersonView == 0 && !var24 || var22.posY >= 0.0D && var22.posY < 256.0D && !this.theWorld.isBlockLoaded(new BlockPos(var22)))
++                        if (var22 == this.mc.getRenderViewEntity() && this.mc.gameSettings.thirdPersonView == 0 && !var24 || var22.posY >= 0.0D && var22.posY < 256.0D && !this.theWorld.isBlockLoaded(new BlockPos(var22)))
+                         {
+                             continue;
+                         }
 @@ -933,17 +937,25 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
          VisGraph var2 = new VisGraph();
          BlockPos var3 = new BlockPos(p_174978_1_.getX() >> 4 << 4, p_174978_1_.getY() >> 4 << 4, p_174978_1_.getZ() >> 4 << 4);
@@ -17036,7 +17346,7 @@ index db09dad..d9a2a8e 100644
          {
              GlStateManager.func_179090_x();
 -            Vec3 var3 = this.theWorld.getSkyColor(this.mc.func_175606_aa(), p_174976_1_);
-+            Vec3d var3 = this.theWorld.getSkyColor(this.mc.func_175606_aa(), p_174976_1_);
++            Vec3d var3 = this.theWorld.getSkyColor(this.mc.getRenderViewEntity(), p_174976_1_);
              float var4 = (float)var3.xCoord;
              float var5 = (float)var3.yCoord;
              float var6 = (float)var3.zCoord;
@@ -17080,6 +17390,15 @@ index db09dad..d9a2a8e 100644
          {
              if (this.mc.gameSettings.fancyGraphics)
              {
+@@ -1431,7 +1443,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
+             else
+             {
+                 GlStateManager.disableCull();
+-                float var3 = (float)(this.mc.func_175606_aa().lastTickPosY + (this.mc.func_175606_aa().posY - this.mc.func_175606_aa().lastTickPosY) * (double)p_180447_1_);
++                float var3 = (float)(this.mc.getRenderViewEntity().lastTickPosY + (this.mc.getRenderViewEntity().posY - this.mc.getRenderViewEntity().lastTickPosY) * (double)p_180447_1_);
+                 boolean var4 = true;
+                 boolean var5 = true;
+                 Tessellator var6 = Tessellator.getInstance();
 @@ -1439,7 +1451,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                  this.renderEngine.bindTexture(locationCloudsPng);
                  GlStateManager.enableBlend();
@@ -17089,6 +17408,17 @@ index db09dad..d9a2a8e 100644
                  float var9 = (float)var8.xCoord;
                  float var10 = (float)var8.yCoord;
                  float var11 = (float)var8.zCoord;
+@@ -1457,8 +1469,8 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
+ 
+                 var12 = 4.8828125E-4F;
+                 double var26 = (double)((float)this.cloudTickCounter + p_180447_1_);
+-                double var15 = this.mc.func_175606_aa().prevPosX + (this.mc.func_175606_aa().posX - this.mc.func_175606_aa().prevPosX) * (double)p_180447_1_ + var26 * 0.029999999329447746D;
+-                double var17 = this.mc.func_175606_aa().prevPosZ + (this.mc.func_175606_aa().posZ - this.mc.func_175606_aa().prevPosZ) * (double)p_180447_1_;
++                double var15 = this.mc.getRenderViewEntity().prevPosX + (this.mc.getRenderViewEntity().posX - this.mc.getRenderViewEntity().prevPosX) * (double)p_180447_1_ + var26 * 0.029999999329447746D;
++                double var17 = this.mc.getRenderViewEntity().prevPosZ + (this.mc.getRenderViewEntity().posZ - this.mc.getRenderViewEntity().prevPosZ) * (double)p_180447_1_;
+                 int var19 = MathHelper.floor_double(var15 / 2048.0D);
+                 int var20 = MathHelper.floor_double(var17 / 2048.0D);
+                 var15 -= (double)(var19 * 2048);
 @@ -1467,7 +1479,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                  float var22 = (float)(var15 * 4.8828125E-4D);
                  float var23 = (float)(var17 * 4.8828125E-4D);
@@ -17098,6 +17428,24 @@ index db09dad..d9a2a8e 100644
  
                  for (int var24 = -256; var24 < 256; var24 += 32)
                  {
+@@ -1499,14 +1511,14 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
+     private void func_180445_c(float p_180445_1_, int p_180445_2_)
+     {
+         GlStateManager.disableCull();
+-        float var3 = (float)(this.mc.func_175606_aa().lastTickPosY + (this.mc.func_175606_aa().posY - this.mc.func_175606_aa().lastTickPosY) * (double)p_180445_1_);
++        float var3 = (float)(this.mc.getRenderViewEntity().lastTickPosY + (this.mc.getRenderViewEntity().posY - this.mc.getRenderViewEntity().lastTickPosY) * (double)p_180445_1_);
+         Tessellator var4 = Tessellator.getInstance();
+         WorldRenderer var5 = var4.getWorldRenderer();
+         float var6 = 12.0F;
+         float var7 = 4.0F;
+         double var8 = (double)((float)this.cloudTickCounter + p_180445_1_);
+-        double var10 = (this.mc.func_175606_aa().prevPosX + (this.mc.func_175606_aa().posX - this.mc.func_175606_aa().prevPosX) * (double)p_180445_1_ + var8 * 0.029999999329447746D) / 12.0D;
+-        double var12 = (this.mc.func_175606_aa().prevPosZ + (this.mc.func_175606_aa().posZ - this.mc.func_175606_aa().prevPosZ) * (double)p_180445_1_) / 12.0D + 0.33000001311302185D;
++        double var10 = (this.mc.getRenderViewEntity().prevPosX + (this.mc.getRenderViewEntity().posX - this.mc.getRenderViewEntity().prevPosX) * (double)p_180445_1_ + var8 * 0.029999999329447746D) / 12.0D;
++        double var12 = (this.mc.getRenderViewEntity().prevPosZ + (this.mc.getRenderViewEntity().posZ - this.mc.getRenderViewEntity().prevPosZ) * (double)p_180445_1_) / 12.0D + 0.33000001311302185D;
+         float var14 = this.theWorld.provider.getCloudHeight() - var3 + 0.33F;
+         int var15 = MathHelper.floor_double(var10 / 2048.0D);
+         int var16 = MathHelper.floor_double(var12 / 2048.0D);
 @@ -1515,7 +1527,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
          this.renderEngine.bindTexture(locationCloudsPng);
          GlStateManager.enableBlend();
@@ -17213,6 +17561,51 @@ index db09dad..d9a2a8e 100644
              {
                  private static final String __OBFID = "CL_00000955";
                  public String call()
+@@ -2066,7 +2078,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
+ 
+     private EntityFX func_174974_b(int p_174974_1_, boolean p_174974_2_, double p_174974_3_, double p_174974_5_, double p_174974_7_, double p_174974_9_, double p_174974_11_, double p_174974_13_, int ... p_174974_15_)
+     {
+-        if (this.mc != null && this.mc.func_175606_aa() != null && this.mc.effectRenderer != null)
++        if (this.mc != null && this.mc.getRenderViewEntity() != null && this.mc.effectRenderer != null)
+         {
+             int var16 = this.mc.gameSettings.particleSetting;
+ 
+@@ -2075,9 +2087,9 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
+                 var16 = 2;
+             }
+ 
+-            double var17 = this.mc.func_175606_aa().posX - p_174974_3_;
+-            double var19 = this.mc.func_175606_aa().posY - p_174974_5_;
+-            double var21 = this.mc.func_175606_aa().posZ - p_174974_7_;
++            double var17 = this.mc.getRenderViewEntity().posX - p_174974_3_;
++            double var19 = this.mc.getRenderViewEntity().posY - p_174974_5_;
++            double var21 = this.mc.getRenderViewEntity().posZ - p_174974_7_;
+ 
+             if (p_174974_2_)
+             {
+@@ -2118,15 +2130,15 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
+         {
+             case 1013:
+             case 1018:
+-                if (this.mc.func_175606_aa() != null)
++                if (this.mc.getRenderViewEntity() != null)
+                 {
+-                    double var4 = (double)p_180440_2_.getX() - this.mc.func_175606_aa().posX;
+-                    double var6 = (double)p_180440_2_.getY() - this.mc.func_175606_aa().posY;
+-                    double var8 = (double)p_180440_2_.getZ() - this.mc.func_175606_aa().posZ;
++                    double var4 = (double)p_180440_2_.getX() - this.mc.getRenderViewEntity().posX;
++                    double var6 = (double)p_180440_2_.getY() - this.mc.getRenderViewEntity().posY;
++                    double var8 = (double)p_180440_2_.getZ() - this.mc.getRenderViewEntity().posZ;
+                     double var10 = Math.sqrt(var4 * var4 + var6 * var6 + var8 * var8);
+-                    double var12 = this.mc.func_175606_aa().posX;
+-                    double var14 = this.mc.func_175606_aa().posY;
+-                    double var16 = this.mc.func_175606_aa().posZ;
++                    double var12 = this.mc.getRenderViewEntity().posX;
++                    double var14 = this.mc.getRenderViewEntity().posY;
++                    double var16 = this.mc.getRenderViewEntity().posZ;
+ 
+                     if (var10 > 0.0D)
+                     {
 @@ -2276,7 +2288,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
              case 2001:
                  Block var6 = Block.getBlockById(p_180439_4_ & 4095);
@@ -17496,7 +17889,7 @@ index 5954583..0fe63cb 100644
          }
  
 diff --git a/net/minecraft/client/renderer/chunk/ChunkRenderWorker.java b/net/minecraft/client/renderer/chunk/ChunkRenderWorker.java
-index 29f19e1..448c142 100644
+index 29f19e1..9484c30 100644
 --- a/net/minecraft/client/renderer/chunk/ChunkRenderWorker.java
 +++ b/net/minecraft/client/renderer/chunk/ChunkRenderWorker.java
 @@ -4,14 +4,17 @@ import com.google.common.collect.Lists;
@@ -17517,6 +17910,15 @@ index 29f19e1..448c142 100644
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
  
+@@ -78,7 +81,7 @@ public class ChunkRenderWorker implements Runnable
+ 
+             return;
+         }
+-        Entity var2 = Minecraft.getMinecraft().func_175606_aa();
++        Entity var2 = Minecraft.getMinecraft().getRenderViewEntity();
+ 
+         if (var2 == null)
+         {
 diff --git a/net/minecraft/client/renderer/chunk/VisGraph.java b/net/minecraft/client/renderer/chunk/VisGraph.java
 index 7508484..e2f3260 100644
 --- a/net/minecraft/client/renderer/chunk/VisGraph.java
