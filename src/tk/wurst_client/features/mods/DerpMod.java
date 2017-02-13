@@ -7,7 +7,7 @@
  */
 package tk.wurst_client.features.mods;
 
-import net.minecraft.network.play.client.CPacketPlayer.Rotation;
+import net.minecraft.network.play.client.CPacketPlayer;
 import tk.wurst_client.events.listeners.UpdateListener;
 
 @Mod.Info(
@@ -16,7 +16,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	name = "Derp",
 	tags = "Retarded",
 	help = "Mods/Derp")
-@Mod.Bypasses
+@Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
 public class DerpMod extends Mod implements UpdateListener
 {
 	@Override
@@ -26,17 +26,17 @@ public class DerpMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		float yaw = mc.player.rotationYaw + (float)(Math.random() * 360 - 180);
 		float pitch = (float)(Math.random() * 180 - 90);
-		mc.player.connection
-			.sendPacket(new Rotation(yaw, pitch, mc.player.onGround));
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
+		mc.player.connection.sendPacket(
+			new CPacketPlayer.Rotation(yaw, pitch, mc.player.onGround));
 	}
 }
