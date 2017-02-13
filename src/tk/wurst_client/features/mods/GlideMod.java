@@ -13,13 +13,19 @@ import tk.wurst_client.events.listeners.UpdateListener;
 @Mod.Info(description = "Makes you fall like if you had a hang glider.",
 	name = "Glide",
 	help = "Mods/Glide")
-@Mod.Bypasses
+@Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
 public class GlideMod extends Mod implements UpdateListener
 {
 	@Override
 	public void onEnable()
 	{
 		wurst.events.add(UpdateListener.class, this);
+	}
+	
+	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
 	}
 	
 	@Override
@@ -32,11 +38,5 @@ public class GlideMod extends Mod implements UpdateListener
 			mc.player.motionY = -0.125f;
 			mc.player.jumpMovementFactor *= 1.21337f;
 		}
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
 	}
 }
