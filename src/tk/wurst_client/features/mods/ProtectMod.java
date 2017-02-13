@@ -8,7 +8,6 @@
 package tk.wurst_client.features.mods;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.network.play.client.CPacketUseEntity;
 import tk.wurst_client.events.listeners.UpdateListener;
 import tk.wurst_client.utils.EntityUtils;
 import tk.wurst_client.utils.EntityUtils.TargetSettings;
@@ -29,7 +28,7 @@ public class ProtectMod extends Mod implements UpdateListener
 	private double distanceF = 2D;
 	private double distanceE = 3D;
 	
-	private TargetSettings friendSettingsFind = new TargetSettings()
+	private final TargetSettings friendSettingsFind = new TargetSettings()
 	{
 		@Override
 		public boolean targetFriends()
@@ -44,7 +43,7 @@ public class ProtectMod extends Mod implements UpdateListener
 		}
 	};
 	
-	private TargetSettings friendSettingsKeep = new TargetSettings()
+	private final TargetSettings friendSettingsKeep = new TargetSettings()
 	{
 		@Override
 		public boolean targetFriends()
@@ -56,7 +55,7 @@ public class ProtectMod extends Mod implements UpdateListener
 		public boolean targetBehindWalls()
 		{
 			return true;
-		};
+		}
 		
 		@Override
 		public boolean targetPlayers()
@@ -107,13 +106,13 @@ public class ProtectMod extends Mod implements UpdateListener
 		}
 	};
 	
-	private TargetSettings enemySettings = new TargetSettings()
+	private final TargetSettings enemySettings = new TargetSettings()
 	{
 		@Override
 		public float getRange()
 		{
 			return range;
-		};
+		}
 	};
 	
 	@Override
@@ -138,6 +137,7 @@ public class ProtectMod extends Mod implements UpdateListener
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
+		
 		if(friend != null)
 			mc.gameSettings.keyBindForward.pressed = false;
 	}
@@ -183,23 +183,18 @@ public class ProtectMod extends Mod implements UpdateListener
 			mc.gameSettings.keyBindForward.pressed =
 				mc.player.getDistanceToEntity(enemy) > distanceE;
 			
-			// check timer
-			if(!hasTimePassedS(wurst.mods.killauraMod.speed.getValueF()))
+			// check timer / cooldown
+			if(wurst.mods.killauraMod.useCooldown != null
+				&& wurst.mods.killauraMod.useCooldown.isChecked()
+					? PlayerUtils.getCooldown() < 1
+					: !hasTimePassedS(wurst.mods.killauraMod.speed.getValueF()))
 				return;
 			
-			// AutoSword
-			wurst.mods.autoSwordMod.setSlot();
-			
-			// Criticals
-			wurst.mods.criticalsMod.doCritical();
-			
-			// BlockHit
-			wurst.mods.blockHitMod.doBlock();
+			// prepare attack
+			EntityUtils.prepareAttack();
 			
 			// attack enemy
-			PlayerUtils.swingArmClient();
-			mc.player.connection.sendPacket(
-				new CPacketUseEntity(enemy, CPacketUseEntity.Action.ATTACK));
+			EntityUtils.attackEntity(enemy);
 			
 			// reset timer
 			updateLastMS();
