@@ -56,6 +56,13 @@ public class InventoryUtils
 			&& ItemPotion.isSplash(stack.getItemDamage());
 	}
 	
+	public static ItemStack createSplashPotion()
+	{
+		ItemStack stack = new ItemStack(Items.potionitem);
+		stack.setItemDamage(16384);
+		return stack;
+	}
+	
 	public static int getArmorType(ItemArmor armor)
 	{
 		return 3 - armor.armorType;
