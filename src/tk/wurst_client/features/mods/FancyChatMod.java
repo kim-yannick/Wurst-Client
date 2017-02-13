@@ -17,7 +17,7 @@ import tk.wurst_client.events.listeners.ChatOutputListener;
 	name = "FancyChat",
 	tags = "fancy chat",
 	help = "Mods/FancyChat")
-@Mod.Bypasses
+@Mod.Bypasses(ghostMode = false, mineplex = false)
 public class FancyChatMod extends Mod implements ChatOutputListener
 {
 	private final String blacklist = "(){}[]|";
@@ -26,6 +26,12 @@ public class FancyChatMod extends Mod implements ChatOutputListener
 	public void onEnable()
 	{
 		wurst.events.add(ChatOutputListener.class, this);
+	}
+	
+	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(ChatOutputListener.class, this);
 	}
 	
 	@Override
@@ -45,11 +51,5 @@ public class FancyChatMod extends Mod implements ChatOutputListener
 				out += chr;
 			
 		event.setMessage(out);
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(ChatOutputListener.class, this);
 	}
 }
