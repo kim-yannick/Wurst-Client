@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import tk.wurst_client.utils.ChatUtils;
+import tk.wurst_client.utils.InventoryUtils;
 
 @Mod.Info(
 	description = "Generates a CrashChest. Give a lot of these to another\n"
@@ -26,7 +27,7 @@ public class CrashChestMod extends Mod
 	@Override
 	public void onEnable()
 	{
-		if(mc.player.inventory.getStackInSlot(36) != null)
+		if(!InventoryUtils.isSlotEmpty(36))
 		{
 			if(mc.player.inventory.getStackInSlot(36).getDisplayName()
 				.equals("§6§lCOPY ME"))
@@ -41,14 +42,14 @@ public class CrashChestMod extends Mod
 			setEnabled(false);
 			return;
 		}
-		ItemStack stack = new ItemStack(Blocks.chest);
+		ItemStack stack = new ItemStack(Blocks.CHEST);
 		NBTTagCompound nbtTagCompound = new NBTTagCompound();
 		NBTTagList nbtList = new NBTTagList();
 		for(int i = 0; i < 40000; i++)
 			nbtList.appendTag(new NBTTagList());
 		nbtTagCompound.setTag("www.wurst-client.tk", nbtList);
 		stack.setTagInfo("www.wurst-client.tk", nbtTagCompound);
-		mc.player.getInventory()[0] = stack;
+		InventoryUtils.placeStackInArmor(0, stack);
 		stack.setStackDisplayName("§6§lCOPY ME");
 		ChatUtils.message("A CrashChest was placed in your shoes slot.");
 		setEnabled(false);

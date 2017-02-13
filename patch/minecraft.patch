@@ -1,6 +1,6 @@
-From 4556429208b4fcbd8f531dc175ba7706ec898b59 Mon Sep 17 00:00:00 2001
+From ad4511de25a29c8a634e376279df65e6440dc0f3 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Mon, 13 Feb 2017 13:08:45 +0100
+Date: Mon, 13 Feb 2017 13:18:27 +0100
 Subject: [PATCH] mod
 
 ---
@@ -227,7 +227,7 @@ Subject: [PATCH] mod
  .../client/renderer/ActiveRenderInfo.java          |  16 +-
  .../client/renderer/BlockFluidRenderer.java        |  26 +-
  .../client/renderer/BlockModelRenderer.java        |  10 +-
- .../client/renderer/BlockModelShapes.java          |  38 +-
+ .../client/renderer/BlockModelShapes.java          |  40 +-
  net/minecraft/client/renderer/EntityRenderer.java  | 209 +++++----
  .../client/renderer/ImageBufferDownload.java       |   6 +-
  .../client/renderer/InventoryEffectRenderer.java   |  10 +-
@@ -250,7 +250,7 @@ Subject: [PATCH] mod
  .../client/renderer/entity/RenderFallingBlock.java |   7 +-
  .../client/renderer/entity/RenderFish.java         |  10 +-
  .../client/renderer/entity/RenderGuardian.java     |  18 +-
- .../client/renderer/entity/RenderItem.java         | 218 ++++-----
+ .../client/renderer/entity/RenderItem.java         | 220 ++++-----
  .../renderer/entity/RenderLightningBolt.java       |   2 +-
  .../client/renderer/entity/RenderLiving.java       |   8 +-
  .../client/renderer/entity/RenderManager.java      |  25 +-
@@ -334,7 +334,7 @@ Subject: [PATCH] mod
  net/minecraft/command/server/CommandWhitelist.java |   4 +-
  net/minecraft/crash/CrashReport.java               |  33 +-
  net/minecraft/crash/CrashReportCategory.java       |  15 +-
- net/minecraft/creativetab/CreativeTabs.java        |   2 +-
+ net/minecraft/creativetab/CreativeTabs.java        |   4 +-
  net/minecraft/entity/DataWatcher.java              |  10 +
  net/minecraft/entity/Entity.java                   | 175 ++++---
  net/minecraft/entity/EntityAgeable.java            |   2 +-
@@ -362,7 +362,7 @@ Subject: [PATCH] mod
  net/minecraft/entity/ai/EntityAIMoveToBlock.java   |   2 +-
  .../entity/ai/EntityAIMoveTowardsRestriction.java  |   4 +-
  .../entity/ai/EntityAIMoveTowardsTarget.java       |   4 +-
- net/minecraft/entity/ai/EntityAIOcelotSit.java     |   2 +-
+ net/minecraft/entity/ai/EntityAIOcelotSit.java     |   4 +-
  net/minecraft/entity/ai/EntityAIPanic.java         |   4 +-
  net/minecraft/entity/ai/EntityAIPlay.java          |   6 +-
  .../entity/ai/EntityAIRunAroundLikeCrazy.java      |   4 +-
@@ -386,6 +386,7 @@ Subject: [PATCH] mod
  net/minecraft/entity/item/EntityItem.java          |  12 +-
  net/minecraft/entity/item/EntityItemFrame.java     |   4 +-
  net/minecraft/entity/item/EntityMinecart.java      |  60 +--
+ net/minecraft/entity/item/EntityMinecartChest.java |   4 +-
  .../entity/item/EntityMinecartContainer.java       |   2 +-
  .../entity/item/EntityMinecartFurnace.java         |   4 +-
  net/minecraft/entity/item/EntityMinecartTNT.java   |   4 +-
@@ -405,7 +406,7 @@ Subject: [PATCH] mod
  net/minecraft/entity/passive/EntityAnimal.java     |   6 +-
  net/minecraft/entity/passive/EntityBat.java        |   4 +-
  net/minecraft/entity/passive/EntityChicken.java    |   2 +-
- net/minecraft/entity/passive/EntityHorse.java      |  12 +-
+ net/minecraft/entity/passive/EntityHorse.java      |  18 +-
  net/minecraft/entity/passive/EntityMooshroom.java  |   4 +-
  net/minecraft/entity/passive/EntityOcelot.java     |   6 +-
  net/minecraft/entity/passive/EntityRabbit.java     |  12 +-
@@ -427,7 +428,7 @@ Subject: [PATCH] mod
  .../entity/projectile/EntityThrowable.java         |  32 +-
  .../entity/projectile/EntityWitherSkull.java       |   6 +-
  net/minecraft/event/HoverEvent.java                |   8 +-
- net/minecraft/init/Blocks.java                     | 184 ++++----
+ net/minecraft/init/Blocks.java                     | 188 ++++----
  net/minecraft/init/Bootstrap.java                  |  12 +-
  net/minecraft/init/Items.java                      |   4 +-
  net/minecraft/inventory/AnimalChest.java           |   4 +-
@@ -440,7 +441,7 @@ Subject: [PATCH] mod
  net/minecraft/inventory/InventoryLargeChest.java   |   8 +-
  net/minecraft/inventory/InventoryMerchant.java     |   8 +-
  net/minecraft/inventory/Slot.java                  |   7 +-
- net/minecraft/item/Item.java                       |  98 ++--
+ net/minecraft/item/Item.java                       | 100 ++--
  net/minecraft/item/ItemArmorStand.java             |   4 +-
  net/minecraft/item/ItemAxe.java                    |   2 +-
  net/minecraft/item/ItemBed.java                    |   4 +-
@@ -471,9 +472,9 @@ Subject: [PATCH] mod
  net/minecraft/item/ItemStack.java                  |  16 +-
  net/minecraft/item/ItemSword.java                  |  10 +-
  net/minecraft/item/ItemTool.java                   |   2 +-
- net/minecraft/item/crafting/CraftingManager.java   |  42 +-
+ net/minecraft/item/crafting/CraftingManager.java   |  46 +-
  net/minecraft/item/crafting/FurnaceRecipes.java    |  26 +-
- net/minecraft/item/crafting/RecipesCrafting.java   |  36 +-
+ net/minecraft/item/crafting/RecipesCrafting.java   |  40 +-
  net/minecraft/item/crafting/RecipesDyes.java       |  30 +-
  net/minecraft/item/crafting/RecipesFood.java       |   8 +-
  net/minecraft/nbt/CompressedStreamTools.java       |   1 +
@@ -645,7 +646,7 @@ Subject: [PATCH] mod
  .../world/gen/feature/WorldGenDeadBush.java        |   8 +-
  .../world/gen/feature/WorldGenDesertWells.java     |   8 +-
  .../world/gen/feature/WorldGenDoublePlant.java     |   4 +-
- .../world/gen/feature/WorldGenDungeons.java        |   8 +-
+ .../world/gen/feature/WorldGenDungeons.java        |  14 +-
  net/minecraft/world/gen/feature/WorldGenFire.java  |   2 +-
  .../world/gen/feature/WorldGenForest.java          |  16 +-
  .../world/gen/feature/WorldGenGlowStone1.java      |   4 +-
@@ -673,11 +674,11 @@ Subject: [PATCH] mod
  net/minecraft/world/gen/feature/WorldGenTrees.java |  48 +-
  net/minecraft/world/gen/feature/WorldGenVines.java |   6 +-
  .../world/gen/feature/WorldGenWaterlily.java       |   4 +-
- .../gen/feature/WorldGeneratorBonusChest.java      |  24 +-
+ .../gen/feature/WorldGeneratorBonusChest.java      |  26 +-
  net/minecraft/world/gen/layer/GenLayer.java        |   5 +-
  .../structure/ComponentScatteredFeaturePieces.java | 254 +++++------
  .../world/gen/structure/MapGenStructure.java       |   8 +-
- .../world/gen/structure/StructureComponent.java    |  18 +-
+ .../world/gen/structure/StructureComponent.java    |  24 +-
  .../gen/structure/StructureMineshaftPieces.java    |  78 ++--
  .../gen/structure/StructureNetherBridgePieces.java |  48 +-
  .../structure/StructureOceanMonumentPieces.java    |   2 +-
@@ -687,7 +688,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |  10 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 683 files changed, 8195 insertions(+), 6904 deletions(-)
+ 684 files changed, 8218 insertions(+), 6927 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -15827,9 +15828,18 @@ index 21be134..4884931 100644
              var7 = true;
          }
 diff --git a/net/minecraft/client/renderer/BlockModelShapes.java b/net/minecraft/client/renderer/BlockModelShapes.java
-index 33c3df8..90a2404 100644
+index 33c3df8..3bd82fa 100644
 --- a/net/minecraft/client/renderer/BlockModelShapes.java
 +++ b/net/minecraft/client/renderer/BlockModelShapes.java
+@@ -83,7 +83,7 @@ public class BlockModelShapes
+ 
+         if (var3 == null || var3 == this.modelManager.getMissingModel())
+         {
+-            if (var2 == Blocks.wall_sign || var2 == Blocks.standing_sign || var2 == Blocks.chest || var2 == Blocks.trapped_chest || var2 == Blocks.standing_banner || var2 == Blocks.wall_banner)
++            if (var2 == Blocks.wall_sign || var2 == Blocks.standing_sign || var2 == Blocks.CHEST || var2 == Blocks.trapped_chest || var2 == Blocks.standing_banner || var2 == Blocks.wall_banner)
+             {
+                 return this.modelManager.func_174952_b().getAtlasSprite("minecraft:blocks/planks_oak");
+             }
 @@ -93,12 +93,12 @@ public class BlockModelShapes
                  return this.modelManager.func_174952_b().getAtlasSprite("minecraft:blocks/obsidian");
              }
@@ -15851,7 +15861,7 @@ index 33c3df8..90a2404 100644
      {
 -        this.func_178123_a(new Block[] {Blocks.air, Blocks.flowing_water, Blocks.water, Blocks.flowing_lava, Blocks.lava, Blocks.piston_extension, Blocks.chest, Blocks.ender_chest, Blocks.trapped_chest, Blocks.standing_sign, Blocks.skull, Blocks.end_portal, Blocks.barrier, Blocks.wall_sign, Blocks.wall_banner, Blocks.standing_banner});
 -        this.func_178121_a(Blocks.stone, (new StateMap.Builder()).func_178440_a(BlockStone.VARIANT_PROP).build());
-+        this.func_178123_a(new Block[] {Blocks.AIR, Blocks.FLOWING_WATER, Blocks.WATER, Blocks.FLOWING_LAVA, Blocks.LAVA, Blocks.piston_extension, Blocks.chest, Blocks.ender_chest, Blocks.trapped_chest, Blocks.standing_sign, Blocks.skull, Blocks.end_portal, Blocks.barrier, Blocks.wall_sign, Blocks.wall_banner, Blocks.standing_banner});
++        this.func_178123_a(new Block[] {Blocks.AIR, Blocks.FLOWING_WATER, Blocks.WATER, Blocks.FLOWING_LAVA, Blocks.LAVA, Blocks.piston_extension, Blocks.CHEST, Blocks.ender_chest, Blocks.trapped_chest, Blocks.standing_sign, Blocks.skull, Blocks.end_portal, Blocks.barrier, Blocks.wall_sign, Blocks.wall_banner, Blocks.standing_banner});
 +        this.func_178121_a(Blocks.STONE, (new StateMap.Builder()).func_178440_a(BlockStone.VARIANT_PROP).build());
          this.func_178121_a(Blocks.prismarine, (new StateMap.Builder()).func_178440_a(BlockPrismarine.VARIANTS).build());
 -        this.func_178121_a(Blocks.leaves, (new StateMap.Builder()).func_178440_a(BlockOldLeaf.VARIANT_PROP).func_178439_a("_leaves").func_178442_a(new IProperty[] {BlockLeaves.field_176236_b, BlockLeaves.field_176237_a}).build());
@@ -17867,7 +17877,7 @@ index ef1550c..7a5da44 100644
              double var31 = var29 * 1.41D;
              double var33 = 0.0D + Math.cos(var26 + 2.356194490192345D) * var31;
 diff --git a/net/minecraft/client/renderer/entity/RenderItem.java b/net/minecraft/client/renderer/entity/RenderItem.java
-index 3da61f1..3fa19f9 100644
+index 3da61f1..566d42e 100644
 --- a/net/minecraft/client/renderer/entity/RenderItem.java
 +++ b/net/minecraft/client/renderer/entity/RenderItem.java
 @@ -3,6 +3,7 @@ package net.minecraft.client.renderer.entity;
@@ -18279,7 +18289,7 @@ index 3da61f1..3fa19f9 100644
          this.registerBlock(Blocks.soul_sand, "soul_sand");
          this.registerBlock(Blocks.spruce_stairs, "spruce_stairs");
          this.registerBlock(Blocks.sticky_piston, "sticky_piston");
-@@ -809,12 +811,12 @@ public class RenderItem implements IResourceManagerReloadListener
+@@ -809,13 +811,13 @@ public class RenderItem implements IResourceManagerReloadListener
          this.registerBlock(Blocks.torch, "torch");
          this.registerBlock(Blocks.trapdoor, "trapdoor");
          this.registerBlock(Blocks.tripwire_hook, "tripwire_hook");
@@ -18292,10 +18302,12 @@ index 3da61f1..3fa19f9 100644
          this.registerBlock(Blocks.wooden_button, "wooden_button");
          this.registerBlock(Blocks.wooden_pressure_plate, "wooden_pressure_plate");
 -        this.registerBlock(Blocks.yellow_flower, BlockFlower.EnumFlowerType.DANDELION.func_176968_b(), "dandelion");
+-        this.registerBlock(Blocks.chest, "chest");
 +        this.registerBlock(Blocks.YELLOW_FLOWER, BlockFlower.EnumFlowerType.DANDELION.func_176968_b(), "dandelion");
-         this.registerBlock(Blocks.chest, "chest");
++        this.registerBlock(Blocks.CHEST, "chest");
          this.registerBlock(Blocks.trapped_chest, "trapped_chest");
          this.registerBlock(Blocks.ender_chest, "ender_chest");
+         this.registerItem(Items.iron_shovel, "iron_shovel");
 @@ -847,7 +849,7 @@ public class RenderItem implements IResourceManagerReloadListener
          this.registerItem(Items.diamond_pickaxe, "diamond_pickaxe");
          this.registerItem(Items.diamond_axe, "diamond_axe");
@@ -21013,7 +21025,7 @@ index 386cfae..bc17a45 100644
              private static final String __OBFID = "CL_00002616";
              public String func_175751_a()
 diff --git a/net/minecraft/creativetab/CreativeTabs.java b/net/minecraft/creativetab/CreativeTabs.java
-index 8d837ed..a60b289 100644
+index 8d837ed..939d61a 100644
 --- a/net/minecraft/creativetab/CreativeTabs.java
 +++ b/net/minecraft/creativetab/CreativeTabs.java
 @@ -27,7 +27,7 @@ public abstract class CreativeTabs
@@ -21025,6 +21037,15 @@ index 8d837ed..a60b289 100644
          }
          public int getIconItemDamage()
          {
+@@ -111,7 +111,7 @@ public abstract class CreativeTabs
+         private static final String __OBFID = "CL_00000009";
+         public Item getTabIconItem()
+         {
+-            return Item.getItemFromBlock(Blocks.chest);
++            return Item.getItemFromBlock(Blocks.CHEST);
+         }
+     }).setBackgroundImageName("inventory.png").setNoScrollbar().setNoTitle();
+     private final int tabIndex;
 diff --git a/net/minecraft/entity/DataWatcher.java b/net/minecraft/entity/DataWatcher.java
 index 6bd900a..cdf03c7 100644
 --- a/net/minecraft/entity/DataWatcher.java
@@ -22455,7 +22476,7 @@ index bed1cc0..bcd5e81 100644
              if (var1 == null)
              {
 diff --git a/net/minecraft/entity/ai/EntityAIOcelotSit.java b/net/minecraft/entity/ai/EntityAIOcelotSit.java
-index cb8dc46..603f5f2 100644
+index cb8dc46..836d1a1 100644
 --- a/net/minecraft/entity/ai/EntityAIOcelotSit.java
 +++ b/net/minecraft/entity/ai/EntityAIOcelotSit.java
 @@ -75,7 +75,7 @@ public class EntityAIOcelotSit extends EntityAIMoveToBlock
@@ -22467,6 +22488,15 @@ index cb8dc46..603f5f2 100644
          {
              return false;
          }
+@@ -84,7 +84,7 @@ public class EntityAIOcelotSit extends EntityAIMoveToBlock
+             IBlockState var3 = worldIn.getBlockState(p_179488_2_);
+             Block var4 = var3.getBlock();
+ 
+-            if (var4 == Blocks.chest)
++            if (var4 == Blocks.CHEST)
+             {
+                 TileEntity var5 = worldIn.getTileEntity(p_179488_2_);
+ 
 diff --git a/net/minecraft/entity/ai/EntityAIPanic.java b/net/minecraft/entity/ai/EntityAIPanic.java
 index 6a98632..0681d9e 100644
 --- a/net/minecraft/entity/ai/EntityAIPanic.java
@@ -23489,6 +23519,28 @@ index 98162e1..1f2649f 100644
              return var1;
          }
      }
+diff --git a/net/minecraft/entity/item/EntityMinecartChest.java b/net/minecraft/entity/item/EntityMinecartChest.java
+index fe0f40f..a5b02cd 100644
+--- a/net/minecraft/entity/item/EntityMinecartChest.java
++++ b/net/minecraft/entity/item/EntityMinecartChest.java
+@@ -29,7 +29,7 @@ public class EntityMinecartChest extends EntityMinecartContainer
+     public void killMinecart(DamageSource p_94095_1_)
+     {
+         super.killMinecart(p_94095_1_);
+-        this.dropItemWithOffset(Item.getItemFromBlock(Blocks.chest), 1, 0.0F);
++        this.dropItemWithOffset(Item.getItemFromBlock(Blocks.CHEST), 1, 0.0F);
+     }
+ 
+     /**
+@@ -47,7 +47,7 @@ public class EntityMinecartChest extends EntityMinecartContainer
+ 
+     public IBlockState func_180457_u()
+     {
+-        return Blocks.chest.getDefaultState().withProperty(BlockChest.FACING_PROP, EnumFacing.NORTH);
++        return Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING_PROP, EnumFacing.NORTH);
+     }
+ 
+     public int getDefaultDisplayTileOffset()
 diff --git a/net/minecraft/entity/item/EntityMinecartContainer.java b/net/minecraft/entity/item/EntityMinecartContainer.java
 index fdb372b..f9838fe 100644
 --- a/net/minecraft/entity/item/EntityMinecartContainer.java
@@ -24040,7 +24092,7 @@ index 8636a70..2df5467 100644
          if (!this.onGround && this.field_70889_i < 1.0F)
          {
 diff --git a/net/minecraft/entity/passive/EntityHorse.java b/net/minecraft/entity/passive/EntityHorse.java
-index 4f4aaed..decf31a 100644
+index 4f4aaed..53a1132 100644
 --- a/net/minecraft/entity/passive/EntityHorse.java
 +++ b/net/minecraft/entity/passive/EntityHorse.java
 @@ -360,7 +360,7 @@ public class EntityHorse extends EntityAnimal implements IInvBasic
@@ -24051,6 +24103,15 @@ index 4f4aaed..decf31a 100644
 +        int var2 = MathHelper.clamp(this.getTemper() + p_110198_1_, 0, this.getMaxTemper());
          this.setTemper(var2);
          return var2;
+     }
+@@ -402,7 +402,7 @@ public class EntityHorse extends EntityAnimal implements IInvBasic
+     {
+         if (!this.worldObj.isRemote && this.isChested())
+         {
+-            this.dropItem(Item.getItemFromBlock(Blocks.chest), 1);
++            this.dropItem(Item.getItemFromBlock(Blocks.CHEST), 1);
+             this.setChested(false);
+         }
      }
 @@ -437,7 +437,7 @@ public class EntityHorse extends EntityAnimal implements IInvBasic
  
@@ -24073,6 +24134,15 @@ index 4f4aaed..decf31a 100644
          }
  
          if (!p_180429_2_.getMaterial().isLiquid())
+@@ -940,7 +940,7 @@ public class EntityHorse extends EntityAnimal implements IInvBasic
+                     return true;
+                 }
+ 
+-                if (!var3 && this.canCarryChest() && !this.isChested() && var2.getItem() == Item.getItemFromBlock(Blocks.chest))
++                if (!var3 && this.canCarryChest() && !this.isChested() && var2.getItem() == Item.getItemFromBlock(Blocks.CHEST))
+                 {
+                     this.setChested(true);
+                     this.playSound("mob.chickenplop", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 @@ -1086,7 +1086,7 @@ public class EntityHorse extends EntityAnimal implements IInvBasic
                  this.heal(1.0F);
              }
@@ -24091,6 +24161,15 @@ index 4f4aaed..decf31a 100644
  
              if (var7 > 1.0F)
              {
+@@ -1815,7 +1815,7 @@ public class EntityHorse extends EntityAnimal implements IInvBasic
+                 return true;
+             }
+ 
+-            if (p_174820_2_ != null && p_174820_2_.getItem() == Item.getItemFromBlock(Blocks.chest) && !this.isChested())
++            if (p_174820_2_ != null && p_174820_2_.getItem() == Item.getItemFromBlock(Blocks.CHEST) && !this.isChested())
+             {
+                 this.setChested(true);
+                 this.func_110226_cD();
 diff --git a/net/minecraft/entity/passive/EntityMooshroom.java b/net/minecraft/entity/passive/EntityMooshroom.java
 index 235217b..e3703e5 100644
 --- a/net/minecraft/entity/passive/EntityMooshroom.java
@@ -25633,7 +25712,7 @@ index 69b88d2..53e62da 100644
          return this.value;
      }
 diff --git a/net/minecraft/init/Blocks.java b/net/minecraft/init/Blocks.java
-index 9e34ddd..c3a1c06 100644
+index 9e34ddd..583d6d5 100644
 --- a/net/minecraft/init/Blocks.java
 +++ b/net/minecraft/init/Blocks.java
 @@ -36,49 +36,49 @@ import net.minecraft.util.ResourceLocation;
@@ -25726,7 +25805,8 @@ index 9e34ddd..c3a1c06 100644
 -    public static final Block mob_spawner;
 +    public static final Block MOB_SPAWNER;
      public static final Block oak_stairs;
-     public static final BlockChest chest;
+-    public static final BlockChest chest;
++    public static final BlockChest CHEST;
      public static final BlockRedstoneWire redstone_wire;
 -    public static final Block diamond_ore;
 +    public static final Block DIAMOND_ORE;
@@ -25925,7 +26005,8 @@ index 9e34ddd..c3a1c06 100644
 -            mob_spawner = getRegisteredBlock("mob_spawner");
 +            MOB_SPAWNER = getRegisteredBlock("mob_spawner");
              oak_stairs = getRegisteredBlock("oak_stairs");
-             chest = (BlockChest)getRegisteredBlock("chest");
+-            chest = (BlockChest)getRegisteredBlock("chest");
++            CHEST = (BlockChest)getRegisteredBlock("chest");
              redstone_wire = (BlockRedstoneWire)getRegisteredBlock("redstone_wire");
 -            diamond_ore = getRegisteredBlock("diamond_ore");
 +            DIAMOND_ORE = getRegisteredBlock("diamond_ore");
@@ -26338,7 +26419,7 @@ index 15d5c72..ce20868 100644
          return null;
      }
 diff --git a/net/minecraft/item/Item.java b/net/minecraft/item/Item.java
-index 36aed35..49318a9 100644
+index 36aed35..9a34b9e 100644
 --- a/net/minecraft/item/Item.java
 +++ b/net/minecraft/item/Item.java
 @@ -36,11 +36,11 @@ import net.minecraft.potion.PotionHelper;
@@ -26510,8 +26591,9 @@ index 36aed35..49318a9 100644
 -        registerItemBlock(Blocks.mob_spawner);
 +        registerItemBlock(Blocks.MOB_SPAWNER);
          registerItemBlock(Blocks.oak_stairs);
-         registerItemBlock(Blocks.chest);
+-        registerItemBlock(Blocks.chest);
 -        registerItemBlock(Blocks.diamond_ore);
++        registerItemBlock(Blocks.CHEST);
 +        registerItemBlock(Blocks.DIAMOND_ORE);
          registerItemBlock(Blocks.diamond_block);
          registerItemBlock(Blocks.crafting_table);
@@ -26657,7 +26739,7 @@ index 0624a57..23dd5f5 100644
                              this.func_179221_a(var20, worldIn.rand);
                              NBTTagCompound var22 = stack.getTagCompound();
 diff --git a/net/minecraft/item/ItemAxe.java b/net/minecraft/item/ItemAxe.java
-index 19515d2..65bee0c 100644
+index 19515d2..1cf6d94 100644
 --- a/net/minecraft/item/ItemAxe.java
 +++ b/net/minecraft/item/ItemAxe.java
 @@ -8,7 +8,7 @@ import net.minecraft.init.Blocks;
@@ -26665,7 +26747,7 @@ index 19515d2..65bee0c 100644
  public class ItemAxe extends ItemTool
  {
 -    private static final Set field_150917_c = Sets.newHashSet(new Block[] {Blocks.planks, Blocks.bookshelf, Blocks.log, Blocks.log2, Blocks.chest, Blocks.pumpkin, Blocks.lit_pumpkin, Blocks.melon_block, Blocks.ladder});
-+    private static final Set field_150917_c = Sets.newHashSet(new Block[] {Blocks.planks, Blocks.bookshelf, Blocks.LOG, Blocks.LOG2, Blocks.chest, Blocks.pumpkin, Blocks.lit_pumpkin, Blocks.melon_block, Blocks.ladder});
++    private static final Set field_150917_c = Sets.newHashSet(new Block[] {Blocks.planks, Blocks.bookshelf, Blocks.LOG, Blocks.LOG2, Blocks.CHEST, Blocks.pumpkin, Blocks.lit_pumpkin, Blocks.melon_block, Blocks.ladder});
      private static final String __OBFID = "CL_00001770";
  
      protected ItemAxe(Item.ToolMaterial p_i45327_1_)
@@ -27545,7 +27627,7 @@ index a821dae..7b3858a 100644
      /** The material this tool is made from. */
      protected Item.ToolMaterial toolMaterial;
 diff --git a/net/minecraft/item/crafting/CraftingManager.java b/net/minecraft/item/crafting/CraftingManager.java
-index 1146247..5febefe 100644
+index 1146247..b3873a5 100644
 --- a/net/minecraft/item/crafting/CraftingManager.java
 +++ b/net/minecraft/item/crafting/CraftingManager.java
 @@ -65,7 +65,7 @@ public class CraftingManager
@@ -27609,6 +27691,15 @@ index 1146247..5febefe 100644
          this.addRecipe(new ItemStack(Items.glass_bottle, 3), new Object[] {"# #", " # ", '#', Blocks.glass});
          this.addRecipe(new ItemStack(Blocks.rail, 16), new Object[] {"X X", "X#X", "X X", 'X', Items.iron_ingot, '#', Items.stick});
          this.addRecipe(new ItemStack(Blocks.golden_rail, 6), new Object[] {"X X", "X#X", "XRX", 'X', Items.gold_ingot, 'R', Items.redstone, '#', Items.stick});
+@@ -131,7 +131,7 @@ public class CraftingManager
+         this.addRecipe(new ItemStack(Items.cauldron, 1), new Object[] {"# #", "# #", "###", '#', Items.iron_ingot});
+         this.addRecipe(new ItemStack(Items.brewing_stand, 1), new Object[] {" B ", "###", '#', Blocks.cobblestone, 'B', Items.blaze_rod});
+         this.addRecipe(new ItemStack(Blocks.lit_pumpkin, 1), new Object[] {"A", "B", 'A', Blocks.pumpkin, 'B', Blocks.torch});
+-        this.addRecipe(new ItemStack(Items.chest_minecart, 1), new Object[] {"A", "B", 'A', Blocks.chest, 'B', Items.minecart});
++        this.addRecipe(new ItemStack(Items.chest_minecart, 1), new Object[] {"A", "B", 'A', Blocks.CHEST, 'B', Items.minecart});
+         this.addRecipe(new ItemStack(Items.furnace_minecart, 1), new Object[] {"A", "B", 'A', Blocks.furnace, 'B', Items.minecart});
+         this.addRecipe(new ItemStack(Items.tnt_minecart, 1), new Object[] {"A", "B", 'A', Blocks.tnt, 'B', Items.minecart});
+         this.addRecipe(new ItemStack(Items.hopper_minecart, 1), new Object[] {"A", "B", 'A', Blocks.hopper, 'B', Items.minecart});
 @@ -152,8 +152,8 @@ public class CraftingManager
          this.addRecipe(new ItemStack(Blocks.brick_stairs, 4), new Object[] {"#  ", "## ", "###", '#', Blocks.brick_block});
          this.addRecipe(new ItemStack(Blocks.stone_brick_stairs, 4), new Object[] {"#  ", "## ", "###", '#', Blocks.stonebrick});
@@ -27639,7 +27730,7 @@ index 1146247..5febefe 100644
          this.addRecipe(new ItemStack(Blocks.wooden_pressure_plate, 1), new Object[] {"##", '#', Blocks.planks});
          this.addRecipe(new ItemStack(Blocks.heavy_weighted_pressure_plate, 1), new Object[] {"##", '#', Items.iron_ingot});
          this.addRecipe(new ItemStack(Blocks.light_weighted_pressure_plate, 1), new Object[] {"##", '#', Items.gold_ingot});
-@@ -180,7 +180,7 @@ public class CraftingManager
+@@ -180,14 +180,14 @@ public class CraftingManager
          this.addRecipe(new ItemStack(Blocks.piston, 1), new Object[] {"TTT", "#X#", "#R#", '#', Blocks.cobblestone, 'X', Items.iron_ingot, 'R', Items.redstone, 'T', Blocks.planks});
          this.addRecipe(new ItemStack(Blocks.sticky_piston, 1), new Object[] {"S", "P", 'S', Items.slime_ball, 'P', Blocks.piston});
          this.addRecipe(new ItemStack(Items.bed, 1), new Object[] {"###", "XXX", '#', Blocks.wool, 'X', Blocks.planks});
@@ -27648,6 +27739,14 @@ index 1146247..5febefe 100644
          this.addRecipe(new ItemStack(Blocks.anvil, 1), new Object[] {"III", " i ", "iii", 'I', Blocks.iron_block, 'i', Items.iron_ingot});
          this.addRecipe(new ItemStack(Items.leather), new Object[] {"##", "##", '#', Items.rabbit_hide});
          this.addShapelessRecipe(new ItemStack(Items.ender_eye, 1), new Object[] {Items.ender_pearl, Items.blaze_powder});
+         this.addShapelessRecipe(new ItemStack(Items.fire_charge, 3), new Object[] {Items.gunpowder, Items.blaze_powder, Items.coal});
+         this.addShapelessRecipe(new ItemStack(Items.fire_charge, 3), new Object[] {Items.gunpowder, Items.blaze_powder, new ItemStack(Items.coal, 1, 1)});
+         this.addRecipe(new ItemStack(Blocks.daylight_detector), new Object[] {"GGG", "QQQ", "WWW", 'G', Blocks.glass, 'Q', Items.quartz, 'W', Blocks.wooden_slab});
+-        this.addRecipe(new ItemStack(Blocks.hopper), new Object[] {"I I", "ICI", " I ", 'I', Items.iron_ingot, 'C', Blocks.chest});
++        this.addRecipe(new ItemStack(Blocks.hopper), new Object[] {"I I", "ICI", " I ", 'I', Items.iron_ingot, 'C', Blocks.CHEST});
+         this.addRecipe(new ItemStack(Items.armor_stand, 1), new Object[] {"///", " / ", "/_/", '/', Items.stick, '_', new ItemStack(Blocks.stone_slab, 1, BlockStoneSlab.EnumType.STONE.func_176624_a())});
+         Collections.sort(this.recipes, new Comparator()
+         {
 diff --git a/net/minecraft/item/crafting/FurnaceRecipes.java b/net/minecraft/item/crafting/FurnaceRecipes.java
 index 656e54b..686d5cc 100644
 --- a/net/minecraft/item/crafting/FurnaceRecipes.java
@@ -27701,14 +27800,18 @@ index 656e54b..686d5cc 100644
  
      public void addSmeltingRecipeForBlock(Block p_151393_1_, ItemStack p_151393_2_, float p_151393_3_)
 diff --git a/net/minecraft/item/crafting/RecipesCrafting.java b/net/minecraft/item/crafting/RecipesCrafting.java
-index a0ea2a6..dcfda77 100644
+index a0ea2a6..45d9816 100644
 --- a/net/minecraft/item/crafting/RecipesCrafting.java
 +++ b/net/minecraft/item/crafting/RecipesCrafting.java
-@@ -26,33 +26,33 @@ public class RecipesCrafting
+@@ -24,35 +24,35 @@ public class RecipesCrafting
+      */
+     public void addRecipes(CraftingManager p_77589_1_)
      {
-         p_77589_1_.addRecipe(new ItemStack(Blocks.chest), new Object[] {"###", "# #", "###", '#', Blocks.planks});
-         p_77589_1_.addRecipe(new ItemStack(Blocks.trapped_chest), new Object[] {"#-", '#', Blocks.chest, '-', Blocks.tripwire_hook});
+-        p_77589_1_.addRecipe(new ItemStack(Blocks.chest), new Object[] {"###", "# #", "###", '#', Blocks.planks});
+-        p_77589_1_.addRecipe(new ItemStack(Blocks.trapped_chest), new Object[] {"#-", '#', Blocks.chest, '-', Blocks.tripwire_hook});
 -        p_77589_1_.addRecipe(new ItemStack(Blocks.ender_chest), new Object[] {"###", "#E#", "###", '#', Blocks.obsidian, 'E', Items.ender_eye});
++        p_77589_1_.addRecipe(new ItemStack(Blocks.CHEST), new Object[] {"###", "# #", "###", '#', Blocks.planks});
++        p_77589_1_.addRecipe(new ItemStack(Blocks.trapped_chest), new Object[] {"#-", '#', Blocks.CHEST, '-', Blocks.tripwire_hook});
 +        p_77589_1_.addRecipe(new ItemStack(Blocks.ender_chest), new Object[] {"###", "#E#", "###", '#', Blocks.OBSIDIAN, 'E', Items.ender_eye});
          p_77589_1_.addRecipe(new ItemStack(Blocks.furnace), new Object[] {"###", "# #", "###", '#', Blocks.cobblestone});
          p_77589_1_.addRecipe(new ItemStack(Blocks.crafting_table), new Object[] {"##", "##", '#', Blocks.planks});
@@ -39490,7 +39593,7 @@ index 226d249..f16a9de 100644
              }
          }
 diff --git a/net/minecraft/world/gen/feature/WorldGenDungeons.java b/net/minecraft/world/gen/feature/WorldGenDungeons.java
-index 7faf98e..ccf7b17 100644
+index 7faf98e..926a46c 100644
 --- a/net/minecraft/world/gen/feature/WorldGenDungeons.java
 +++ b/net/minecraft/world/gen/feature/WorldGenDungeons.java
 @@ -61,7 +61,7 @@ public class WorldGenDungeons extends WorldGenerator
@@ -39502,7 +39605,13 @@ index 7faf98e..ccf7b17 100644
                      {
                          ++var13;
                      }
-@@ -86,7 +86,7 @@ public class WorldGenDungeons extends WorldGenerator
+@@ -81,20 +81,20 @@ public class WorldGenDungeons extends WorldGenerator
+ 
+                         if (var14 != var6 && var15 != -1 && var16 != var11 && var14 != var7 && var15 != 4 && var16 != var12)
+                         {
+-                            if (worldIn.getBlockState(var17).getBlock() != Blocks.chest)
++                            if (worldIn.getBlockState(var17).getBlock() != Blocks.CHEST)
+                             {
                                  worldIn.setBlockToAir(var17);
                              }
                          }
@@ -39511,7 +39620,8 @@ index 7faf98e..ccf7b17 100644
                          {
                              worldIn.setBlockToAir(var17);
                          }
-@@ -94,7 +94,7 @@ public class WorldGenDungeons extends WorldGenerator
+-                        else if (worldIn.getBlockState(var17).getBlock().getMaterial().isSolid() && worldIn.getBlockState(var17).getBlock() != Blocks.chest)
++                        else if (worldIn.getBlockState(var17).getBlock().getMaterial().isSolid() && worldIn.getBlockState(var17).getBlock() != Blocks.CHEST)
                          {
                              if (var15 == -1 && p_180709_2_.nextInt(4) != 0)
                              {
@@ -39520,6 +39630,15 @@ index 7faf98e..ccf7b17 100644
                              }
                              else
                              {
+@@ -139,7 +139,7 @@ public class WorldGenDungeons extends WorldGenerator
+ 
+                                 if (var20 == 1)
+                                 {
+-                                    worldIn.setBlockState(var26, Blocks.chest.func_176458_f(worldIn, var26, Blocks.chest.getDefaultState()), 2);
++                                    worldIn.setBlockState(var26, Blocks.CHEST.func_176458_f(worldIn, var26, Blocks.CHEST.getDefaultState()), 2);
+                                     List var27 = WeightedRandomChestContent.func_177629_a(CHESTCONTENT, new WeightedRandomChestContent[] {Items.enchanted_book.getRandomEnchantedBook(p_180709_2_)});
+                                     TileEntity var28 = worldIn.getTileEntity(var26);
+ 
 @@ -162,7 +162,7 @@ public class WorldGenDungeons extends WorldGenerator
                  }
              }
@@ -40871,7 +40990,7 @@ index a2d53cb..755d5ad 100644
          }
  
 diff --git a/net/minecraft/world/gen/feature/WorldGeneratorBonusChest.java b/net/minecraft/world/gen/feature/WorldGeneratorBonusChest.java
-index 9f60ff0..fe2480b 100644
+index 9f60ff0..f5abde6 100644
 --- a/net/minecraft/world/gen/feature/WorldGeneratorBonusChest.java
 +++ b/net/minecraft/world/gen/feature/WorldGeneratorBonusChest.java
 @@ -31,9 +31,9 @@ public class WorldGeneratorBonusChest extends WorldGenerator
@@ -40886,7 +41005,7 @@ index 9f60ff0..fe2480b 100644
          }
  
          if (p_180709_3_.getY() < 1)
-@@ -42,13 +42,13 @@ public class WorldGeneratorBonusChest extends WorldGenerator
+@@ -42,15 +42,15 @@ public class WorldGeneratorBonusChest extends WorldGenerator
          }
          else
          {
@@ -40900,8 +41019,11 @@ index 9f60ff0..fe2480b 100644
 -                if (worldIn.isAirBlock(var6) && World.doesBlockHaveSolidTopSurface(worldIn, var6.offsetDown()))
 +                if (worldIn.isAirBlock(var6) && World.doesBlockHaveSolidTopSurface(worldIn, var6.down()))
                  {
-                     worldIn.setBlockState(var6, Blocks.chest.getDefaultState(), 2);
+-                    worldIn.setBlockState(var6, Blocks.chest.getDefaultState(), 2);
++                    worldIn.setBlockState(var6, Blocks.CHEST.getDefaultState(), 2);
                      TileEntity var7 = worldIn.getTileEntity(var6);
+ 
+                     if (var7 instanceof TileEntityChest)
 @@ -58,27 +58,27 @@ public class WorldGeneratorBonusChest extends WorldGenerator
                          WeightedRandomChestContent.generateChestContents(p_180709_2_, this.field_175909_a, (TileEntityChest)var7, this.itemsToGenerateInBonusChest);
                      }
@@ -41425,7 +41547,7 @@ index e39a8f2..9a18d6c 100644
                      private static final String __OBFID = "CL_00000508";
                      public String call()
 diff --git a/net/minecraft/world/gen/structure/StructureComponent.java b/net/minecraft/world/gen/structure/StructureComponent.java
-index 3792db0..8b9ed42 100644
+index 3792db0..996c01d 100644
 --- a/net/minecraft/world/gen/structure/StructureComponent.java
 +++ b/net/minecraft/world/gen/structure/StructureComponent.java
 @@ -597,7 +597,7 @@ public abstract class StructureComponent
@@ -41493,6 +41615,20 @@ index 3792db0..8b9ed42 100644
              }
          }
      }
+@@ -767,10 +767,10 @@ public abstract class StructureComponent
+     {
+         BlockPos var9 = new BlockPos(this.getXWithOffset(p_180778_4_, p_180778_6_), this.getYWithOffset(p_180778_5_), this.getZWithOffset(p_180778_4_, p_180778_6_));
+ 
+-        if (p_180778_2_.func_175898_b(var9) && worldIn.getBlockState(var9).getBlock() != Blocks.chest)
++        if (p_180778_2_.func_175898_b(var9) && worldIn.getBlockState(var9).getBlock() != Blocks.CHEST)
+         {
+-            IBlockState var10 = Blocks.chest.getDefaultState();
+-            worldIn.setBlockState(var9, Blocks.chest.func_176458_f(worldIn, var9, var10), 2);
++            IBlockState var10 = Blocks.CHEST.getDefaultState();
++            worldIn.setBlockState(var9, Blocks.CHEST.func_176458_f(worldIn, var9, var10), 2);
+             TileEntity var11 = worldIn.getTileEntity(var9);
+ 
+             if (var11 instanceof TileEntityChest)
 @@ -825,7 +825,7 @@ public abstract class StructureComponent
  
          protected BlockSelector()
