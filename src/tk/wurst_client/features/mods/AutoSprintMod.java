@@ -23,16 +23,16 @@ public class AutoSprintMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		if(!mc.player.isCollidedHorizontally && mc.player.moveForward > 0
 			&& !mc.player.isSneaking())
 			mc.player.setSprinting(true);
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
 	}
 }
