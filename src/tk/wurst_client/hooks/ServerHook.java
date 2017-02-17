@@ -30,6 +30,7 @@ import net.minecraft.client.gui.ServerListEntryNormal;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerData;
 import tk.wurst_client.WurstClient;
+import tk.wurst_client.files.WurstFolders;
 import tk.wurst_client.utils.MiscUtils;
 
 public class ServerHook
@@ -39,18 +40,17 @@ public class ServerHook
 	
 	public static void importServers(GuiMultiplayer guiMultiplayer)
 	{
-		JFileChooser fileChooser =
-			new JFileChooser(WurstClient.INSTANCE.files.serverlistsDir)
+		JFileChooser fileChooser = new JFileChooser(WurstFolders.SERVERLISTS)
+		{
+			@Override
+			protected JDialog createDialog(Component parent)
+				throws HeadlessException
 			{
-				@Override
-				protected JDialog createDialog(Component parent)
-					throws HeadlessException
-				{
-					JDialog dialog = super.createDialog(parent);
-					dialog.setAlwaysOnTop(true);
-					return dialog;
-				}
-			};
+				JDialog dialog = super.createDialog(parent);
+				dialog.setAlwaysOnTop(true);
+				return dialog;
+			}
+		};
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		fileChooser.addChoosableFileFilter(
@@ -83,18 +83,17 @@ public class ServerHook
 	
 	public static void exportServers(GuiMultiplayer guiMultiplayer)
 	{
-		JFileChooser fileChooser =
-			new JFileChooser(WurstClient.INSTANCE.files.serverlistsDir)
+		JFileChooser fileChooser = new JFileChooser(WurstFolders.SERVERLISTS)
+		{
+			@Override
+			protected JDialog createDialog(Component parent)
+				throws HeadlessException
 			{
-				@Override
-				protected JDialog createDialog(Component parent)
-					throws HeadlessException
-				{
-					JDialog dialog = super.createDialog(parent);
-					dialog.setAlwaysOnTop(true);
-					return dialog;
-				}
-			};
+				JDialog dialog = super.createDialog(parent);
+				dialog.setAlwaysOnTop(true);
+				return dialog;
+			}
+		};
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		fileChooser.addChoosableFileFilter(
