@@ -48,6 +48,11 @@ public final class BlockUtils
 		return Block.getIdFromBlock(getBlock(pos));
 	}
 	
+	public static String getName(Block block)
+	{
+		return "" + Block.blockRegistry.getNameForObject(block);
+	}
+	
 	public static Material getMaterial(BlockPos pos)
 	{
 		return getBlock(pos).getMaterial();
