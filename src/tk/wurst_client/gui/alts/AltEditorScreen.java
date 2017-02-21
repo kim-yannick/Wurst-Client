@@ -17,6 +17,7 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiTextField;
 import tk.wurst_client.WurstClient;
 import tk.wurst_client.alts.Alt;
 import tk.wurst_client.alts.NameGenerator;
@@ -27,7 +28,7 @@ import tk.wurst_client.utils.MiscUtils;
 public abstract class AltEditorScreen extends GuiScreen
 {
 	protected GuiScreen prevMenu;
-	protected GuiEmailField emailBox;
+	protected GuiTextField emailBox;
 	protected GuiPasswordField passwordBox;
 	protected String displayText = "";
 	protected int errorTimer;
@@ -84,7 +85,7 @@ public abstract class AltEditorScreen extends GuiScreen
 		buttonList.add(new GuiButton(5, (width / 2 - 100) / 2 - 64, height - 32,
 			128, 20, "Open Skin Folder"));
 		emailBox =
-			new GuiEmailField(0, fontRendererObj, width / 2 - 100, 60, 200, 20);
+			new GuiTextField(0, fontRendererObj, width / 2 - 100, 60, 200, 20);
 		emailBox.setMaxStringLength(48);
 		emailBox.setFocused(true);
 		emailBox.setText(getEmailBoxText());

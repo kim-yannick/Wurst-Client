@@ -24,7 +24,6 @@ import com.google.gson.JsonSyntaxException;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Session;
 import tk.wurst_client.WurstClient;
 import tk.wurst_client.utils.JsonUtils;
@@ -150,14 +149,9 @@ public class SessionStealerScreen extends GuiScreen
 				// validate session
 				try
 				{
-					Proxy proxy = MinecraftServer.getServer() == null ? null
-						: MinecraftServer.getServer().getServerProxy();
-					if(proxy == null)
-						proxy = Proxy.NO_PROXY;
-					
 					HttpURLConnection connection = (HttpURLConnection)new URL(
 						"https://authserver.mojang.com/validate")
-							.openConnection(proxy);
+							.openConnection(Proxy.NO_PROXY);
 					
 					connection.setRequestMethod("POST");
 					connection.setRequestProperty("Content-Type",

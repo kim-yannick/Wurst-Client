@@ -96,12 +96,12 @@ public class GuiAlts extends GuiScreen
 	}
 	
 	@Override
-	protected void actionPerformed(GuiButton clickedButton)
+	public void actionPerformed(GuiButton clickedButton)
 	{
 		if(clickedButton.enabled)
 			if(clickedButton.id == 0)
 			{// Use
-				Alt alt = GuiAltList.alts.get(altList.getSelectedSlot());
+				Alt alt = altList.getSelectedAlt();
 				if(alt.isCracked())
 				{// Cracked
 					LoginManager.changeCrackedName(alt.getEmail());
@@ -120,7 +120,7 @@ public class GuiAlts extends GuiScreen
 						errorTimer = 8;
 						if(reply.equals("§4§lWrong password!"))
 						{
-							GuiAltList.alts.remove(altList.getSelectedSlot());
+							altList.removeSelectedAlt();
 							GuiAltList.sortAlts();
 							ConfigFiles.ALTS.save();
 						}
@@ -132,17 +132,17 @@ public class GuiAlts extends GuiScreen
 				mc.displayGuiScreen(new GuiAltAdd(this));
 			else if(clickedButton.id == 3)
 			{
-				Alt alt = GuiAltList.alts.get(altList.getSelectedSlot());
+				Alt alt = altList.getSelectedAlt();
 				alt.setStarred(!alt.isStarred());
 				GuiAltList.sortAlts();
 				ConfigFiles.ALTS.save();
 			}else if(clickedButton.id == 4)
 			{
-				Alt alt = GuiAltList.alts.get(altList.getSelectedSlot());
+				Alt alt = altList.getSelectedAlt();
 				mc.displayGuiScreen(new GuiAltEdit(this, alt));
 			}else if(clickedButton.id == 5)
 			{// Delete
-				Alt alt = GuiAltList.alts.get(altList.getSelectedSlot());
+				Alt alt = altList.getSelectedAlt();
 				String deleteQuestion =
 					"Are you sure you want to remove this alt?";
 				String deleteWarning = "\"" + alt.getNameOrEmail()
@@ -223,7 +223,7 @@ public class GuiAlts extends GuiScreen
 		}else if(par2 == 1)
 			if(par1)
 			{
-				GuiAltList.alts.remove(altList.getSelectedSlot());
+				altList.removeSelectedAlt();
 				GuiAltList.sortAlts();
 				ConfigFiles.ALTS.save();
 			}
@@ -255,6 +255,13 @@ public class GuiAlts extends GuiScreen
 		super.mouseClicked(par1, par2, par3);
 	}
 	
+	@Override
+	public void handleMouseInput() throws IOException
+	{
+		super.handleMouseInput();
+		altList.handleMouseInput();
+	}
+	
 	/**
 	 * Draws the screen and all the components in it.
 	 */
@@ -266,7 +273,7 @@ public class GuiAlts extends GuiScreen
 		if(altList.getSelectedSlot() != -1
 			&& altList.getSelectedSlot() < GuiAltList.alts.size())
 		{
-			Alt alt = GuiAltList.alts.get(altList.getSelectedSlot());
+			Alt alt = altList.getSelectedAlt();
 			AltRenderer.drawAltBack(alt.getNameOrEmail(),
 				(width / 2 - 125) / 2 - 32, height / 2 - 64 - 9, 64, 128);
 			AltRenderer.drawAltBody(alt.getNameOrEmail(),

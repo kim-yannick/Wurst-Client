@@ -18,11 +18,11 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.util.MathHelper;
 import tk.wurst_client.alts.Alt;
-import tk.wurst_client.gui.GuiWurstSlot;
 
-public class GuiAltList extends GuiWurstSlot
+public class GuiAltList extends GuiSlot
 {
 	public GuiAltList(Minecraft mc, GuiAlts prevMenu)
 	{
@@ -92,6 +92,29 @@ public class GuiAltList extends GuiWurstSlot
 		if(selectedSlot > alts.size())
 			selectedSlot = alts.size();
 		return selectedSlot;
+	}
+	
+	protected Alt getSelectedAlt()
+	{
+		if(alts.isEmpty())
+			return null;
+		
+		if(selectedSlot >= alts.size())
+			selectedSlot = alts.size() - 1;
+		
+		return alts.get(selectedSlot);
+	}
+	
+	protected void removeSelectedAlt()
+	{
+		if(alts.isEmpty())
+			return;
+		
+		if(selectedSlot >= alts.size())
+			selectedSlot = alts.size() - 1;
+		
+		alts.remove(selectedSlot);
+		return;
 	}
 	
 	@Override
