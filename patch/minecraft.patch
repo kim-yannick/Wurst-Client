@@ -1,6 +1,6 @@
-From 1284d533787aeb7a65f45e3239745044dd455d43 Mon Sep 17 00:00:00 2001
+From 559b36a050b5571999396ca122fd8d2804a05403 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 21 Feb 2017 16:07:51 +0100
+Date: Tue, 21 Feb 2017 21:08:42 +0100
 Subject: [PATCH] mod
 
 ---
@@ -102,31 +102,32 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/GuiButtonLanguage.java    |   1 +
  net/minecraft/client/gui/GuiButtonRealmsProxy.java |   1 +
  net/minecraft/client/gui/GuiChat.java              |  22 +-
+ .../GuiClickableScrolledSelectionListProxy.java    |   4 +-
  net/minecraft/client/gui/GuiCommandBlock.java      |  10 +-
  net/minecraft/client/gui/GuiConfirmOpenLink.java   |   2 +
- net/minecraft/client/gui/GuiControls.java          |   2 +
- net/minecraft/client/gui/GuiCreateFlatWorld.java   |  10 +-
+ net/minecraft/client/gui/GuiControls.java          |   4 +-
+ net/minecraft/client/gui/GuiCreateFlatWorld.java   |  12 +-
  net/minecraft/client/gui/GuiCreateWorld.java       |   6 +-
  net/minecraft/client/gui/GuiCustomizeSkin.java     |   2 +
- .../client/gui/GuiCustomizeWorldScreen.java        |  41 +-
+ .../client/gui/GuiCustomizeWorldScreen.java        |  43 +-
  net/minecraft/client/gui/GuiDisconnected.java      |  91 +++-
  net/minecraft/client/gui/GuiDownloadTerrain.java   |   2 +-
  net/minecraft/client/gui/GuiEnchantment.java       |  19 +-
  net/minecraft/client/gui/GuiErrorScreen.java       |   2 +
- net/minecraft/client/gui/GuiFlatPresets.java       |  22 +-
+ net/minecraft/client/gui/GuiFlatPresets.java       |  24 +-
  net/minecraft/client/gui/GuiGameOver.java          |  23 +-
  net/minecraft/client/gui/GuiHopper.java            |   2 +-
  net/minecraft/client/gui/GuiIngame.java            | 104 ++---
  net/minecraft/client/gui/GuiIngameMenu.java        |  60 ++-
  net/minecraft/client/gui/GuiKeyBindingList.java    |   3 +
- net/minecraft/client/gui/GuiLanguage.java          |   3 +
+ net/minecraft/client/gui/GuiLanguage.java          |   5 +-
  net/minecraft/client/gui/GuiListButton.java        |   1 +
  net/minecraft/client/gui/GuiListExtended.java      |   4 +
  net/minecraft/client/gui/GuiLockIconButton.java    |   1 +
  net/minecraft/client/gui/GuiMainMenu.java          |  81 +++-
  net/minecraft/client/gui/GuiMemoryErrorScreen.java |   4 +-
  net/minecraft/client/gui/GuiMerchant.java          |  20 +-
- net/minecraft/client/gui/GuiMultiplayer.java       | 169 +++++--
+ net/minecraft/client/gui/GuiMultiplayer.java       | 171 +++++--
  net/minecraft/client/gui/GuiNewChat.java           |  72 ++-
  net/minecraft/client/gui/GuiOptionButton.java      |   1 +
  net/minecraft/client/gui/GuiOptionSlider.java      |   5 +-
@@ -140,23 +141,24 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/GuiScreen.java            |  46 +-
  net/minecraft/client/gui/GuiScreenAddServer.java   |   3 +
  net/minecraft/client/gui/GuiScreenBook.java        | 108 ++++-
- .../client/gui/GuiScreenCustomizePresets.java      |   4 +
+ .../client/gui/GuiScreenCustomizePresets.java      |   6 +-
  net/minecraft/client/gui/GuiScreenDemo.java        |   3 +
  .../client/gui/GuiScreenOptionsSounds.java         |   6 +-
  net/minecraft/client/gui/GuiScreenRealmsProxy.java |   5 +-
- .../client/gui/GuiScreenResourcePacks.java         |   4 +
+ .../client/gui/GuiScreenResourcePacks.java         |   8 +-
  net/minecraft/client/gui/GuiScreenServerList.java  |  11 +
- net/minecraft/client/gui/GuiSelectWorld.java       |   6 +
+ net/minecraft/client/gui/GuiSelectWorld.java       |   8 +-
  net/minecraft/client/gui/GuiShareToLan.java        |  16 +-
- .../gui/GuiSimpleScrolledSelectionListProxy.java   |   8 +-
+ .../gui/GuiSimpleScrolledSelectionListProxy.java   |  12 +-
  net/minecraft/client/gui/GuiSleepMP.java           |  10 +-
  net/minecraft/client/gui/GuiSlider.java            |   1 +
- net/minecraft/client/gui/GuiSlot.java              |  32 +-
- net/minecraft/client/gui/GuiSnooper.java           |   3 +
+ net/minecraft/client/gui/GuiSlot.java              |  34 +-
+ net/minecraft/client/gui/GuiSlotRealmsProxy.java   |   4 +-
+ net/minecraft/client/gui/GuiSnooper.java           |   5 +-
  net/minecraft/client/gui/GuiSpectator.java         |   6 +-
  net/minecraft/client/gui/GuiTextField.java         |  10 +-
  .../client/gui/GuiUtilRenderComponents.java        |  30 +-
- net/minecraft/client/gui/GuiVideoSettings.java     |   2 +
+ net/minecraft/client/gui/GuiVideoSettings.java     |   4 +-
  net/minecraft/client/gui/GuiWinGame.java           |  14 +-
  net/minecraft/client/gui/GuiYesNo.java             |   3 +
  net/minecraft/client/gui/ScaledResolution.java     |   8 +-
@@ -166,7 +168,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/ServerSelectionList.java  |  15 +-
  .../client/gui/achievement/GuiAchievement.java     |   2 +-
  .../client/gui/achievement/GuiAchievements.java    |  26 +-
- net/minecraft/client/gui/achievement/GuiStats.java |  26 +-
+ net/minecraft/client/gui/achievement/GuiStats.java |  28 +-
  net/minecraft/client/gui/inventory/GuiBeacon.java  |   5 +-
  net/minecraft/client/gui/inventory/GuiChest.java   | 114 ++++-
  .../client/gui/inventory/GuiContainer.java         |  81 ++--
@@ -181,7 +183,7 @@ Subject: [PATCH] mod
  .../client/gui/spectator/SpectatorMenu.java        |  16 +-
  .../gui/spectator/categories/TeleportToPlayer.java |  18 +-
  .../gui/spectator/categories/TeleportToTeam.java   |  24 +-
- .../client/gui/stream/GuiIngestServers.java        |   1 +
+ .../client/gui/stream/GuiIngestServers.java        |   3 +-
  .../client/gui/stream/GuiStreamOptions.java        |   1 +
  .../client/gui/stream/GuiStreamUnavailable.java    |  22 +-
  .../client/gui/stream/GuiTwitchUserMode.java       |  42 +-
@@ -528,10 +530,13 @@ Subject: [PATCH] mod
  net/minecraft/pathfinding/PathPoint.java           |   2 +-
  net/minecraft/potion/PotionEffect.java             |  12 +-
  net/minecraft/realms/DisconnectedRealmsScreen.java |   6 +-
+ .../RealmsClickableScrolledSelectionList.java      |   2 +-
  net/minecraft/realms/RealmsConnect.java            |   2 +
  net/minecraft/realms/RealmsMth.java                |  14 +-
  net/minecraft/realms/RealmsScreen.java             |   2 +-
+ .../realms/RealmsScrolledSelectionList.java        |   2 +-
  net/minecraft/realms/RealmsServerStatusPinger.java |  13 +-
+ .../realms/RealmsSimpleScrolledSelectionList.java  |   2 +-
  net/minecraft/realms/RealmsSliderButton.java       |  10 +-
  net/minecraft/realms/Tezzelator.java               |  14 +-
  net/minecraft/scoreboard/Scoreboard.java           |   2 +-
@@ -688,7 +693,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |  10 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 684 files changed, 8287 insertions(+), 6997 deletions(-)
+ 689 files changed, 8311 insertions(+), 7021 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -7600,6 +7605,22 @@ index 87cf047..0c2f216 100644
          {
              this.func_175272_a(var4, mouseX, mouseY);
          }
+diff --git a/net/minecraft/client/gui/GuiClickableScrolledSelectionListProxy.java b/net/minecraft/client/gui/GuiClickableScrolledSelectionListProxy.java
+index af1c1c0..2350603 100644
+--- a/net/minecraft/client/gui/GuiClickableScrolledSelectionListProxy.java
++++ b/net/minecraft/client/gui/GuiClickableScrolledSelectionListProxy.java
+@@ -75,9 +75,9 @@ public class GuiClickableScrolledSelectionListProxy extends GuiSlot
+         return this.field_178046_u.getScrollbarPosition();
+     }
+ 
+-    public void func_178039_p()
++    public void handleMouseInput()
+     {
+-        super.func_178039_p();
++        super.handleMouseInput();
+ 
+         if (this.scrollMultiplier > 0.0F && Mouse.getEventButtonState())
+         {
 diff --git a/net/minecraft/client/gui/GuiCommandBlock.java b/net/minecraft/client/gui/GuiCommandBlock.java
 index 5fa383c..cd691c5 100644
 --- a/net/minecraft/client/gui/GuiCommandBlock.java
@@ -7650,7 +7671,7 @@ index badeb48..bd417c3 100644
  
  public class GuiConfirmOpenLink extends GuiYesNo
 diff --git a/net/minecraft/client/gui/GuiControls.java b/net/minecraft/client/gui/GuiControls.java
-index 2372539..9a61dc0 100644
+index 2372539..b439575 100644
 --- a/net/minecraft/client/gui/GuiControls.java
 +++ b/net/minecraft/client/gui/GuiControls.java
 @@ -1,7 +1,9 @@
@@ -7663,8 +7684,17 @@ index 2372539..9a61dc0 100644
  import net.minecraft.client.resources.I18n;
  import net.minecraft.client.settings.GameSettings;
  import net.minecraft.client.settings.KeyBinding;
+@@ -68,7 +70,7 @@ public class GuiControls extends GuiScreen
+     public void handleMouseInput() throws IOException
+     {
+         super.handleMouseInput();
+-        this.keyBindingList.func_178039_p();
++        this.keyBindingList.handleMouseInput();
+     }
+ 
+     protected void actionPerformed(GuiButton button) throws IOException
 diff --git a/net/minecraft/client/gui/GuiCreateFlatWorld.java b/net/minecraft/client/gui/GuiCreateFlatWorld.java
-index 0a72c4c..d96cdba 100644
+index 0a72c4c..809d1fc 100644
 --- a/net/minecraft/client/gui/GuiCreateFlatWorld.java
 +++ b/net/minecraft/client/gui/GuiCreateFlatWorld.java
 @@ -1,8 +1,10 @@
@@ -7678,6 +7708,15 @@ index 0a72c4c..d96cdba 100644
  import net.minecraft.client.renderer.GlStateManager;
  import net.minecraft.client.renderer.RenderHelper;
  import net.minecraft.client.renderer.Tessellator;
+@@ -71,7 +73,7 @@ public class GuiCreateFlatWorld extends GuiScreen
+     public void handleMouseInput() throws IOException
+     {
+         super.handleMouseInput();
+-        this.createFlatWorldListSlotGui.func_178039_p();
++        this.createFlatWorldListSlotGui.handleMouseInput();
+     }
+ 
+     protected void actionPerformed(GuiButton button) throws IOException
 @@ -147,7 +149,7 @@ public class GuiCreateFlatWorld extends GuiScreen
              if (p_148225_3_ != null && p_148225_3_.getItem() != null)
              {
@@ -7756,7 +7795,7 @@ index aa1e89e..f7d93a3 100644
  import net.minecraft.entity.player.EnumPlayerModelParts;
  
 diff --git a/net/minecraft/client/gui/GuiCustomizeWorldScreen.java b/net/minecraft/client/gui/GuiCustomizeWorldScreen.java
-index b98bb52..3a628d9 100644
+index b98bb52..726b794 100644
 --- a/net/minecraft/client/gui/GuiCustomizeWorldScreen.java
 +++ b/net/minecraft/client/gui/GuiCustomizeWorldScreen.java
 @@ -2,8 +2,11 @@ package net.minecraft.client.gui;
@@ -7771,6 +7810,15 @@ index b98bb52..3a628d9 100644
  import net.minecraft.client.renderer.GlStateManager;
  import net.minecraft.client.renderer.Tessellator;
  import net.minecraft.client.renderer.WorldRenderer;
+@@ -83,7 +86,7 @@ public class GuiCustomizeWorldScreen extends GuiScreen implements GuiSlider.Form
+     public void handleMouseInput() throws IOException
+     {
+         super.handleMouseInput();
+-        this.field_175349_r.func_178039_p();
++        this.field_175349_r.handleMouseInput();
+     }
+ 
+     private void func_175325_f()
 @@ -137,67 +140,67 @@ public class GuiCustomizeWorldScreen extends GuiScreen implements GuiSlider.Form
          switch (p_175319_1_)
          {
@@ -8114,7 +8162,7 @@ index fe5ee48..302f199 100644
  
  public class GuiErrorScreen extends GuiScreen
 diff --git a/net/minecraft/client/gui/GuiFlatPresets.java b/net/minecraft/client/gui/GuiFlatPresets.java
-index f976539..652703f 100644
+index f976539..665f9b8 100644
 --- a/net/minecraft/client/gui/GuiFlatPresets.java
 +++ b/net/minecraft/client/gui/GuiFlatPresets.java
 @@ -2,11 +2,14 @@ package net.minecraft.client.gui;
@@ -8140,6 +8188,15 @@ index f976539..652703f 100644
  import org.lwjgl.input.Keyboard;
  
  public class GuiFlatPresets extends GuiScreen
+@@ -63,7 +67,7 @@ public class GuiFlatPresets extends GuiScreen
+     public void handleMouseInput() throws IOException
+     {
+         super.handleMouseInput();
+-        this.field_146435_s.func_178039_p();
++        this.field_146435_s.handleMouseInput();
+     }
+ 
+     /**
 @@ -180,14 +184,14 @@ public class GuiFlatPresets extends GuiScreen
  
      static
@@ -8748,7 +8805,7 @@ index 3f0ee74..4097c4d 100644
  
  public class GuiKeyBindingList extends GuiListExtended
 diff --git a/net/minecraft/client/gui/GuiLanguage.java b/net/minecraft/client/gui/GuiLanguage.java
-index 1a663cc..866b405 100644
+index 1a663cc..45de226 100644
 --- a/net/minecraft/client/gui/GuiLanguage.java
 +++ b/net/minecraft/client/gui/GuiLanguage.java
 @@ -2,10 +2,13 @@ package net.minecraft.client.gui;
@@ -8765,6 +8822,15 @@ index 1a663cc..866b405 100644
  import net.minecraft.client.resources.I18n;
  import net.minecraft.client.resources.Language;
  import net.minecraft.client.resources.LanguageManager;
+@@ -47,7 +50,7 @@ public class GuiLanguage extends GuiScreen
+     public void handleMouseInput() throws IOException
+     {
+         super.handleMouseInput();
+-        this.field_146450_f.func_178039_p();
++        this.field_146450_f.handleMouseInput();
+     }
+ 
+     protected void actionPerformed(GuiButton button) throws IOException
 diff --git a/net/minecraft/client/gui/GuiListButton.java b/net/minecraft/client/gui/GuiListButton.java
 index 86fb8cb..7037d3b 100644
 --- a/net/minecraft/client/gui/GuiListButton.java
@@ -9141,7 +9207,7 @@ index 991708b..41a3b94 100644
                  this.renderToolTip(var11, mouseX, mouseY);
              }
 diff --git a/net/minecraft/client/gui/GuiMultiplayer.java b/net/minecraft/client/gui/GuiMultiplayer.java
-index 82619a7..6184889 100644
+index 82619a7..284ea64 100644
 --- a/net/minecraft/client/gui/GuiMultiplayer.java
 +++ b/net/minecraft/client/gui/GuiMultiplayer.java
 @@ -1,26 +1,52 @@
@@ -9210,17 +9276,19 @@ index 82619a7..6184889 100644
          }
          else
          {
-@@ -82,6 +108,10 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
+@@ -82,7 +108,11 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
      public void handleMouseInput() throws IOException
      {
          super.handleMouseInput();
+-        this.serverListSelector.func_178039_p();
 +        
 +		// TODO: Client
 +		if(serverListSelector != null)
 +			
- 			this.serverListSelector.func_178039_p();
++			this.serverListSelector.handleMouseInput();
      }
  
+     public void createButtons()
 @@ -94,7 +124,25 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
          this.buttonList.add(new GuiButton(3, this.width / 2 + 4 + 50, this.height - 52, 100, 20, I18n.format("selectServer.add", new Object[0])));
          this.buttonList.add(new GuiButton(8, this.width / 2 + 4, this.height - 28, 70, 20, I18n.format("selectServer.refresh", new Object[0])));
@@ -10605,7 +10673,7 @@ index a8feb74..9221e4f 100644
                                  if (var8 > var3)
                                  {
 diff --git a/net/minecraft/client/gui/GuiScreenCustomizePresets.java b/net/minecraft/client/gui/GuiScreenCustomizePresets.java
-index 0bb23a8..96f2ccd 100644
+index 0bb23a8..512c02c 100644
 --- a/net/minecraft/client/gui/GuiScreenCustomizePresets.java
 +++ b/net/minecraft/client/gui/GuiScreenCustomizePresets.java
 @@ -1,14 +1,18 @@
@@ -10627,6 +10695,15 @@ index 0bb23a8..96f2ccd 100644
  import org.lwjgl.input.Keyboard;
  
  public class GuiScreenCustomizePresets extends GuiScreen
+@@ -53,7 +57,7 @@ public class GuiScreenCustomizePresets extends GuiScreen
+     public void handleMouseInput() throws IOException
+     {
+         super.handleMouseInput();
+-        this.field_175311_g.func_178039_p();
++        this.field_175311_g.handleMouseInput();
+     }
+ 
+     /**
 diff --git a/net/minecraft/client/gui/GuiScreenDemo.java b/net/minecraft/client/gui/GuiScreenDemo.java
 index 20ba93a..61a59f3 100644
 --- a/net/minecraft/client/gui/GuiScreenDemo.java
@@ -10709,7 +10786,7 @@ index fe9d074..cf81f61 100644
  
      public List func_154323_a(String p_154323_1_, int p_154323_2_)
 diff --git a/net/minecraft/client/gui/GuiScreenResourcePacks.java b/net/minecraft/client/gui/GuiScreenResourcePacks.java
-index b3f689d..dbc9bc8 100644
+index b3f689d..bd623de 100644
 --- a/net/minecraft/client/gui/GuiScreenResourcePacks.java
 +++ b/net/minecraft/client/gui/GuiScreenResourcePacks.java
 @@ -1,6 +1,7 @@
@@ -10736,6 +10813,17 @@ index b3f689d..dbc9bc8 100644
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
  import org.lwjgl.Sys;
+@@ -79,8 +83,8 @@ public class GuiScreenResourcePacks extends GuiScreen
+     public void handleMouseInput() throws IOException
+     {
+         super.handleMouseInput();
+-        this.field_146967_r.func_178039_p();
+-        this.field_146970_i.func_178039_p();
++        this.field_146967_r.handleMouseInput();
++        this.field_146970_i.handleMouseInput();
+     }
+ 
+     public boolean hasResourcePackEntry(ResourcePackListEntry p_146961_1_)
 diff --git a/net/minecraft/client/gui/GuiScreenServerList.java b/net/minecraft/client/gui/GuiScreenServerList.java
 index a19f2ec..f9bf16f 100644
 --- a/net/minecraft/client/gui/GuiScreenServerList.java
@@ -10770,7 +10858,7 @@ index a19f2ec..f9bf16f 100644
              }
          }
 diff --git a/net/minecraft/client/gui/GuiSelectWorld.java b/net/minecraft/client/gui/GuiSelectWorld.java
-index ea2c93b..d2f3b69 100644
+index ea2c93b..a9d549b 100644
 --- a/net/minecraft/client/gui/GuiSelectWorld.java
 +++ b/net/minecraft/client/gui/GuiSelectWorld.java
 @@ -5,8 +5,10 @@ import java.text.DateFormat;
@@ -10806,6 +10894,15 @@ index ea2c93b..d2f3b69 100644
      }
  
      /**
+@@ -78,7 +84,7 @@ public class GuiSelectWorld extends GuiScreen implements GuiYesNoCallback
+     public void handleMouseInput() throws IOException
+     {
+         super.handleMouseInput();
+-        this.field_146638_t.func_178039_p();
++        this.field_146638_t.handleMouseInput();
+     }
+ 
+     private void func_146627_h() throws AnvilConverterException
 diff --git a/net/minecraft/client/gui/GuiShareToLan.java b/net/minecraft/client/gui/GuiShareToLan.java
 index 888904a..de11d7e 100644
 --- a/net/minecraft/client/gui/GuiShareToLan.java
@@ -10848,9 +10945,21 @@ index 888904a..de11d7e 100644
      }
  
 diff --git a/net/minecraft/client/gui/GuiSimpleScrolledSelectionListProxy.java b/net/minecraft/client/gui/GuiSimpleScrolledSelectionListProxy.java
-index 2f6c16a..c84c65c 100644
+index 2f6c16a..823839b 100644
 --- a/net/minecraft/client/gui/GuiSimpleScrolledSelectionListProxy.java
 +++ b/net/minecraft/client/gui/GuiSimpleScrolledSelectionListProxy.java
+@@ -77,9 +77,9 @@ public class GuiSimpleScrolledSelectionListProxy extends GuiSlot
+         return this.field_178050_u.getScrollbarPosition();
+     }
+ 
+-    public void func_178039_p()
++    public void handleMouseInput()
+     {
+-        super.func_178039_p();
++        super.handleMouseInput();
+     }
+ 
+     public void drawScreen(int p_148128_1_, int p_148128_2_, float p_148128_3_)
 @@ -119,7 +119,7 @@ public class GuiSimpleScrolledSelectionListProxy extends GuiSlot
              if (var11 > 0)
              {
@@ -10934,7 +11043,7 @@ index 9c97890..ad05b42 100644
  import net.minecraft.client.resources.I18n;
  
 diff --git a/net/minecraft/client/gui/GuiSlot.java b/net/minecraft/client/gui/GuiSlot.java
-index f759a78..88ad93e 100644
+index f759a78..2297872 100644
 --- a/net/minecraft/client/gui/GuiSlot.java
 +++ b/net/minecraft/client/gui/GuiSlot.java
 @@ -1,10 +1,12 @@
@@ -11025,6 +11134,15 @@ index f759a78..88ad93e 100644
                  var7.addVertexWithUV((double)var4, (double)(var14 + var13 - 1), 0.0D, 0.0D, 1.0D);
                  var7.addVertexWithUV((double)(var5 - 1), (double)(var14 + var13 - 1), 0.0D, 1.0D, 1.0D);
                  var7.addVertexWithUV((double)(var5 - 1), (double)var14, 0.0D, 1.0D, 0.0D);
+@@ -325,7 +327,7 @@ public abstract class GuiSlot
+         }
+     }
+ 
+-    public void func_178039_p()
++    public void handleMouseInput()
+     {
+         if (this.isMouseYWithinSlotBounds(this.mouseY))
+         {
 @@ -369,7 +371,7 @@ public abstract class GuiSlot
                              }
  
@@ -11062,8 +11180,23 @@ index f759a78..88ad93e 100644
          var6.addVertexWithUV((double)(this.left + this.width), (double)p_148136_1_, 0.0D, (double)((float)this.width / var7), (double)((float)p_148136_1_ / var7));
          var6.addVertexWithUV((double)this.left, (double)p_148136_1_, 0.0D, 0.0D, (double)((float)p_148136_1_ / var7));
          var5.draw();
+diff --git a/net/minecraft/client/gui/GuiSlotRealmsProxy.java b/net/minecraft/client/gui/GuiSlotRealmsProxy.java
+index 5747e2f..5621461 100644
+--- a/net/minecraft/client/gui/GuiSlotRealmsProxy.java
++++ b/net/minecraft/client/gui/GuiSlotRealmsProxy.java
+@@ -73,8 +73,8 @@ public class GuiSlotRealmsProxy extends GuiSlot
+         return this.selectionList.getScrollbarPosition();
+     }
+ 
+-    public void func_178039_p()
++    public void handleMouseInput()
+     {
+-        super.func_178039_p();
++        super.handleMouseInput();
+     }
+ }
 diff --git a/net/minecraft/client/gui/GuiSnooper.java b/net/minecraft/client/gui/GuiSnooper.java
-index 9b3e996..be72d96 100644
+index 9b3e996..f72c62d 100644
 --- a/net/minecraft/client/gui/GuiSnooper.java
 +++ b/net/minecraft/client/gui/GuiSnooper.java
 @@ -1,11 +1,14 @@
@@ -11081,6 +11214,15 @@ index 9b3e996..be72d96 100644
  import net.minecraft.client.resources.I18n;
  import net.minecraft.client.settings.GameSettings;
  
+@@ -82,7 +85,7 @@ public class GuiSnooper extends GuiScreen
+     public void handleMouseInput() throws IOException
+     {
+         super.handleMouseInput();
+-        this.field_146606_s.func_178039_p();
++        this.field_146606_s.handleMouseInput();
+     }
+ 
+     protected void actionPerformed(GuiButton button) throws IOException
 diff --git a/net/minecraft/client/gui/GuiSpectator.java b/net/minecraft/client/gui/GuiSpectator.java
 index 6bf48ef..869a6eb 100644
 --- a/net/minecraft/client/gui/GuiSpectator.java
@@ -11249,7 +11391,7 @@ index e79e5a9..286749e 100644
          }
  
 diff --git a/net/minecraft/client/gui/GuiVideoSettings.java b/net/minecraft/client/gui/GuiVideoSettings.java
-index 0ef76a0..cda7e01 100644
+index 0ef76a0..e7335c5 100644
 --- a/net/minecraft/client/gui/GuiVideoSettings.java
 +++ b/net/minecraft/client/gui/GuiVideoSettings.java
 @@ -1,6 +1,8 @@
@@ -11261,6 +11403,15 @@ index 0ef76a0..cda7e01 100644
  import net.minecraft.client.renderer.OpenGlHelper;
  import net.minecraft.client.resources.I18n;
  import net.minecraft.client.settings.GameSettings;
+@@ -65,7 +67,7 @@ public class GuiVideoSettings extends GuiScreen
+     public void handleMouseInput() throws IOException
+     {
+         super.handleMouseInput();
+-        this.optionsRowList.func_178039_p();
++        this.optionsRowList.handleMouseInput();
+     }
+ 
+     protected void actionPerformed(GuiButton button) throws IOException
 diff --git a/net/minecraft/client/gui/GuiWinGame.java b/net/minecraft/client/gui/GuiWinGame.java
 index 41d5838..105ff8b 100644
 --- a/net/minecraft/client/gui/GuiWinGame.java
@@ -11768,7 +11919,7 @@ index 6109f96..166aec5 100644
          }
  
 diff --git a/net/minecraft/client/gui/achievement/GuiStats.java b/net/minecraft/client/gui/achievement/GuiStats.java
-index 74a0030..48afd04 100644
+index 74a0030..bf9b5e2 100644
 --- a/net/minecraft/client/gui/achievement/GuiStats.java
 +++ b/net/minecraft/client/gui/achievement/GuiStats.java
 @@ -1,11 +1,13 @@
@@ -11803,6 +11954,15 @@ index 74a0030..48afd04 100644
      }
  
      /**
+@@ -68,7 +72,7 @@ public class GuiStats extends GuiScreen implements IProgressMeter
+ 
+         if (this.displaySlot != null)
+         {
+-            this.displaySlot.func_178039_p();
++            this.displaySlot.handleMouseInput();
+         }
+     }
+ 
 @@ -86,6 +90,11 @@ public class GuiStats extends GuiScreen implements IProgressMeter
  
      public void createButtons()
@@ -13014,7 +13174,7 @@ index fc85067..2856649 100644
  
              if (var3 >= 0)
 diff --git a/net/minecraft/client/gui/stream/GuiIngestServers.java b/net/minecraft/client/gui/stream/GuiIngestServers.java
-index 1118b25..e625f7a 100644
+index 1118b25..bd06bda 100644
 --- a/net/minecraft/client/gui/stream/GuiIngestServers.java
 +++ b/net/minecraft/client/gui/stream/GuiIngestServers.java
 @@ -1,6 +1,7 @@
@@ -13025,6 +13185,15 @@ index 1118b25..e625f7a 100644
  import net.minecraft.client.Minecraft;
  import net.minecraft.client.gui.GuiButton;
  import net.minecraft.client.gui.GuiScreen;
+@@ -45,7 +46,7 @@ public class GuiIngestServers extends GuiScreen
+     public void handleMouseInput() throws IOException
+     {
+         super.handleMouseInput();
+-        this.field_152311_g.func_178039_p();
++        this.field_152311_g.handleMouseInput();
+     }
+ 
+     /**
 diff --git a/net/minecraft/client/gui/stream/GuiStreamOptions.java b/net/minecraft/client/gui/stream/GuiStreamOptions.java
 index ee2a030..995dd75 100644
 --- a/net/minecraft/client/gui/stream/GuiStreamOptions.java
@@ -32783,6 +32952,19 @@ index cd54aea..87c84b2 100644
      {
          this.parent = p_i45742_1_;
          this.title = getLocalizedString(p_i45742_2_);
+diff --git a/net/minecraft/realms/RealmsClickableScrolledSelectionList.java b/net/minecraft/realms/RealmsClickableScrolledSelectionList.java
+index 2e60621..30e1ff2 100644
+--- a/net/minecraft/realms/RealmsClickableScrolledSelectionList.java
++++ b/net/minecraft/realms/RealmsClickableScrolledSelectionList.java
+@@ -65,7 +65,7 @@ public class RealmsClickableScrolledSelectionList
+ 
+     public void mouseEvent()
+     {
+-        this.proxy.func_178039_p();
++        this.proxy.handleMouseInput();
+     }
+ 
+     public void customMouseEvent(int p_customMouseEvent_1_, int p_customMouseEvent_2_, int p_customMouseEvent_3_, float p_customMouseEvent_4_, int p_customMouseEvent_5_) {}
 diff --git a/net/minecraft/realms/RealmsConnect.java b/net/minecraft/realms/RealmsConnect.java
 index 1555ba3..2ef52bc 100644
 --- a/net/minecraft/realms/RealmsConnect.java
@@ -32874,6 +33056,19 @@ index d3ae7ea..3971089 100644
          }
  
          AbstractClientPlayer.getDownloadImageSkin(var2, p_bindFace_1_);
+diff --git a/net/minecraft/realms/RealmsScrolledSelectionList.java b/net/minecraft/realms/RealmsScrolledSelectionList.java
+index c5251df..0c377ca 100644
+--- a/net/minecraft/realms/RealmsScrolledSelectionList.java
++++ b/net/minecraft/realms/RealmsScrolledSelectionList.java
+@@ -65,7 +65,7 @@ public class RealmsScrolledSelectionList
+ 
+     public void mouseEvent()
+     {
+-        this.proxy.func_178039_p();
++        this.proxy.handleMouseInput();
+     }
+ 
+     public void scroll(int p_scroll_1_)
 diff --git a/net/minecraft/realms/RealmsServerStatusPinger.java b/net/minecraft/realms/RealmsServerStatusPinger.java
 index d176957..667a0e7 100644
 --- a/net/minecraft/realms/RealmsServerStatusPinger.java
@@ -32925,6 +33120,19 @@ index d176957..667a0e7 100644
                  }
              }
          }
+diff --git a/net/minecraft/realms/RealmsSimpleScrolledSelectionList.java b/net/minecraft/realms/RealmsSimpleScrolledSelectionList.java
+index 4a640ea..b6879ce 100644
+--- a/net/minecraft/realms/RealmsSimpleScrolledSelectionList.java
++++ b/net/minecraft/realms/RealmsSimpleScrolledSelectionList.java
+@@ -65,7 +65,7 @@ public class RealmsSimpleScrolledSelectionList
+ 
+     public void mouseEvent()
+     {
+-        this.proxy.func_178039_p();
++        this.proxy.handleMouseInput();
+     }
+ 
+     public void scroll(int p_scroll_1_)
 diff --git a/net/minecraft/realms/RealmsSliderButton.java b/net/minecraft/realms/RealmsSliderButton.java
 index 772c6f4..30527aa 100644
 --- a/net/minecraft/realms/RealmsSliderButton.java
