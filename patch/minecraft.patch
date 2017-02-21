@@ -1,6 +1,6 @@
-From 5986628a2f01106f6eb0ab051edbd9da4b59cc28 Mon Sep 17 00:00:00 2001
+From 1284d533787aeb7a65f45e3239745044dd455d43 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Sat, 18 Feb 2017 15:18:32 +0100
+Date: Tue, 21 Feb 2017 16:07:51 +0100
 Subject: [PATCH] mod
 
 ---
@@ -6638,7 +6638,7 @@ index 387c172..94036ec 100644
  
      /**
 diff --git a/net/minecraft/client/entity/AbstractClientPlayer.java b/net/minecraft/client/entity/AbstractClientPlayer.java
-index a073d5e..2586810 100644
+index a073d5e..462d737 100644
 --- a/net/minecraft/client/entity/AbstractClientPlayer.java
 +++ b/net/minecraft/client/entity/AbstractClientPlayer.java
 @@ -1,7 +1,7 @@
@@ -6691,7 +6691,7 @@ index a073d5e..2586810 100644
          if (var3 == null)
          {
 -            var3 = new ThreadDownloadImageData((File)null, String.format("http://skins.minecraft.net/MinecraftSkins/%s.png", new Object[] {StringUtils.stripControlCodes(username)}), DefaultPlayerSkin.func_177334_a(func_175147_b(username)), new ImageBufferDownload());
-+            var3 = new ThreadDownloadImageData((File)null, String.format("http://skins.minecraft.net/MinecraftSkins/%s.png", new Object[] {StringUtils.stripControlCodes(username)}), DefaultPlayerSkin.getLocationFromUUID(getUUIDFromPlayerName(username)), new ImageBufferDownload());
++            var3 = new ThreadDownloadImageData((File)null, String.format("http://skins.minecraft.net/MinecraftSkins/%s.png", new Object[] {StringUtils.stripControlCodes(username)}), DefaultPlayerSkin.getLocationFromUUID(getOfflineUUID(username)), new ImageBufferDownload());
              var2.loadTexture(resourceLocationIn, (ITextureObject)var3);
          }
  
@@ -6700,7 +6700,7 @@ index a073d5e..2586810 100644
      {
          NetworkPlayerInfo var1 = this.func_175155_b();
 -        return var1 == null ? DefaultPlayerSkin.func_177332_b(this.getUniqueID()) : var1.func_178851_f();
-+        return var1 == null ? DefaultPlayerSkin.getModelNameFromUUID(this.getUniqueID()) : var1.getModelName();
++        return var1 == null ? DefaultPlayerSkin.getSkinType(this.getUniqueID()) : var1.getModelName();
      }
  
      public float func_175156_o()
@@ -15011,7 +15011,7 @@ index 2b1d59a..e7108eb 100644
          return var3;
      }
 diff --git a/net/minecraft/client/network/NetworkPlayerInfo.java b/net/minecraft/client/network/NetworkPlayerInfo.java
-index 76043f3..a9a1bb2 100644
+index 76043f3..c057ca4 100644
 --- a/net/minecraft/client/network/NetworkPlayerInfo.java
 +++ b/net/minecraft/client/network/NetworkPlayerInfo.java
 @@ -4,18 +4,19 @@ import com.google.common.base.Objects;
@@ -15098,7 +15098,7 @@ index 76043f3..a9a1bb2 100644
 +    public String getModelName()
      {
 -        return this.field_178863_g == null ? DefaultPlayerSkin.func_177332_b(this.field_178867_a.getId()) : this.field_178863_g;
-+        return this.name == null ? DefaultPlayerSkin.getModelNameFromUUID(this.gameProfile.getId()) : this.name;
++        return this.name == null ? DefaultPlayerSkin.getSkinType(this.gameProfile.getId()) : this.name;
      }
  
      public ResourceLocation func_178837_g()
@@ -19525,7 +19525,7 @@ index f2602e9..eeba0a5 100644
                      }
  
 diff --git a/net/minecraft/client/resources/DefaultPlayerSkin.java b/net/minecraft/client/resources/DefaultPlayerSkin.java
-index 6f44429..299d546 100644
+index 6f44429..dfd503d 100644
 --- a/net/minecraft/client/resources/DefaultPlayerSkin.java
 +++ b/net/minecraft/client/resources/DefaultPlayerSkin.java
 @@ -3,29 +3,30 @@ package net.minecraft.client.resources;
@@ -19556,7 +19556,7 @@ index 6f44429..299d546 100644
      }
  
 -    public static String func_177332_b(UUID p_177332_0_)
-+    public static String getModelNameFromUUID(UUID uuid)
++    public static String getSkinType(UUID uuid)
      {
 -        return func_177333_c(p_177332_0_) ? "slim" : "default";
 +        return isSlimSkin(uuid) ? "slim" : "default";
@@ -24762,7 +24762,7 @@ index b1345a2..9026ae0 100644
              if (this.timeWolfIsShaking == 0.0F)
              {
 diff --git a/net/minecraft/entity/player/EntityPlayer.java b/net/minecraft/entity/player/EntityPlayer.java
-index 04f22d7..94dd975 100644
+index 04f22d7..59931cb 100644
 --- a/net/minecraft/entity/player/EntityPlayer.java
 +++ b/net/minecraft/entity/player/EntityPlayer.java
 @@ -1,17 +1,19 @@
@@ -25143,14 +25143,14 @@ index 04f22d7..94dd975 100644
          if (var1 == null)
          {
 -            var1 = func_175147_b(p_146094_0_.getName());
-+            var1 = getUUIDFromPlayerName(p_146094_0_.getName());
++            var1 = getOfflineUUID(p_146094_0_.getName());
          }
  
          return var1;
      }
  
 -    public static UUID func_175147_b(String p_175147_0_)
-+    public static UUID getUUIDFromPlayerName(String name)
++    public static UUID getOfflineUUID(String name)
      {
 -        return UUID.nameUUIDFromBytes(("OfflinePlayer:" + p_175147_0_).getBytes(Charsets.UTF_8));
 +        return UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(Charsets.UTF_8));
