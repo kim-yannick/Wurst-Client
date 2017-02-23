@@ -20,6 +20,7 @@ import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,7 +30,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.Sys;
 
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Util;
 
 public class MiscUtils
@@ -80,6 +80,11 @@ public class MiscUtils
 			logger.error("Failed to open link", e);
 			return false;
 		}
+	}
+	
+	public static void openFile(Path path)
+	{
+		openFile(path.toString());
 	}
 	
 	public static void openFile(File file)
@@ -175,13 +180,9 @@ public class MiscUtils
 	public static String post(URL url, String content, String contentType)
 		throws IOException
 	{
-		Proxy proxy = MinecraftServer.getServer() == null ? null
-			: MinecraftServer.getServer().getServerProxy();
-		if(proxy == null)
-			proxy = Proxy.NO_PROXY;
 		
 		HttpURLConnection connection =
-			(HttpURLConnection)url.openConnection(proxy);
+			(HttpURLConnection)url.openConnection(Proxy.NO_PROXY);
 		connection.setRequestMethod("POST");
 		connection.setRequestProperty("Content-Type", contentType);
 		connection.setRequestProperty("Content-Length",

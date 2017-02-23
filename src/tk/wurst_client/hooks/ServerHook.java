@@ -40,17 +40,18 @@ public class ServerHook
 	
 	public static void importServers(GuiMultiplayer guiMultiplayer)
 	{
-		JFileChooser fileChooser = new JFileChooser(WurstFolders.SERVERLISTS)
-		{
-			@Override
-			protected JDialog createDialog(Component parent)
-				throws HeadlessException
+		JFileChooser fileChooser =
+			new JFileChooser(WurstFolders.SERVERLISTS.toFile())
 			{
-				JDialog dialog = super.createDialog(parent);
-				dialog.setAlwaysOnTop(true);
-				return dialog;
-			}
-		};
+				@Override
+				protected JDialog createDialog(Component parent)
+					throws HeadlessException
+				{
+					JDialog dialog = super.createDialog(parent);
+					dialog.setAlwaysOnTop(true);
+					return dialog;
+				}
+			};
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		fileChooser.addChoosableFileFilter(
@@ -83,17 +84,18 @@ public class ServerHook
 	
 	public static void exportServers(GuiMultiplayer guiMultiplayer)
 	{
-		JFileChooser fileChooser = new JFileChooser(WurstFolders.SERVERLISTS)
-		{
-			@Override
-			protected JDialog createDialog(Component parent)
-				throws HeadlessException
+		JFileChooser fileChooser =
+			new JFileChooser(WurstFolders.SERVERLISTS.toFile())
 			{
-				JDialog dialog = super.createDialog(parent);
-				dialog.setAlwaysOnTop(true);
-				return dialog;
-			}
-		};
+				@Override
+				protected JDialog createDialog(Component parent)
+					throws HeadlessException
+				{
+					JDialog dialog = super.createDialog(parent);
+					dialog.setAlwaysOnTop(true);
+					return dialog;
+				}
+			};
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		fileChooser.addChoosableFileFilter(
