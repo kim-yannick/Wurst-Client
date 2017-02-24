@@ -16,7 +16,7 @@ import tk.wurst_client.utils.ChatUtils;
 public final class FastBreakCmd extends Cmd
 {
 	@Override
-	public void execute(String[] args) throws Error
+	public void execute(String[] args) throws CmdError
 	{
 		if(args.length != 2)
 			syntaxError();
