@@ -21,7 +21,7 @@ import tk.wurst_client.utils.InventoryUtils;
 	tags = "AutoBlock, BlockHitting, auto block, block hitting",
 	help = "Mods/BlockHit")
 @Mod.Bypasses
-public class BlockHitMod extends Mod
+public final class BlockHitMod extends Mod
 	implements LeftClickListener, UpdateListener
 {
 	private int timer;

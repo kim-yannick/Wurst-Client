@@ -15,7 +15,7 @@ import tk.wurst_client.utils.MiscUtils;
 @Cmd.Info(description = "Changes the settings of GhostHand or toggles it.",
 	name = "ghosthand",
 	syntax = {"id <block_id>", "name <block_name>"})
-public class GhostHandCmd extends Cmd
+public final class GhostHandCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

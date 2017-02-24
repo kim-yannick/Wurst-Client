@@ -17,7 +17,7 @@ import tk.wurst_client.utils.MiscUtils;
 @Cmd.Info(description = "Lists all keybinds.",
 	name = "binds",
 	syntax = {"[<page>]"})
-public class BindsCmd extends Cmd
+public final class BindsCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

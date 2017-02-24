@@ -14,7 +14,7 @@ import tk.wurst_client.utils.ChatUtils;
 @Cmd.Info(description = "Annoys a player by repeating everything he says.",
 	name = "annoy",
 	syntax = {"[<player>]"})
-public class AnnoyCmd extends Cmd implements ChatInputListener
+public final class AnnoyCmd extends Cmd implements ChatInputListener
 {
 	private boolean toggled;
 	private String name;

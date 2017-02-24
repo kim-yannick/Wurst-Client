@@ -22,7 +22,7 @@ import tk.wurst_client.settings.SliderSetting.ValueDisplay;
 	name = "Step",
 	help = "Mods/Step")
 @Mod.Bypasses
-public class StepMod extends Mod implements UpdateListener
+public final class StepMod extends Mod implements UpdateListener
 {
 	public float height = 1F;
 	

@@ -14,7 +14,7 @@ import tk.wurst_client.utils.MiscUtils;
 @Cmd.Info(description = "Applies the given amount of damage.",
 	name = "damage",
 	syntax = {"<amount>"})
-public class DamageCmd extends Cmd
+public final class DamageCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

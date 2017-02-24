@@ -17,7 +17,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	name = "Tired",
 	help = "Mods/Tired")
 @Mod.Bypasses
-public class TiredMod extends Mod implements UpdateListener
+public final class TiredMod extends Mod implements UpdateListener
 {
 	@Override
 	public void onEnable()

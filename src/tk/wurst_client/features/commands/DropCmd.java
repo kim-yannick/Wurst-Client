@@ -18,7 +18,7 @@ import tk.wurst_client.features.special_features.YesCheatSpf.BypassLevel;
 @Cmd.Info(description = "Drops all your items on the ground.",
 	name = "drop",
 	syntax = {"[infinite]"})
-public class DropCmd extends Cmd implements UpdateListener
+public final class DropCmd extends Cmd implements UpdateListener
 {
 	private int timer;
 	private int counter;

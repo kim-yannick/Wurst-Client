@@ -20,7 +20,7 @@ import tk.wurst_client.utils.ChatUtils;
 	tags = "Force OP,OP Sign,Sign OP,sign hack,admin hack,OpSign",
 	help = "Mods/OP-Sign_(Force_OP)")
 @Mod.Bypasses
-public class OpSignMod extends Mod
+public final class OpSignMod extends Mod
 {
 	public String command;
 	

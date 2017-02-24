@@ -15,7 +15,7 @@ import tk.wurst_client.utils.MiscUtils;
 @Cmd.Info(description = "Changes the settings of Search or toggles it.",
 	name = "search",
 	syntax = {"id <block_id>", "name <block_name>"})
-public class SearchCmd extends Cmd
+public final class SearchCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

@@ -18,7 +18,7 @@ import tk.wurst_client.settings.Setting;
 		+ "switch modes through keybinds.",
 	name = "setmode",
 	syntax = {"<feature> <mode_setting> (<mode>|next|prev)"})
-public class SetModeCmd extends Cmd
+public final class SetModeCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

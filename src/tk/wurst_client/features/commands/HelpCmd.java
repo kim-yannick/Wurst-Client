@@ -15,7 +15,7 @@ import tk.wurst_client.utils.MiscUtils;
 @Cmd.Info(description = "Shows the command list or the help for a command.",
 	name = "help",
 	syntax = {"[<page>]", "[<command>]"})
-public class HelpCmd extends Cmd
+public final class HelpCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

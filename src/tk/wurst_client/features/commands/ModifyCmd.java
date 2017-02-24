@@ -20,7 +20,7 @@ import tk.wurst_client.utils.MiscUtils;
 	name = "modify",
 	syntax = {"add <nbt>", "remove <nbt_path>", "set <nbt>",
 		"metadata <value>"})
-public class ModifyCmd extends Cmd
+public final class ModifyCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

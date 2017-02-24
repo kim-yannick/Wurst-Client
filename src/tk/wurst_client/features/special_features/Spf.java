@@ -17,7 +17,7 @@ import tk.wurst_client.features.Feature;
 import tk.wurst_client.navigator.PossibleKeybind;
 import tk.wurst_client.settings.Setting;
 
-public class Spf extends Feature
+public abstract class Spf extends Feature
 {
 	private final String name = getClass().getAnnotation(Info.class).name();
 	private final String description =

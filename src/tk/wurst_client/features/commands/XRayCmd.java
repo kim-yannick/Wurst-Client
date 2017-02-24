@@ -21,7 +21,7 @@ import tk.wurst_client.utils.MiscUtils;
 	name = "xray",
 	syntax = {"add (id <block_id>|name <block_name>)",
 		"remove (id <block_id>|name <block_name>)", "list [<page>]"})
-public class XRayCmd extends Cmd
+public final class XRayCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

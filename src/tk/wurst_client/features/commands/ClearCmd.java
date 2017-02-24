@@ -10,7 +10,7 @@ package tk.wurst_client.features.commands;
 @Cmd.Info(description = "Clears the chat completely.",
 	name = "clear",
 	syntax = {})
-public class ClearCmd extends Cmd
+public final class ClearCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

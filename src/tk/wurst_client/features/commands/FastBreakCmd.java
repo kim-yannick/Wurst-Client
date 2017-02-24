@@ -13,7 +13,7 @@ import tk.wurst_client.utils.ChatUtils;
 @Cmd.Info(description = "Changes the settings of FastBreak.",
 	name = "fastbreak",
 	syntax = {"mode (normal|instant)"})
-public class FastBreakCmd extends Cmd
+public final class FastBreakCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

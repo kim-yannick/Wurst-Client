@@ -16,7 +16,7 @@ import tk.wurst_client.utils.ChatUtils;
 	description = "Allows you to see parts of another player's inventory.",
 	name = "invsee",
 	syntax = {"<player>"})
-public class InvseeCmd extends Cmd implements RenderListener
+public final class InvseeCmd extends Cmd implements RenderListener
 {
 	private String playerName;
 	

@@ -22,7 +22,7 @@ import tk.wurst_client.utils.MiscUtils;
 	name = "potion",
 	syntax = {"add (<effect> <amplifier> <duration>)...",
 		"set (<effect> <amplifier> <duration>)...", "remove <effect>"})
-public class PotionCmd extends Cmd
+public final class PotionCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

@@ -12,7 +12,7 @@ import tk.wurst_client.utils.ChatUtils;
 @Cmd.Info(description = "Enables/disables Wurst messages or sends a message.",
 	name = "wms",
 	syntax = {"(on | off)", "echo <message>"})
-public class WmsCmd extends Cmd
+public final class WmsCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

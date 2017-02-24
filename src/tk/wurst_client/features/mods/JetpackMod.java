@@ -18,7 +18,7 @@ import tk.wurst_client.settings.CheckboxSetting;
 	tags = "jet pack",
 	help = "Mods/Jetpack")
 @Mod.Bypasses
-public class JetpackMod extends Mod implements UpdateListener
+public final class JetpackMod extends Mod implements UpdateListener
 {
 	public final CheckboxSetting flightKickBypass =
 		new CheckboxSetting("Flight-Kick-Bypass", false);

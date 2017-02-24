@@ -14,7 +14,7 @@ import tk.wurst_client.utils.MiscUtils;
 @Cmd.Info(description = "Changes the amount of Throw or toggles it.",
 	name = "throw",
 	syntax = {"[amount <amount>]"})
-public class ThrowCmd extends Cmd
+public final class ThrowCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

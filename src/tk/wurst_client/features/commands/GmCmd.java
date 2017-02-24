@@ -11,7 +11,7 @@ package tk.wurst_client.features.commands;
 	description = "Types \"/gamemode <args>\".\nUseful for servers that don't support /gm.",
 	name = "gm",
 	syntax = {"<gamemode>"})
-public class GmCmd extends Cmd
+public final class GmCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

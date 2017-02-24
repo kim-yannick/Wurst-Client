@@ -13,7 +13,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	name = "Spider",
 	help = "Mods/Spider")
 @Mod.Bypasses
-public class SpiderMod extends Mod implements UpdateListener
+public final class SpiderMod extends Mod implements UpdateListener
 {
 	@Override
 	public void onEnable()

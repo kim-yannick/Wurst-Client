@@ -19,7 +19,7 @@ import tk.wurst_client.utils.MiscUtils;
 		+ "move sliders through keybinds.",
 	name = "setslider",
 	syntax = {"<feature> <slider_setting> (<value>|more|less)"})
-public class SetSliderCmd extends Cmd
+public final class SetSliderCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

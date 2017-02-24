@@ -12,7 +12,7 @@ import tk.wurst_client.events.ChatOutputEvent;
 @Cmd.Info(description = "Does nothing. Useful for scripting.",
 	name = "nothing",
 	syntax = {})
-public class NothingCmd extends Cmd
+public final class NothingCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

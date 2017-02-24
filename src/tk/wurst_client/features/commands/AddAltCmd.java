@@ -20,7 +20,7 @@ import tk.wurst_client.utils.ChatUtils;
 	description = "Adds a player or all players on a server to your alt list.",
 	name = "addalt",
 	syntax = {"<player>", "all"})
-public class AddAltCmd extends Cmd
+public final class AddAltCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

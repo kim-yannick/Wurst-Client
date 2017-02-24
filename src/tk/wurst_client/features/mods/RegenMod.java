@@ -17,7 +17,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	tags = "GodMode, god mode",
 	help = "Mods/Regen")
 @Mod.Bypasses
-public class RegenMod extends Mod implements UpdateListener
+public final class RegenMod extends Mod implements UpdateListener
 {
 	@Override
 	public void onEnable()

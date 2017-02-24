@@ -15,7 +15,7 @@ import tk.wurst_client.utils.ChatUtils;
 @Cmd.Info(description = "Enchants items with everything.",
 	name = "enchant",
 	syntax = {"[all]"})
-public class EnchantCmd extends Cmd
+public final class EnchantCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

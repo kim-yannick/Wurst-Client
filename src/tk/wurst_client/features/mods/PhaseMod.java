@@ -16,7 +16,7 @@ import tk.wurst_client.events.listeners.UpdateListener;
 	tags = "Phaze",
 	help = "Mods/Phase")
 @Mod.Bypasses
-public class PhaseMod extends Mod implements UpdateListener
+public final class PhaseMod extends Mod implements UpdateListener
 {
 	@Override
 	public void onEnable()

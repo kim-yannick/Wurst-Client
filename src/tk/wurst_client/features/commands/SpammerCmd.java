@@ -16,7 +16,7 @@ import tk.wurst_client.utils.MiscUtils;
 	description = "Changes the delay of Spammer or spams spam from a file.",
 	name = "spammer",
 	syntax = {"delay <delay_in_ms>", "spam <file>"})
-public class SpammerCmd extends Cmd
+public final class SpammerCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

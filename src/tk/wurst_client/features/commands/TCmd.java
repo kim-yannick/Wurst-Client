@@ -12,7 +12,7 @@ import tk.wurst_client.features.mods.Mod;
 @Cmd.Info(description = "Toggles a mod.",
 	name = "t",
 	syntax = {"<mod> [(on|off)]"})
-public class TCmd extends Cmd
+public final class TCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

@@ -14,7 +14,7 @@ import net.minecraft.nbt.NBTTagString;
 @Cmd.Info(description = "Changes the held book's author.",
 	name = "author",
 	syntax = {"<author>"})
-public class AuthorCmd extends Cmd
+public final class AuthorCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Cmd.Error

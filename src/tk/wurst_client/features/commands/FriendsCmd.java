@@ -16,7 +16,7 @@ import tk.wurst_client.utils.MiscUtils;
 @Cmd.Info(description = "Manages your friends list.",
 	name = "friends",
 	syntax = {"(add | remove) <player>", "list [<page>]"})
-public class FriendsCmd extends Cmd
+public final class FriendsCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

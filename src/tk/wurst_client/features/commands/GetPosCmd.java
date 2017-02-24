@@ -18,7 +18,7 @@ import tk.wurst_client.utils.ChatUtils;
 	description = "Shows your current position or copies it to the clipboard.",
 	name = "getpos",
 	syntax = {"[copy]"})
-public class GetPosCmd extends Cmd
+public final class GetPosCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

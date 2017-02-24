@@ -10,7 +10,7 @@ package tk.wurst_client.features.commands;
 import tk.wurst_client.events.ChatOutputEvent;
 
 @Cmd.Info(description = "Makes you jump once.", name = "jump", syntax = {})
-public class JumpCmd extends Cmd
+public final class JumpCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

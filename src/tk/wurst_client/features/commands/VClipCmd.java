@@ -15,7 +15,7 @@ import tk.wurst_client.utils.MiscUtils;
 		+ "10 blocks on Bukkit servers.",
 	name = "vclip",
 	syntax = {"<height>"})
-public class VClipCmd extends Cmd
+public final class VClipCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

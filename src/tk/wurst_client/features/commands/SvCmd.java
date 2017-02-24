@@ -15,7 +15,7 @@ import tk.wurst_client.utils.ChatUtils;
 	description = "Shows the version of the server you are currently playing on.",
 	name = "sv",
 	syntax = {})
-public class SvCmd extends Cmd
+public final class SvCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

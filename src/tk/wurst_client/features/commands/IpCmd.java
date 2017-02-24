@@ -18,7 +18,7 @@ import tk.wurst_client.utils.ChatUtils;
 	description = "Shows the IP of the server you are currently playing on or copies it to the clipboard.",
 	name = "ip",
 	syntax = {"[copy]"})
-public class IpCmd extends Cmd
+public final class IpCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error

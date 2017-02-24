@@ -10,7 +10,7 @@ package tk.wurst_client.features.commands;
 @Cmd.Info(description = "Enables, disables or cancels Blink.",
 	name = "blink",
 	syntax = {"[(on|off|cancel)]"})
-public class BlinkCmd extends Cmd
+public final class BlinkCmd extends Cmd
 {
 	@Override
 	public void execute(String[] args) throws Error
