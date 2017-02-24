@@ -1,6 +1,6 @@
-From 559b36a050b5571999396ca122fd8d2804a05403 Mon Sep 17 00:00:00 2001
+From 61d438b9eec0a6e78a5803d0d518b741e2ace16f Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 21 Feb 2017 21:08:42 +0100
+Date: Fri, 24 Feb 2017 19:22:17 +0100
 Subject: [PATCH] mod
 
 ---
@@ -287,7 +287,7 @@ Subject: [PATCH] mod
  .../client/resources/FallbackResourceManager.java  |   5 +
  .../client/resources/ResourcePackListEntry.java    |   4 +-
  .../client/resources/ResourcePackRepository.java   |   6 +-
- net/minecraft/client/resources/SkinManager.java    |  34 +-
+ net/minecraft/client/resources/SkinManager.java    |  27 +-
  .../client/resources/data/IMetadataSerializer.java |   4 +-
  .../client/resources/data/PackMetadataSection.java |   8 +-
  .../data/PackMetadataSectionSerializer.java        |   4 +-
@@ -693,7 +693,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |  10 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 689 files changed, 8311 insertions(+), 7021 deletions(-)
+ 689 files changed, 8304 insertions(+), 7021 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -19848,10 +19848,10 @@ index 6e67db7..cf73e47 100644
  
      public ListenableFuture func_177319_a(File p_177319_1_)
 diff --git a/net/minecraft/client/resources/SkinManager.java b/net/minecraft/client/resources/SkinManager.java
-index 8ccc45c..966a39d 100644
+index 8ccc45c..f61454f 100644
 --- a/net/minecraft/client/resources/SkinManager.java
 +++ b/net/minecraft/client/resources/SkinManager.java
-@@ -1,22 +1,20 @@
+@@ -1,14 +1,5 @@
  package net.minecraft.client.resources;
  
 -import com.google.common.cache.CacheBuilder;
@@ -19864,43 +19864,35 @@ index 8ccc45c..966a39d 100644
 -import com.mojang.authlib.minecraft.MinecraftSessionService;
 -import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
  import java.awt.image.BufferedImage;
-+import java.io.BufferedReader;
  import java.io.File;
-+import java.io.InputStreamReader;
-+import java.net.URL;
  import java.util.HashMap;
- import java.util.Map;
- import java.util.concurrent.ExecutorService;
+@@ -17,6 +8,17 @@ import java.util.concurrent.ExecutorService;
  import java.util.concurrent.LinkedBlockingQueue;
  import java.util.concurrent.ThreadPoolExecutor;
  import java.util.concurrent.TimeUnit;
 +
-+import javax.net.ssl.HttpsURLConnection;
-+
-+import tk.wurst_client.capes.WurstCapes;
- import net.minecraft.client.Minecraft;
- import net.minecraft.client.renderer.IImageBuffer;
- import net.minecraft.client.renderer.ImageBufferDownload;
-@@ -25,6 +23,18 @@ import net.minecraft.client.renderer.texture.ITextureObject;
- import net.minecraft.client.renderer.texture.TextureManager;
- import net.minecraft.util.ResourceLocation;
- 
 +import com.google.common.cache.CacheBuilder;
 +import com.google.common.cache.CacheLoader;
 +import com.google.common.cache.LoadingCache;
 +import com.google.common.collect.Maps;
-+import com.google.gson.JsonObject;
-+import com.google.gson.JsonParser;
 +import com.mojang.authlib.GameProfile;
 +import com.mojang.authlib.minecraft.InsecureTextureException;
 +import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 +import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 +import com.mojang.authlib.minecraft.MinecraftSessionService;
 +
+ import net.minecraft.client.Minecraft;
+ import net.minecraft.client.renderer.IImageBuffer;
+ import net.minecraft.client.renderer.ImageBufferDownload;
+@@ -24,6 +26,7 @@ import net.minecraft.client.renderer.ThreadDownloadImageData;
+ import net.minecraft.client.renderer.texture.ITextureObject;
+ import net.minecraft.client.renderer.texture.TextureManager;
+ import net.minecraft.util.ResourceLocation;
++import tk.wurst_client.hooks.CapesHook;
+ 
  public class SkinManager
  {
-     private static final ExecutorService THREAD_POOL = new ThreadPoolExecutor(0, 2, 1L, TimeUnit.MINUTES, new LinkedBlockingQueue());
-@@ -81,7 +91,7 @@ public class SkinManager
+@@ -81,7 +84,7 @@ public class SkinManager
              File var6 = new File(this.skinCacheDir, p_152789_1_.getHash().substring(0, 2));
              File var7 = new File(var6, p_152789_1_.getHash());
              final ImageBufferDownload var8 = p_152789_2_ == Type.SKIN ? new ImageBufferDownload() : null;
@@ -19909,12 +19901,12 @@ index 8ccc45c..966a39d 100644
              {
                  private static final String __OBFID = "CL_00001828";
                  public BufferedImage parseUserSkin(BufferedImage p_78432_1_)
-@@ -135,6 +145,10 @@ public class SkinManager
+@@ -135,6 +138,10 @@ public class SkinManager
                      var1.putAll(SkinManager.this.sessionService.getTextures(SkinManager.this.sessionService.fillProfileProperties(p_152790_1_, false), false));
                  }
  
 +				// TODO: Client
-+                WurstCapes.checkCape(p_152790_1_, var1, p_152790_2_);
++				CapesHook.checkCape(p_152790_1_, var1);
 +				
 +
                  Minecraft.getMinecraft().addScheduledTask(new Runnable()
