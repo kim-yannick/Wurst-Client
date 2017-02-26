@@ -1,6 +1,6 @@
-From 61d438b9eec0a6e78a5803d0d518b741e2ace16f Mon Sep 17 00:00:00 2001
+From f18124c4cdd193b43b1ddc106a0f99612a495584 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 24 Feb 2017 19:22:17 +0100
+Date: Sun, 26 Feb 2017 09:39:33 +0100
 Subject: [PATCH] mod
 
 ---
@@ -14425,7 +14425,7 @@ index d6a17db..8ea33d8 100644
          this.field_147394_b.displayGuiScreen(new GuiDisconnected(this.field_147395_c, "connect.failed", reason));
      }
 diff --git a/net/minecraft/client/network/NetHandlerPlayClient.java b/net/minecraft/client/network/NetHandlerPlayClient.java
-index 2b1d59a..e7108eb 100644
+index 2b1d59a..f1d42ec 100644
 --- a/net/minecraft/client/network/NetHandlerPlayClient.java
 +++ b/net/minecraft/client/network/NetHandlerPlayClient.java
 @@ -1,39 +1,24 @@
@@ -15166,7 +15166,7 @@ index 2b1d59a..e7108eb 100644
      }
  
 -    public Collection func_175106_d()
-+    public Collection getPlayerInfoMap()
++    public Collection<NetworkPlayerInfo> getPlayerInfoMap()
      {
          return this.playerInfoMap.values();
      }
