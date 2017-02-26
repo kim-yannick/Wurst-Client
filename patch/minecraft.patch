@@ -1,6 +1,6 @@
-From f18124c4cdd193b43b1ddc106a0f99612a495584 Mon Sep 17 00:00:00 2001
+From f003b235aa39789393df15f80b72a7e1edf28056 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Sun, 26 Feb 2017 09:39:33 +0100
+Date: Sun, 26 Feb 2017 20:21:02 +0100
 Subject: [PATCH] mod
 
 ---
@@ -117,7 +117,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/GuiFlatPresets.java       |  24 +-
  net/minecraft/client/gui/GuiGameOver.java          |  23 +-
  net/minecraft/client/gui/GuiHopper.java            |   2 +-
- net/minecraft/client/gui/GuiIngame.java            | 104 ++---
+ net/minecraft/client/gui/GuiIngame.java            | 106 ++---
  net/minecraft/client/gui/GuiIngameMenu.java        |  60 ++-
  net/minecraft/client/gui/GuiKeyBindingList.java    |   3 +
  net/minecraft/client/gui/GuiLanguage.java          |   5 +-
@@ -126,7 +126,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/GuiLockIconButton.java    |   1 +
  net/minecraft/client/gui/GuiMainMenu.java          |  81 +++-
  net/minecraft/client/gui/GuiMemoryErrorScreen.java |   4 +-
- net/minecraft/client/gui/GuiMerchant.java          |  20 +-
+ net/minecraft/client/gui/GuiMerchant.java          |  26 +-
  net/minecraft/client/gui/GuiMultiplayer.java       | 171 +++++--
  net/minecraft/client/gui/GuiNewChat.java           |  72 ++-
  net/minecraft/client/gui/GuiOptionButton.java      |   1 +
@@ -172,7 +172,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/inventory/GuiBeacon.java  |   5 +-
  net/minecraft/client/gui/inventory/GuiChest.java   | 114 ++++-
  .../client/gui/inventory/GuiContainer.java         |  81 ++--
- .../client/gui/inventory/GuiContainerCreative.java |  69 +--
+ .../client/gui/inventory/GuiContainerCreative.java |  71 +--
  .../client/gui/inventory/GuiEditSign.java          |  38 +-
  .../client/gui/inventory/GuiInventory.java         |  11 +-
  .../gui/inventory/GuiScreenHorseInventory.java     |   2 +-
@@ -252,7 +252,7 @@ Subject: [PATCH] mod
  .../client/renderer/entity/RenderFallingBlock.java |   7 +-
  .../client/renderer/entity/RenderFish.java         |  10 +-
  .../client/renderer/entity/RenderGuardian.java     |  18 +-
- .../client/renderer/entity/RenderItem.java         | 220 ++++-----
+ .../client/renderer/entity/RenderItem.java         | 222 ++++-----
  .../renderer/entity/RenderLightningBolt.java       |   2 +-
  .../client/renderer/entity/RenderLiving.java       |   8 +-
  .../client/renderer/entity/RenderManager.java      |  25 +-
@@ -693,7 +693,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |  10 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 689 files changed, 8304 insertions(+), 7021 deletions(-)
+ 689 files changed, 8310 insertions(+), 7027 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -8327,7 +8327,7 @@ index 4d52ca9..5c9d8fd 100644
          this.field_147083_w = p_i1092_2_;
          this.allowUserInput = false;
 diff --git a/net/minecraft/client/gui/GuiIngame.java b/net/minecraft/client/gui/GuiIngame.java
-index 12b2457..095733b 100644
+index 12b2457..e18bc4f 100644
 --- a/net/minecraft/client/gui/GuiIngame.java
 +++ b/net/minecraft/client/gui/GuiIngame.java
 @@ -1,13 +1,15 @@
@@ -8634,7 +8634,7 @@ index 12b2457..095733b 100644
          double var5 = Math.min(var3.func_177749_o() * (double)var3.getWarningTime() * 1000.0D, Math.abs(var3.getTargetSize() - var3.getDiameter()));
          double var7 = Math.max((double)var3.getWarningDistance(), var5);
  
-@@ -1047,7 +1047,7 @@ public class GuiIngame extends Gui
+@@ -1047,14 +1047,14 @@ public class GuiIngame extends Gui
                  GlStateManager.translate((float)(-(p_175184_2_ + 8)), (float)(-(p_175184_3_ + 12)), 0.0F);
              }
  
@@ -8643,6 +8643,14 @@ index 12b2457..095733b 100644
  
              if (var7 > 0.0F)
              {
+                 GlStateManager.popMatrix();
+             }
+ 
+-            this.itemRenderer.func_175030_a(this.mc.fontRendererObj, var6, p_175184_2_, p_175184_3_);
++            this.itemRenderer.renderItemOverlays(this.mc.fontRendererObj, var6, p_175184_2_, p_175184_3_);
+         }
+     }
+ 
 @@ -1082,9 +1082,9 @@ public class GuiIngame extends Gui
          ++this.updateCounter;
          this.streamIndicator.func_152439_a();
@@ -9114,7 +9122,7 @@ index b5e6872..e97ec4b 100644
          else if (button.id == 1)
          {
 diff --git a/net/minecraft/client/gui/GuiMerchant.java b/net/minecraft/client/gui/GuiMerchant.java
-index 991708b..41a3b94 100644
+index 991708b..3ab58c5 100644
 --- a/net/minecraft/client/gui/GuiMerchant.java
 +++ b/net/minecraft/client/gui/GuiMerchant.java
 @@ -1,8 +1,11 @@
@@ -9197,6 +9205,26 @@ index 991708b..41a3b94 100644
  
          if (var4 != null && !var4.isEmpty())
          {
+@@ -174,16 +178,16 @@ public class GuiMerchant extends GuiContainer
+             GlStateManager.enableLighting();
+             this.itemRender.zLevel = 100.0F;
+             this.itemRender.func_180450_b(var9, var5 + 36, var6 + 24);
+-            this.itemRender.func_175030_a(this.fontRendererObj, var9, var5 + 36, var6 + 24);
++            this.itemRender.renderItemOverlays(this.fontRendererObj, var9, var5 + 36, var6 + 24);
+ 
+             if (var10 != null)
+             {
+                 this.itemRender.func_180450_b(var10, var5 + 62, var6 + 24);
+-                this.itemRender.func_175030_a(this.fontRendererObj, var10, var5 + 62, var6 + 24);
++                this.itemRender.renderItemOverlays(this.fontRendererObj, var10, var5 + 62, var6 + 24);
+             }
+ 
+             this.itemRender.func_180450_b(var11, var5 + 120, var6 + 24);
+-            this.itemRender.func_175030_a(this.fontRendererObj, var11, var5 + 120, var6 + 24);
++            this.itemRender.renderItemOverlays(this.fontRendererObj, var11, var5 + 120, var6 + 24);
+             this.itemRender.zLevel = 0.0F;
+             GlStateManager.disableLighting();
+ 
 @@ -195,7 +199,7 @@ public class GuiMerchant extends GuiContainer
              {
                  this.renderToolTip(var10, mouseX, mouseY);
@@ -12462,7 +12490,7 @@ index b87feb0..d9e9542 100644
      }
  }
 diff --git a/net/minecraft/client/gui/inventory/GuiContainerCreative.java b/net/minecraft/client/gui/inventory/GuiContainerCreative.java
-index c538022..5daaed3 100644
+index c538022..8c7225c 100644
 --- a/net/minecraft/client/gui/inventory/GuiContainerCreative.java
 +++ b/net/minecraft/client/gui/inventory/GuiContainerCreative.java
 @@ -1,10 +1,12 @@
@@ -12686,6 +12714,15 @@ index c538022..5daaed3 100644
          }
      }
  
+@@ -868,7 +871,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
+         GlStateManager.enableRescaleNormal();
+         ItemStack var10 = p_147051_1_.getIconItemStack();
+         this.itemRender.func_180450_b(var10, var7, var8);
+-        this.itemRender.func_175030_a(this.fontRendererObj, var10, var7, var8);
++        this.itemRender.renderItemOverlays(this.fontRendererObj, var10, var7, var8);
+         GlStateManager.disableLighting();
+         this.itemRender.zLevel = 0.0F;
+         this.zLevel = 0.0F;
 @@ -878,12 +881,12 @@ public class GuiContainerCreative extends InventoryEffectRenderer
      {
          if (button.id == 0)
@@ -18448,7 +18485,7 @@ index ef1550c..7a5da44 100644
              double var31 = var29 * 1.41D;
              double var33 = 0.0D + Math.cos(var26 + 2.356194490192345D) * var31;
 diff --git a/net/minecraft/client/renderer/entity/RenderItem.java b/net/minecraft/client/renderer/entity/RenderItem.java
-index 3da61f1..566d42e 100644
+index 3da61f1..7666e92 100644
 --- a/net/minecraft/client/renderer/entity/RenderItem.java
 +++ b/net/minecraft/client/renderer/entity/RenderItem.java
 @@ -3,6 +3,7 @@ package net.minecraft.client.renderer.entity;
@@ -18602,6 +18639,15 @@ index 3da61f1..566d42e 100644
                  {
                      private static final String __OBFID = "CL_00001007";
                      public String call()
+@@ -462,7 +464,7 @@ public class RenderItem implements IResourceManagerReloadListener
+         }
+     }
+ 
+-    public void func_175030_a(FontRenderer p_175030_1_, ItemStack p_175030_2_, int p_175030_3_, int p_175030_4_)
++    public void renderItemOverlays(FontRenderer p_175030_1_, ItemStack p_175030_2_, int p_175030_3_, int p_175030_4_)
+     {
+         this.func_180453_a(p_175030_1_, p_175030_2_, p_175030_3_, p_175030_4_, (String)null);
+     }
 @@ -483,7 +485,7 @@ public class RenderItem implements IResourceManagerReloadListener
                  GlStateManager.disableLighting();
                  GlStateManager.disableDepth();
