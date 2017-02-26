@@ -16,7 +16,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.util.ChatAllowedCharacters;
 
-public class PasswordField extends Gui
+public final class PasswordField extends Gui
 {
 	private final FontRenderer field_146211_a;
 	private final int field_146209_f;
