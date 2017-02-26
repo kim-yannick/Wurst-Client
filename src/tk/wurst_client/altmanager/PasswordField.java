@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package tk.wurst_client.gui.alts;
+package tk.wurst_client.altmanager;
 
 import org.lwjgl.opengl.GL11;
 
@@ -16,7 +16,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.util.ChatAllowedCharacters;
 
-public class GuiPasswordField extends Gui
+public class PasswordField extends Gui
 {
 	private final FontRenderer field_146211_a;
 	private final int field_146209_f;
@@ -37,7 +37,7 @@ public class GuiPasswordField extends Gui
 	private int field_146221_u = 7368816;
 	private boolean field_146220_v = true;
 	
-	public GuiPasswordField(FontRenderer par1FontRenderer, int par2, int par3,
+	public PasswordField(FontRenderer par1FontRenderer, int par2, int par3,
 		int par4, int par5)
 	{
 		field_146211_a = par1FontRenderer;
@@ -473,7 +473,7 @@ public class GuiPasswordField extends Gui
 		
 		if(p_146188_1_ > field_146209_f + field_146218_h)
 			p_146188_1_ = field_146209_f + field_146218_h;
-		
+
 		WorldRenderer var6 = Tessellator.getInstance().getWorldRenderer();
 		GL11.glColor4f(0.0F, 0.0F, 255.0F, 255.0F);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
