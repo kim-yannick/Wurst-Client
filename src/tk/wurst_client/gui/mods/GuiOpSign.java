@@ -21,14 +21,14 @@ import tk.wurst_client.utils.MiscUtils;
 
 public class GuiOpSign extends GuiScreen
 {
-	private GuiScreen prevMenu;
+	private GuiScreen prevScreen;
 	private OpSignMod mod;
 	private GuiTextField commandBox;
 	
-	public GuiOpSign(OpSignMod mod, GuiScreen prevMenu)
+	public GuiOpSign(OpSignMod mod, GuiScreen prevScreen)
 	{
 		this.mod = mod;
-		this.prevMenu = prevMenu;
+		this.prevScreen = prevScreen;
 	}
 	
 	@Override
@@ -60,13 +60,13 @@ public class GuiOpSign extends GuiScreen
 		switch(button.id)
 		{
 			case 0:
-				Minecraft.getMinecraft().displayGuiScreen(prevMenu);
+				Minecraft.getMinecraft().displayGuiScreen(prevScreen);
 				mod.setCommand(commandBox.getText());
 				WurstClient.INSTANCE.analytics.trackEvent("opsign",
 					"set command");
 				break;
 			case 1:
-				Minecraft.getMinecraft().displayGuiScreen(prevMenu);
+				Minecraft.getMinecraft().displayGuiScreen(prevScreen);
 				mod.setEnabled(false);
 				WurstClient.INSTANCE.analytics.trackEvent("opsign", "cancel");
 				break;
