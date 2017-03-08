@@ -72,7 +72,7 @@ public class GuiOpSign extends GuiScreen
 				break;
 			case 2:
 				MiscUtils.openLink(
-					"https://www.wurst-client.tk/wiki/Mods/OP-Sign_(Force_OP)");
+					"https://www.wurstclient.net/wiki/Mods/OP-Sign_(Force_OP)");
 				break;
 		}
 	}

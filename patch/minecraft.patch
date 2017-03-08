@@ -1,6 +1,6 @@
-From f003b235aa39789393df15f80b72a7e1edf28056 Mon Sep 17 00:00:00 2001
+From db5134b37e8cee51f4f1c906ef4d6bc0ac3e73ec Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Sun, 26 Feb 2017 20:21:02 +0100
+Date: Wed, 8 Mar 2017 17:37:29 +0100
 Subject: [PATCH] mod
 
 ---
@@ -334,7 +334,7 @@ Subject: [PATCH] mod
  net/minecraft/command/server/CommandTestFor.java   |   2 +-
  .../command/server/CommandTestForBlock.java        |   2 +-
  net/minecraft/command/server/CommandWhitelist.java |   4 +-
- net/minecraft/crash/CrashReport.java               |  33 +-
+ net/minecraft/crash/CrashReport.java               |  94 +++-
  net/minecraft/crash/CrashReportCategory.java       |  15 +-
  net/minecraft/creativetab/CreativeTabs.java        |   4 +-
  net/minecraft/entity/DataWatcher.java              |  10 +
@@ -693,7 +693,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |  10 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 689 files changed, 8310 insertions(+), 7027 deletions(-)
+ 689 files changed, 8355 insertions(+), 7043 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -21440,7 +21440,7 @@ index 3f9c3e6..cee58df 100644
              else
              {
 diff --git a/net/minecraft/crash/CrashReport.java b/net/minecraft/crash/CrashReport.java
-index 0a4366d..25894ff 100644
+index 0a4366d..eee235f 100644
 --- a/net/minecraft/crash/CrashReport.java
 +++ b/net/minecraft/crash/CrashReport.java
 @@ -1,6 +1,7 @@
@@ -21479,20 +21479,21 @@ index 0a4366d..25894ff 100644
          {
              private static final String __OBFID = "CL_00001197";
              public String call()
-@@ -62,7 +68,11 @@ public class CrashReport
+@@ -62,7 +68,12 @@ public class CrashReport
                  return "1.8";
              }
          });
 -        this.theReportCategory.addCrashSectionCallable("Operating System", new Callable()
 +        
-+        //TODO: Client
-+        this.theReportCategory.setDetail("Wurst Client Version", new CrashSectionWurstVersion());
++		// TODO: Client
++		this.theReportCategory.setDetail("Wurst Client Version",
++			new CrashSectionWurstVersion());
 +        
 +        this.theReportCategory.setDetail("Operating System", new Callable()
          {
              private static final String __OBFID = "CL_00001222";
              public String call()
-@@ -70,7 +80,7 @@ public class CrashReport
+@@ -70,7 +81,7 @@ public class CrashReport
                  return System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ") version " + System.getProperty("os.version");
              }
          });
@@ -21501,7 +21502,7 @@ index 0a4366d..25894ff 100644
          {
              private static final String __OBFID = "CL_00001248";
              public String call()
-@@ -78,7 +88,7 @@ public class CrashReport
+@@ -78,7 +89,7 @@ public class CrashReport
                  return System.getProperty("java.version") + ", " + System.getProperty("java.vendor");
              }
          });
@@ -21510,7 +21511,7 @@ index 0a4366d..25894ff 100644
          {
              private static final String __OBFID = "CL_00001275";
              public String call()
-@@ -86,7 +96,7 @@ public class CrashReport
+@@ -86,7 +97,7 @@ public class CrashReport
                  return System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor");
              }
          });
@@ -21519,7 +21520,7 @@ index 0a4366d..25894ff 100644
          {
              private static final String __OBFID = "CL_00001302";
              public String call()
-@@ -101,7 +111,7 @@ public class CrashReport
+@@ -101,7 +112,7 @@ public class CrashReport
                  return var6 + " bytes (" + var12 + " MB) / " + var4 + " bytes (" + var10 + " MB) up to " + var2 + " bytes (" + var8 + " MB)";
              }
          });
@@ -21528,7 +21529,7 @@ index 0a4366d..25894ff 100644
          {
              private static final String __OBFID = "CL_00001329";
              public String call()
-@@ -130,7 +140,7 @@ public class CrashReport
+@@ -130,7 +141,7 @@ public class CrashReport
                  return String.format("%d total; %s", new Object[] {Integer.valueOf(var3), var4.toString()});
              }
          });
@@ -21537,26 +21538,91 @@ index 0a4366d..25894ff 100644
          {
              private static final String __OBFID = "CL_00001355";
              public String call()
-@@ -246,7 +256,10 @@ public class CrashReport
+@@ -245,28 +256,36 @@ public class CrashReport
+      */
      public String getCompleteReport()
      {
-         StringBuilder var1 = new StringBuilder();
+-        StringBuilder var1 = new StringBuilder();
 -        var1.append("---- Minecraft Crash Report ----\n");
-+        //TODO: Client
-+        var1.append("---------------- Wurst Client Crash Report ----------------\n");
-+        var1.append("---- Please report this crash at: wurst-client.tk/bugs ----\n");
+-        var1.append("// ");
+-        var1.append(getWittyComment());
+-        var1.append("\n\n");
+-        var1.append("Time: ");
+-        var1.append((new SimpleDateFormat()).format(new Date()));
+-        var1.append("\n");
+-        var1.append("Description: ");
+-        var1.append(this.description);
+-        var1.append("\n\n");
+-        var1.append(this.getCauseStackTraceOrString());
+-        var1.append("\n\nA detailed walkthrough of the error, its code path and all known details is as follows:\n");
++        StringBuilder stringbuilder = new StringBuilder();
 +        
-         var1.append("// ");
-         var1.append(getWittyComment());
-         var1.append("\n\n");
-@@ -379,7 +392,9 @@ public class CrashReport
++		// TODO: Client
++		stringbuilder.append("```\n");
++		stringbuilder.append("---- Wurst Client Crash Report ----\n");
++        
++        stringbuilder.append("// ");
++        stringbuilder.append(getWittyComment());
++        stringbuilder.append("\n\n");
++        stringbuilder.append("Time: ");
++        stringbuilder.append((new SimpleDateFormat()).format(new Date()));
++        stringbuilder.append("\n");
++        stringbuilder.append("Description: ");
++        stringbuilder.append(this.description);
++        stringbuilder.append("\n\n");
++        stringbuilder.append(this.getCauseStackTraceOrString());
++        stringbuilder.append("\n\nA detailed walkthrough of the error, its code path and all known details is as follows:\n");
+ 
+         for (int var2 = 0; var2 < 87; ++var2)
+         {
+-            var1.append("-");
++            stringbuilder.append("-");
+         }
+ 
+-        var1.append("\n\n");
+-        this.getSectionsInStringBuilder(var1);
+-        return var1.toString();
++        stringbuilder.append("\n\n");
++        this.getSectionsInStringBuilder(stringbuilder);
++
++		// TODO: Client
++		stringbuilder.append("\n```");
++		
++        return stringbuilder.toString();
+     }
+ 
+     /**
+@@ -379,7 +398,32 @@ public class CrashReport
       */
      private static String getWittyComment()
      {
 -        String[] var0 = new String[] {"Who set us up the TNT?", "Everything\'s going to plan. No, really, that was supposed to happen.", "Uh... Did I do that?", "Oops.", "Why did you do that?", "I feel sad now :(", "My bad.", "I\'m sorry, Dave.", "I let you down. Sorry :(", "On the bright side, I bought you a teddy bear!", "Daisy, daisy...", "Oh - I know what I did wrong!", "Hey, that tickles! Hehehe!", "I blame Dinnerbone.", "You should try our sister game, Minceraft!", "Don\'t be sad. I\'ll do better next time, I promise!", "Don\'t be sad, have a hug! <3", "I just don\'t know what went wrong :(", "Shall we play a game?", "Quite honestly, I wouldn\'t worry myself about that.", "I bet Cylons wouldn\'t have this problem.", "Sorry :(", "Surprise! Haha. Well, this is awkward.", "Would you like a cupcake?", "Hi. I\'m Minecraft, and I\'m a crashaholic.", "Ooh. Shiny.", "This doesn\'t make any sense!", "Why is it breaking :(", "Don\'t do that.", "Ouch. That hurt :(", "You\'re mean.", "This is a token for 1 free hug. Redeem at your nearest Mojangsta: [~~HUG~~]", "There are four lights!", "But it works on my machine."};
-+    	//TODO: Client
-+    	//Added some extra comments
-+        String[] var0 = new String[] {"Who set us up the TNT?", "Everything\'s going to plan. No, really, that was supposed to happen.", "Uh... Did I do that?", "Oops.", "Why did you do that?", "I feel sad now :(", "My bad.", "I\'m sorry, Dave.", "I let you down. Sorry :(", "On the bright side, I bought you a teddy bear!", "Daisy, daisy...", "Oh - I know what I did wrong!", "Hey, that tickles! Hehehe!", "I blame Dinnerbone.", "I blame Apple.", "You should try our sister game, Minceraft!", "Don\'t be sad. I\'ll do better next time, I promise!", "Don\'t be sad, have a hug! <3", "I just don\'t know what went wrong :(", "Shall we play a game?", "Quite honestly, I wouldn\'t worry myself about that.", "I bet Cylons wouldn\'t have this problem.", "Sorry :(", "Surprise! Haha. Well, this is awkward.", "Would you like a cupcake?", "Hi. I\'m Minecraft, and I\'m a crashaholic.", "Ooh. Shiny.", "This doesn\'t make any sense!", "Why is it breaking :(", "Don\'t do that.", "Ouch. That hurt :(", "You\'re mean.", "This is a token for 1 free hug. Redeem at your nearest Mojangsta: [~~HUG~~]", "There are four lights!", "But it works on my machine.", "At least you tried it!", "At least you got a nice looking crash report!", "Immer weiter gehen, nicht stehen bleiben!"};
++		// TODO: Client
++		// Added some extra comments
++		String[] var0 = new String[]{"Who set us up the TNT?",
++			"Everything\'s going to plan. No, really, that was supposed to happen.",
++			"Uh... Did I do that?", "Oops.", "Why did you do that?",
++			"I feel sad now :(", "My bad.", "I\'m sorry, Dave.",
++			"I let you down. Sorry :(",
++			"On the bright side, I bought you a teddy bear!", "Daisy, daisy...",
++			"Oh - I know what I did wrong!", "Hey, that tickles! Hehehe!",
++			"I blame Dinnerbone.", "I blame Apple.",
++			"You should try our sister game, Minceraft!",
++			"Don\'t be sad. I\'ll do better next time, I promise!",
++			"Don\'t be sad, have a hug! <3",
++			"I just don\'t know what went wrong :(", "Shall we play a game?",
++			"Quite honestly, I wouldn\'t worry myself about that.",
++			"I bet Cylons wouldn\'t have this problem.", "Sorry :(",
++			"Surprise! Haha. Well, this is awkward.",
++			"Would you like a cupcake?",
++			"Hi. I\'m Minecraft, and I\'m a crashaholic.", "Ooh. Shiny.",
++			"This doesn\'t make any sense!", "Why is it breaking :(",
++			"Don\'t do that.", "Ouch. That hurt :(", "You\'re mean.",
++			"This is a token for 1 free hug. Redeem at your nearest Mojangsta: [~~HUG~~]",
++			"There are four lights!", "But it works on my machine.",
++			"At least you tried it!",
++			"At least you got a nice looking crash report!",
++			"Immer weiter gehen, nicht stehen bleiben!"};
  
          try
          {
