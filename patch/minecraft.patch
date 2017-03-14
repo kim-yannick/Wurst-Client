@@ -1,6 +1,6 @@
-From 64f3bef078b70602bd6cfccabb9cd07c30e99f90 Mon Sep 17 00:00:00 2001
+From c6f6d47a920e285c851489508423f48fa866b991 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 8 Mar 2017 17:41:34 +0100
+Date: Tue, 14 Mar 2017 14:34:16 +0100
 Subject: [PATCH] mod
 
 ---
@@ -187,7 +187,7 @@ Subject: [PATCH] mod
  .../client/gui/stream/GuiStreamOptions.java        |   1 +
  .../client/gui/stream/GuiStreamUnavailable.java    |  22 +-
  .../client/gui/stream/GuiTwitchUserMode.java       |  42 +-
- net/minecraft/client/main/Main.java                |  21 +-
+ net/minecraft/client/main/Main.java                |  19 +-
  net/minecraft/client/model/ModelBiped.java         |   2 +-
  net/minecraft/client/model/ModelGuardian.java      |  16 +-
  .../client/model/PositionTextureVertex.java        |   8 +-
@@ -693,7 +693,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |  10 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 689 files changed, 8338 insertions(+), 7043 deletions(-)
+ 689 files changed, 8336 insertions(+), 7043 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -13468,7 +13468,7 @@ index 27c8769..9401e3f 100644
          }
  
 diff --git a/net/minecraft/client/main/Main.java b/net/minecraft/client/main/Main.java
-index 217fd14..fabe3e5 100644
+index 217fd14..b5ddd64 100644
 --- a/net/minecraft/client/main/Main.java
 +++ b/net/minecraft/client/main/Main.java
 @@ -1,8 +1,5 @@
@@ -13480,33 +13480,25 @@ index 217fd14..fabe3e5 100644
  import java.io.File;
  import java.net.Authenticator;
  import java.net.InetSocketAddress;
-@@ -10,12 +7,20 @@ import java.net.PasswordAuthentication;
+@@ -10,6 +7,13 @@ import java.net.PasswordAuthentication;
  import java.net.Proxy;
  import java.net.Proxy.Type;
  import java.util.List;
 +
 +import javax.swing.UIManager;
 +
- import joptsimple.ArgumentAcceptingOptionSpec;
- import joptsimple.NonOptionArgumentSpec;
- import joptsimple.OptionParser;
- import joptsimple.OptionSet;
- import net.minecraft.client.Minecraft;
- import net.minecraft.util.Session;
-+import net.wurstclient.java8check.Java8Checker;
-+
 +import com.google.gson.GsonBuilder;
 +import com.mojang.authlib.properties.PropertyMap;
 +import com.mojang.authlib.properties.PropertyMap.Serializer;
- 
- public class Main
- {
-@@ -23,6 +28,16 @@ public class Main
++
+ import joptsimple.ArgumentAcceptingOptionSpec;
+ import joptsimple.NonOptionArgumentSpec;
+ import joptsimple.OptionParser;
+@@ -23,6 +27,15 @@ public class Main
  
      public static void main(String[] p_main_0_)
      {
 +    	//TODO: Client
-+    	Java8Checker.checkJavaVersion();
 +		try
 +		{
 +			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
