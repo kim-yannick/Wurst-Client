@@ -157,20 +157,20 @@ public final class CmdManager implements ChatOutputListener
 				{
 					case "...":
 					case ".legit":
-						TextComponentString link =
-							new TextComponentString("more info");
-						link.getStyle().setColor(EnumChatFormatting.AQUA)
-							.setClickEvent(new ClickEvent(Action.OPEN_URL,
-								"https://www.wurstclient.net/wiki/Commands/say/"));
-						
-						ChatUtils.component(
-							new TextComponentString("Try using .say (")
-								.appendSibling(link).appendText(")"));
-						break;
+					TextComponentString link =
+						new TextComponentString("more info");
+					link.getStyle().setColor(EnumChatFormatting.AQUA)
+						.setClickEvent(new ClickEvent(Action.OPEN_URL,
+							"https://www.wurstclient.net/wiki/Commands/say/"));
+					
+					ChatUtils
+						.component(new TextComponentString("Try using .say (")
+							.appendSibling(link).appendText(")"));
+					break;
 					default:
-						ChatUtils.error(
-							"\"." + commandName + "\" is not a valid command.");
-						break;
+					ChatUtils.error(
+						"\"." + commandName + "\" is not a valid command.");
+					break;
 				}
 		}
 	}

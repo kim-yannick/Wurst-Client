@@ -60,21 +60,21 @@ public final class BlockHitMod extends Mod
 		switch(timer)
 		{
 			case 0:
-				mc.gameSettings.keyBindUseItem.pressed = false;
-				break;
+			mc.gameSettings.keyBindUseItem.pressed = false;
+			break;
 			
 			case 1:
 			case 2:
-				mc.gameSettings.keyBindUseItem.pressed = true;
-				break;
+			mc.gameSettings.keyBindUseItem.pressed = true;
+			break;
 			
 			case 3:
-				mc.gameSettings.keyBindUseItem.pressed = false;
-				wurst.events.remove(UpdateListener.class, this);
-				
-				// reset timer
-				timer = -1;
-				break;
+			mc.gameSettings.keyBindUseItem.pressed = false;
+			wurst.events.remove(UpdateListener.class, this);
+			
+			// reset timer
+			timer = -1;
+			break;
 		}
 		
 		// update timer

@@ -60,20 +60,19 @@ public class GuiOpSign extends GuiScreen
 		switch(button.id)
 		{
 			case 0:
-				Minecraft.getMinecraft().displayGuiScreen(prevScreen);
-				mod.setCommand(commandBox.getText());
-				WurstClient.INSTANCE.analytics.trackEvent("opsign",
-					"set command");
-				break;
+			Minecraft.getMinecraft().displayGuiScreen(prevScreen);
+			mod.setCommand(commandBox.getText());
+			WurstClient.INSTANCE.analytics.trackEvent("opsign", "set command");
+			break;
 			case 1:
-				Minecraft.getMinecraft().displayGuiScreen(prevScreen);
-				mod.setEnabled(false);
-				WurstClient.INSTANCE.analytics.trackEvent("opsign", "cancel");
-				break;
+			Minecraft.getMinecraft().displayGuiScreen(prevScreen);
+			mod.setEnabled(false);
+			WurstClient.INSTANCE.analytics.trackEvent("opsign", "cancel");
+			break;
 			case 2:
-				MiscUtils.openLink(
-					"https://www.wurstclient.net/wiki/Mods/OP-Sign_(Force_OP)");
-				break;
+			MiscUtils.openLink(
+				"https://www.wurstclient.net/wiki/Mods/OP-Sign_(Force_OP)");
+			break;
 		}
 	}
 	
