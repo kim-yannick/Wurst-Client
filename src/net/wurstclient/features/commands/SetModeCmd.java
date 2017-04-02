@@ -17,7 +17,8 @@ import net.wurstclient.settings.Setting;
 	description = "Changes a mode setting of a feature. Allows you to\n"
 		+ "switch modes through keybinds.",
 	name = "setmode",
-	syntax = {"<feature> <mode_setting> (<mode>|next|prev)"})
+	syntax = {"<feature> <mode_setting> (<mode>|next|prev)"},
+	help = "Commands/setmode")
 public final class SetModeCmd extends Cmd
 {
 	@Override
@@ -62,7 +63,7 @@ public final class SetModeCmd extends Cmd
 		ModeSetting modeSetting = (ModeSetting)setting;
 		
 		// set mode
-		String modeName = args[2];
+		String modeName = args[2].replace("_", " ");
 		if(modeName.equalsIgnoreCase("next"))
 			modeSetting.nextMode();
 		else if(modeName.equalsIgnoreCase("prev"))

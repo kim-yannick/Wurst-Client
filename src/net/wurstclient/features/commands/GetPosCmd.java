@@ -18,7 +18,8 @@ import net.wurstclient.utils.ChatUtils;
 @Cmd.Info(
 	description = "Shows your current position or copies it to the clipboard.",
 	name = "getpos",
-	syntax = {"[copy]"})
+	syntax = {"[copy]"},
+	help = "Commands/getpos")
 public final class GetPosCmd extends Cmd
 {
 	@Override

@@ -14,7 +14,8 @@ import net.wurstclient.utils.MiscUtils;
 
 @Cmd.Info(description = "Changes the settings of GhostHand or toggles it.",
 	name = "ghosthand",
-	syntax = {"id <block_id>", "name <block_name>"})
+	syntax = {"id <block_id>", "name <block_name>"},
+	help = "Commands/ghosthand")
 public final class GhostHandCmd extends Cmd
 {
 	@Override

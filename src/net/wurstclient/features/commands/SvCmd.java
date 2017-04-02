@@ -14,7 +14,8 @@ import net.wurstclient.utils.ChatUtils;
 @Cmd.Info(
 	description = "Shows the version of the server you are currently playing on.",
 	name = "sv",
-	syntax = {})
+	syntax = {},
+	help = "Commands/sv")
 public final class SvCmd extends Cmd
 {
 	@Override

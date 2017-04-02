@@ -15,7 +15,8 @@ import net.wurstclient.utils.MiscUtils;
 @Cmd.Info(
 	description = "Changes the delay of Spammer or spams spam from a file.",
 	name = "spammer",
-	syntax = {"delay <delay_in_ms>", "spam <file>"})
+	syntax = {"delay <delay_in_ms>", "spam <file>"},
+	help = "Commands/spammer")
 public final class SpammerCmd extends Cmd
 {
 	@Override

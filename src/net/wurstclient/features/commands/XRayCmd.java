@@ -20,7 +20,8 @@ import net.wurstclient.utils.MiscUtils;
 @Cmd.Info(description = "Manages or toggles X-Ray.",
 	name = "xray",
 	syntax = {"add (id <block_id>|name <block_name>)",
-		"remove (id <block_id>|name <block_name>)", "list [<page>]"})
+		"remove (id <block_id>|name <block_name>)", "list [<page>]"},
+	help = "Commands/xray")
 public final class XRayCmd extends Cmd
 {
 	@Override
@@ -50,9 +51,11 @@ public final class XRayCmd extends Cmd
 				{
 					Block block = itr.next();
 					if(i >= (page - 1) * 8 && i < (page - 1) * 8 + 8)
-						ChatUtils
-							.message(new ItemStack(Item.getItemFromBlock(block))
-								.getDisplayName());
+						if(Item.getItemFromBlock(block) != null)
+							ChatUtils
+								.message(new ItemStack(block).getDisplayName());
+						else
+							ChatUtils.message(block.getLocalizedName());
 				}
 			}else
 				syntaxError();

@@ -14,7 +14,8 @@ import net.wurstclient.utils.MiscUtils;
 
 @Cmd.Info(description = "Changes the settings of Search or toggles it.",
 	name = "search",
-	syntax = {"id <block_id>", "name <block_name>"})
+	syntax = {"id <block_id>", "name <block_name>"},
+	help = "Commands/search")
 public final class SearchCmd extends Cmd
 {
 	@Override

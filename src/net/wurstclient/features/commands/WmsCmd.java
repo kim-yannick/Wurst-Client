@@ -11,7 +11,8 @@ import net.wurstclient.utils.ChatUtils;
 
 @Cmd.Info(description = "Enables/disables Wurst messages or sends a message.",
 	name = "wms",
-	syntax = {"(on | off)", "echo <message>"})
+	syntax = {"(on | off)", "echo <message>"},
+	help = "Commands/wms")
 public final class WmsCmd extends Cmd
 {
 	@Override
@@ -21,7 +22,7 @@ public final class WmsCmd extends Cmd
 			syntaxError();
 		if(args[0].equalsIgnoreCase("on") || args[0].equalsIgnoreCase("off"))
 			ChatUtils.setEnabled(args[0].equalsIgnoreCase("on"));
-		else if(args[0].equalsIgnoreCase("echo") && args.length == 2)
+		else if(args[0].equalsIgnoreCase("echo") && args.length >= 2)
 		{
 			String message = args[1];
 			for(int i = 2; i < args.length; i++)

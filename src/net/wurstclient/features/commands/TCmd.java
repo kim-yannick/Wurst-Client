@@ -11,7 +11,8 @@ import net.wurstclient.features.mods.Mod;
 
 @Cmd.Info(description = "Toggles a mod.",
 	name = "t",
-	syntax = {"<mod> [(on|off)]"})
+	syntax = {"<mod> [(on|off)]"},
+	help = "Commands/t")
 public final class TCmd extends Cmd
 {
 	@Override

@@ -13,7 +13,8 @@ import net.wurstclient.utils.MiscUtils;
 
 @Cmd.Info(description = "Changes the amount of Throw or toggles it.",
 	name = "throw",
-	syntax = {"[amount <amount>]"})
+	syntax = {"[amount <amount>]"},
+	help = "Commands/throw")
 public final class ThrowCmd extends Cmd
 {
 	@Override

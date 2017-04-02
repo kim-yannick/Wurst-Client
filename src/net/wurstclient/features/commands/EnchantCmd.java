@@ -15,7 +15,8 @@ import net.wurstclient.utils.ChatUtils;
 
 @Cmd.Info(description = "Enchants items with everything.",
 	name = "enchant",
-	syntax = {"[all]"})
+	syntax = {"[all]"},
+	help = "Commands/enchant")
 public final class EnchantCmd extends Cmd
 {
 	@Override

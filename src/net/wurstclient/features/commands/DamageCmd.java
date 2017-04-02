@@ -8,13 +8,14 @@
 package net.wurstclient.features.commands;
 
 import net.minecraft.client.network.NetHandlerPlayClient;
-import net.minecraft.network.play.client.CPacketPlayer.Position;
+import net.minecraft.network.play.client.CPacketPlayer;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.utils.MiscUtils;
 
 @Cmd.Info(description = "Applies the given amount of damage.",
 	name = "damage",
-	syntax = {"<amount>"})
+	syntax = {"<amount>"},
+	help = "Commands/damage")
 public final class DamageCmd extends Cmd
 {
 	@Override
@@ -39,15 +40,17 @@ public final class DamageCmd extends Cmd
 		double posX = WMinecraft.getPlayer().posX;
 		double posY = WMinecraft.getPlayer().posY;
 		double posZ = WMinecraft.getPlayer().posZ;
-		NetHandlerPlayClient sendQueue = WMinecraft.getPlayer().connection;
+		NetHandlerPlayClient connection = WMinecraft.getPlayer().connection;
 		
 		// apply damage
 		for(int i = 0; i < 80 + 20 * (dmg - 1D); ++i)
 		{
-			sendQueue
-				.sendPacket(new Position(posX, posY + 0.049D, posZ, false));
-			sendQueue.sendPacket(new Position(posX, posY, posZ, false));
+			connection.sendPacket(
+				new CPacketPlayer.Position(posX, posY + 0.049D, posZ, false));
+			connection.sendPacket(
+				new CPacketPlayer.Position(posX, posY, posZ, false));
 		}
-		sendQueue.sendPacket(new Position(posX, posY, posZ, true));
+		connection
+			.sendPacket(new CPacketPlayer.Position(posX, posY, posZ, true));
 	}
 }

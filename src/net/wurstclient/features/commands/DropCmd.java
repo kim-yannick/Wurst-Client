@@ -15,10 +15,12 @@ import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
+import net.wurstclient.utils.ClickType;
 
 @Cmd.Info(description = "Drops all your items on the ground.",
 	name = "drop",
-	syntax = {"[infinite]"})
+	syntax = {"[infinite]"},
+	help = "Commands/drop")
 public final class DropCmd extends Cmd implements UpdateListener
 {
 	private int timer;
@@ -56,12 +58,12 @@ public final class DropCmd extends Cmd implements UpdateListener
 			return;
 		}
 		if(wurst.special.yesCheatSpf.getBypassLevel()
-			.ordinal() >= BypassLevel.ANTICHEAT.ordinal())
+			.ordinal() >= BypassLevel.OLDER_NCP.ordinal())
 		{
 			timer++;
 			if(timer >= 5)
 			{
-				mc.playerController.windowClick(0, counter, 1, 4,
+				mc.playerController.windowClick(0, counter, 1, ClickType.THROW,
 					WMinecraft.getPlayer());
 				counter++;
 				timer = 0;
@@ -71,7 +73,7 @@ public final class DropCmd extends Cmd implements UpdateListener
 		}else
 		{
 			for(int i = 9; i < 45; i++)
-				mc.playerController.windowClick(0, i, 1, 4,
+				mc.playerController.windowClick(0, i, 1, ClickType.THROW,
 					WMinecraft.getPlayer());
 			wurst.events.remove(UpdateListener.class, this);
 		}

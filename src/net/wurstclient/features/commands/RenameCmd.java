@@ -14,7 +14,8 @@ import net.wurstclient.utils.ChatUtils;
 @Cmd.Info(
 	description = "Renames the item in your hand. Use $ for colors, use $$ for $.",
 	name = "rename",
-	syntax = {"<new_name>"})
+	syntax = {"<new_name>"},
+	help = "Commands/rename")
 public final class RenameCmd extends Cmd
 {
 	@Override

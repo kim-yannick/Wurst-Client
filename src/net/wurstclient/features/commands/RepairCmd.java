@@ -15,7 +15,8 @@ import net.wurstclient.events.ChatOutputEvent;
 
 @Cmd.Info(description = "Repairs the held item. Requires creative mode.",
 	name = "repair",
-	syntax = {})
+	syntax = {},
+	help = "Commands/repair")
 public final class RepairCmd extends Cmd
 {
 	@Override

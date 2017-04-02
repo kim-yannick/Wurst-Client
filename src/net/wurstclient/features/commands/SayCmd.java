@@ -14,7 +14,7 @@ import net.wurstclient.compatibility.WMinecraft;
 	description = "Sends a chat message, even if the message starts with a dot.",
 	name = "say",
 	syntax = {"<message>"},
-	tags = ".legit,dots in chat,command bypass,prefix",
+	tags = ".legit, dots in chat, command bypass, prefix",
 	help = "Commands/say")
 public final class SayCmd extends Cmd
 {

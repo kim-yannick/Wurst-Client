@@ -22,7 +22,8 @@ import net.wurstclient.utils.MiscUtils;
 @Cmd.Info(description = "Changes the effects of the held potion.",
 	name = "potion",
 	syntax = {"add (<effect> <amplifier> <duration>)...",
-		"set (<effect> <amplifier> <duration>)...", "remove <effect>"})
+		"set (<effect> <amplifier> <duration>)...", "remove <effect>"},
+	help = "Commands/potion")
 public final class PotionCmd extends Cmd
 {
 	@Override

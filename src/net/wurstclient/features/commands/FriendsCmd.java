@@ -15,7 +15,8 @@ import net.wurstclient.utils.MiscUtils;
 
 @Cmd.Info(description = "Manages your friends list.",
 	name = "friends",
-	syntax = {"(add | remove) <player>", "list [<page>]"})
+	syntax = {"(add | remove) <player>", "list [<page>]"},
+	help = "Commands/friends")
 public final class FriendsCmd extends Cmd
 {
 	@Override

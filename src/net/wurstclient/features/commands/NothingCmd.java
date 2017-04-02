@@ -11,7 +11,8 @@ import net.wurstclient.events.ChatOutputEvent;
 
 @Cmd.Info(description = "Does nothing. Useful for scripting.",
 	name = "nothing",
-	syntax = {})
+	syntax = {},
+	help = "Commands/nothing")
 public final class NothingCmd extends Cmd
 {
 	@Override

@@ -17,7 +17,8 @@ import net.wurstclient.settings.Setting;
 	description = "Changes a checkbox setting of a feature. Allows you\n"
 		+ "to toggle checkboxes through keybinds.",
 	name = "setcheckbox",
-	syntax = {"<feature> <checkbox_setting> (on|off|toggle)"})
+	syntax = {"<feature> <checkbox_setting> (on|off|toggle)"},
+	help = "Commands/setcheckbox")
 public final class SetCheckboxCmd extends Cmd
 {
 	@Override
@@ -68,7 +69,7 @@ public final class SetCheckboxCmd extends Cmd
 		else if(valueName.equalsIgnoreCase("off"))
 			checkboxSetting.setChecked(false);
 		else if(valueName.equalsIgnoreCase("toggle"))
-			checkboxSetting.setChecked(!checkboxSetting.isChecked());
+			checkboxSetting.toggle();
 		else
 			syntaxError();
 	}

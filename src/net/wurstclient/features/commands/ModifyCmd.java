@@ -20,7 +20,8 @@ import net.wurstclient.utils.MiscUtils;
 @Cmd.Info(description = "Modifies items in creative mode.",
 	name = "modify",
 	syntax = {"add <nbt>", "remove <nbt_path>", "set <nbt>",
-		"metadata <value>"})
+		"metadata <value>"},
+	help = "Commands/modify")
 public final class ModifyCmd extends Cmd
 {
 	@Override
