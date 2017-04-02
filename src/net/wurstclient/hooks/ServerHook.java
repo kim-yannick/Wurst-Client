@@ -29,7 +29,7 @@ import net.minecraft.client.gui.ServerListEntryLanDetected;
 import net.minecraft.client.gui.ServerListEntryNormal;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerData;
-import net.wurstclient.WurstClient;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.files.WurstFolders;
 import net.wurstclient.utils.MiscUtils;
 
@@ -209,7 +209,7 @@ public class ServerHook
 	public static int getProtocolVersion()
 	{
 		ServerData server = lastServer.getServerData();
-		NavigableMap<Integer, String> protocols = WurstClient.PROTOCOLS;
+		NavigableMap<Integer, String> protocols = WMinecraft.PROTOCOLS;
 		
 		// use default if ping failed
 		if(!server.pinged || server.pingToServer < 0)

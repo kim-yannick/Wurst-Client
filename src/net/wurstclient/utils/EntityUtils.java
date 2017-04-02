@@ -10,7 +10,6 @@ package net.wurstclient.utils;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityFlying;
@@ -25,11 +24,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.wurstclient.WurstClient;
+import net.wurstclient.compatibility.WMinecraft;
 
 public class EntityUtils
 {
 	private static final WurstClient wurst = WurstClient.INSTANCE;
-	private static final Minecraft mc = Minecraft.getMinecraft();
 	
 	public static final TargetSettings DEFAULT_SETTINGS = new TargetSettings();
 	
@@ -53,7 +52,7 @@ public class EntityUtils
 	
 	public static void sendAttackPacket(Entity entity)
 	{
-		mc.player.connection.sendPacket(
+		WMinecraft.getPlayer().connection.sendPacket(
 			new CPacketUseEntity(entity, CPacketUseEntity.Action.ATTACK));
 	}
 	
@@ -74,7 +73,7 @@ public class EntityUtils
 			return false;
 		
 		// entities outside the range
-		if(mc.player.getDistanceToEntity(en) > settings.getRange())
+		if(WMinecraft.getPlayer().getDistanceToEntity(en) > settings.getRange())
 			return false;
 		
 		// entities outside the FOV
@@ -83,7 +82,8 @@ public class EntityUtils
 			return false;
 		
 		// entities behind walls
-		if(!settings.targetBehindWalls() && !mc.player.canEntityBeSeen(en))
+		if(!settings.targetBehindWalls()
+			&& !WMinecraft.getPlayer().canEntityBeSeen(en))
 			return false;
 		
 		// friends
@@ -119,11 +119,12 @@ public class EntityUtils
 				return false;
 			
 			// the user
-			if(en == mc.player)
+			if(en == WMinecraft.getPlayer())
 				return false;
 			
 			// Freecam entity
-			if(((EntityPlayer)en).getName().equals(mc.player.getName()))
+			if(((EntityPlayer)en).getName()
+				.equals(WMinecraft.getPlayer().getName()))
 				return false;
 			
 			// mobs
@@ -195,7 +196,7 @@ public class EntityUtils
 	{
 		ArrayList<Entity> validEntities = new ArrayList<>();
 		
-		for(Entity entity : mc.world.loadedEntityList)
+		for(Entity entity : WMinecraft.getWorld().loadedEntityList)
 		{
 			if(isCorrectEntity(entity, settings))
 				validEntities.add(entity);
@@ -211,10 +212,11 @@ public class EntityUtils
 	{
 		Entity closestEntity = null;
 		
-		for(Entity entity : mc.world.loadedEntityList)
-			if(isCorrectEntity(entity, settings) && (closestEntity == null
-				|| mc.player.getDistanceToEntity(entity) < mc.player
-					.getDistanceToEntity(closestEntity)))
+		for(Entity entity : WMinecraft.getWorld().loadedEntityList)
+			if(isCorrectEntity(entity, settings)
+				&& (closestEntity == null || WMinecraft.getPlayer()
+					.getDistanceToEntity(entity) < WMinecraft.getPlayer()
+						.getDistanceToEntity(closestEntity)))
 				closestEntity = entity;
 			
 		return closestEntity;
@@ -225,7 +227,7 @@ public class EntityUtils
 		Entity bestEntity = null;
 		float bestAngle = Float.POSITIVE_INFINITY;
 		
-		for(Entity entity : mc.world.loadedEntityList)
+		for(Entity entity : WMinecraft.getWorld().loadedEntityList)
 		{
 			if(!isCorrectEntity(entity, settings))
 				continue;
@@ -248,10 +250,10 @@ public class EntityUtils
 	{
 		Entity closestEnemy = null;
 		
-		for(Entity entity : mc.world.loadedEntityList)
+		for(Entity entity : WMinecraft.getWorld().loadedEntityList)
 			if(isCorrectEntity(entity, settings) && entity != otherEntity
-				&& (closestEnemy == null
-					|| mc.player.getDistanceToEntity(entity) < mc.player
+				&& (closestEnemy == null || WMinecraft.getPlayer()
+					.getDistanceToEntity(entity) < WMinecraft.getPlayer()
 						.getDistanceToEntity(closestEnemy)))
 				closestEnemy = entity;
 			
@@ -260,7 +262,7 @@ public class EntityUtils
 	
 	public static Entity getEntityWithName(String name, TargetSettings settings)
 	{
-		for(Entity entity : mc.world.loadedEntityList)
+		for(Entity entity : WMinecraft.getWorld().loadedEntityList)
 			if(isCorrectEntity(entity, settings)
 				&& entity.getName().equalsIgnoreCase(name))
 				return entity;
@@ -270,7 +272,7 @@ public class EntityUtils
 	
 	public static Entity getEntityWithId(UUID id, TargetSettings settings)
 	{
-		for(Entity entity : mc.world.loadedEntityList)
+		for(Entity entity : WMinecraft.getWorld().loadedEntityList)
 			if(isCorrectEntity(entity, settings)
 				&& entity.getUniqueID().equals(id))
 				return entity;

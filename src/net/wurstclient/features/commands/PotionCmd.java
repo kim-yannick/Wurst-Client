@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.utils.MiscUtils;
 
 @Cmd.Info(description = "Changes the effects of the held potion.",
@@ -29,10 +30,11 @@ public final class PotionCmd extends Cmd
 	{
 		if(args.length == 0)
 			syntaxError();
-		if(!mc.player.capabilities.isCreativeMode)
+		if(!WMinecraft.getPlayer().capabilities.isCreativeMode)
 			error("Creative mode only.");
 		
-		ItemStack currentItem = mc.player.inventory.getCurrentItem();
+		ItemStack currentItem =
+			WMinecraft.getPlayer().inventory.getCurrentItem();
 		if(currentItem == null
 			|| Item.getIdFromItem(currentItem.getItem()) != 373)
 			error("You are not holding a potion in your hand.");

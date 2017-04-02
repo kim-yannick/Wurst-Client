@@ -25,6 +25,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Vec3d;
 import net.wurstclient.WurstClient;
+import net.wurstclient.compatibility.WMinecraft;
 
 public final class BlockUtils
 {
@@ -35,7 +36,7 @@ public final class BlockUtils
 	
 	public static IBlockState getState(BlockPos pos)
 	{
-		return mc.world.getBlockState(pos);
+		return WMinecraft.getWorld().getBlockState(pos);
 	}
 	
 	public static Block getBlock(BlockPos pos)
@@ -65,7 +66,7 @@ public final class BlockUtils
 		if(block instanceof BlockChest)
 			return CHEST_AABB.offset(pos);
 		
-		return block.getSelectedBoundingBox(mc.world, pos);
+		return block.getSelectedBoundingBox(WMinecraft.getWorld(), pos);
 	}
 	
 	public static boolean canBeClicked(BlockPos pos)
@@ -75,8 +76,8 @@ public final class BlockUtils
 	
 	public static float getHardness(BlockPos pos)
 	{
-		return getBlock(pos).getPlayerRelativeBlockHardness(mc.player, mc.world,
-			pos);
+		return getBlock(pos).getPlayerRelativeBlockHardness(
+			WMinecraft.getPlayer(), WMinecraft.getWorld(), pos);
 	}
 	
 	public static boolean placeBlockLegit(BlockPos pos)
@@ -105,8 +106,8 @@ public final class BlockUtils
 				continue;
 			
 			// check line of sight
-			if(mc.world.rayTraceBlocks(eyesPos, hitVec, false, true,
-				false) != null)
+			if(WMinecraft.getWorld().rayTraceBlocks(eyesPos, hitVec, false,
+				true, false) != null)
 				continue;
 			
 			// face block
@@ -175,8 +176,8 @@ public final class BlockUtils
 				continue;
 			
 			// check line of sight
-			if(mc.world.rayTraceBlocks(eyesPos, hitVec, false, true,
-				false) != null)
+			if(WMinecraft.getWorld().rayTraceBlocks(eyesPos, hitVec, false,
+				true, false) != null)
 				continue;
 			
 			// AutoTool
@@ -213,8 +214,8 @@ public final class BlockUtils
 				continue;
 			
 			// check line of sight
-			if(mc.world.rayTraceBlocks(eyesPos, hitVec, false, true,
-				false) != null)
+			if(WMinecraft.getWorld().rayTraceBlocks(eyesPos, hitVec, false,
+				true, false) != null)
 				continue;
 			
 			// damage block
@@ -251,8 +252,8 @@ public final class BlockUtils
 				continue;
 			
 			// check line of sight
-			if(mc.world.rayTraceBlocks(eyesPos, hitVec, false, true,
-				false) != null)
+			if(WMinecraft.getWorld().rayTraceBlocks(eyesPos, hitVec, false,
+				true, false) != null)
 				continue;
 			
 			// AutoTool
@@ -335,9 +336,10 @@ public final class BlockUtils
 				continue;
 			
 			// break block
-			mc.player.connection.sendPacket(new CPacketPlayerDigging(
-				Action.START_DESTROY_BLOCK, pos, side));
-			mc.player.connection.sendPacket(
+			WMinecraft.getPlayer().connection
+				.sendPacket(new CPacketPlayerDigging(Action.START_DESTROY_BLOCK,
+					pos, side));
+			WMinecraft.getPlayer().connection.sendPacket(
 				new CPacketPlayerDigging(Action.STOP_DESTROY_BLOCK, pos, side));
 			
 			return;
@@ -365,8 +367,8 @@ public final class BlockUtils
 				continue;
 			
 			// check line of sight
-			if(mc.world.rayTraceBlocks(eyesPos, hitVec, false, true,
-				false) != null)
+			if(WMinecraft.getWorld().rayTraceBlocks(eyesPos, hitVec, false,
+				true, false) != null)
 				continue;
 			
 			// face block

@@ -12,6 +12,7 @@ import java.util.Random;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
 
@@ -49,8 +50,9 @@ public final class DropCmd extends Cmd implements UpdateListener
 			Item item = null;
 			while(item == null)
 				item = Item.getItemById(new Random().nextInt(431));
-			mc.player.connection.sendPacket(new CPacketCreativeInventoryAction(
-				-1, new ItemStack(item, 64)));
+			WMinecraft.getPlayer().connection
+				.sendPacket(new CPacketCreativeInventoryAction(-1,
+					new ItemStack(item, 64)));
 			return;
 		}
 		if(wurst.special.yesCheatSpf.getBypassLevel()
@@ -59,7 +61,8 @@ public final class DropCmd extends Cmd implements UpdateListener
 			timer++;
 			if(timer >= 5)
 			{
-				mc.playerController.windowClick(0, counter, 1, 4, mc.player);
+				mc.playerController.windowClick(0, counter, 1, 4,
+					WMinecraft.getPlayer());
 				counter++;
 				timer = 0;
 				if(counter >= 45)
@@ -68,7 +71,8 @@ public final class DropCmd extends Cmd implements UpdateListener
 		}else
 		{
 			for(int i = 9; i < 45; i++)
-				mc.playerController.windowClick(0, i, 1, 4, mc.player);
+				mc.playerController.windowClick(0, i, 1, 4,
+					WMinecraft.getPlayer());
 			wurst.events.remove(UpdateListener.class, this);
 		}
 	}

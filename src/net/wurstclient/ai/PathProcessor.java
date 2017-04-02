@@ -16,6 +16,7 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3d;
 import net.wurstclient.WurstClient;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.utils.RotationUtils;
 
 public abstract class PathProcessor
@@ -59,7 +60,7 @@ public abstract class PathProcessor
 			facePosition(path.get(index));
 		
 		// disable sprinting
-		mc.player.setSprinting(false);
+		WMinecraft.getPlayer().setSprinting(false);
 	}
 	
 	protected void facePosition(BlockPos pos)

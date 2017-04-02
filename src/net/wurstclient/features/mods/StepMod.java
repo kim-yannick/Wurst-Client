@@ -13,6 +13,7 @@ import net.minecraft.block.BlockFenceGate;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.network.play.client.CPacketPlayer.Position;
 import net.minecraft.util.BlockPos;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
 import net.wurstclient.settings.SliderSetting;
@@ -52,38 +53,44 @@ public final class StepMod extends Mod implements UpdateListener
 		if(wurst.special.yesCheatSpf.getBypassLevel()
 			.ordinal() >= BypassLevel.ANTICHEAT.ordinal())
 		{
-			mc.player.stepHeight = 0.5F;
-			if(mc.player.onGround && !mc.player.isOnLadder()
-				&& (mc.player.movementInput.moveForward != 0.0F
-					|| mc.player.movementInput.moveStrafe != 0.0F)
-				&& canStep() && !mc.player.movementInput.jump
-				&& mc.player.isCollidedHorizontally)
+			WMinecraft.getPlayer().stepHeight = 0.5F;
+			if(WMinecraft.getPlayer().onGround
+				&& !WMinecraft.getPlayer().isOnLadder()
+				&& (WMinecraft.getPlayer().movementInput.moveForward != 0.0F
+					|| WMinecraft.getPlayer().movementInput.moveStrafe != 0.0F)
+				&& canStep() && !WMinecraft.getPlayer().movementInput.jump
+				&& WMinecraft.getPlayer().isCollidedHorizontally)
 			{
-				mc.getNetHandler().sendPacket(
-					new Position(mc.player.posX, mc.player.posY + 0.42D,
-						mc.player.posZ, mc.player.onGround));
-				mc.getNetHandler().sendPacket(
-					new Position(mc.player.posX, mc.player.posY + 0.753D,
-						mc.player.posZ, mc.player.onGround));
-				mc.player.setPosition(mc.player.posX, mc.player.posY + 1D,
-					mc.player.posZ);
+				mc.getNetHandler()
+					.sendPacket(new Position(WMinecraft.getPlayer().posX,
+						WMinecraft.getPlayer().posY + 0.42D,
+						WMinecraft.getPlayer().posZ,
+						WMinecraft.getPlayer().onGround));
+				mc.getNetHandler()
+					.sendPacket(new Position(WMinecraft.getPlayer().posX,
+						WMinecraft.getPlayer().posY + 0.753D,
+						WMinecraft.getPlayer().posZ,
+						WMinecraft.getPlayer().onGround));
+				WMinecraft.getPlayer().setPosition(WMinecraft.getPlayer().posX,
+					WMinecraft.getPlayer().posY + 1D,
+					WMinecraft.getPlayer().posZ);
 			}
 		}else
-			mc.player.stepHeight = isEnabled() ? height : 0.5F;
+			WMinecraft.getPlayer().stepHeight = isEnabled() ? height : 0.5F;
 	}
 	
 	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
-		mc.player.stepHeight = 0.5F;
+		WMinecraft.getPlayer().stepHeight = 0.5F;
 	}
 	
 	private boolean canStep()
 	{
 		ArrayList<BlockPos> collisionBlocks = new ArrayList<>();
 		
-		EntityPlayerSP player = mc.player;
+		EntityPlayerSP player = WMinecraft.getPlayer();
 		BlockPos pos1 =
 			new BlockPos(player.getEntityBoundingBox().minX - 0.001D,
 				player.getEntityBoundingBox().minY - 0.001D,
@@ -106,9 +113,9 @@ public final class StepMod extends Mod implements UpdateListener
 			if(!(player.worldObj.getBlockState(collisionBlock.add(0, 1, 0))
 				.getBlock() instanceof BlockFenceGate))
 				if(player.worldObj.getBlockState(collisionBlock.add(0, 1, 0))
-					.getBlock().getCollisionBoundingBox(mc.world,
-						belowPlayerPos,
-						mc.world.getBlockState(collisionBlock)) != null)
+					.getBlock().getCollisionBoundingBox(WMinecraft.getWorld(),
+						belowPlayerPos, WMinecraft.getWorld()
+							.getBlockState(collisionBlock)) != null)
 					return false;
 				
 		return true;

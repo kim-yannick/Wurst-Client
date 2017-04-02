@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3d;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.utils.RenderUtils;
@@ -52,7 +53,7 @@ public final class TrajectoriesMod extends Mod implements RenderListener
 	@Override
 	public void onRender(float partialTicks)
 	{
-		EntityPlayerSP player = mc.player;
+		EntityPlayerSP player = WMinecraft.getPlayer();
 		
 		// check if player is holding item
 		ItemStack stack = player.getCurrentEquippedItem();
@@ -153,7 +154,7 @@ public final class TrajectoriesMod extends Mod implements RenderListener
 			arrowMotionZ *= 0.99D;
 			arrowMotionY -= gravity;
 			
-			if(mc.world.rayTraceBlocks(playerVector,
+			if(WMinecraft.getWorld().rayTraceBlocks(playerVector,
 				new Vec3d(arrowPosX, arrowPosY, arrowPosZ)) != null)
 				break;
 		}

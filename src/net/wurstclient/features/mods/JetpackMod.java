@@ -8,6 +8,7 @@
 package net.wurstclient.features.mods;
 
 import net.minecraft.network.play.client.CPacketPlayer;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.settings.CheckboxSetting;
 
@@ -51,12 +52,13 @@ public final class JetpackMod extends Mod implements UpdateListener
 		updateMS();
 		
 		if(mc.gameSettings.keyBindJump.pressed)
-			mc.player.jump();
+			WMinecraft.getPlayer().jump();
 		
 		if(flightKickBypass.isChecked())
 		{
 			wurst.mods.flightMod.updateFlyHeight();
-			mc.player.connection.sendPacket(new CPacketPlayer(true));
+			WMinecraft.getPlayer().connection
+				.sendPacket(new CPacketPlayer(true));
 			
 			if(wurst.mods.flightMod.flyHeight <= 290 && hasTimePassedM(500)
 				|| wurst.mods.flightMod.flyHeight > 290 && hasTimePassedM(100))

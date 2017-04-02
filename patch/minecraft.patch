@@ -1,6 +1,6 @@
-From c6f6d47a920e285c851489508423f48fa866b991 Mon Sep 17 00:00:00 2001
+From 3f52f960b1042f5638db94b39d0634b0dd01e43a Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 14 Mar 2017 14:34:16 +0100
+Date: Sun, 2 Apr 2017 16:23:10 +0200
 Subject: [PATCH] mod
 
 ---
@@ -124,7 +124,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/GuiListButton.java        |   1 +
  net/minecraft/client/gui/GuiListExtended.java      |   4 +
  net/minecraft/client/gui/GuiLockIconButton.java    |   1 +
- net/minecraft/client/gui/GuiMainMenu.java          |  81 +++-
+ net/minecraft/client/gui/GuiMainMenu.java          |  74 ++-
  net/minecraft/client/gui/GuiMemoryErrorScreen.java |   4 +-
  net/minecraft/client/gui/GuiMerchant.java          |  26 +-
  net/minecraft/client/gui/GuiMultiplayer.java       | 170 +++++--
@@ -164,7 +164,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/ScaledResolution.java     |   8 +-
  net/minecraft/client/gui/ScreenChatOptions.java    |   2 +
  .../client/gui/ServerListEntryLanDetected.java     |   2 +-
- .../client/gui/ServerListEntryNormal.java          |  83 ++--
+ .../client/gui/ServerListEntryNormal.java          | 101 ++--
  net/minecraft/client/gui/ServerSelectionList.java  |  15 +-
  .../client/gui/achievement/GuiAchievement.java     |   2 +-
  .../client/gui/achievement/GuiAchievements.java    |  26 +-
@@ -693,7 +693,7 @@ Subject: [PATCH] mod
  .../world/pathfinder/WalkNodeProcessor.java        |  10 +-
  net/minecraft/world/storage/MapData.java           |   2 +-
  net/minecraft/world/storage/WorldInfo.java         |  18 +-
- 689 files changed, 8336 insertions(+), 7043 deletions(-)
+ 689 files changed, 8339 insertions(+), 7051 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -8870,26 +8870,17 @@ index 7c69b95..e44dc02 100644
  
  public class GuiLockIconButton extends GuiButton
 diff --git a/net/minecraft/client/gui/GuiMainMenu.java b/net/minecraft/client/gui/GuiMainMenu.java
-index 9fd9e99..a69af90 100644
+index 9fd9e99..aeacc6a 100644
 --- a/net/minecraft/client/gui/GuiMainMenu.java
 +++ b/net/minecraft/client/gui/GuiMainMenu.java
-@@ -1,15 +1,31 @@
+@@ -1,6 +1,5 @@
  package net.minecraft.client.gui;
  
 -import com.google.common.collect.Lists;
-+import static org.lwjgl.opengl.GL11.GL_BLEND;
-+import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
-+import static org.lwjgl.opengl.GL11.glBlendFunc;
-+import static org.lwjgl.opengl.GL11.glEnable;
-+
  import java.io.BufferedReader;
  import java.io.IOException;
  import java.io.InputStreamReader;
- import java.net.URI;
- import java.util.ArrayList;
- import java.util.Calendar;
-+import java.util.ConcurrentModificationException;
+@@ -10,6 +9,16 @@ import java.util.Calendar;
  import java.util.Date;
  import java.util.Random;
  import java.util.concurrent.atomic.AtomicInteger;
@@ -8906,7 +8897,7 @@ index 9fd9e99..a69af90 100644
  import net.minecraft.client.Minecraft;
  import net.minecraft.client.renderer.GlStateManager;
  import net.minecraft.client.renderer.OpenGlHelper;
-@@ -24,12 +40,9 @@ import net.minecraft.util.ResourceLocation;
+@@ -24,12 +33,9 @@ import net.minecraft.util.ResourceLocation;
  import net.minecraft.world.demo.DemoWorldServer;
  import net.minecraft.world.storage.ISaveFormat;
  import net.minecraft.world.storage.WorldInfo;
@@ -8917,12 +8908,12 @@ index 9fd9e99..a69af90 100644
 -import org.lwjgl.opengl.GLContext;
 -import org.lwjgl.util.glu.Project;
 +import net.wurstclient.WurstClient;
++import net.wurstclient.compatibility.WMinecraft;
 +import net.wurstclient.hooks.ServerHook;
-+import net.wurstclient.utils.MiscUtils;
  
  public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
  {
-@@ -41,7 +54,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -41,7 +47,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
      private float updateCounter;
  
      /** The splash message. */
@@ -8931,7 +8922,7 @@ index 9fd9e99..a69af90 100644
      private GuiButton buttonResetDemo;
  
      /** Timer used to rotate the panorama, increases every tick. */
-@@ -57,11 +70,12 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -57,11 +63,12 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
      private String field_146972_A;
      private String field_104024_v;
      private static final ResourceLocation splashTexts = new ResourceLocation("texts/splashes.txt");
@@ -8945,7 +8936,7 @@ index 9fd9e99..a69af90 100644
      private int field_92024_r;
      private int field_92023_s;
      private int field_92022_t;
-@@ -69,12 +83,12 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -69,12 +76,12 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
      private int field_92020_v;
      private int field_92019_w;
      private ResourceLocation field_110351_G;
@@ -8960,7 +8951,7 @@ index 9fd9e99..a69af90 100644
          this.splashText = "missingno";
          BufferedReader var1 = null;
  
-@@ -184,7 +198,13 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -184,7 +191,13 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
          else if (var1.get(2) + 1 == 10 && var1.get(5) == 31)
          {
              this.splashText = "OOoooOOOoooo! Spooky!";
@@ -8974,7 +8965,7 @@ index 9fd9e99..a69af90 100644
  
          boolean var2 = true;
          int var3 = this.height / 4 + 48;
-@@ -198,9 +218,9 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -198,9 +211,9 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
              this.addSingleplayerMultiplayerButtons(var3, 24);
          }
  
@@ -8987,7 +8978,7 @@ index 9fd9e99..a69af90 100644
          Object var4 = this.field_104025_t;
  
          synchronized (this.field_104025_t)
-@@ -222,7 +242,23 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -222,7 +235,23 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
      {
          this.buttonList.add(new GuiButton(1, this.width / 2 - 100, p_73969_1_, I18n.format("menu.singleplayer", new Object[0])));
          this.buttonList.add(new GuiButton(2, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 1, I18n.format("menu.multiplayer", new Object[0])));
@@ -8996,7 +8987,7 @@ index 9fd9e99..a69af90 100644
 +		// TODO: Client
 +		if(WurstClient.INSTANCE.isEnabled())
 +		{
-+			boolean realms = WurstClient.ENABLE_REALMS;
++			boolean realms = WMinecraft.REALMS;
 +			buttonList.add(
 +				new GuiButton(3, width / 2 - 100, p_73969_1_ + p_73969_2_ * 2,
 +					realms ? 98 : 200, 20, "Alt Manager"));
@@ -9012,7 +9003,7 @@ index 9fd9e99..a69af90 100644
      }
  
      /**
-@@ -263,7 +299,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -263,7 +292,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
              this.mc.displayGuiScreen(new GuiMultiplayer(this));
          }
  
@@ -9021,7 +9012,7 @@ index 9fd9e99..a69af90 100644
          {
              this.switchToRealms();
          }
-@@ -391,7 +427,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -391,7 +420,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
  
                  this.mc.getTextureManager().bindTexture(titlePanoramaPaths[var11]);
                  var5.startDrawingQuads();
@@ -9030,7 +9021,7 @@ index 9fd9e99..a69af90 100644
                  float var12 = 0.0F;
                  var5.addVertexWithUV(-1.0D, -1.0D, 1.0D, (double)(0.0F + var12), (double)(0.0F + var12));
                  var5.addVertexWithUV(1.0D, -1.0D, 1.0D, (double)(1.0F - var12), (double)(0.0F + var12));
-@@ -436,7 +472,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -436,7 +465,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
  
          for (int var5 = 0; var5 < var4; ++var5)
          {
@@ -9039,7 +9030,7 @@ index 9fd9e99..a69af90 100644
              int var6 = this.width;
              int var7 = this.height;
              float var8 = (float)(var5 - var4 / 2) / 256.0F;
-@@ -454,7 +490,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -454,7 +483,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
      /**
       * Renders the skybox in the main menu
       */
@@ -9048,7 +9039,7 @@ index 9fd9e99..a69af90 100644
      {
          this.mc.getFramebuffer().unbindFramebuffer();
          GlStateManager.viewport(0, 0, 256, 256);
-@@ -474,7 +510,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -474,7 +503,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
          float var6 = this.width > this.height ? 120.0F / (float)this.width : 120.0F / (float)this.height;
          float var7 = (float)this.height * var6 / 256.0F;
          float var8 = (float)this.width * var6 / 256.0F;
@@ -9057,7 +9048,7 @@ index 9fd9e99..a69af90 100644
          int var9 = this.width;
          int var10 = this.height;
          var5.addVertexWithUV(0.0D, (double)var10, (double)this.zLevel, (double)(0.5F - var7), (double)(0.5F + var8));
-@@ -494,6 +530,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -494,6 +523,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
          GlStateManager.enableAlpha();
          Tessellator var4 = Tessellator.getInstance();
          WorldRenderer var5 = var4.getWorldRenderer();
@@ -9065,7 +9056,7 @@ index 9fd9e99..a69af90 100644
          short var6 = 274;
          int var7 = this.width / 2 - var6 / 2;
          byte var8 = 30;
-@@ -516,13 +553,14 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -516,13 +546,14 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
              this.drawTexturedModalRect(var7 + 155, var8 + 0, 0, 45, 155, 44);
          }
  
@@ -9081,7 +9072,7 @@ index 9fd9e99..a69af90 100644
          this.drawCenteredString(this.fontRendererObj, this.splashText, 0, -8, -256);
          GlStateManager.popMatrix();
          String var10 = "Minecraft 1.8";
-@@ -542,7 +580,6 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+@@ -542,7 +573,6 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
              this.drawString(this.fontRendererObj, this.field_92025_p, this.field_92022_t, this.field_92021_u, -1);
              this.drawString(this.fontRendererObj, this.field_146972_A, (this.width - this.field_92024_r) / 2, ((GuiButton)this.buttonList.get(0)).yPosition - 12, -1);
          }
@@ -11551,19 +11542,49 @@ index 5481461..215b9fe 100644
          return this.field_148291_b;
      }
 diff --git a/net/minecraft/client/gui/ServerListEntryNormal.java b/net/minecraft/client/gui/ServerListEntryNormal.java
-index 71f1e82..bd59459 100644
+index 71f1e82..2c7ad13 100644
 --- a/net/minecraft/client/gui/ServerListEntryNormal.java
 +++ b/net/minecraft/client/gui/ServerListEntryNormal.java
-@@ -18,6 +18,8 @@ import net.minecraft.client.renderer.texture.DynamicTexture;
+@@ -1,16 +1,22 @@
+ package net.minecraft.client.gui;
+ 
++import java.awt.image.BufferedImage;
++import java.net.UnknownHostException;
++import java.util.List;
++import java.util.concurrent.ScheduledThreadPoolExecutor;
++import java.util.concurrent.ThreadPoolExecutor;
++
++import org.apache.commons.lang3.Validate;
++import org.apache.logging.log4j.LogManager;
++import org.apache.logging.log4j.Logger;
++
+ import com.google.common.base.Charsets;
+ import com.google.common.util.concurrent.ThreadFactoryBuilder;
++
+ import io.netty.buffer.ByteBuf;
+ import io.netty.buffer.ByteBufInputStream;
+ import io.netty.buffer.Unpooled;
+ import io.netty.handler.codec.base64.Base64;
+-import java.awt.image.BufferedImage;
+-import java.net.UnknownHostException;
+-import java.util.List;
+-import java.util.concurrent.ScheduledThreadPoolExecutor;
+-import java.util.concurrent.ThreadPoolExecutor;
+ import net.minecraft.client.Minecraft;
+ import net.minecraft.client.multiplayer.ServerData;
+ import net.minecraft.client.renderer.GlStateManager;
+@@ -18,9 +24,7 @@ import net.minecraft.client.renderer.texture.DynamicTexture;
  import net.minecraft.client.renderer.texture.TextureUtil;
  import net.minecraft.util.EnumChatFormatting;
  import net.minecraft.util.ResourceLocation;
-+import net.wurstclient.WurstClient;
-+
- import org.apache.commons.lang3.Validate;
- import org.apache.logging.log4j.LogManager;
- import org.apache.logging.log4j.Logger;
-@@ -30,17 +32,17 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
+-import org.apache.commons.lang3.Validate;
+-import org.apache.logging.log4j.LogManager;
+-import org.apache.logging.log4j.Logger;
++import net.wurstclient.compatibility.WMinecraft;
+ 
+ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
+ {
+@@ -30,17 +34,17 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
      private static final ResourceLocation field_178014_d = new ResourceLocation("textures/gui/server_selection.png");
      private final GuiMultiplayer field_148303_c;
      private final Minecraft field_148300_d;
@@ -11584,7 +11605,7 @@ index 71f1e82..bd59459 100644
          this.field_148300_d = Minecraft.getMinecraft();
          this.field_148306_i = new ResourceLocation("servers/" + p_i45048_2_.serverIP + "/icon");
          this.field_148305_h = (DynamicTexture)this.field_148300_d.getTextureManager().getTexture(this.field_148306_i);
-@@ -48,12 +50,12 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
+@@ -48,12 +52,12 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
  
      public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected)
      {
@@ -11602,7 +11623,7 @@ index 71f1e82..bd59459 100644
              field_148302_b.submit(new Runnable()
              {
                  private static final String __OBFID = "CL_00000818";
-@@ -61,34 +63,43 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
+@@ -61,34 +65,43 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
                  {
                      try
                      {
@@ -11636,7 +11657,7 @@ index 71f1e82..bd59459 100644
 +        boolean var10 = this.server.version < 47;
 +
 +		// TODO: Client
-+		boolean var11 = !WurstClient.PROTOCOLS.containsKey(server.version);
++		boolean var11 = !WMinecraft.PROTOCOLS.containsKey(server.version);
 +        
 +        this.field_148300_d.fontRendererObj.drawString(this.server.serverName, x + 32 + 3, y + 1, 16777215);
 +        List var12 = this.field_148300_d.fontRendererObj.listFormattedStringToWidth(this.server.serverMOTD, listWidth - 32 - 2);
@@ -11657,7 +11678,7 @@ index 71f1e82..bd59459 100644
          int var14 = this.field_148300_d.fontRendererObj.getStringWidth(var23);
          this.field_148300_d.fontRendererObj.drawString(var23, x + listWidth - var14 - 15 - 2, y + 1, 8421504);
          byte var15 = 0;
-@@ -100,27 +111,27 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
+@@ -100,27 +113,27 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
          {
              var16 = 5;
              var18 = var9 ? "Client out of date!" : "Server out of date!";
@@ -11692,7 +11713,7 @@ index 71f1e82..bd59459 100644
              {
                  var16 = 3;
              }
-@@ -129,14 +140,14 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
+@@ -129,14 +142,14 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
                  var16 = 4;
              }
  
@@ -11710,7 +11731,7 @@ index 71f1e82..bd59459 100644
              }
          }
          else
-@@ -156,9 +167,9 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
+@@ -156,9 +169,9 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
          this.field_148300_d.getTextureManager().bindTexture(Gui.icons);
          Gui.drawModalRectWithCustomSizedTexture(x + listWidth - 15, y, (float)(var15 * 10), (float)(176 + var16 * 8), 10, 8, 256.0F, 256.0F);
  
@@ -11722,7 +11743,7 @@ index 71f1e82..bd59459 100644
              this.prepareServerIcon();
              this.field_148303_c.getServerList().saveServerList();
          }
-@@ -245,14 +256,14 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
+@@ -245,14 +258,14 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
  
      private void prepareServerIcon()
      {
@@ -11739,7 +11760,7 @@ index 71f1e82..bd59459 100644
              ByteBuf var3 = Base64.decode(var2);
              BufferedImage var1;
              label74:
-@@ -266,8 +277,8 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
+@@ -266,8 +279,8 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
                  }
                  catch (Exception var8)
                  {
@@ -11750,7 +11771,7 @@ index 71f1e82..bd59459 100644
                  }
                  finally
                  {
-@@ -336,6 +347,6 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
+@@ -336,6 +349,6 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
  
      public ServerData getServerData()
      {

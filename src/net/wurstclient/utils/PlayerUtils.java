@@ -14,6 +14,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Vec3d;
+import net.wurstclient.compatibility.WMinecraft;
 
 public class PlayerUtils
 {
@@ -21,12 +22,12 @@ public class PlayerUtils
 	
 	public static void swingArmClient()
 	{
-		mc.player.swingArm();
+		WMinecraft.getPlayer().swingArm();
 	}
 	
 	public static void swingArmPacket()
 	{
-		mc.player.connection.sendPacket(new CPacketAnimation());
+		WMinecraft.getPlayer().connection.sendPacket(new CPacketAnimation());
 	}
 	
 	public static float getCooldown()
@@ -36,24 +37,27 @@ public class PlayerUtils
 	
 	public static void processRightClick()
 	{
-		mc.playerController.processRightClick(mc.player, mc.world,
-			mc.player.getCurrentEquippedItem());
+		mc.playerController.processRightClick(WMinecraft.getPlayer(),
+			WMinecraft.getWorld(),
+			WMinecraft.getPlayer().getCurrentEquippedItem());
 	}
 	
 	static void processRightClickBlock(BlockPos pos, EnumFacing side,
 		Vec3d hitVec)
 	{
-		mc.playerController.processRightClickBlock(mc.player, mc.world,
-			mc.player.getCurrentEquippedItem(), pos, side, hitVec);
+		mc.playerController.processRightClickBlock(WMinecraft.getPlayer(),
+			WMinecraft.getWorld(),
+			WMinecraft.getPlayer().getCurrentEquippedItem(), pos, side, hitVec);
 	}
 	
 	public static void addPotionEffect(Potion potion)
 	{
-		mc.player.addPotionEffect(new PotionEffect(potion.getId(), 10801220));
+		WMinecraft.getPlayer()
+			.addPotionEffect(new PotionEffect(potion.getId(), 10801220));
 	}
 	
 	public static void removePotionEffect(Potion potion)
 	{
-		mc.player.removePotionEffect(potion.getId());
+		WMinecraft.getPlayer().removePotionEffect(potion.getId());
 	}
 }

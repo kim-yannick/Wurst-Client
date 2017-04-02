@@ -9,6 +9,7 @@ package net.wurstclient.features.commands;
 
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.network.play.client.CPacketPlayer.Position;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.utils.MiscUtils;
 
 @Cmd.Info(description = "Applies the given amount of damage.",
@@ -32,13 +33,13 @@ public final class DamageCmd extends Cmd
 			error("Amount must be at most 20.");
 		
 		// check gamemode
-		if(mc.player.capabilities.isCreativeMode)
+		if(WMinecraft.getPlayer().capabilities.isCreativeMode)
 			error("Cannot damage in creative mode.");
 		
-		double posX = mc.player.posX;
-		double posY = mc.player.posY;
-		double posZ = mc.player.posZ;
-		NetHandlerPlayClient sendQueue = mc.player.connection;
+		double posX = WMinecraft.getPlayer().posX;
+		double posY = WMinecraft.getPlayer().posY;
+		double posZ = WMinecraft.getPlayer().posZ;
+		NetHandlerPlayClient sendQueue = WMinecraft.getPlayer().connection;
 		
 		// apply damage
 		for(int i = 0; i < 80 + 20 * (dmg - 1D); ++i)

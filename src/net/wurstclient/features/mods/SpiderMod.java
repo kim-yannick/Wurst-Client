@@ -7,6 +7,7 @@
  */
 package net.wurstclient.features.mods;
 
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 
 @Mod.Info(description = "Allows you to climb up walls like a spider.",
@@ -24,8 +25,8 @@ public final class SpiderMod extends Mod implements UpdateListener
 	@Override
 	public void onUpdate()
 	{
-		if(mc.player.isCollidedHorizontally)
-			mc.player.motionY = 0.2;
+		if(WMinecraft.getPlayer().isCollidedHorizontally)
+			WMinecraft.getPlayer().motionY = 0.2;
 	}
 	
 	@Override

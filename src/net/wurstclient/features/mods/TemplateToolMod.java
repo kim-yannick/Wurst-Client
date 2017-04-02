@@ -32,6 +32,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.TextComponentString;
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.GUIRenderListener;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.events.listeners.UpdateListener;
@@ -438,8 +439,8 @@ public final class TemplateToolMod extends Mod
 			JsonObject json = new JsonObject();
 			
 			// get facings
-			EnumFacing front = EnumFacing.getHorizontal(
-				4 - mc.player.getHorizontalFacing().getHorizontalIndex());
+			EnumFacing front = EnumFacing.getHorizontal(4 - WMinecraft
+				.getPlayer().getHorizontalFacing().getHorizontalIndex());
 			EnumFacing left = front.rotateYCCW();
 			
 			// add sorted blocks

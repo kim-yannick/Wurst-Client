@@ -7,6 +7,7 @@
  */
 package net.wurstclient.features.commands;
 
+import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.ChatOutputEvent;
 
 @Cmd.Info(description = "Makes you jump once.", name = "jump", syntax = {})
@@ -17,9 +18,9 @@ public final class JumpCmd extends Cmd
 	{
 		if(args.length != 0)
 			syntaxError();
-		if(!mc.player.onGround)
+		if(!WMinecraft.getPlayer().onGround)
 			error("Can't jump in mid-air.");
-		mc.player.jump();
+		WMinecraft.getPlayer().jump();
 	}
 	
 	@Override

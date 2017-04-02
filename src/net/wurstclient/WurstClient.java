@@ -7,10 +7,6 @@
  */
 package net.wurstclient;
 
-import java.util.Collections;
-import java.util.NavigableMap;
-import java.util.TreeMap;
-
 import net.wurstclient.analytics.AnalyticsManager;
 import net.wurstclient.events.EventManager;
 import net.wurstclient.features.commands.CmdManager;
@@ -32,17 +28,6 @@ public enum WurstClient
 	INSTANCE;
 	
 	public static final String VERSION = "2.29";
-	public static final String MINECRAFT_VERSION = "1.8";
-	
-	public static final NavigableMap<Integer, String> PROTOCOLS;
-	static
-	{
-		TreeMap<Integer, String> protocols = new TreeMap<>();
-		protocols.put(47, "1.8");
-		PROTOCOLS = Collections.unmodifiableNavigableMap(protocols);
-	}
-	
-	public static final boolean ENABLE_REALMS = false;
 	
 	public AnalyticsManager analytics;
 	public CmdManager commands;
