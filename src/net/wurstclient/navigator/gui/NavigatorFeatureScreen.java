@@ -20,9 +20,9 @@ import java.util.TreeSet;
 
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.wurstclient.WurstClient;
+import net.wurstclient.compatibility.WMath;
 import net.wurstclient.features.Feature;
 import net.wurstclient.files.ConfigFiles;
 import net.wurstclient.font.Fonts;
@@ -282,7 +282,7 @@ public class NavigatorFeatureScreen extends NavigatorScreen
 		{
 			// percentage from mouse location (not the actual percentage!)
 			float mousePercentage =
-				MathHelper.clamp((x - (middleX - 150)) / 298F, 0, 1);
+				WMath.clamp((x - (middleX - 150)) / 298F, 0, 1);
 			
 			// update slider value
 			SliderSetting slider = sliders.get(sliding);
