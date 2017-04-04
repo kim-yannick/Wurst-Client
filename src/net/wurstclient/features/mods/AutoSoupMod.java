@@ -14,6 +14,7 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemSoup;
 import net.minecraft.item.ItemStack;
+import net.wurstclient.compatibility.WBlock;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
@@ -21,7 +22,6 @@ import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
-import net.wurstclient.utils.BlockUtils;
 import net.wurstclient.utils.ClickType;
 import net.wurstclient.utils.InventoryUtils;
 import net.wurstclient.utils.PlayerUtils;
@@ -188,7 +188,7 @@ public final class AutoSoupMod extends Mod implements UpdateListener
 				return false;
 			
 			// clickable blocks
-			if(mc.objectMouseOver.getBlockPos() != null && BlockUtils.getBlock(
+			if(mc.objectMouseOver.getBlockPos() != null && WBlock.getBlock(
 				mc.objectMouseOver.getBlockPos()) instanceof BlockContainer)
 				return false;
 		}

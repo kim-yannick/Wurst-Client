@@ -16,6 +16,7 @@ import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.BlockPos;
+import net.wurstclient.compatibility.WBlock;
 import net.wurstclient.compatibility.WMinecraft;
 
 public class InventoryUtils
@@ -68,7 +69,7 @@ public class InventoryUtils
 	
 	public static float getStrVsBlock(ItemStack stack, BlockPos pos)
 	{
-		return stack.getStrVsBlock(BlockUtils.getBlock(pos));
+		return stack.getStrVsBlock(WBlock.getBlock(pos));
 	}
 	
 	public static boolean hasEffect(ItemStack stack, Potion potion)
