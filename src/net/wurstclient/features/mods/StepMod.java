@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.network.play.client.CPacketPlayer.Position;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;

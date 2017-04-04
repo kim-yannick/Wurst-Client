@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLadder;
 import net.minecraft.block.BlockVine;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.wurstclient.compatibility.WBlock;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.utils.RotationUtils;

@@ -7,7 +7,7 @@
  */
 package net.wurstclient.features.commands;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.wurstclient.ai.GotoAI;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.utils.ChatUtils;

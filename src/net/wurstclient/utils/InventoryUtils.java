@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.wurstclient.compatibility.WBlock;
 import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;

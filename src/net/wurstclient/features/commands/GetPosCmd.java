@@ -10,7 +10,7 @@ package net.wurstclient.features.commands;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.ChatOutputEvent;
 import net.wurstclient.utils.ChatUtils;

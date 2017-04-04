@@ -13,7 +13,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.GUIRenderListener;
 import net.wurstclient.events.listeners.RenderListener;

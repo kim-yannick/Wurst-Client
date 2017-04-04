@@ -9,7 +9,7 @@ package net.wurstclient.features.mods;
 
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.features.Feature;
 import net.wurstclient.utils.RenderUtils;

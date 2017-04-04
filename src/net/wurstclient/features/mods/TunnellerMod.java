@@ -7,8 +7,8 @@
  */
 package net.wurstclient.features.mods;
 
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.Vec3d;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.wurstclient.compatibility.WBlock;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.PostUpdateListener;

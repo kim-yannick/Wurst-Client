@@ -10,7 +10,7 @@ package net.wurstclient.features.mods;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.events.listeners.UpdateListener;

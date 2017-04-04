@@ -9,8 +9,8 @@ package net.wurstclient.utils;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.network.play.client.CPacketPlayer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Vec3d;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.Vec3d;
 import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMath;
 import net.wurstclient.compatibility.WMinecraft;

@@ -10,7 +10,7 @@ package net.wurstclient.features.mods;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.Vec3d;
+import net.minecraft.util.math.Vec3d;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.features.Feature;

@@ -13,8 +13,8 @@ import org.lwjgl.input.Keyboard;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.Vec3d;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.wurstclient.WurstClient;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.utils.RotationUtils;

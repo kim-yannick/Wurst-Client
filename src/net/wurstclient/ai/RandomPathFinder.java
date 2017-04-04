@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 import net.minecraft.block.BlockLiquid;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.wurstclient.compatibility.WBlock;
 import net.wurstclient.compatibility.WMinecraft;
 

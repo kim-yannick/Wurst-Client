@@ -16,7 +16,7 @@ import net.minecraft.block.BlockStem;
 import net.minecraft.block.IGrowable;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.wurstclient.compatibility.WBlock;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.compatibility.WPlayer;

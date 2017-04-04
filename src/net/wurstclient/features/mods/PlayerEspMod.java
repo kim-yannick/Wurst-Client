@@ -10,7 +10,7 @@ package net.wurstclient.features.mods;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
 import net.wurstclient.features.Feature;

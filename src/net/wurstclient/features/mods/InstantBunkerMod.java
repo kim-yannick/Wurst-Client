@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.wurstclient.compatibility.WBlock;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.compatibility.WPlayer;

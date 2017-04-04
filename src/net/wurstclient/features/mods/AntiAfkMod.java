@@ -9,7 +9,7 @@ package net.wurstclient.features.mods;
 
 import java.util.Random;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.wurstclient.ai.GoRandomAI;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.wurstclient.WurstClient;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.features.Feature;

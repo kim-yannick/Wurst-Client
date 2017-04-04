@@ -12,7 +12,7 @@ import static org.lwjgl.opengl.GL11.*;
 import java.util.ArrayList;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.wurstclient.ai.PathFinder;
 import net.wurstclient.ai.PathPos;
 import net.wurstclient.events.listeners.RenderListener;
