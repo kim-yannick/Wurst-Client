@@ -10,6 +10,7 @@ package net.wurstclient.features.mods;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketPlayer.Position;
 import net.minecraft.util.AxisAlignedBB;
+import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Feature;
@@ -95,7 +96,7 @@ public final class FlightMod extends Mod implements UpdateListener
 			
 			Position packet = new Position(WMinecraft.getPlayer().posX, y,
 				WMinecraft.getPlayer().posZ, true);
-			WMinecraft.getPlayer().connection.sendPacket(packet);
+			WConnection.sendPacket(packet);
 		}
 		
 		for(double y = minY; y < WMinecraft.getPlayer().posY;)
@@ -106,7 +107,7 @@ public final class FlightMod extends Mod implements UpdateListener
 			
 			Position packet = new Position(WMinecraft.getPlayer().posX, y,
 				WMinecraft.getPlayer().posZ, true);
-			WMinecraft.getPlayer().connection.sendPacket(packet);
+			WConnection.sendPacket(packet);
 		}
 	}
 	
@@ -131,10 +132,9 @@ public final class FlightMod extends Mod implements UpdateListener
 			double startZ = WMinecraft.getPlayer().posZ;
 			for(int i = 0; i < 4; i++)
 			{
-				WMinecraft.getPlayer().connection
-					.sendPacket(new CPacketPlayer.Position(startX,
-						startY + 1.01, startZ, false));
-				WMinecraft.getPlayer().connection.sendPacket(
+				WConnection.sendPacket(new CPacketPlayer.Position(startX,
+					startY + 1.01, startZ, false));
+				WConnection.sendPacket(
 					new CPacketPlayer.Position(startX, startY, startZ, false));
 			}
 			WMinecraft.getPlayer().jump();
@@ -189,8 +189,7 @@ public final class FlightMod extends Mod implements UpdateListener
 			if(flightKickBypass.isChecked())
 			{
 				updateFlyHeight();
-				WMinecraft.getPlayer().connection
-					.sendPacket(new CPacketPlayer(true));
+				WConnection.sendPacket(new CPacketPlayer(true));
 				
 				if(flyHeight <= 290 && hasTimePassedM(500)
 					|| flyHeight > 290 && hasTimePassedM(100))

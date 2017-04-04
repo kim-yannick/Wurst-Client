@@ -25,6 +25,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Vec3d;
 import net.wurstclient.WurstClient;
+import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.compatibility.WPlayerController;
@@ -338,10 +339,9 @@ public final class BlockUtils
 				continue;
 			
 			// break block
-			WMinecraft.getPlayer().connection
-				.sendPacket(new CPacketPlayerDigging(Action.START_DESTROY_BLOCK,
-					pos, side));
-			WMinecraft.getPlayer().connection.sendPacket(
+			WConnection.sendPacket(new CPacketPlayerDigging(
+				Action.START_DESTROY_BLOCK, pos, side));
+			WConnection.sendPacket(
 				new CPacketPlayerDigging(Action.STOP_DESTROY_BLOCK, pos, side));
 			
 			return;

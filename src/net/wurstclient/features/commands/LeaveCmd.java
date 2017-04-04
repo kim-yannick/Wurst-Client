@@ -11,6 +11,7 @@ import net.minecraft.network.play.client.CPacketChatMessage;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.network.play.client.CPacketUseEntity.Action;
+import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.ChatOutputEvent;
 import net.wurstclient.files.ConfigFiles;
@@ -73,14 +74,13 @@ public final class LeaveCmd extends Cmd
 			WMinecraft.getWorld().sendQuittingDisconnectingPacket();
 			break;
 			case 1:
-			WMinecraft.getPlayer().connection
-				.sendPacket(new CPacketChatMessage("§"));
+			WConnection.sendPacket(new CPacketChatMessage("§"));
 			break;
 			case 2:
-			WMinecraft.getPlayer().connection.sendPacket(
+			WConnection.sendPacket(
 				new CPacketPlayer.Position(3.1e7d, 100, 3.1e7d, false));
 			case 3:
-			WMinecraft.getPlayer().connection.sendPacket(
+			WConnection.sendPacket(
 				new CPacketUseEntity(WMinecraft.getPlayer(), Action.ATTACK));
 			break;
 			default:

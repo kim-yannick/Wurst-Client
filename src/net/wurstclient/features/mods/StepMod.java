@@ -13,6 +13,7 @@ import net.minecraft.block.BlockFenceGate;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.network.play.client.CPacketPlayer.Position;
 import net.minecraft.util.BlockPos;
+import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
@@ -61,16 +62,14 @@ public final class StepMod extends Mod implements UpdateListener
 				&& canStep() && !WMinecraft.getPlayer().movementInput.jump
 				&& WMinecraft.getPlayer().isCollidedHorizontally)
 			{
-				mc.getNetHandler()
-					.sendPacket(new Position(WMinecraft.getPlayer().posX,
-						WMinecraft.getPlayer().posY + 0.42D,
-						WMinecraft.getPlayer().posZ,
-						WMinecraft.getPlayer().onGround));
-				mc.getNetHandler()
-					.sendPacket(new Position(WMinecraft.getPlayer().posX,
-						WMinecraft.getPlayer().posY + 0.753D,
-						WMinecraft.getPlayer().posZ,
-						WMinecraft.getPlayer().onGround));
+				WConnection.sendPacket(new Position(WMinecraft.getPlayer().posX,
+					WMinecraft.getPlayer().posY + 0.42D,
+					WMinecraft.getPlayer().posZ,
+					WMinecraft.getPlayer().onGround));
+				WConnection.sendPacket(new Position(WMinecraft.getPlayer().posX,
+					WMinecraft.getPlayer().posY + 0.753D,
+					WMinecraft.getPlayer().posZ,
+					WMinecraft.getPlayer().onGround));
 				WMinecraft.getPlayer().setPosition(WMinecraft.getPlayer().posX,
 					WMinecraft.getPlayer().posY + 1D,
 					WMinecraft.getPlayer().posZ);
