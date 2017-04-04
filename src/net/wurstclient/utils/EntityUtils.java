@@ -25,6 +25,7 @@ import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.wurstclient.WurstClient;
 import net.wurstclient.compatibility.WMinecraft;
+import net.wurstclient.compatibility.WPlayer;
 
 public class EntityUtils
 {
@@ -46,7 +47,7 @@ public class EntityUtils
 	
 	public static void attackEntity(Entity entity)
 	{
-		PlayerUtils.swingArmClient();
+		WPlayer.swingArmClient();
 		sendAttackPacket(entity);
 	}
 	

@@ -10,9 +10,9 @@ package net.wurstclient.features.mods;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.utils.MobEffects;
-import net.wurstclient.utils.PlayerUtils;
 
 @Mod.Info(description = "Thousands of colors!", name = "LSD", help = "Mods/LSD")
 @Mod.Bypasses
@@ -51,7 +51,7 @@ public final class LsdMod extends Mod implements UpdateListener
 	{
 		wurst.events.remove(UpdateListener.class, this);
 		
-		PlayerUtils.removePotionEffect(MobEffects.NAUSEA);
+		WPlayer.removePotionEffect(MobEffects.NAUSEA);
 		
 		if(mc.entityRenderer.theShaderGroup != null)
 		{
@@ -66,7 +66,7 @@ public final class LsdMod extends Mod implements UpdateListener
 	public void onUpdate()
 	{
 		if(!OpenGlHelper.shadersSupported)
-			PlayerUtils.addPotionEffect(MobEffects.NAUSEA);
+			WPlayer.addPotionEffect(MobEffects.NAUSEA);
 		
 		mc.gameSettings.smoothCamera = isEnabled();
 	}

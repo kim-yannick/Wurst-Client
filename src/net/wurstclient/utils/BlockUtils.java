@@ -26,6 +26,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Vec3d;
 import net.wurstclient.WurstClient;
 import net.wurstclient.compatibility.WMinecraft;
+import net.wurstclient.compatibility.WPlayer;
 import net.wurstclient.compatibility.WPlayerController;
 
 public final class BlockUtils
@@ -117,7 +118,7 @@ public final class BlockUtils
 			// place block
 			WPlayerController.processRightClickBlock(neighbor,
 				side.getOpposite(), hitVec);
-			PlayerUtils.swingArmClient();
+			WPlayer.swingArmClient();
 			mc.rightClickDelayTimer = 4;
 			
 			return true;
@@ -224,7 +225,7 @@ public final class BlockUtils
 				return false;
 			
 			// swing arm
-			PlayerUtils.swingArmPacket();
+			WPlayer.swingArmPacket();
 			
 			return true;
 		}
@@ -313,7 +314,7 @@ public final class BlockUtils
 				return false;
 			
 			// swing arm
-			PlayerUtils.swingArmPacket();
+			WPlayer.swingArmPacket();
 			
 			return true;
 		}
@@ -378,7 +379,7 @@ public final class BlockUtils
 			
 			// place block
 			WPlayerController.processRightClickBlock(pos, side, hitVec);
-			PlayerUtils.swingArmClient();
+			WPlayer.swingArmClient();
 			mc.rightClickDelayTimer = 4;
 			
 			return true;
