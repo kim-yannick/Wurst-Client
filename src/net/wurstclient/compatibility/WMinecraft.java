@@ -26,11 +26,11 @@ public final class WMinecraft
 	
 	public static EntityPlayerSP getPlayer()
 	{
-		return mc.player;
+		return mc.thePlayer;
 	}
 	
 	public static WorldClient getWorld()
 	{
-		return mc.world;
+		return mc.theWorld;
 	}
 }
