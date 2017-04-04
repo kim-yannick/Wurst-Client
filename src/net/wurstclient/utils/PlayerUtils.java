@@ -7,19 +7,13 @@
  */
 package net.wurstclient.utils;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Vec3d;
 import net.wurstclient.compatibility.WMinecraft;
 
 public class PlayerUtils
 {
-	private static final Minecraft mc = Minecraft.getMinecraft();
-	
 	public static void swingArmClient()
 	{
 		WMinecraft.getPlayer().swingArm();
@@ -33,21 +27,6 @@ public class PlayerUtils
 	public static float getCooldown()
 	{
 		return 1;
-	}
-	
-	public static void processRightClick()
-	{
-		mc.playerController.processRightClick(WMinecraft.getPlayer(),
-			WMinecraft.getWorld(),
-			WMinecraft.getPlayer().getCurrentEquippedItem());
-	}
-	
-	static void processRightClickBlock(BlockPos pos, EnumFacing side,
-		Vec3d hitVec)
-	{
-		mc.playerController.processRightClickBlock(WMinecraft.getPlayer(),
-			WMinecraft.getWorld(),
-			WMinecraft.getPlayer().getCurrentEquippedItem(), pos, side, hitVec);
 	}
 	
 	public static void addPotionEffect(Potion potion)
