@@ -11,7 +11,7 @@ import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 
-public class WPlayer
+public final class WPlayer
 {
 	public static void swingArmClient()
 	{
