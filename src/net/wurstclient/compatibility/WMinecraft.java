@@ -7,6 +7,7 @@ import java.util.TreeMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.network.NetHandlerPlayClient;
 
 public final class WMinecraft
 {
@@ -32,6 +33,11 @@ public final class WMinecraft
 	public static WorldClient getWorld()
 	{
 		return mc.theWorld;
+	}
+	
+	public static NetHandlerPlayClient getConnection()
+	{
+		return getPlayer().connection;
 	}
 	
 	public static boolean isRunningOnMac()
