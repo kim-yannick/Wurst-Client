@@ -11,10 +11,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
-import net.wurstclient.WurstClient;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.features.Feature;
 import net.wurstclient.navigator.PossibleKeybind;
@@ -33,9 +31,6 @@ public abstract class Cmd extends Feature
 	private String tags = getClass().getAnnotation(Info.class).tags();
 	private String help = getClass().getAnnotation(Info.class).help();
 	protected ArrayList<Setting> settings = new ArrayList<>();
-	
-	protected static final WurstClient wurst = WurstClient.INSTANCE;
-	protected static final Minecraft mc = Minecraft.getMinecraft();
 	
 	@Retention(RetentionPolicy.RUNTIME)
 	public @interface Info
