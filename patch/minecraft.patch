@@ -1,6 +1,6 @@
-From 26985ff89180c23f815de88c52c4d6dc5dfec7b3 Mon Sep 17 00:00:00 2001
+From ba1f3e98a9f5cb17e624e025571e30cfb5359bac Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 4 Apr 2017 18:51:48 +0200
+Date: Wed, 5 Apr 2017 18:58:12 +0200
 Subject: [PATCH] mod
 
 ---
@@ -237,7 +237,7 @@ Subject: [PATCH] mod
  .../client/multiplayer/ChunkProviderClient.java    |   2 +-
  .../client/multiplayer/GuiConnecting.java          |  14 +-
  .../client/multiplayer/PlayerControllerMP.java     | 135 +++---
- net/minecraft/client/multiplayer/ServerData.java   |   8 +-
+ net/minecraft/client/multiplayer/ServerData.java   |  14 +-
  net/minecraft/client/multiplayer/ServerList.java   |  16 +-
  net/minecraft/client/multiplayer/WorldClient.java  |  18 +-
  .../client/network/NetHandlerHandshakeMemory.java  |   4 +-
@@ -853,7 +853,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |  20 +-
- 849 files changed, 8966 insertions(+), 7632 deletions(-)
+ 849 files changed, 8972 insertions(+), 7632 deletions(-)
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -12363,7 +12363,7 @@ index ca6ffd5..d8ec87c 100644
      }
  
 diff --git a/net/minecraft/client/multiplayer/ServerData.java b/net/minecraft/client/multiplayer/ServerData.java
-index 3b6ed40..ad60d90 100644
+index 3b6ed40..28b5ffd 100644
 --- a/net/minecraft/client/multiplayer/ServerData.java
 +++ b/net/minecraft/client/multiplayer/ServerData.java
 @@ -2,7 +2,7 @@ package net.minecraft.client.multiplayer;
@@ -12375,7 +12375,7 @@ index 3b6ed40..ad60d90 100644
  
  public class ServerData
  {
-@@ -27,7 +27,7 @@ public class ServerData
+@@ -27,12 +27,18 @@ public class ServerData
  
      /** Game version for this server. */
      public String gameVersion = "1.8";
@@ -12384,7 +12384,18 @@ index 3b6ed40..ad60d90 100644
      public String playerList;
      private ServerData.ServerResourceMode resourceMode;
      private String serverIcon;
-@@ -133,7 +133,7 @@ public class ServerData
+     private static final String __OBFID = "CL_00000890";
+     
++	// TODO: Client
++	public ServerData(String name, String ip, boolean isLan)
++	{
++		this(name, ip);
++	}
++    
+     public ServerData(String p_i1193_1_, String p_i1193_2_)
+     {
+         this.resourceMode = ServerData.ServerResourceMode.PROMPT;
+@@ -133,7 +139,7 @@ public class ServerData
          ENABLED("ENABLED", 0, "enabled"),
          DISABLED("DISABLED", 1, "disabled"),
          PROMPT("PROMPT", 2, "prompt");
@@ -12393,7 +12404,7 @@ index 3b6ed40..ad60d90 100644
  
          private static final ServerData.ServerResourceMode[] $VALUES = new ServerData.ServerResourceMode[]{ENABLED, DISABLED, PROMPT};
          private static final String __OBFID = "CL_00001833";
-@@ -143,7 +143,7 @@ public class ServerData
+@@ -143,7 +149,7 @@ public class ServerData
              this.motd = new ChatComponentTranslation("addServer.resourcePack." + p_i1053_3_, new Object[0]);
          }
  
