@@ -13,10 +13,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
 import net.wurstclient.compatibility.WConnection;
-import net.wurstclient.compatibility.WMinecraft;
+import net.wurstclient.compatibility.WPlayerController;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
-import net.wurstclient.utils.ClickType;
 
 @Cmd.Info(description = "Drops all your items on the ground.",
 	name = "drop",
@@ -63,8 +62,7 @@ public final class DropCmd extends Cmd implements UpdateListener
 			timer++;
 			if(timer >= 5)
 			{
-				mc.playerController.windowClick(0, counter, 1, ClickType.THROW,
-					WMinecraft.getPlayer());
+				WPlayerController.windowClick_THROW(counter);
 				counter++;
 				timer = 0;
 				if(counter >= 45)
@@ -73,8 +71,7 @@ public final class DropCmd extends Cmd implements UpdateListener
 		}else
 		{
 			for(int i = 9; i < 45; i++)
-				mc.playerController.windowClick(0, i, 1, ClickType.THROW,
-					WMinecraft.getPlayer());
+				WPlayerController.windowClick_THROW(i);
 			wurst.events.remove(UpdateListener.class, this);
 		}
 	}

@@ -18,7 +18,6 @@ import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
-import net.wurstclient.utils.ClickType;
 import net.wurstclient.utils.InventoryUtils;
 import net.wurstclient.utils.MobEffects;
 
@@ -116,8 +115,7 @@ public final class AutoSplashPotMod extends Mod implements UpdateListener
 		
 		// move potion in inventory to hotbar
 		if(potionInInventory != -1)
-			mc.playerController.windowClick(0, potionInInventory, 0,
-				ClickType.QUICK_MOVE, WMinecraft.getPlayer());
+			WPlayerController.windowClick_QUICK_MOVE(potionInInventory);
 	}
 	
 	@Override
