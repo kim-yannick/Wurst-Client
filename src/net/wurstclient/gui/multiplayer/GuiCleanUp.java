@@ -18,7 +18,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextFormatting;
 import net.wurstclient.WurstClient;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.files.ConfigFiles;
@@ -137,8 +137,8 @@ public class GuiCleanUp extends GuiScreen
 					ServerData server =
 						prevScreen.savedServerList.getServerData(i);
 					if(WurstClient.INSTANCE.options.cleanupUnknown
-						&& server.serverMOTD.equals(EnumChatFormatting.DARK_RED
-							+ "Can\'t resolve hostname")
+						&& server.serverMOTD.equals(
+							TextFormatting.DARK_RED + "Can\'t resolve hostname")
 						|| WurstClient.INSTANCE.options.cleanupOutdated
 							&& !WMinecraft.PROTOCOLS.containsKey(server.version)
 						|| WurstClient.INSTANCE.options.cleanupFailed

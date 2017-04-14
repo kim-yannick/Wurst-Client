@@ -14,9 +14,10 @@ import java.util.TreeMap;
 
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ReportedException;
-import net.minecraft.util.TextComponentString;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.ClickEvent.Action;
 import net.wurstclient.WurstClient;
@@ -47,7 +48,6 @@ public final class CmdManager implements ChatOutputListener
 	public final DamageCmd damageCmd = new DamageCmd();
 	public final DropCmd dropCmd = new DropCmd();
 	public final EnchantCmd enchantCmd = new EnchantCmd();
-	public final FastBreakCmd fastBreakCmd = new FastBreakCmd();
 	public final FeaturesCmd featuresCmd = new FeaturesCmd();
 	public final FollowCmd followCmd = new FollowCmd();
 	public final FriendsCmd friendsCmd = new FriendsCmd();
@@ -149,9 +149,8 @@ public final class CmdManager implements ChatOutputListener
 				{
 					case "...":
 					case ".legit":
-					TextComponentString link =
-						new TextComponentString("more info");
-					link.getStyle().setColor(EnumChatFormatting.AQUA)
+					ITextComponent link = new TextComponentString("more info");
+					link.getStyle().setColor(TextFormatting.AQUA)
 						.setClickEvent(new ClickEvent(Action.OPEN_URL,
 							"https://www.wurstclient.net/wiki/Commands/say/"));
 					
