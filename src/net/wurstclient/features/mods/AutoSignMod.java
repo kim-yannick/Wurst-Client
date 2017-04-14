@@ -7,7 +7,7 @@
  */
 package net.wurstclient.features.mods;
 
-import net.minecraft.util.ITextComponent;
+import net.minecraft.util.text.ITextComponent;
 
 @Mod.Info(
 	description = "Instantly writes whatever text you want on every sign\n"

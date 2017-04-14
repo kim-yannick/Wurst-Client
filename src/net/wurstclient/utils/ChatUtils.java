@@ -8,8 +8,8 @@
 package net.wurstclient.utils;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.ITextComponent;
 import net.minecraft.util.TextComponentString;
+import net.minecraft.util.text.ITextComponent;
 
 public class ChatUtils
 {

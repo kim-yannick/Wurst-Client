@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.gui.ChatLine;
-import net.minecraft.util.ITextComponent;
+import net.minecraft.util.text.ITextComponent;
 import net.wurstclient.events.listeners.ChatInputListener;
 
 public class ChatInputEvent extends CancellableEvent<ChatInputListener>
