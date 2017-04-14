@@ -252,7 +252,7 @@ public class PathFinder
 		
 		// check if safe
 		if(!invulnerable
-			&& (material == Material.LAVA || material == Material.fire))
+			&& (material == Material.LAVA || material == Material.FIRE))
 			return false;
 		
 		return true;
@@ -278,7 +278,7 @@ public class PathFinder
 		
 		// check if safe
 		if(!invulnerable
-			&& (material == Material.cactus || material == Material.LAVA))
+			&& (material == Material.CACTUS || material == Material.LAVA))
 			return false;
 		
 		return true;
