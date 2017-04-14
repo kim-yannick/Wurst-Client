@@ -11,15 +11,14 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.TreeMap;
-import java.util.concurrent.Callable;
 
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
-import net.minecraft.event.ClickEvent;
-import net.minecraft.event.ClickEvent.Action;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ReportedException;
 import net.minecraft.util.TextComponentString;
+import net.minecraft.util.text.event.ClickEvent;
+import net.minecraft.util.text.event.ClickEvent.Action;
 import net.wurstclient.WurstClient;
 import net.wurstclient.events.ChatOutputEvent;
 import net.wurstclient.events.listeners.ChatOutputListener;
@@ -142,14 +141,7 @@ public final class CmdManager implements ChatOutputListener
 					CrashReportCategory crashReportCategory =
 						crashReport.makeCategory("Affected command");
 					crashReportCategory.setDetail("Command input",
-						new Callable()
-						{
-							@Override
-							public String call() throws Exception
-							{
-								return message;
-							}
-						});
+						() -> message);
 					throw new ReportedException(crashReport);
 				}
 			else

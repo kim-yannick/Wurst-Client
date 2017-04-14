@@ -1,6 +1,6 @@
-From e9674e1ec3e006fb1976fbccea73143e7cefcfdb Mon Sep 17 00:00:00 2001
+From 8c9dfd3b72d58df78b1a53fc177dc90b61856ae9 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 14 Apr 2017 14:02:38 +0200
+Date: Fri, 14 Apr 2017 14:10:03 +0200
 Subject: [PATCH] mod
 
 ---
@@ -181,9 +181,9 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/GuiPlayerTabOverlay.java  |  46 +-
  net/minecraft/client/gui/GuiRenameWorld.java       |   3 +
  net/minecraft/client/gui/GuiRepair.java            |   2 +-
- net/minecraft/client/gui/GuiScreen.java            |  40 +-
+ net/minecraft/client/gui/GuiScreen.java            |  44 +-
  net/minecraft/client/gui/GuiScreenAddServer.java   |   3 +
- net/minecraft/client/gui/GuiScreenBook.java        | 107 ++++-
+ net/minecraft/client/gui/GuiScreenBook.java        | 109 ++++-
  .../client/gui/GuiScreenCustomizePresets.java      |   6 +-
  net/minecraft/client/gui/GuiScreenDemo.java        |   3 +
  .../client/gui/GuiScreenOptionsSounds.java         |   6 +-
@@ -353,7 +353,7 @@ Subject: [PATCH] mod
  net/minecraft/client/shader/Framebuffer.java       |   2 +-
  net/minecraft/client/shader/Shader.java            |   2 +-
  .../client/stream/BroadcastController.java         |   4 +
- net/minecraft/client/stream/TwitchStream.java      |  31 +-
+ net/minecraft/client/stream/TwitchStream.java      |  35 +-
  net/minecraft/command/CommandBase.java             |  24 +-
  net/minecraft/command/CommandBlockData.java        |   4 +-
  net/minecraft/command/CommandClearInventory.java   |   4 +-
@@ -370,7 +370,7 @@ Subject: [PATCH] mod
  net/minecraft/command/CommandGameRule.java         |   8 +-
  net/minecraft/command/CommandGive.java             |   4 +-
  net/minecraft/command/CommandHandler.java          |  13 +-
- net/minecraft/command/CommandHelp.java             |   8 +-
+ net/minecraft/command/CommandHelp.java             |  10 +-
  net/minecraft/command/CommandParticle.java         |   7 +-
  net/minecraft/command/CommandPlaySound.java        |  10 +-
  net/minecraft/command/CommandServerKick.java       |   2 +-
@@ -417,7 +417,7 @@ Subject: [PATCH] mod
  net/minecraft/creativetab/CreativeTabs.java        |   4 +-
  net/minecraft/dispenser/IBlockSource.java          |   2 +-
  net/minecraft/entity/DataWatcher.java              |  12 +-
- net/minecraft/entity/Entity.java                   | 151 ++++---
+ net/minecraft/entity/Entity.java                   | 153 ++++---
  net/minecraft/entity/EntityAgeable.java            |   2 +-
  net/minecraft/entity/EntityBodyHelper.java         |   2 +-
  net/minecraft/entity/EntityCreature.java           |   2 +-
@@ -513,7 +513,7 @@ Subject: [PATCH] mod
  net/minecraft/entity/passive/EntitySquid.java      |   2 +-
  net/minecraft/entity/passive/EntityVillager.java   |  16 +-
  net/minecraft/entity/passive/EntityWolf.java       |   4 +-
- net/minecraft/entity/player/EntityPlayer.java      | 131 +++---
+ net/minecraft/entity/player/EntityPlayer.java      | 133 +++---
  net/minecraft/entity/player/EntityPlayerMP.java    |  30 +-
  .../entity/player/EnumPlayerModelParts.java        |   6 +-
  net/minecraft/entity/player/InventoryPlayer.java   |  11 +-
@@ -527,7 +527,8 @@ Subject: [PATCH] mod
  .../entity/projectile/EntitySnowball.java          |   4 +-
  .../entity/projectile/EntityThrowable.java         |  36 +-
  .../entity/projectile/EntityWitherSkull.java       |   8 +-
- net/minecraft/event/HoverEvent.java                |  10 +-
+ net/minecraft/event/ClickEvent.java                | 131 ------
+ net/minecraft/event/HoverEvent.java                | 130 ------
  net/minecraft/init/Blocks.java                     | 188 ++++----
  net/minecraft/init/Bootstrap.java                  |   6 +-
  net/minecraft/init/Items.java                      |   4 +-
@@ -584,7 +585,7 @@ Subject: [PATCH] mod
  net/minecraft/item/ItemSnow.java                   |   2 +-
  net/minecraft/item/ItemSoup.java                   |   2 +-
  net/minecraft/item/ItemSpade.java                  |   4 +-
- net/minecraft/item/ItemStack.java                  |  18 +-
+ net/minecraft/item/ItemStack.java                  |  20 +-
  net/minecraft/item/ItemSword.java                  |  12 +-
  net/minecraft/item/ItemTool.java                   |   4 +-
  net/minecraft/item/crafting/CraftingManager.java   |  46 +-
@@ -678,7 +679,7 @@ Subject: [PATCH] mod
  .../server/network/NetHandlerStatusServer.java     |   4 +-
  net/minecraft/stats/Achievement.java               |   8 +-
  net/minecraft/stats/AchievementList.java           |   6 +-
- net/minecraft/stats/StatBase.java                  |  26 +-
+ net/minecraft/stats/StatBase.java                  |  29 +-
  net/minecraft/stats/StatBasic.java                 |   6 +-
  net/minecraft/stats/StatCrafting.java              |   4 +-
  net/minecraft/stats/StatList.java                  |  10 +-
@@ -696,7 +697,7 @@ Subject: [PATCH] mod
  net/minecraft/tileentity/TileEntityMobSpawner.java |   4 +-
  net/minecraft/tileentity/TileEntityNote.java       |   4 +-
  net/minecraft/tileentity/TileEntityPiston.java     |   2 +-
- net/minecraft/tileentity/TileEntitySign.java       |  39 +-
+ net/minecraft/tileentity/TileEntitySign.java       |  41 +-
  net/minecraft/util/AxisAlignedBB.java              | 414 -----------------
  net/minecraft/util/BlockPos.java                   | 415 -----------------
  net/minecraft/util/ChatComponentProcessor.java     |  23 +-
@@ -705,7 +706,7 @@ Subject: [PATCH] mod
  net/minecraft/util/ChatComponentStyle.java         |  52 ++-
  net/minecraft/util/ChatComponentText.java          |  72 ---
  net/minecraft/util/ChatComponentTranslation.java   |  53 +--
- net/minecraft/util/ChatStyle.java                  |   9 +-
+ net/minecraft/util/ChatStyle.java                  |  14 +-
  net/minecraft/util/CombatEntry.java                |   3 +-
  net/minecraft/util/CombatTracker.java              |  12 +-
  net/minecraft/util/CryptManager.java               |  30 +-
@@ -720,7 +721,7 @@ Subject: [PATCH] mod
  net/minecraft/util/MessageDeserializer2.java       |   6 +-
  net/minecraft/util/MessageSerializer.java          |   6 +-
  net/minecraft/util/MovingObjectPosition.java       |  71 ---
- net/minecraft/util/ScreenShotHelper.java           |  24 +-
+ net/minecraft/util/ScreenShotHelper.java           |  26 +-
  net/minecraft/util/TextComponentString.java        |  74 ++++
  net/minecraft/util/Timer.java                      |   8 +-
  net/minecraft/util/Vec3.java                       | 208 ---------
@@ -731,6 +732,8 @@ Subject: [PATCH] mod
  net/minecraft/util/math/Vec3d.java                 | 224 ++++++++++
  net/minecraft/util/math/Vec3i.java                 | 136 ++++++
  net/minecraft/util/text/ITextComponent.java        | 325 ++++++++++++++
+ net/minecraft/util/text/event/ClickEvent.java      | 131 ++++++
+ net/minecraft/util/text/event/HoverEvent.java      | 132 ++++++
  net/minecraft/village/Village.java                 |  14 +-
  net/minecraft/village/VillageCollection.java       |   2 +-
  net/minecraft/village/VillageDoorInfo.java         |   2 +-
@@ -850,7 +853,9 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 846 files changed, 8781 insertions(+), 7346 deletions(-)
+ 849 files changed, 9054 insertions(+), 7617 deletions(-)
+ delete mode 100644 net/minecraft/event/ClickEvent.java
+ delete mode 100644 net/minecraft/event/HoverEvent.java
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
  delete mode 100644 net/minecraft/network/play/client/C02PacketUseEntity.java
  delete mode 100644 net/minecraft/network/play/client/C03PacketPlayer.java
@@ -885,6 +890,8 @@ Subject: [PATCH] mod
  create mode 100644 net/minecraft/util/math/Vec3d.java
  create mode 100644 net/minecraft/util/math/Vec3i.java
  create mode 100644 net/minecraft/util/text/ITextComponent.java
+ create mode 100644 net/minecraft/util/text/event/ClickEvent.java
+ create mode 100644 net/minecraft/util/text/event/HoverEvent.java
 
 diff --git a/net/minecraft/block/Block.java b/net/minecraft/block/Block.java
 index d8fe39f..1ab9b17 100644
@@ -8650,7 +8657,7 @@ index 063634b..a872a22 100644
  
      /**
 diff --git a/net/minecraft/client/gui/GuiScreen.java b/net/minecraft/client/gui/GuiScreen.java
-index 6cafae5..9c3c6cb 100644
+index 6cafae5..2306bba 100644
 --- a/net/minecraft/client/gui/GuiScreen.java
 +++ b/net/minecraft/client/gui/GuiScreen.java
 @@ -3,6 +3,7 @@ package net.minecraft.client.gui;
@@ -8671,12 +8678,23 @@ index 6cafae5..9c3c6cb 100644
  import net.minecraft.client.gui.stream.GuiTwitchUserMode;
  import net.minecraft.client.renderer.GlStateManager;
  import net.minecraft.client.renderer.RenderHelper;
-@@ -36,12 +39,14 @@ import net.minecraft.stats.StatBase;
+@@ -25,8 +28,6 @@ import net.minecraft.client.renderer.Tessellator;
+ import net.minecraft.client.renderer.WorldRenderer;
+ import net.minecraft.client.renderer.entity.RenderItem;
+ import net.minecraft.entity.EntityList;
+-import net.minecraft.event.ClickEvent;
+-import net.minecraft.event.HoverEvent;
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.nbt.JsonToNBT;
+ import net.minecraft.nbt.NBTException;
+@@ -36,12 +37,16 @@ import net.minecraft.stats.StatBase;
  import net.minecraft.stats.StatList;
  import net.minecraft.util.ChatComponentTranslation;
  import net.minecraft.util.EnumChatFormatting;
 -import net.minecraft.util.IChatComponent;
 +import net.minecraft.util.text.ITextComponent;
++import net.minecraft.util.text.event.ClickEvent;
++import net.minecraft.util.text.event.HoverEvent;
 +
  import org.apache.commons.lang3.StringUtils;
  import org.apache.logging.log4j.LogManager;
@@ -8821,10 +8839,10 @@ index f97ff5a..f032cdc 100644
  
  public class GuiScreenAddServer extends GuiScreen
 diff --git a/net/minecraft/client/gui/GuiScreenBook.java b/net/minecraft/client/gui/GuiScreenBook.java
-index a8feb74..c176dbe 100644
+index a8feb74..7e36947 100644
 --- a/net/minecraft/client/gui/GuiScreenBook.java
 +++ b/net/minecraft/client/gui/GuiScreenBook.java
-@@ -2,11 +2,15 @@ package net.minecraft.client.gui;
+@@ -2,28 +2,38 @@ package net.minecraft.client.gui;
  
  import com.google.common.collect.Lists;
  import com.google.gson.JsonParseException;
@@ -8840,7 +8858,7 @@ index a8feb74..c176dbe 100644
  import net.minecraft.client.renderer.GlStateManager;
  import net.minecraft.client.resources.I18n;
  import net.minecraft.entity.player.EntityPlayer;
-@@ -14,16 +18,22 @@ import net.minecraft.event.ClickEvent;
+-import net.minecraft.event.ClickEvent;
  import net.minecraft.init.Items;
  import net.minecraft.item.ItemEditableBook;
  import net.minecraft.item.ItemStack;
@@ -8856,6 +8874,7 @@ index a8feb74..c176dbe 100644
 -import net.minecraft.util.ChatComponentText;
 +import net.minecraft.util.TextComponentString;
 +import net.minecraft.util.text.ITextComponent;
++import net.minecraft.util.text.event.ClickEvent;
 +import net.wurstclient.gui.mods.GuiBookHack;
 +import net.minecraft.util.ChatStyle;
  import net.minecraft.util.EnumChatFormatting;
@@ -10810,7 +10829,7 @@ index dd28a72..1257b99 100644
  
  public class GuiCrafting extends GuiContainer
 diff --git a/net/minecraft/client/gui/inventory/GuiEditSign.java b/net/minecraft/client/gui/inventory/GuiEditSign.java
-index c3c8bf5..faf4788 100644
+index c3c8bf5..4df6f97 100644
 --- a/net/minecraft/client/gui/inventory/GuiEditSign.java
 +++ b/net/minecraft/client/gui/inventory/GuiEditSign.java
 @@ -1,6 +1,7 @@
@@ -10821,19 +10840,15 @@ index c3c8bf5..faf4788 100644
  import net.minecraft.block.Block;
  import net.minecraft.client.gui.GuiButton;
  import net.minecraft.client.gui.GuiScreen;
-@@ -8,11 +9,19 @@ import net.minecraft.client.network.NetHandlerPlayClient;
- import net.minecraft.client.renderer.GlStateManager;
- import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
- import net.minecraft.client.resources.I18n;
-+import net.minecraft.event.ClickEvent;
-+import net.minecraft.event.ClickEvent.Action;
- import net.minecraft.init.Blocks;
+@@ -12,7 +13,15 @@ import net.minecraft.init.Blocks;
  import net.minecraft.network.play.client.C12PacketUpdateSign;
  import net.minecraft.tileentity.TileEntitySign;
  import net.minecraft.util.ChatAllowedCharacters;
 -import net.minecraft.util.ChatComponentText;
 +import net.minecraft.util.TextComponentString;
 +import net.minecraft.util.text.ITextComponent;
++import net.minecraft.util.text.event.ClickEvent;
++import net.minecraft.util.text.event.ClickEvent.Action;
 +import net.wurstclient.WurstClient;
 +import net.wurstclient.features.mods.AutoSignMod;
 +import net.wurstclient.features.mods.OpSignMod;
@@ -17216,13 +17231,15 @@ index 3cfbb4d..d57e0d8 100644
  import tv.twitch.Core;
  import tv.twitch.ErrorCode;
 diff --git a/net/minecraft/client/stream/TwitchStream.java b/net/minecraft/client/stream/TwitchStream.java
-index 4a1d50b..e13ba88 100644
+index 4a1d50b..769395e 100644
 --- a/net/minecraft/client/stream/TwitchStream.java
 +++ b/net/minecraft/client/stream/TwitchStream.java
-@@ -21,14 +21,15 @@ import net.minecraft.client.settings.GameSettings;
+@@ -19,16 +19,17 @@ import net.minecraft.client.renderer.Tessellator;
+ import net.minecraft.client.renderer.WorldRenderer;
+ import net.minecraft.client.settings.GameSettings;
  import net.minecraft.client.shader.Framebuffer;
- import net.minecraft.event.ClickEvent;
- import net.minecraft.event.HoverEvent;
+-import net.minecraft.event.ClickEvent;
+-import net.minecraft.event.HoverEvent;
 -import net.minecraft.util.ChatComponentText;
 +import net.minecraft.util.TextComponentString;
  import net.minecraft.util.ChatComponentTranslation;
@@ -17233,6 +17250,8 @@ index 4a1d50b..e13ba88 100644
  import net.minecraft.util.MathHelper;
  import net.minecraft.util.Util;
 +import net.minecraft.util.text.ITextComponent;
++import net.minecraft.util.text.event.ClickEvent;
++import net.minecraft.util.text.event.HoverEvent;
 +
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
@@ -17774,18 +17793,21 @@ index e40349b..d7b2977 100644
              logger.error("Couldn\'t process command: \'" + p_175786_4_ + "\'", var9);
          }
 diff --git a/net/minecraft/command/CommandHelp.java b/net/minecraft/command/CommandHelp.java
-index 98752ec..325201c 100644
+index 98752ec..8d76161 100644
 --- a/net/minecraft/command/CommandHelp.java
 +++ b/net/minecraft/command/CommandHelp.java
-@@ -8,10 +8,10 @@ import java.util.Set;
+@@ -6,12 +6,12 @@ import java.util.List;
+ import java.util.Map;
+ import java.util.Set;
  import net.minecraft.entity.player.EntityPlayer;
- import net.minecraft.event.ClickEvent;
+-import net.minecraft.event.ClickEvent;
  import net.minecraft.server.MinecraftServer;
 -import net.minecraft.util.BlockPos;
  import net.minecraft.util.ChatComponentTranslation;
  import net.minecraft.util.EnumChatFormatting;
  import net.minecraft.util.MathHelper;
 +import net.minecraft.util.math.BlockPos;
++import net.minecraft.util.text.event.ClickEvent;
  
  public class CommandHelp extends CommandBase
  {
@@ -19136,7 +19158,7 @@ index 6bd900a..b3482c7 100644
  
      /**
 diff --git a/net/minecraft/entity/Entity.java b/net/minecraft/entity/Entity.java
-index 7865119..b8d1f10 100644
+index 7865119..45c98a0 100644
 --- a/net/minecraft/entity/Entity.java
 +++ b/net/minecraft/entity/Entity.java
 @@ -5,6 +5,7 @@ import java.util.List;
@@ -19155,7 +19177,15 @@ index 7865119..b8d1f10 100644
  import net.minecraft.command.CommandResultStats;
  import net.minecraft.command.ICommandSender;
  import net.minecraft.crash.CrashReport;
-@@ -31,21 +33,21 @@ import net.minecraft.nbt.NBTTagDouble;
+@@ -22,7 +24,6 @@ import net.minecraft.entity.effect.EntityLightningBolt;
+ import net.minecraft.entity.item.EntityItem;
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.entity.player.EntityPlayerMP;
+-import net.minecraft.event.HoverEvent;
+ import net.minecraft.init.Blocks;
+ import net.minecraft.item.Item;
+ import net.minecraft.item.ItemStack;
+@@ -31,21 +32,22 @@ import net.minecraft.nbt.NBTTagDouble;
  import net.minecraft.nbt.NBTTagFloat;
  import net.minecraft.nbt.NBTTagList;
  import net.minecraft.server.MinecraftServer;
@@ -19177,6 +19207,7 @@ index 7865119..b8d1f10 100644
 +import net.minecraft.util.math.RayTraceResult;
 +import net.minecraft.util.math.Vec3d;
 +import net.minecraft.util.text.ITextComponent;
++import net.minecraft.util.text.event.HoverEvent;
  import net.minecraft.world.Explosion;
  import net.minecraft.world.World;
  import net.minecraft.world.WorldServer;
@@ -22565,7 +22596,7 @@ index b1345a2..021de51 100644
              if (this.timeWolfIsShaking == 0.0F)
              {
 diff --git a/net/minecraft/entity/player/EntityPlayer.java b/net/minecraft/entity/player/EntityPlayer.java
-index 04f22d7..3c848d8 100644
+index 04f22d7..d9db152 100644
 --- a/net/minecraft/entity/player/EntityPlayer.java
 +++ b/net/minecraft/entity/player/EntityPlayer.java
 @@ -1,17 +1,16 @@
@@ -22588,7 +22619,15 @@ index 04f22d7..3c848d8 100644
  import net.minecraft.command.server.CommandBlockLogic;
  import net.minecraft.enchantment.EnchantmentHelper;
  import net.minecraft.entity.Entity;
-@@ -60,21 +59,23 @@ import net.minecraft.stats.AchievementList;
+@@ -33,7 +32,6 @@ import net.minecraft.entity.passive.EntityHorse;
+ import net.minecraft.entity.passive.EntityPig;
+ import net.minecraft.entity.projectile.EntityArrow;
+ import net.minecraft.entity.projectile.EntityFishHook;
+-import net.minecraft.event.ClickEvent;
+ import net.minecraft.init.Blocks;
+ import net.minecraft.init.Items;
+ import net.minecraft.inventory.Container;
+@@ -60,21 +58,24 @@ import net.minecraft.stats.AchievementList;
  import net.minecraft.stats.StatBase;
  import net.minecraft.stats.StatList;
  import net.minecraft.tileentity.TileEntitySign;
@@ -22607,6 +22646,7 @@ index 04f22d7..3c848d8 100644
 +import net.minecraft.util.math.BlockPos;
 +import net.minecraft.util.math.Vec3d;
 +import net.minecraft.util.text.ITextComponent;
++import net.minecraft.util.text.event.ClickEvent;
  import net.minecraft.world.EnumDifficulty;
  import net.minecraft.world.IInteractionObject;
  import net.minecraft.world.LockCode;
@@ -23841,41 +23881,279 @@ index 92eec77..1213660 100644
      {
          if (!this.worldObj.isRemote)
          {
+diff --git a/net/minecraft/event/ClickEvent.java b/net/minecraft/event/ClickEvent.java
+deleted file mode 100644
+index 4b49ff4..0000000
+--- a/net/minecraft/event/ClickEvent.java
++++ /dev/null
+@@ -1,131 +0,0 @@
+-package net.minecraft.event;
+-
+-import com.google.common.collect.Maps;
+-import java.util.Map;
+-
+-public class ClickEvent
+-{
+-    private final ClickEvent.Action action;
+-    private final String value;
+-    private static final String __OBFID = "CL_00001260";
+-
+-    public ClickEvent(ClickEvent.Action p_i45156_1_, String p_i45156_2_)
+-    {
+-        this.action = p_i45156_1_;
+-        this.value = p_i45156_2_;
+-    }
+-
+-    /**
+-     * Gets the action to perform when this event is raised.
+-     */
+-    public ClickEvent.Action getAction()
+-    {
+-        return this.action;
+-    }
+-
+-    /**
+-     * Gets the value to perform the action on when this event is raised.  For example, if the action is "open URL",
+-     * this would be the URL to open.
+-     */
+-    public String getValue()
+-    {
+-        return this.value;
+-    }
+-
+-    public boolean equals(Object p_equals_1_)
+-    {
+-        if (this == p_equals_1_)
+-        {
+-            return true;
+-        }
+-        else if (p_equals_1_ != null && this.getClass() == p_equals_1_.getClass())
+-        {
+-            ClickEvent var2 = (ClickEvent)p_equals_1_;
+-
+-            if (this.action != var2.action)
+-            {
+-                return false;
+-            }
+-            else
+-            {
+-                if (this.value != null)
+-                {
+-                    if (!this.value.equals(var2.value))
+-                    {
+-                        return false;
+-                    }
+-                }
+-                else if (var2.value != null)
+-                {
+-                    return false;
+-                }
+-
+-                return true;
+-            }
+-        }
+-        else
+-        {
+-            return false;
+-        }
+-    }
+-
+-    public String toString()
+-    {
+-        return "ClickEvent{action=" + this.action + ", value=\'" + this.value + '\'' + '}';
+-    }
+-
+-    public int hashCode()
+-    {
+-        int var1 = this.action.hashCode();
+-        var1 = 31 * var1 + (this.value != null ? this.value.hashCode() : 0);
+-        return var1;
+-    }
+-
+-    public static enum Action
+-    {
+-        OPEN_URL("OPEN_URL", 0, "open_url", true),
+-        OPEN_FILE("OPEN_FILE", 1, "open_file", false),
+-        RUN_COMMAND("RUN_COMMAND", 2, "run_command", true),
+-        TWITCH_USER_INFO("TWITCH_USER_INFO", 3, "twitch_user_info", false),
+-        SUGGEST_COMMAND("SUGGEST_COMMAND", 4, "suggest_command", true),
+-        CHANGE_PAGE("CHANGE_PAGE", 5, "change_page", true);
+-        private static final Map nameMapping = Maps.newHashMap();
+-        private final boolean allowedInChat;
+-        private final String canonicalName;
+-
+-        private static final ClickEvent.Action[] $VALUES = new ClickEvent.Action[]{OPEN_URL, OPEN_FILE, RUN_COMMAND, TWITCH_USER_INFO, SUGGEST_COMMAND, CHANGE_PAGE};
+-        private static final String __OBFID = "CL_00001261";
+-
+-        private Action(String p_i45155_1_, int p_i45155_2_, String p_i45155_3_, boolean p_i45155_4_)
+-        {
+-            this.canonicalName = p_i45155_3_;
+-            this.allowedInChat = p_i45155_4_;
+-        }
+-
+-        public boolean shouldAllowInChat()
+-        {
+-            return this.allowedInChat;
+-        }
+-
+-        public String getCanonicalName()
+-        {
+-            return this.canonicalName;
+-        }
+-
+-        public static ClickEvent.Action getValueByCanonicalName(String p_150672_0_)
+-        {
+-            return (ClickEvent.Action)nameMapping.get(p_150672_0_);
+-        }
+-
+-        static {
+-            ClickEvent.Action[] var0 = values();
+-            int var1 = var0.length;
+-
+-            for (int var2 = 0; var2 < var1; ++var2)
+-            {
+-                ClickEvent.Action var3 = var0[var2];
+-                nameMapping.put(var3.getCanonicalName(), var3);
+-            }
+-        }
+-    }
+-}
 diff --git a/net/minecraft/event/HoverEvent.java b/net/minecraft/event/HoverEvent.java
-index 69b88d2..05a4656 100644
+deleted file mode 100644
+index 69b88d2..0000000
 --- a/net/minecraft/event/HoverEvent.java
-+++ b/net/minecraft/event/HoverEvent.java
-@@ -1,16 +1,18 @@
- package net.minecraft.event;
- 
- import com.google.common.collect.Maps;
-+
-+import net.minecraft.util.text.ITextComponent;
-+
- import java.util.Map;
++++ /dev/null
+@@ -1,130 +0,0 @@
+-package net.minecraft.event;
+-
+-import com.google.common.collect.Maps;
+-import java.util.Map;
 -import net.minecraft.util.IChatComponent;
- 
- public class HoverEvent
- {
-     private final HoverEvent.Action action;
+-
+-public class HoverEvent
+-{
+-    private final HoverEvent.Action action;
 -    private final IChatComponent value;
-+    private final ITextComponent value;
-     private static final String __OBFID = "CL_00001264";
- 
+-    private static final String __OBFID = "CL_00001264";
+-
 -    public HoverEvent(HoverEvent.Action p_i45158_1_, IChatComponent p_i45158_2_)
-+    public HoverEvent(HoverEvent.Action p_i45158_1_, ITextComponent p_i45158_2_)
-     {
-         this.action = p_i45158_1_;
-         this.value = p_i45158_2_;
-@@ -28,7 +30,7 @@ public class HoverEvent
-      * Gets the value to perform the action on when this event is raised.  For example, if the action is "show item",
-      * this would be the item to show.
-      */
+-    {
+-        this.action = p_i45158_1_;
+-        this.value = p_i45158_2_;
+-    }
+-
+-    /**
+-     * Gets the action to perform when this event is raised.
+-     */
+-    public HoverEvent.Action getAction()
+-    {
+-        return this.action;
+-    }
+-
+-    /**
+-     * Gets the value to perform the action on when this event is raised.  For example, if the action is "show item",
+-     * this would be the item to show.
+-     */
 -    public IChatComponent getValue()
-+    public ITextComponent getValue()
-     {
-         return this.value;
-     }
+-    {
+-        return this.value;
+-    }
+-
+-    public boolean equals(Object p_equals_1_)
+-    {
+-        if (this == p_equals_1_)
+-        {
+-            return true;
+-        }
+-        else if (p_equals_1_ != null && this.getClass() == p_equals_1_.getClass())
+-        {
+-            HoverEvent var2 = (HoverEvent)p_equals_1_;
+-
+-            if (this.action != var2.action)
+-            {
+-                return false;
+-            }
+-            else
+-            {
+-                if (this.value != null)
+-                {
+-                    if (!this.value.equals(var2.value))
+-                    {
+-                        return false;
+-                    }
+-                }
+-                else if (var2.value != null)
+-                {
+-                    return false;
+-                }
+-
+-                return true;
+-            }
+-        }
+-        else
+-        {
+-            return false;
+-        }
+-    }
+-
+-    public String toString()
+-    {
+-        return "HoverEvent{action=" + this.action + ", value=\'" + this.value + '\'' + '}';
+-    }
+-
+-    public int hashCode()
+-    {
+-        int var1 = this.action.hashCode();
+-        var1 = 31 * var1 + (this.value != null ? this.value.hashCode() : 0);
+-        return var1;
+-    }
+-
+-    public static enum Action
+-    {
+-        SHOW_TEXT("SHOW_TEXT", 0, "show_text", true),
+-        SHOW_ACHIEVEMENT("SHOW_ACHIEVEMENT", 1, "show_achievement", true),
+-        SHOW_ITEM("SHOW_ITEM", 2, "show_item", true),
+-        SHOW_ENTITY("SHOW_ENTITY", 3, "show_entity", true);
+-        private static final Map nameMapping = Maps.newHashMap();
+-        private final boolean allowedInChat;
+-        private final String canonicalName;
+-
+-        private static final HoverEvent.Action[] $VALUES = new HoverEvent.Action[]{SHOW_TEXT, SHOW_ACHIEVEMENT, SHOW_ITEM, SHOW_ENTITY};
+-        private static final String __OBFID = "CL_00001265";
+-
+-        private Action(String p_i45157_1_, int p_i45157_2_, String p_i45157_3_, boolean p_i45157_4_)
+-        {
+-            this.canonicalName = p_i45157_3_;
+-            this.allowedInChat = p_i45157_4_;
+-        }
+-
+-        public boolean shouldAllowInChat()
+-        {
+-            return this.allowedInChat;
+-        }
+-
+-        public String getCanonicalName()
+-        {
+-            return this.canonicalName;
+-        }
+-
+-        public static HoverEvent.Action getValueByCanonicalName(String p_150684_0_)
+-        {
+-            return (HoverEvent.Action)nameMapping.get(p_150684_0_);
+-        }
+-
+-        static {
+-            HoverEvent.Action[] var0 = values();
+-            int var1 = var0.length;
+-
+-            for (int var2 = 0; var2 < var1; ++var2)
+-            {
+-                HoverEvent.Action var3 = var0[var2];
+-                nameMapping.put(var3.getCanonicalName(), var3);
+-            }
+-        }
+-    }
+-}
 diff --git a/net/minecraft/init/Blocks.java b/net/minecraft/init/Blocks.java
 index 9e34ddd..583d6d5 100644
 --- a/net/minecraft/init/Blocks.java
@@ -25900,10 +26178,16 @@ index 056d0b1..c65dd26 100644
      }
  }
 diff --git a/net/minecraft/item/ItemStack.java b/net/minecraft/item/ItemStack.java
-index 490dac5..f41436f 100644
+index 490dac5..111b774 100644
 --- a/net/minecraft/item/ItemStack.java
 +++ b/net/minecraft/item/ItemStack.java
-@@ -26,11 +26,11 @@ import net.minecraft.nbt.NBTBase;
+@@ -20,17 +20,17 @@ import net.minecraft.entity.SharedMonsterAttributes;
+ import net.minecraft.entity.ai.attributes.AttributeModifier;
+ import net.minecraft.entity.item.EntityItemFrame;
+ import net.minecraft.entity.player.EntityPlayer;
+-import net.minecraft.event.HoverEvent;
+ import net.minecraft.init.Items;
+ import net.minecraft.nbt.NBTBase;
  import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.nbt.NBTTagList;
  import net.minecraft.stats.StatList;
@@ -25912,6 +26196,7 @@ index 490dac5..f41436f 100644
 +import net.minecraft.util.TextComponentString;
 +import net.minecraft.util.math.BlockPos;
 +import net.minecraft.util.text.ITextComponent;
++import net.minecraft.util.text.event.HoverEvent;
  import net.minecraft.util.EnumChatFormatting;
  import net.minecraft.util.EnumFacing;
 -import net.minecraft.util.IChatComponent;
@@ -31825,22 +32110,26 @@ index 26fc4f3..45d9e1d 100644
      /** Is the 'Return to Sender' achievement */
      public static Achievement ghast = (new Achievement("achievement.ghast", "ghast", -4, 8, Items.ghast_tear, portal)).setSpecial().func_180788_c();
 diff --git a/net/minecraft/stats/StatBase.java b/net/minecraft/stats/StatBase.java
-index 2d89461..ab8da14 100644
+index 2d89461..4412f40 100644
 --- a/net/minecraft/stats/StatBase.java
 +++ b/net/minecraft/stats/StatBase.java
-@@ -5,9 +5,9 @@ import java.text.NumberFormat;
+@@ -3,11 +3,12 @@ package net.minecraft.stats;
+ import java.text.DecimalFormat;
+ import java.text.NumberFormat;
  import java.util.Locale;
- import net.minecraft.event.HoverEvent;
+-import net.minecraft.event.HoverEvent;
++
  import net.minecraft.scoreboard.IScoreObjectiveCriteria;
 -import net.minecraft.util.ChatComponentText;
 +import net.minecraft.util.TextComponentString;
 +import net.minecraft.util.text.ITextComponent;
++import net.minecraft.util.text.event.HoverEvent;
  import net.minecraft.util.EnumChatFormatting;
 -import net.minecraft.util.IChatComponent;
  
  public class StatBase
  {
-@@ -15,7 +15,7 @@ public class StatBase
+@@ -15,7 +16,7 @@ public class StatBase
      public final String statId;
  
      /** The Stat name */
@@ -31849,7 +32138,7 @@ index 2d89461..ab8da14 100644
      public boolean isIndependent;
      private final IStatType type;
      private final IScoreObjectiveCriteria field_150957_c;
-@@ -63,7 +63,7 @@ public class StatBase
+@@ -63,7 +64,7 @@ public class StatBase
      };
      private static final String __OBFID = "CL_00001472";
  
@@ -31858,7 +32147,7 @@ index 2d89461..ab8da14 100644
      {
          this.statId = p_i45307_1_;
          this.statName = p_i45307_2_;
-@@ -72,7 +72,7 @@ public class StatBase
+@@ -72,7 +73,7 @@ public class StatBase
          IScoreObjectiveCriteria.INSTANCES.put(this.field_150957_c.getName(), this.field_150957_c);
      }
  
@@ -31867,7 +32156,7 @@ index 2d89461..ab8da14 100644
      {
          this(p_i45308_1_, p_i45308_2_, simpleStatType);
      }
-@@ -117,19 +117,19 @@ public class StatBase
+@@ -117,19 +118,19 @@ public class StatBase
          return this.type.format(p_75968_1_);
      }
  
@@ -32297,10 +32586,15 @@ index 17b16eb..23b5ad3 100644
  public class TileEntityPiston extends TileEntity implements IUpdatePlayerListBox
  {
 diff --git a/net/minecraft/tileentity/TileEntitySign.java b/net/minecraft/tileentity/TileEntitySign.java
-index 3d886a9..6775ee7 100644
+index 3d886a9..d328885 100644
 --- a/net/minecraft/tileentity/TileEntitySign.java
 +++ b/net/minecraft/tileentity/TileEntitySign.java
-@@ -11,17 +11,18 @@ import net.minecraft.nbt.NBTTagCompound;
+@@ -6,22 +6,23 @@ import net.minecraft.command.CommandResultStats;
+ import net.minecraft.command.ICommandSender;
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.player.EntityPlayer;
+-import net.minecraft.event.ClickEvent;
+ import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.network.Packet;
  import net.minecraft.network.play.server.S33PacketUpdateSign;
  import net.minecraft.server.MinecraftServer;
@@ -32314,6 +32608,7 @@ index 3d886a9..6775ee7 100644
 +import net.minecraft.util.math.BlockPos;
 +import net.minecraft.util.math.Vec3d;
 +import net.minecraft.util.text.ITextComponent;
++import net.minecraft.util.text.event.ClickEvent;
  import net.minecraft.world.World;
  
  public class TileEntitySign extends TileEntity
@@ -33816,18 +34111,23 @@ index d9b3cf7..8768517 100644
  
      public String getKey()
 diff --git a/net/minecraft/util/ChatStyle.java b/net/minecraft/util/ChatStyle.java
-index ae1d0dd..be70898 100644
+index ae1d0dd..5c0e102 100644
 --- a/net/minecraft/util/ChatStyle.java
 +++ b/net/minecraft/util/ChatStyle.java
-@@ -10,6 +10,7 @@ import com.google.gson.JsonSerializer;
+@@ -8,8 +8,10 @@ import com.google.gson.JsonPrimitive;
+ import com.google.gson.JsonSerializationContext;
+ import com.google.gson.JsonSerializer;
  import java.lang.reflect.Type;
- import net.minecraft.event.ClickEvent;
- import net.minecraft.event.HoverEvent;
+-import net.minecraft.event.ClickEvent;
+-import net.minecraft.event.HoverEvent;
++
 +import net.minecraft.util.text.ITextComponent;
++import net.minecraft.util.text.event.ClickEvent;
++import net.minecraft.util.text.event.HoverEvent;
  
  public class ChatStyle
  {
-@@ -93,7 +94,7 @@ public class ChatStyle
+@@ -93,7 +95,7 @@ public class ChatStyle
          {
              throw new UnsupportedOperationException();
          }
@@ -33836,7 +34136,7 @@ index ae1d0dd..be70898 100644
          {
              throw new UnsupportedOperationException();
          }
-@@ -267,7 +268,7 @@ public class ChatStyle
+@@ -267,7 +269,7 @@ public class ChatStyle
      /**
       * Sets the event that should be run when text of this ChatStyle is clicked on.
       */
@@ -33845,7 +34145,7 @@ index ae1d0dd..be70898 100644
      {
          this.chatClickEvent = event;
          return this;
-@@ -474,7 +475,7 @@ public class ChatStyle
+@@ -474,7 +476,7 @@ public class ChatStyle
          var1.setUnderlined(Boolean.valueOf(this.getUnderlined()));
          var1.setObfuscated(Boolean.valueOf(this.getObfuscated()));
          var1.setColor(this.getColor());
@@ -33854,7 +34154,7 @@ index ae1d0dd..be70898 100644
          var1.setChatHoverEvent(this.getChatHoverEvent());
          var1.setInsertion(this.getInsertion());
          return var1;
-@@ -561,7 +562,7 @@ public class ChatStyle
+@@ -561,7 +563,7 @@ public class ChatStyle
                          {
                              var7 = var6.getAsJsonPrimitive("action");
                              HoverEvent.Action var11 = var7 == null ? null : HoverEvent.Action.getValueByCanonicalName(var7.getAsString());
@@ -34686,14 +34986,16 @@ index fd7a472..0000000
 -    }
 -}
 diff --git a/net/minecraft/util/ScreenShotHelper.java b/net/minecraft/util/ScreenShotHelper.java
-index 8169170..e12d5dd 100644
+index 8169170..43fd603 100644
 --- a/net/minecraft/util/ScreenShotHelper.java
 +++ b/net/minecraft/util/ScreenShotHelper.java
-@@ -12,6 +12,9 @@ import net.minecraft.client.renderer.OpenGlHelper;
+@@ -11,7 +11,10 @@ import net.minecraft.client.renderer.GlStateManager;
+ import net.minecraft.client.renderer.OpenGlHelper;
  import net.minecraft.client.renderer.texture.TextureUtil;
  import net.minecraft.client.shader.Framebuffer;
- import net.minecraft.event.ClickEvent;
+-import net.minecraft.event.ClickEvent;
 +import net.minecraft.util.text.ITextComponent;
++import net.minecraft.util.text.event.ClickEvent;
 +import net.wurstclient.WurstClient;
 +
  import org.apache.logging.log4j.LogManager;
@@ -36935,6 +37237,281 @@ index 0000000..5b4e64e
 +            var0.registerTypeHierarchyAdapter(ChatStyle.class, new ChatStyle.Serializer());
 +            var0.registerTypeAdapterFactory(new EnumTypeAdapterFactory());
 +            GSON = var0.create();
++        }
++    }
++}
+diff --git a/net/minecraft/util/text/event/ClickEvent.java b/net/minecraft/util/text/event/ClickEvent.java
+new file mode 100644
+index 0000000..f94b007
+--- /dev/null
++++ b/net/minecraft/util/text/event/ClickEvent.java
+@@ -0,0 +1,131 @@
++package net.minecraft.util.text.event;
++
++import com.google.common.collect.Maps;
++import java.util.Map;
++
++public class ClickEvent
++{
++    private final ClickEvent.Action action;
++    private final String value;
++    private static final String __OBFID = "CL_00001260";
++
++    public ClickEvent(ClickEvent.Action p_i45156_1_, String p_i45156_2_)
++    {
++        this.action = p_i45156_1_;
++        this.value = p_i45156_2_;
++    }
++
++    /**
++     * Gets the action to perform when this event is raised.
++     */
++    public ClickEvent.Action getAction()
++    {
++        return this.action;
++    }
++
++    /**
++     * Gets the value to perform the action on when this event is raised.  For example, if the action is "open URL",
++     * this would be the URL to open.
++     */
++    public String getValue()
++    {
++        return this.value;
++    }
++
++    public boolean equals(Object p_equals_1_)
++    {
++        if (this == p_equals_1_)
++        {
++            return true;
++        }
++        else if (p_equals_1_ != null && this.getClass() == p_equals_1_.getClass())
++        {
++            ClickEvent var2 = (ClickEvent)p_equals_1_;
++
++            if (this.action != var2.action)
++            {
++                return false;
++            }
++            else
++            {
++                if (this.value != null)
++                {
++                    if (!this.value.equals(var2.value))
++                    {
++                        return false;
++                    }
++                }
++                else if (var2.value != null)
++                {
++                    return false;
++                }
++
++                return true;
++            }
++        }
++        else
++        {
++            return false;
++        }
++    }
++
++    public String toString()
++    {
++        return "ClickEvent{action=" + this.action + ", value=\'" + this.value + '\'' + '}';
++    }
++
++    public int hashCode()
++    {
++        int var1 = this.action.hashCode();
++        var1 = 31 * var1 + (this.value != null ? this.value.hashCode() : 0);
++        return var1;
++    }
++
++    public static enum Action
++    {
++        OPEN_URL("OPEN_URL", 0, "open_url", true),
++        OPEN_FILE("OPEN_FILE", 1, "open_file", false),
++        RUN_COMMAND("RUN_COMMAND", 2, "run_command", true),
++        TWITCH_USER_INFO("TWITCH_USER_INFO", 3, "twitch_user_info", false),
++        SUGGEST_COMMAND("SUGGEST_COMMAND", 4, "suggest_command", true),
++        CHANGE_PAGE("CHANGE_PAGE", 5, "change_page", true);
++        private static final Map nameMapping = Maps.newHashMap();
++        private final boolean allowedInChat;
++        private final String canonicalName;
++
++        private static final ClickEvent.Action[] $VALUES = new ClickEvent.Action[]{OPEN_URL, OPEN_FILE, RUN_COMMAND, TWITCH_USER_INFO, SUGGEST_COMMAND, CHANGE_PAGE};
++        private static final String __OBFID = "CL_00001261";
++
++        private Action(String p_i45155_1_, int p_i45155_2_, String p_i45155_3_, boolean p_i45155_4_)
++        {
++            this.canonicalName = p_i45155_3_;
++            this.allowedInChat = p_i45155_4_;
++        }
++
++        public boolean shouldAllowInChat()
++        {
++            return this.allowedInChat;
++        }
++
++        public String getCanonicalName()
++        {
++            return this.canonicalName;
++        }
++
++        public static ClickEvent.Action getValueByCanonicalName(String p_150672_0_)
++        {
++            return (ClickEvent.Action)nameMapping.get(p_150672_0_);
++        }
++
++        static {
++            ClickEvent.Action[] var0 = values();
++            int var1 = var0.length;
++
++            for (int var2 = 0; var2 < var1; ++var2)
++            {
++                ClickEvent.Action var3 = var0[var2];
++                nameMapping.put(var3.getCanonicalName(), var3);
++            }
++        }
++    }
++}
+diff --git a/net/minecraft/util/text/event/HoverEvent.java b/net/minecraft/util/text/event/HoverEvent.java
+new file mode 100644
+index 0000000..a799358
+--- /dev/null
++++ b/net/minecraft/util/text/event/HoverEvent.java
+@@ -0,0 +1,132 @@
++package net.minecraft.util.text.event;
++
++import com.google.common.collect.Maps;
++
++import net.minecraft.util.text.ITextComponent;
++
++import java.util.Map;
++
++public class HoverEvent
++{
++    private final HoverEvent.Action action;
++    private final ITextComponent value;
++    private static final String __OBFID = "CL_00001264";
++
++    public HoverEvent(HoverEvent.Action p_i45158_1_, ITextComponent p_i45158_2_)
++    {
++        this.action = p_i45158_1_;
++        this.value = p_i45158_2_;
++    }
++
++    /**
++     * Gets the action to perform when this event is raised.
++     */
++    public HoverEvent.Action getAction()
++    {
++        return this.action;
++    }
++
++    /**
++     * Gets the value to perform the action on when this event is raised.  For example, if the action is "show item",
++     * this would be the item to show.
++     */
++    public ITextComponent getValue()
++    {
++        return this.value;
++    }
++
++    public boolean equals(Object p_equals_1_)
++    {
++        if (this == p_equals_1_)
++        {
++            return true;
++        }
++        else if (p_equals_1_ != null && this.getClass() == p_equals_1_.getClass())
++        {
++            HoverEvent var2 = (HoverEvent)p_equals_1_;
++
++            if (this.action != var2.action)
++            {
++                return false;
++            }
++            else
++            {
++                if (this.value != null)
++                {
++                    if (!this.value.equals(var2.value))
++                    {
++                        return false;
++                    }
++                }
++                else if (var2.value != null)
++                {
++                    return false;
++                }
++
++                return true;
++            }
++        }
++        else
++        {
++            return false;
++        }
++    }
++
++    public String toString()
++    {
++        return "HoverEvent{action=" + this.action + ", value=\'" + this.value + '\'' + '}';
++    }
++
++    public int hashCode()
++    {
++        int var1 = this.action.hashCode();
++        var1 = 31 * var1 + (this.value != null ? this.value.hashCode() : 0);
++        return var1;
++    }
++
++    public static enum Action
++    {
++        SHOW_TEXT("SHOW_TEXT", 0, "show_text", true),
++        SHOW_ACHIEVEMENT("SHOW_ACHIEVEMENT", 1, "show_achievement", true),
++        SHOW_ITEM("SHOW_ITEM", 2, "show_item", true),
++        SHOW_ENTITY("SHOW_ENTITY", 3, "show_entity", true);
++        private static final Map nameMapping = Maps.newHashMap();
++        private final boolean allowedInChat;
++        private final String canonicalName;
++
++        private static final HoverEvent.Action[] $VALUES = new HoverEvent.Action[]{SHOW_TEXT, SHOW_ACHIEVEMENT, SHOW_ITEM, SHOW_ENTITY};
++        private static final String __OBFID = "CL_00001265";
++
++        private Action(String p_i45157_1_, int p_i45157_2_, String p_i45157_3_, boolean p_i45157_4_)
++        {
++            this.canonicalName = p_i45157_3_;
++            this.allowedInChat = p_i45157_4_;
++        }
++
++        public boolean shouldAllowInChat()
++        {
++            return this.allowedInChat;
++        }
++
++        public String getCanonicalName()
++        {
++            return this.canonicalName;
++        }
++
++        public static HoverEvent.Action getValueByCanonicalName(String p_150684_0_)
++        {
++            return (HoverEvent.Action)nameMapping.get(p_150684_0_);
++        }
++
++        static {
++            HoverEvent.Action[] var0 = values();
++            int var1 = var0.length;
++
++            for (int var2 = 0; var2 < var1; ++var2)
++            {
++                HoverEvent.Action var3 = var0[var2];
++                nameMapping.put(var3.getCanonicalName(), var3);
++            }
 +        }
 +    }
 +}
