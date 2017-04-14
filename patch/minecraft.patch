@@ -1,6 +1,6 @@
-From 11c3e20272755aa1911577e0b076a6e3b24043f7 Mon Sep 17 00:00:00 2001
+From 9b0e05393064f1435eff7bd373d876ae26ff2953 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 14 Apr 2017 14:19:30 +0200
+Date: Fri, 14 Apr 2017 15:01:31 +0200
 Subject: [PATCH] mod
 
 ---
@@ -534,7 +534,7 @@ Subject: [PATCH] mod
  net/minecraft/event/HoverEvent.java                | 130 ------
  net/minecraft/init/Blocks.java                     | 188 ++++----
  net/minecraft/init/Bootstrap.java                  |   6 +-
- net/minecraft/init/Items.java                      |   4 +-
+ net/minecraft/init/Items.java                      |  11 +-
  net/minecraft/inventory/AnimalChest.java           |   4 +-
  net/minecraft/inventory/Container.java             |   2 +-
  net/minecraft/inventory/ContainerEnchantment.java  |   2 +-
@@ -551,7 +551,7 @@ Subject: [PATCH] mod
  net/minecraft/inventory/Slot.java                  |   7 +-
  net/minecraft/item/EnumDyeColor.java               |  38 +-
  net/minecraft/item/EnumRarity.java                 |  14 +-
- net/minecraft/item/Item.java                       | 102 ++---
+ net/minecraft/item/Item.java                       | 106 ++---
  net/minecraft/item/ItemArmor.java                  |   4 +-
  net/minecraft/item/ItemArmorStand.java             |   6 +-
  net/minecraft/item/ItemAxe.java                    |   2 +-
@@ -864,7 +864,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 860 files changed, 9445 insertions(+), 7983 deletions(-)
+ 860 files changed, 9456 insertions(+), 7983 deletions(-)
  delete mode 100644 net/minecraft/event/ClickEvent.java
  delete mode 100644 net/minecraft/event/HoverEvent.java
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
@@ -25200,7 +25200,7 @@ index 244dc25..ba94ec9 100644
                          ItemBlock.setTileEntityNBT(var3, var4, stack);
                          var3.notifyNeighborsOfStateChange(source.getBlockPos(), source.getBlock());
 diff --git a/net/minecraft/init/Items.java b/net/minecraft/init/Items.java
-index c80fdd0..6b71eb4 100644
+index c80fdd0..d62398a 100644
 --- a/net/minecraft/init/Items.java
 +++ b/net/minecraft/init/Items.java
 @@ -39,7 +39,7 @@ public class Items
@@ -25221,6 +25221,18 @@ index c80fdd0..6b71eb4 100644
              mushroom_stew = getRegisteredItem("mushroom_stew");
              golden_sword = getRegisteredItem("golden_sword");
              golden_shovel = getRegisteredItem("golden_shovel");
+@@ -405,4 +405,11 @@ public class Items
+             banner = getRegisteredItem("banner");
+         }
+     }
++    
++	// TODO: Client
++	public static final Item BOW = bow;
++	public static final Item DIAMOND_SWORD = diamond_sword;
++	public static final Item STICK = stick;
++	public static final Item DIAMOND_CHESTPLATE = diamond_chestplate;
++	public static final Item POTIONITEM = potionitem;
+ }
 diff --git a/net/minecraft/inventory/AnimalChest.java b/net/minecraft/inventory/AnimalChest.java
 index 1f56365..e7b2894 100644
 --- a/net/minecraft/inventory/AnimalChest.java
@@ -25600,10 +25612,10 @@ index f178c71..47068f3 100644
          this.rarityColor = p_i45349_3_;
          this.rarityName = p_i45349_4_;
 diff --git a/net/minecraft/item/Item.java b/net/minecraft/item/Item.java
-index 36aed35..17a85f5 100644
+index 36aed35..9b07181 100644
 --- a/net/minecraft/item/Item.java
 +++ b/net/minecraft/item/Item.java
-@@ -33,14 +33,14 @@ import net.minecraft.init.Items;
+@@ -33,19 +33,23 @@ import net.minecraft.init.Items;
  import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.potion.Potion;
  import net.minecraft.potion.PotionHelper;
@@ -25621,7 +25633,16 @@ index 36aed35..17a85f5 100644
  import net.minecraft.world.World;
  
  public class Item
-@@ -437,14 +437,14 @@ public class Item
+ {
+     public static final RegistryNamespaced itemRegistry = new RegistryNamespaced();
++    
++    // TODO: Client
++    public static final RegistryNamespaced REGISTRY = itemRegistry;
++    
+     private static final Map BLOCK_TO_ITEM = Maps.newHashMap();
+     protected static final UUID itemModifierUUID = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
+     private CreativeTabs tabToDisplayOn;
+@@ -437,14 +441,14 @@ public class Item
          return this.getItemStackLimit() == 1 && this.isDamageable();
      }
  
@@ -25638,7 +25659,7 @@ index 36aed35..17a85f5 100644
          float var13 = MathHelper.cos(-var5 * 0.017453292F - (float)Math.PI);
          float var14 = MathHelper.sin(-var5 * 0.017453292F - (float)Math.PI);
          float var15 = -MathHelper.cos(-var4 * 0.017453292F);
-@@ -452,7 +452,7 @@ public class Item
+@@ -452,7 +456,7 @@ public class Item
          float var17 = var14 * var15;
          float var19 = var13 * var15;
          double var20 = 5.0D;
@@ -25647,7 +25668,7 @@ index 36aed35..17a85f5 100644
          return worldIn.rayTraceBlocks(var12, var22, useLiquids, !useLiquids, false);
      }
  
-@@ -521,7 +521,7 @@ public class Item
+@@ -521,7 +525,7 @@ public class Item
  
      public static void registerItems()
      {
@@ -25656,7 +25677,7 @@ index 36aed35..17a85f5 100644
          {
              private static final String __OBFID = "CL_00002178";
              public String apply(ItemStack stack)
-@@ -533,8 +533,8 @@ public class Item
+@@ -533,8 +537,8 @@ public class Item
                  return this.apply((ItemStack)p_apply_1_);
              }
          })).setUnlocalizedName("stone"));
@@ -25667,7 +25688,7 @@ index 36aed35..17a85f5 100644
          {
              private static final String __OBFID = "CL_00002169";
              public String apply(ItemStack stack)
-@@ -571,8 +571,8 @@ public class Item
+@@ -571,8 +575,8 @@ public class Item
                  return this.apply((ItemStack)p_apply_1_);
              }
          })).setUnlocalizedName("sapling"));
@@ -25678,7 +25699,7 @@ index 36aed35..17a85f5 100644
          {
              private static final String __OBFID = "CL_00002166";
              public String apply(ItemStack stack)
-@@ -584,11 +584,11 @@ public class Item
+@@ -584,11 +588,11 @@ public class Item
                  return this.apply((ItemStack)p_apply_1_);
              }
          })).setUnlocalizedName("sand"));
@@ -25695,7 +25716,7 @@ index 36aed35..17a85f5 100644
          {
              private static final String __OBFID = "CL_00002165";
              public String apply(ItemStack stack)
-@@ -600,7 +600,7 @@ public class Item
+@@ -600,7 +604,7 @@ public class Item
                  return this.apply((ItemStack)p_apply_1_);
              }
          })).setUnlocalizedName("log"));
@@ -25704,7 +25725,7 @@ index 36aed35..17a85f5 100644
          {
              private static final String __OBFID = "CL_00002164";
              public String apply(ItemStack stack)
-@@ -612,8 +612,8 @@ public class Item
+@@ -612,8 +616,8 @@ public class Item
                  return this.apply((ItemStack)p_apply_1_);
              }
          })).setUnlocalizedName("log"));
@@ -25715,7 +25736,7 @@ index 36aed35..17a85f5 100644
          registerItemBlock(Blocks.sponge, (new ItemMultiTexture(Blocks.sponge, Blocks.sponge, new Function()
          {
              private static final String __OBFID = "CL_00002163";
-@@ -627,10 +627,10 @@ public class Item
+@@ -627,10 +631,10 @@ public class Item
              }
          })).setUnlocalizedName("sponge"));
          registerItemBlock(Blocks.glass);
@@ -25728,7 +25749,7 @@ index 36aed35..17a85f5 100644
          {
              private static final String __OBFID = "CL_00002162";
              public String apply(ItemStack stack)
-@@ -646,12 +646,12 @@ public class Item
+@@ -646,12 +650,12 @@ public class Item
          registerItemBlock(Blocks.golden_rail);
          registerItemBlock(Blocks.detector_rail);
          registerItemBlock(Blocks.sticky_piston, new ItemPiston(Blocks.sticky_piston));
@@ -25745,7 +25766,7 @@ index 36aed35..17a85f5 100644
          {
              private static final String __OBFID = "CL_00002177";
              public String apply(ItemStack stack)
-@@ -663,7 +663,7 @@ public class Item
+@@ -663,7 +667,7 @@ public class Item
                  return this.apply((ItemStack)p_apply_1_);
              }
          })).setUnlocalizedName("flower"));
@@ -25754,7 +25775,7 @@ index 36aed35..17a85f5 100644
          {
              private static final String __OBFID = "CL_00002176";
              public String apply(ItemStack stack)
-@@ -675,21 +675,21 @@ public class Item
+@@ -675,21 +679,21 @@ public class Item
                  return this.apply((ItemStack)p_apply_1_);
              }
          })).setUnlocalizedName("rose"));
@@ -25783,7 +25804,7 @@ index 36aed35..17a85f5 100644
          registerItemBlock(Blocks.diamond_block);
          registerItemBlock(Blocks.crafting_table);
          registerItemBlock(Blocks.farmland);
-@@ -701,14 +701,14 @@ public class Item
+@@ -701,14 +705,14 @@ public class Item
          registerItemBlock(Blocks.lever);
          registerItemBlock(Blocks.stone_pressure_plate);
          registerItemBlock(Blocks.wooden_pressure_plate);
@@ -25802,7 +25823,7 @@ index 36aed35..17a85f5 100644
          registerItemBlock(Blocks.jukebox);
          registerItemBlock(Blocks.oak_fence);
          registerItemBlock(Blocks.spruce_fence);
-@@ -722,7 +722,7 @@ public class Item
+@@ -722,7 +726,7 @@ public class Item
          registerItemBlock(Blocks.glowstone);
          registerItemBlock(Blocks.lit_pumpkin);
          registerItemBlock(Blocks.trapdoor);
@@ -25811,7 +25832,7 @@ index 36aed35..17a85f5 100644
          {
              private static final String __OBFID = "CL_00002175";
              public String apply(ItemStack stack)
-@@ -746,12 +746,12 @@ public class Item
+@@ -746,12 +750,12 @@ public class Item
                  return this.apply((ItemStack)p_apply_1_);
              }
          })).setUnlocalizedName("stonebricksmooth"));
@@ -25827,7 +25848,7 @@ index 36aed35..17a85f5 100644
          registerItemBlock(Blocks.oak_fence_gate);
          registerItemBlock(Blocks.spruce_fence_gate);
          registerItemBlock(Blocks.birch_fence_gate);
-@@ -761,7 +761,7 @@ public class Item
+@@ -761,7 +765,7 @@ public class Item
          registerItemBlock(Blocks.brick_stairs);
          registerItemBlock(Blocks.stone_brick_stairs);
          registerItemBlock(Blocks.mycelium);
@@ -25836,7 +25857,7 @@ index 36aed35..17a85f5 100644
          registerItemBlock(Blocks.nether_brick);
          registerItemBlock(Blocks.nether_brick_fence);
          registerItemBlock(Blocks.nether_brick_stairs);
-@@ -772,14 +772,14 @@ public class Item
+@@ -772,14 +776,14 @@ public class Item
          registerItemBlock(Blocks.redstone_lamp);
          registerItemBlock(Blocks.wooden_slab, (new ItemSlab(Blocks.wooden_slab, Blocks.wooden_slab, Blocks.double_wooden_slab)).setUnlocalizedName("woodSlab"));
          registerItemBlock(Blocks.sandstone_stairs);
@@ -25853,7 +25874,7 @@ index 36aed35..17a85f5 100644
          registerItemBlock(Blocks.beacon);
          registerItemBlock(Blocks.cobblestone_wall, (new ItemMultiTexture(Blocks.cobblestone_wall, Blocks.cobblestone_wall, new Function()
          {
-@@ -800,7 +800,7 @@ public class Item
+@@ -800,7 +804,7 @@ public class Item
          registerItemBlock(Blocks.heavy_weighted_pressure_plate);
          registerItemBlock(Blocks.daylight_detector);
          registerItemBlock(Blocks.redstone_block);
@@ -25862,7 +25883,7 @@ index 36aed35..17a85f5 100644
          registerItemBlock(Blocks.hopper);
          registerItemBlock(Blocks.quartz_block, (new ItemMultiTexture(Blocks.quartz_block, Blocks.quartz_block, new String[] {"default", "chiseled", "lines"})).setUnlocalizedName("quartzBlock"));
          registerItemBlock(Blocks.quartz_stairs);
-@@ -811,13 +811,13 @@ public class Item
+@@ -811,13 +815,13 @@ public class Item
          registerItemBlock(Blocks.iron_trapdoor);
          registerItemBlock(Blocks.hay_block);
          registerItemBlock(Blocks.carpet, (new ItemCloth(Blocks.carpet)).setUnlocalizedName("woolCarpet"));
@@ -25878,7 +25899,7 @@ index 36aed35..17a85f5 100644
          {
              private static final String __OBFID = "CL_00002172";
              public String apply(ItemStack stack)
-@@ -844,7 +844,7 @@ public class Item
+@@ -844,7 +848,7 @@ public class Item
              }
          })).setUnlocalizedName("prismarine"));
          registerItemBlock(Blocks.sea_lantern);
@@ -25887,7 +25908,7 @@ index 36aed35..17a85f5 100644
          {
              private static final String __OBFID = "CL_00002170";
              public String apply(ItemStack stack)
-@@ -927,10 +927,10 @@ public class Item
+@@ -927,10 +931,10 @@ public class Item
          registerItem(322, "golden_apple", (new ItemAppleGold(4, 1.2F, false)).setAlwaysEdible().setPotionEffect(Potion.regeneration.id, 5, 1, 1.0F).setUnlocalizedName("appleGold"));
          registerItem(323, "sign", (new ItemSign()).setUnlocalizedName("sign"));
          registerItem(324, "wooden_door", (new ItemDoor(Blocks.oak_door)).setUnlocalizedName("doorOak"));
