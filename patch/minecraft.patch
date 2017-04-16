@@ -1,6 +1,6 @@
-From 9b0e05393064f1435eff7bd373d876ae26ff2953 Mon Sep 17 00:00:00 2001
+From 7a7ff56e7ed9a5efc638272f018802ffe011b9be Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 14 Apr 2017 15:01:31 +0200
+Date: Sun, 16 Apr 2017 12:20:38 +0200
 Subject: [PATCH] mod
 
 ---
@@ -214,7 +214,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/achievement/GuiStats.java |  28 +-
  net/minecraft/client/gui/inventory/GuiBeacon.java  |   5 +-
  net/minecraft/client/gui/inventory/GuiChest.java   | 112 ++++-
- .../client/gui/inventory/GuiContainer.java         |  51 ++-
+ .../client/gui/inventory/GuiContainer.java         |  56 ++-
  .../client/gui/inventory/GuiContainerCreative.java |  23 +-
  .../client/gui/inventory/GuiCrafting.java          |   2 +-
  .../client/gui/inventory/GuiEditSign.java          |  37 +-
@@ -864,7 +864,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 860 files changed, 9456 insertions(+), 7983 deletions(-)
+ 860 files changed, 9459 insertions(+), 7985 deletions(-)
  delete mode 100644 net/minecraft/event/ClickEvent.java
  delete mode 100644 net/minecraft/event/HoverEvent.java
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
@@ -10915,23 +10915,38 @@ index 15a710a..ca2e623 100644
      }
  }
 diff --git a/net/minecraft/client/gui/inventory/GuiContainer.java b/net/minecraft/client/gui/inventory/GuiContainer.java
-index b87feb0..9d18183 100644
+index b87feb0..d5a0983 100644
 --- a/net/minecraft/client/gui/inventory/GuiContainer.java
 +++ b/net/minecraft/client/gui/inventory/GuiContainer.java
-@@ -15,9 +15,11 @@ import net.minecraft.entity.player.InventoryPlayer;
+@@ -1,9 +1,13 @@
+ package net.minecraft.client.gui.inventory;
+ 
+-import com.google.common.collect.Sets;
+ import java.io.IOException;
+ import java.util.Iterator;
+ import java.util.Set;
++
++import org.lwjgl.input.Keyboard;
++
++import com.google.common.collect.Sets;
++
+ import net.minecraft.client.Minecraft;
+ import net.minecraft.client.gui.GuiScreen;
+ import net.minecraft.client.renderer.GlStateManager;
+@@ -15,10 +19,10 @@ import net.minecraft.entity.player.InventoryPlayer;
  import net.minecraft.inventory.Container;
  import net.minecraft.inventory.Slot;
  import net.minecraft.item.ItemStack;
 -import net.minecraft.util.EnumChatFormatting;
  import net.minecraft.util.MathHelper;
  import net.minecraft.util.ResourceLocation;
+-import org.lwjgl.input.Keyboard;
 +import net.minecraft.util.text.TextFormatting;
 +import net.wurstclient.WurstClient;
-+
- import org.lwjgl.input.Keyboard;
  
  public abstract class GuiContainer extends GuiScreen
-@@ -164,7 +166,7 @@ public abstract class GuiContainer extends GuiScreen
+ {
+@@ -164,7 +168,7 @@ public abstract class GuiContainer extends GuiScreen
  
                  if (var16.stackSize == 0)
                  {
@@ -10940,7 +10955,7 @@ index b87feb0..9d18183 100644
                  }
              }
  
-@@ -185,7 +187,7 @@ public abstract class GuiContainer extends GuiScreen
+@@ -185,7 +189,7 @@ public abstract class GuiContainer extends GuiScreen
              int var20 = this.returningStackDestSlot.yDisplayPosition - this.touchUpY;
              int var13 = this.touchUpX + (int)((float)var11 * var18);
              int var14 = this.touchUpY + (int)((float)var20 * var18);
@@ -10949,7 +10964,7 @@ index b87feb0..9d18183 100644
          }
  
          GlStateManager.popMatrix();
-@@ -229,40 +231,40 @@ public abstract class GuiContainer extends GuiScreen
+@@ -229,40 +233,40 @@ public abstract class GuiContainer extends GuiScreen
      {
          int var2 = slotIn.xDisplayPosition;
          int var3 = slotIn.yDisplayPosition;
@@ -11005,7 +11020,7 @@ index b87feb0..9d18183 100644
                  }
              }
              else
-@@ -275,9 +277,9 @@ public abstract class GuiContainer extends GuiScreen
+@@ -275,9 +279,9 @@ public abstract class GuiContainer extends GuiScreen
          this.zLevel = 100.0F;
          this.itemRender.zLevel = 100.0F;
  
@@ -11017,16 +11032,15 @@ index b87feb0..9d18183 100644
  
              if (var9 != null)
              {
-@@ -288,6 +290,8 @@ public abstract class GuiContainer extends GuiScreen
+@@ -288,6 +292,7 @@ public abstract class GuiContainer extends GuiScreen
                  GlStateManager.enableLighting();
                  var6 = true;
              }
-+            //TODO: Client
 +            var6 = true;
          }
  
          if (!var6)
-@@ -298,8 +302,8 @@ public abstract class GuiContainer extends GuiScreen
+@@ -298,8 +303,8 @@ public abstract class GuiContainer extends GuiScreen
              }
  
              GlStateManager.enableDepth();
@@ -11037,7 +11051,7 @@ index b87feb0..9d18183 100644
          }
  
          this.itemRender.zLevel = 0.0F;
-@@ -749,6 +753,9 @@ public abstract class GuiContainer extends GuiScreen
+@@ -749,6 +754,9 @@ public abstract class GuiContainer extends GuiScreen
       */
      public void onGuiClosed()
      {
