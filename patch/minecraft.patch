@@ -1,6 +1,6 @@
-From 296158f30a0394c2675228ab0f49854e75495dcd Mon Sep 17 00:00:00 2001
+From 7a0ea9e2f7baec8625141cd12be2ba9a9402fe36 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 18 Apr 2017 21:10:54 +0200
+Date: Tue, 18 Apr 2017 21:26:33 +0200
 Subject: [PATCH] mod
 
 ---
@@ -147,7 +147,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/GuiButtonRealmsProxy.java |   1 +
  net/minecraft/client/gui/GuiChat.java              |  25 +-
  .../GuiClickableScrolledSelectionListProxy.java    |   4 +-
- net/minecraft/client/gui/GuiCommandBlock.java      |  10 +-
+ net/minecraft/client/gui/GuiCommandBlock.java      |  12 +-
  net/minecraft/client/gui/GuiConfirmOpenLink.java   |   2 +
  net/minecraft/client/gui/GuiControls.java          |   4 +-
  net/minecraft/client/gui/GuiCreateFlatWorld.java   |  12 +-
@@ -169,7 +169,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/GuiLockIconButton.java    |   1 +
  net/minecraft/client/gui/GuiMainMenu.java          |  76 +++-
  net/minecraft/client/gui/GuiMemoryErrorScreen.java |   4 +-
- net/minecraft/client/gui/GuiMerchant.java          |  18 +-
+ net/minecraft/client/gui/GuiMerchant.java          |  20 +-
  net/minecraft/client/gui/GuiMultiplayer.java       | 170 +++++--
  net/minecraft/client/gui/GuiNewChat.java           |  71 ++-
  net/minecraft/client/gui/GuiOptionButton.java      |   1 +
@@ -180,11 +180,11 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/GuiPageButtonList.java    |   3 +
  net/minecraft/client/gui/GuiPlayerTabOverlay.java  |  52 +--
  net/minecraft/client/gui/GuiRenameWorld.java       |   3 +
- net/minecraft/client/gui/GuiRepair.java            |   2 +-
+ net/minecraft/client/gui/GuiRepair.java            |   4 +-
  net/minecraft/client/gui/GuiResourcePackList.java  |   4 +-
  net/minecraft/client/gui/GuiScreen.java            |  56 +--
  net/minecraft/client/gui/GuiScreenAddServer.java   |   3 +
- net/minecraft/client/gui/GuiScreenBook.java        | 123 ++++--
+ net/minecraft/client/gui/GuiScreenBook.java        | 125 ++++--
  .../client/gui/GuiScreenCustomizePresets.java      |   6 +-
  net/minecraft/client/gui/GuiScreenDemo.java        |   3 +
  .../client/gui/GuiScreenOptionsSounds.java         |   6 +-
@@ -212,7 +212,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/ServerSelectionList.java  |  15 +-
  .../client/gui/achievement/GuiAchievements.java    |  26 +-
  net/minecraft/client/gui/achievement/GuiStats.java |  28 +-
- net/minecraft/client/gui/inventory/GuiBeacon.java  |   5 +-
+ net/minecraft/client/gui/inventory/GuiBeacon.java  |   7 +-
  net/minecraft/client/gui/inventory/GuiChest.java   | 112 ++++-
  .../client/gui/inventory/GuiContainer.java         |  56 ++-
  .../client/gui/inventory/GuiContainerCreative.java |  23 +-
@@ -243,7 +243,7 @@ Subject: [PATCH] mod
  net/minecraft/client/multiplayer/WorldClient.java  |  10 +-
  .../client/network/NetHandlerHandshakeMemory.java  |   4 +-
  .../client/network/NetHandlerLoginClient.java      |   9 +-
- .../client/network/NetHandlerPlayClient.java       | 223 +++-------
+ .../client/network/NetHandlerPlayClient.java       | 227 +++-------
  .../client/network/NetworkPlayerInfo.java          |  57 +--
  net/minecraft/client/network/OldServerPinger.java  |  24 +-
  net/minecraft/client/particle/Barrier.java         |   2 +-
@@ -601,16 +601,16 @@ Subject: [PATCH] mod
  net/minecraft/nbt/CompressedStreamTools.java       |   1 +
  net/minecraft/nbt/JsonToNBT.java                   |   2 +-
  net/minecraft/nbt/NBTTagCompound.java              |   3 +
- net/minecraft/network/EnumConnectionState.java     |  46 +-
+ net/minecraft/network/EnumConnectionState.java     |  50 +--
  net/minecraft/network/INetHandler.java             |   4 +-
- net/minecraft/network/NetHandlerPlayServer.java    | 137 +++---
+ net/minecraft/network/NetHandlerPlayServer.java    | 141 +++---
  net/minecraft/network/NetworkManager.java          | 335 +++++++-------
  net/minecraft/network/NetworkSystem.java           |   9 +-
  net/minecraft/network/PacketBuffer.java            |  18 +-
  net/minecraft/network/ServerStatusResponse.java    |  11 +-
  .../network/login/server/S00PacketDisconnect.java  |   8 +-
  .../network/play/INetHandlerPlayClient.java        |  12 +-
- .../network/play/INetHandlerPlayServer.java        |  28 +-
+ .../network/play/INetHandlerPlayServer.java        |  32 +-
  .../network/play/client/C01PacketChatMessage.java  |  59 ---
  .../network/play/client/C02PacketUseEntity.java    | 105 -----
  .../network/play/client/C03PacketPlayer.java       | 229 ----------
@@ -621,9 +621,11 @@ Subject: [PATCH] mod
  .../client/C10PacketCreativeInventoryAction.java   |  64 ---
  .../network/play/client/C12PacketUpdateSign.java   |  14 +-
  .../network/play/client/C14PacketTabComplete.java  |   3 +-
+ .../play/client/C17PacketCustomPayload.java        |  81 ----
  .../network/play/client/CPacketAnimation.java      |  35 ++
  .../network/play/client/CPacketChatMessage.java    |  59 +++
  .../client/CPacketCreativeInventoryAction.java     |  64 +++
+ .../network/play/client/CPacketCustomPayload.java  |  81 ++++
  .../network/play/client/CPacketEntityAction.java   |  89 ++++
  .../network/play/client/CPacketPlayer.java         | 259 +++++++++++
  .../network/play/client/CPacketPlayerDigging.java  |  91 ++++
@@ -864,7 +866,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 860 files changed, 9489 insertions(+), 7985 deletions(-)
+ 862 files changed, 9583 insertions(+), 8079 deletions(-)
  delete mode 100644 net/minecraft/event/ClickEvent.java
  delete mode 100644 net/minecraft/event/HoverEvent.java
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
@@ -874,9 +876,11 @@ Subject: [PATCH] mod
  delete mode 100644 net/minecraft/network/play/client/C0APacketAnimation.java
  delete mode 100644 net/minecraft/network/play/client/C0BPacketEntityAction.java
  delete mode 100644 net/minecraft/network/play/client/C10PacketCreativeInventoryAction.java
+ delete mode 100644 net/minecraft/network/play/client/C17PacketCustomPayload.java
  create mode 100644 net/minecraft/network/play/client/CPacketAnimation.java
  create mode 100644 net/minecraft/network/play/client/CPacketChatMessage.java
  create mode 100644 net/minecraft/network/play/client/CPacketCreativeInventoryAction.java
+ create mode 100644 net/minecraft/network/play/client/CPacketCustomPayload.java
  create mode 100644 net/minecraft/network/play/client/CPacketEntityAction.java
  create mode 100644 net/minecraft/network/play/client/CPacketPlayer.java
  create mode 100644 net/minecraft/network/play/client/CPacketPlayerDigging.java
@@ -6444,7 +6448,7 @@ index af1c1c0..2350603 100644
          if (this.scrollMultiplier > 0.0F && Mouse.getEventButtonState())
          {
 diff --git a/net/minecraft/client/gui/GuiCommandBlock.java b/net/minecraft/client/gui/GuiCommandBlock.java
-index 5fa383c..ea37ea2 100644
+index 5fa383c..71ebb3d 100644
 --- a/net/minecraft/client/gui/GuiCommandBlock.java
 +++ b/net/minecraft/client/gui/GuiCommandBlock.java
 @@ -1,12 +1,16 @@
@@ -6458,8 +6462,9 @@ index 5fa383c..ea37ea2 100644
  import net.minecraft.client.resources.I18n;
  import net.minecraft.command.server.CommandBlockLogic;
  import net.minecraft.network.PacketBuffer;
- import net.minecraft.network.play.client.C17PacketCustomPayload;
+-import net.minecraft.network.play.client.C17PacketCustomPayload;
 -import net.minecraft.util.IChatComponent;
++import net.minecraft.network.play.client.CPacketCustomPayload;
 +import net.minecraft.util.text.ITextComponent;
 +
  import org.apache.logging.log4j.LogManager;
@@ -6470,7 +6475,7 @@ index 5fa383c..ea37ea2 100644
                  var2.writeString(this.commandTextField.getText());
                  var2.writeBoolean(this.localCommandBlock.func_175571_m());
 -                this.mc.getNetHandler().addToSendQueue(new C17PacketCustomPayload("MC|AdvCdm", var2));
-+                this.mc.getNetHandler().sendPacket(new C17PacketCustomPayload("MC|AdvCdm", var2));
++                this.mc.getNetHandler().sendPacket(new CPacketCustomPayload("MC|AdvCdm", var2));
  
                  if (!this.localCommandBlock.func_175571_m())
                  {
@@ -7784,7 +7789,7 @@ index b5e6872..398f3e5 100644
          else if (button.id == 1)
          {
 diff --git a/net/minecraft/client/gui/GuiMerchant.java b/net/minecraft/client/gui/GuiMerchant.java
-index 991708b..3814ebd 100644
+index 991708b..cc4a329 100644
 --- a/net/minecraft/client/gui/GuiMerchant.java
 +++ b/net/minecraft/client/gui/GuiMerchant.java
 @@ -1,8 +1,11 @@
@@ -7799,11 +7804,13 @@ index 991708b..3814ebd 100644
  import net.minecraft.client.gui.inventory.GuiContainer;
  import net.minecraft.client.renderer.GlStateManager;
  import net.minecraft.client.renderer.RenderHelper;
-@@ -13,11 +16,12 @@ import net.minecraft.inventory.ContainerMerchant;
+@@ -12,12 +15,13 @@ import net.minecraft.entity.player.InventoryPlayer;
+ import net.minecraft.inventory.ContainerMerchant;
  import net.minecraft.item.ItemStack;
  import net.minecraft.network.PacketBuffer;
- import net.minecraft.network.play.client.C17PacketCustomPayload;
+-import net.minecraft.network.play.client.C17PacketCustomPayload;
 -import net.minecraft.util.IChatComponent;
++import net.minecraft.network.play.client.CPacketCustomPayload;
  import net.minecraft.util.ResourceLocation;
 +import net.minecraft.util.text.ITextComponent;
  import net.minecraft.village.MerchantRecipe;
@@ -7827,7 +7834,7 @@ index 991708b..3814ebd 100644
              PacketBuffer var4 = new PacketBuffer(Unpooled.buffer());
              var4.writeInt(this.field_147041_z);
 -            this.mc.getNetHandler().addToSendQueue(new C17PacketCustomPayload("MC|TrSel", var4));
-+            this.mc.getNetHandler().sendPacket(new C17PacketCustomPayload("MC|TrSel", var4));
++            this.mc.getNetHandler().sendPacket(new CPacketCustomPayload("MC|TrSel", var4));
          }
      }
  
@@ -8779,15 +8786,24 @@ index c755d31..7e7e929 100644
  
  public class GuiRenameWorld extends GuiScreen
 diff --git a/net/minecraft/client/gui/GuiRepair.java b/net/minecraft/client/gui/GuiRepair.java
-index 063634b..a872a22 100644
+index 063634b..81029e5 100644
 --- a/net/minecraft/client/gui/GuiRepair.java
 +++ b/net/minecraft/client/gui/GuiRepair.java
+@@ -15,7 +15,7 @@ import net.minecraft.inventory.IInventory;
+ import net.minecraft.inventory.Slot;
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.network.PacketBuffer;
+-import net.minecraft.network.play.client.C17PacketCustomPayload;
++import net.minecraft.network.play.client.CPacketCustomPayload;
+ import net.minecraft.util.ResourceLocation;
+ import net.minecraft.world.World;
+ import org.lwjgl.input.Keyboard;
 @@ -144,7 +144,7 @@ public class GuiRepair extends GuiContainer implements ICrafting
          }
  
          this.anvil.updateItemName(var1);
 -        this.mc.thePlayer.sendQueue.addToSendQueue(new C17PacketCustomPayload("MC|ItemName", (new PacketBuffer(Unpooled.buffer())).writeString(var1)));
-+        this.mc.thePlayer.connection.sendPacket(new C17PacketCustomPayload("MC|ItemName", (new PacketBuffer(Unpooled.buffer())).writeString(var1)));
++        this.mc.thePlayer.connection.sendPacket(new CPacketCustomPayload("MC|ItemName", (new PacketBuffer(Unpooled.buffer())).writeString(var1)));
      }
  
      /**
@@ -9040,7 +9056,7 @@ index f97ff5a..f032cdc 100644
  
  public class GuiScreenAddServer extends GuiScreen
 diff --git a/net/minecraft/client/gui/GuiScreenBook.java b/net/minecraft/client/gui/GuiScreenBook.java
-index a8feb74..6117fd1 100644
+index a8feb74..4691673 100644
 --- a/net/minecraft/client/gui/GuiScreenBook.java
 +++ b/net/minecraft/client/gui/GuiScreenBook.java
 @@ -2,28 +2,38 @@ package net.minecraft.client.gui;
@@ -9070,7 +9086,8 @@ index a8feb74..6117fd1 100644
  import net.minecraft.nbt.NBTTagList;
  import net.minecraft.nbt.NBTTagString;
  import net.minecraft.network.PacketBuffer;
- import net.minecraft.network.play.client.C17PacketCustomPayload;
+-import net.minecraft.network.play.client.C17PacketCustomPayload;
++import net.minecraft.network.play.client.CPacketCustomPayload;
  import net.minecraft.util.ChatAllowedCharacters;
 -import net.minecraft.util.ChatComponentText;
 -import net.minecraft.util.EnumChatFormatting;
@@ -9167,7 +9184,7 @@ index a8feb74..6117fd1 100644
                  PacketBuffer var7 = new PacketBuffer(Unpooled.buffer());
                  var7.writeItemStackToBuffer(this.bookObj);
 -                this.mc.getNetHandler().addToSendQueue(new C17PacketCustomPayload(var2, var7));
-+                this.mc.getNetHandler().sendPacket(new C17PacketCustomPayload(var2, var7));
++                this.mc.getNetHandler().sendPacket(new CPacketCustomPayload(var2, var7));
              }
          }
      }
@@ -10727,7 +10744,7 @@ index 74a0030..f0ea5d8 100644
              }
          }
 diff --git a/net/minecraft/client/gui/inventory/GuiBeacon.java b/net/minecraft/client/gui/inventory/GuiBeacon.java
-index 3dc2b1e..c8f0447 100644
+index 3dc2b1e..736b9ec 100644
 --- a/net/minecraft/client/gui/inventory/GuiBeacon.java
 +++ b/net/minecraft/client/gui/inventory/GuiBeacon.java
 @@ -1,8 +1,10 @@
@@ -10741,7 +10758,12 @@ index 3dc2b1e..c8f0447 100644
  import net.minecraft.client.Minecraft;
  import net.minecraft.client.gui.GuiButton;
  import net.minecraft.client.gui.GuiScreen;
-@@ -19,6 +21,7 @@ import net.minecraft.network.play.client.C17PacketCustomPayload;
+@@ -15,10 +17,11 @@ import net.minecraft.inventory.ContainerBeacon;
+ import net.minecraft.inventory.IInventory;
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.network.PacketBuffer;
+-import net.minecraft.network.play.client.C17PacketCustomPayload;
++import net.minecraft.network.play.client.CPacketCustomPayload;
  import net.minecraft.potion.Potion;
  import net.minecraft.tileentity.TileEntityBeacon;
  import net.minecraft.util.ResourceLocation;
@@ -10754,7 +10776,7 @@ index 3dc2b1e..c8f0447 100644
              var3.writeInt(this.tileBeacon.getField(1));
              var3.writeInt(this.tileBeacon.getField(2));
 -            this.mc.getNetHandler().addToSendQueue(new C17PacketCustomPayload(var2, var3));
-+            this.mc.getNetHandler().sendPacket(new C17PacketCustomPayload(var2, var3));
++            this.mc.getNetHandler().sendPacket(new CPacketCustomPayload(var2, var3));
              this.mc.displayGuiScreen((GuiScreen)null);
          }
          else if (button instanceof GuiBeacon.PowerButton)
@@ -12725,7 +12747,7 @@ index d6a17db..a8a8d9c 100644
          this.field_147394_b.displayGuiScreen(new GuiDisconnected(this.field_147395_c, "connect.failed", reason));
      }
 diff --git a/net/minecraft/client/network/NetHandlerPlayClient.java b/net/minecraft/client/network/NetHandlerPlayClient.java
-index 2b1d59a..5a4f49b 100644
+index 2b1d59a..e51deb3 100644
 --- a/net/minecraft/client/network/NetHandlerPlayClient.java
 +++ b/net/minecraft/client/network/NetHandlerPlayClient.java
 @@ -1,39 +1,24 @@
@@ -12814,7 +12836,8 @@ index 2b1d59a..5a4f49b 100644
 -import net.minecraft.network.play.client.C03PacketPlayer;
 +import net.minecraft.network.play.client.CPacketPlayer;
  import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
- import net.minecraft.network.play.client.C17PacketCustomPayload;
+-import net.minecraft.network.play.client.C17PacketCustomPayload;
++import net.minecraft.network.play.client.CPacketCustomPayload;
  import net.minecraft.network.play.client.C19PacketResourcePackStatus;
 -import net.minecraft.network.play.server.S00PacketKeepAlive;
 -import net.minecraft.network.play.server.S01PacketJoinGame;
@@ -12939,6 +12962,15 @@ index 2b1d59a..5a4f49b 100644
  public class NetHandlerPlayClient implements INetHandlerPlayClient
  {
      private static final Logger logger = LogManager.getLogger();
+@@ -293,7 +186,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
+         this.gameController.thePlayer.func_175150_k(packetIn.func_179744_h());
+         this.gameController.playerController.setGameType(packetIn.func_149198_e());
+         this.gameController.gameSettings.sendSettingsToServer();
+-        this.netManager.sendPacket(new C17PacketCustomPayload("MC|Brand", (new PacketBuffer(Unpooled.buffer())).writeString(ClientBrandRetriever.getClientModName())));
++        this.netManager.sendPacket(new CPacketCustomPayload("MC|Brand", (new PacketBuffer(Unpooled.buffer())).writeString(ClientBrandRetriever.getClientModName())));
+     }
+ 
+     /**
 @@ -465,12 +358,12 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
      /**
       * Handles globally visible entities. Used in vanilla for lightning bolts
@@ -27594,10 +27626,10 @@ index 6fcada4..1cdd1ef 100644
  import org.apache.logging.log4j.Logger;
  
 diff --git a/net/minecraft/network/EnumConnectionState.java b/net/minecraft/network/EnumConnectionState.java
-index 65e3465..0c32b8e 100644
+index 65e3465..9419ecc 100644
 --- a/net/minecraft/network/EnumConnectionState.java
 +++ b/net/minecraft/network/EnumConnectionState.java
-@@ -15,19 +15,19 @@ import net.minecraft.network.login.server.S01PacketEncryptionRequest;
+@@ -15,26 +15,26 @@ import net.minecraft.network.login.server.S01PacketEncryptionRequest;
  import net.minecraft.network.login.server.S02PacketLoginSuccess;
  import net.minecraft.network.login.server.S03PacketEnableCompression;
  import net.minecraft.network.play.client.C00PacketKeepAlive;
@@ -27624,6 +27656,14 @@ index 65e3465..0c32b8e 100644
  import net.minecraft.network.play.client.C11PacketEnchantItem;
  import net.minecraft.network.play.client.C12PacketUpdateSign;
  import net.minecraft.network.play.client.C13PacketPlayerAbilities;
+ import net.minecraft.network.play.client.C14PacketTabComplete;
+ import net.minecraft.network.play.client.C15PacketClientSettings;
+ import net.minecraft.network.play.client.C16PacketClientStatus;
+-import net.minecraft.network.play.client.C17PacketCustomPayload;
++import net.minecraft.network.play.client.CPacketCustomPayload;
+ import net.minecraft.network.play.client.C18PacketSpectate;
+ import net.minecraft.network.play.client.C19PacketResourcePackStatus;
+ import net.minecraft.network.play.server.S00PacketKeepAlive;
 @@ -74,11 +74,11 @@ import net.minecraft.network.play.server.S24PacketBlockAction;
  import net.minecraft.network.play.server.S25PacketBlockBreakAnim;
  import net.minecraft.network.play.server.S26PacketMapChunkBulk;
@@ -27654,7 +27694,7 @@ index 65e3465..0c32b8e 100644
              this.registerPacket(EnumPacketDirection.CLIENTBOUND, S2DPacketOpenWindow.class);
              this.registerPacket(EnumPacketDirection.CLIENTBOUND, S2EPacketCloseWindow.class);
              this.registerPacket(EnumPacketDirection.CLIENTBOUND, S2FPacketSetSlot.class);
-@@ -202,22 +202,22 @@ public enum EnumConnectionState
+@@ -202,29 +202,29 @@ public enum EnumConnectionState
              this.registerPacket(EnumPacketDirection.CLIENTBOUND, S48PacketResourcePackSend.class);
              this.registerPacket(EnumPacketDirection.CLIENTBOUND, S49PacketUpdateEntityNBT.class);
              this.registerPacket(EnumPacketDirection.SERVERBOUND, C00PacketKeepAlive.class);
@@ -27687,6 +27727,14 @@ index 65e3465..0c32b8e 100644
              this.registerPacket(EnumPacketDirection.SERVERBOUND, C11PacketEnchantItem.class);
              this.registerPacket(EnumPacketDirection.SERVERBOUND, C12PacketUpdateSign.class);
              this.registerPacket(EnumPacketDirection.SERVERBOUND, C13PacketPlayerAbilities.class);
+             this.registerPacket(EnumPacketDirection.SERVERBOUND, C14PacketTabComplete.class);
+             this.registerPacket(EnumPacketDirection.SERVERBOUND, C15PacketClientSettings.class);
+             this.registerPacket(EnumPacketDirection.SERVERBOUND, C16PacketClientStatus.class);
+-            this.registerPacket(EnumPacketDirection.SERVERBOUND, C17PacketCustomPayload.class);
++            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketCustomPayload.class);
+             this.registerPacket(EnumPacketDirection.SERVERBOUND, C18PacketSpectate.class);
+             this.registerPacket(EnumPacketDirection.SERVERBOUND, C19PacketResourcePackStatus.class);
+         }
 diff --git a/net/minecraft/network/INetHandler.java b/net/minecraft/network/INetHandler.java
 index 2e213eb..0564710 100644
 --- a/net/minecraft/network/INetHandler.java
@@ -27706,7 +27754,7 @@ index 2e213eb..0564710 100644
 +    void onDisconnect(ITextComponent reason);
  }
 diff --git a/net/minecraft/network/NetHandlerPlayServer.java b/net/minecraft/network/NetHandlerPlayServer.java
-index 3301ef8..bfb12c3 100644
+index 3301ef8..b92b49f 100644
 --- a/net/minecraft/network/NetHandlerPlayServer.java
 +++ b/net/minecraft/network/NetHandlerPlayServer.java
 @@ -2,9 +2,11 @@ package net.minecraft.network;
@@ -27729,7 +27777,7 @@ index 3301ef8..bfb12c3 100644
  import net.minecraft.block.material.Material;
  import net.minecraft.command.server.CommandBlockLogic;
  import net.minecraft.crash.CrashReport;
-@@ -37,21 +40,22 @@ import net.minecraft.item.ItemStack;
+@@ -37,28 +40,29 @@ import net.minecraft.item.ItemStack;
  import net.minecraft.item.ItemWritableBook;
  import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.nbt.NBTTagString;
@@ -27759,6 +27807,14 @@ index 3301ef8..bfb12c3 100644
  import net.minecraft.network.play.client.C11PacketEnchantItem;
  import net.minecraft.network.play.client.C12PacketUpdateSign;
  import net.minecraft.network.play.client.C13PacketPlayerAbilities;
+ import net.minecraft.network.play.client.C14PacketTabComplete;
+ import net.minecraft.network.play.client.C15PacketClientSettings;
+ import net.minecraft.network.play.client.C16PacketClientStatus;
+-import net.minecraft.network.play.client.C17PacketCustomPayload;
++import net.minecraft.network.play.client.CPacketCustomPayload;
+ import net.minecraft.network.play.client.C18PacketSpectate;
+ import net.minecraft.network.play.client.C19PacketResourcePackStatus;
+ import net.minecraft.network.play.server.S00PacketKeepAlive;
 @@ -78,17 +82,14 @@ import net.minecraft.stats.AchievementList;
  import net.minecraft.tileentity.TileEntity;
  import net.minecraft.tileentity.TileEntityCommandBlock;
@@ -28043,6 +28099,15 @@ index 3301ef8..bfb12c3 100644
          {
              this.playerEntity.openContainer.setCanCraft(this.playerEntity, true);
          }
+@@ -1235,7 +1236,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
+     /**
+      * Synchronizes serverside and clientside book contents and signing
+      */
+-    public void processVanilla250Packet(C17PacketCustomPayload packetIn)
++    public void processVanilla250Packet(CPacketCustomPayload packetIn)
+     {
+         PacketThreadUtil.func_180031_a(packetIn, this, this.playerEntity.getServerForPlayer());
+         PacketBuffer var2;
 @@ -1390,7 +1391,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, IUpdatePlaye
  
                          if (!var6)
@@ -29044,10 +29109,10 @@ index b56e8cf..890c4e5 100644
      void handleCollectItem(S0DPacketCollectItem packetIn);
  
 diff --git a/net/minecraft/network/play/INetHandlerPlayServer.java b/net/minecraft/network/play/INetHandlerPlayServer.java
-index f9e85f2..9402afe 100644
+index f9e85f2..d7ddc75 100644
 --- a/net/minecraft/network/play/INetHandlerPlayServer.java
 +++ b/net/minecraft/network/play/INetHandlerPlayServer.java
-@@ -2,19 +2,19 @@ package net.minecraft.network.play;
+@@ -2,37 +2,37 @@ package net.minecraft.network.play;
  
  import net.minecraft.network.INetHandler;
  import net.minecraft.network.play.client.C00PacketKeepAlive;
@@ -29074,7 +29139,13 @@ index f9e85f2..9402afe 100644
  import net.minecraft.network.play.client.C11PacketEnchantItem;
  import net.minecraft.network.play.client.C12PacketUpdateSign;
  import net.minecraft.network.play.client.C13PacketPlayerAbilities;
-@@ -27,12 +27,12 @@ import net.minecraft.network.play.client.C19PacketResourcePackStatus;
+ import net.minecraft.network.play.client.C14PacketTabComplete;
+ import net.minecraft.network.play.client.C15PacketClientSettings;
+ import net.minecraft.network.play.client.C16PacketClientStatus;
+-import net.minecraft.network.play.client.C17PacketCustomPayload;
++import net.minecraft.network.play.client.CPacketCustomPayload;
+ import net.minecraft.network.play.client.C18PacketSpectate;
+ import net.minecraft.network.play.client.C19PacketResourcePackStatus;
  
  public interface INetHandlerPlayServer extends INetHandler
  {
@@ -29089,7 +29160,14 @@ index f9e85f2..9402afe 100644
  
      /**
       * Retrieves possible tab completions for the requested command string and sends them to the client
-@@ -85,7 +85,7 @@ public interface INetHandlerPlayServer extends INetHandler
+@@ -79,13 +79,13 @@ public interface INetHandlerPlayServer extends INetHandler
+     /**
+      * Synchronizes serverside and clientside book contents and signing
+      */
+-    void processVanilla250Packet(C17PacketCustomPayload packetIn);
++    void processVanilla250Packet(CPacketCustomPayload packetIn);
+ 
+     /**
       * Processes interactions ((un)leashing, opening command block GUI) and attacks on an entity with players currently
       * equipped item
       */
@@ -29922,6 +30000,93 @@ index 8404d39..2027814 100644
  import org.apache.commons.lang3.StringUtils;
  
  public class C14PacketTabComplete implements Packet
+diff --git a/net/minecraft/network/play/client/C17PacketCustomPayload.java b/net/minecraft/network/play/client/C17PacketCustomPayload.java
+deleted file mode 100644
+index 4126c9b..0000000
+--- a/net/minecraft/network/play/client/C17PacketCustomPayload.java
++++ /dev/null
+@@ -1,81 +0,0 @@
+-package net.minecraft.network.play.client;
+-
+-import io.netty.buffer.ByteBuf;
+-import java.io.IOException;
+-import net.minecraft.network.INetHandler;
+-import net.minecraft.network.Packet;
+-import net.minecraft.network.PacketBuffer;
+-import net.minecraft.network.play.INetHandlerPlayServer;
+-
+-public class C17PacketCustomPayload implements Packet
+-{
+-    private String channel;
+-    private PacketBuffer data;
+-    private static final String __OBFID = "CL_00001356";
+-
+-    public C17PacketCustomPayload() {}
+-
+-    public C17PacketCustomPayload(String p_i45945_1_, PacketBuffer p_i45945_2_)
+-    {
+-        this.channel = p_i45945_1_;
+-        this.data = p_i45945_2_;
+-
+-        if (p_i45945_2_.writerIndex() > 32767)
+-        {
+-            throw new IllegalArgumentException("Payload may not be larger than 32767 bytes");
+-        }
+-    }
+-
+-    /**
+-     * Reads the raw packet data from the data stream.
+-     */
+-    public void readPacketData(PacketBuffer data) throws IOException
+-    {
+-        this.channel = data.readStringFromBuffer(20);
+-        int var2 = data.readableBytes();
+-
+-        if (var2 >= 0 && var2 <= 32767)
+-        {
+-            this.data = new PacketBuffer(data.readBytes(var2));
+-        }
+-        else
+-        {
+-            throw new IOException("Payload may not be larger than 32767 bytes");
+-        }
+-    }
+-
+-    /**
+-     * Writes the raw packet data to the data stream.
+-     */
+-    public void writePacketData(PacketBuffer data) throws IOException
+-    {
+-        data.writeString(this.channel);
+-        data.writeBytes((ByteBuf)this.data);
+-    }
+-
+-    /**
+-     * Passes this Packet on to the NetHandler for processing.
+-     */
+-    public void processPacket(INetHandlerPlayServer handler)
+-    {
+-        handler.processVanilla250Packet(this);
+-    }
+-
+-    public String getChannelName()
+-    {
+-        return this.channel;
+-    }
+-
+-    public PacketBuffer getBufferData()
+-    {
+-        return this.data;
+-    }
+-
+-    /**
+-     * Passes this Packet on to the NetHandler for processing.
+-     */
+-    public void processPacket(INetHandler handler)
+-    {
+-        this.processPacket((INetHandlerPlayServer)handler);
+-    }
+-}
 diff --git a/net/minecraft/network/play/client/CPacketAnimation.java b/net/minecraft/network/play/client/CPacketAnimation.java
 new file mode 100644
 index 0000000..8781aab
@@ -30096,6 +30261,93 @@ index 0000000..fa87e8c
 +    public void processPacket(INetHandler handler)
 +    {
 +        this.func_180767_a((INetHandlerPlayServer)handler);
++    }
++}
+diff --git a/net/minecraft/network/play/client/CPacketCustomPayload.java b/net/minecraft/network/play/client/CPacketCustomPayload.java
+new file mode 100644
+index 0000000..908beec
+--- /dev/null
++++ b/net/minecraft/network/play/client/CPacketCustomPayload.java
+@@ -0,0 +1,81 @@
++package net.minecraft.network.play.client;
++
++import io.netty.buffer.ByteBuf;
++import java.io.IOException;
++import net.minecraft.network.INetHandler;
++import net.minecraft.network.Packet;
++import net.minecraft.network.PacketBuffer;
++import net.minecraft.network.play.INetHandlerPlayServer;
++
++public class CPacketCustomPayload implements Packet
++{
++    private String channel;
++    private PacketBuffer data;
++    private static final String __OBFID = "CL_00001356";
++
++    public CPacketCustomPayload() {}
++
++    public CPacketCustomPayload(String p_i45945_1_, PacketBuffer p_i45945_2_)
++    {
++        this.channel = p_i45945_1_;
++        this.data = p_i45945_2_;
++
++        if (p_i45945_2_.writerIndex() > 32767)
++        {
++            throw new IllegalArgumentException("Payload may not be larger than 32767 bytes");
++        }
++    }
++
++    /**
++     * Reads the raw packet data from the data stream.
++     */
++    public void readPacketData(PacketBuffer data) throws IOException
++    {
++        this.channel = data.readStringFromBuffer(20);
++        int var2 = data.readableBytes();
++
++        if (var2 >= 0 && var2 <= 32767)
++        {
++            this.data = new PacketBuffer(data.readBytes(var2));
++        }
++        else
++        {
++            throw new IOException("Payload may not be larger than 32767 bytes");
++        }
++    }
++
++    /**
++     * Writes the raw packet data to the data stream.
++     */
++    public void writePacketData(PacketBuffer data) throws IOException
++    {
++        data.writeString(this.channel);
++        data.writeBytes((ByteBuf)this.data);
++    }
++
++    /**
++     * Passes this Packet on to the NetHandler for processing.
++     */
++    public void processPacket(INetHandlerPlayServer handler)
++    {
++        handler.processVanilla250Packet(this);
++    }
++
++    public String getChannelName()
++    {
++        return this.channel;
++    }
++
++    public PacketBuffer getBufferData()
++    {
++        return this.data;
++    }
++
++    /**
++     * Passes this Packet on to the NetHandler for processing.
++     */
++    public void processPacket(INetHandler handler)
++    {
++        this.processPacket((INetHandlerPlayServer)handler);
 +    }
 +}
 diff --git a/net/minecraft/network/play/client/CPacketEntityAction.java b/net/minecraft/network/play/client/CPacketEntityAction.java
