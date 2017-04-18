@@ -8,8 +8,8 @@
 package net.wurstclient.features.mods;
 
 @Mod.Info(
-	description = "Changes the scale of the nametags so you can always\n"
-		+ "read them.",
+	description = "Changes the scale of the nametags so you can always read them.\n"
+		+ "Also allows you to see the nametags of sneaking players.",
 	name = "NameTags",
 	tags = "name tags",
 	help = "Mods/NameTags")
