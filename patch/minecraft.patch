@@ -1,6 +1,6 @@
-From 7a7ff56e7ed9a5efc638272f018802ffe011b9be Mon Sep 17 00:00:00 2001
+From 296158f30a0394c2675228ab0f49854e75495dcd Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Sun, 16 Apr 2017 12:20:38 +0200
+Date: Tue, 18 Apr 2017 21:10:54 +0200
 Subject: [PATCH] mod
 
 ---
@@ -625,7 +625,7 @@ Subject: [PATCH] mod
  .../network/play/client/CPacketChatMessage.java    |  59 +++
  .../client/CPacketCreativeInventoryAction.java     |  64 +++
  .../network/play/client/CPacketEntityAction.java   |  89 ++++
- .../network/play/client/CPacketPlayer.java         | 229 ++++++++++
+ .../network/play/client/CPacketPlayer.java         | 259 +++++++++++
  .../network/play/client/CPacketPlayerDigging.java  |  91 ++++
  .../network/play/client/CPacketUseEntity.java      | 105 +++++
  .../network/play/server/S02PacketChat.java         |  18 +-
@@ -864,7 +864,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 860 files changed, 9459 insertions(+), 7985 deletions(-)
+ 860 files changed, 9489 insertions(+), 7985 deletions(-)
  delete mode 100644 net/minecraft/event/ClickEvent.java
  delete mode 100644 net/minecraft/event/HoverEvent.java
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
@@ -30195,10 +30195,10 @@ index 0000000..3917980
 +}
 diff --git a/net/minecraft/network/play/client/CPacketPlayer.java b/net/minecraft/network/play/client/CPacketPlayer.java
 new file mode 100644
-index 0000000..695c8a7
+index 0000000..640d5a9
 --- /dev/null
 +++ b/net/minecraft/network/play/client/CPacketPlayer.java
-@@ -0,0 +1,229 @@
+@@ -0,0 +1,259 @@
 +package net.minecraft.network.play.client;
 +
 +import java.io.IOException;
@@ -30250,6 +30250,36 @@ index 0000000..695c8a7
 +        data.writeByte(this.field_149474_g ? 1 : 0);
 +    }
 +
++	// TODO: Client
++	public double getX(double defaultValue)
++	{
++		return this.field_149480_h ? this.x : defaultValue;
++	}
++	
++	// TODO: Client
++	public double getY(double defaultValue)
++	{
++		return this.field_149480_h ? this.y : defaultValue;
++	}
++	
++	// TODO: Client
++	public double getZ(double defaultValue)
++	{
++		return this.field_149480_h ? this.z : defaultValue;
++	}
++	
++	// TODO: Client
++	public float getYaw(float defaultValue)
++	{
++		return this.rotating ? this.yaw : defaultValue;
++	}
++	
++	// TODO: Client
++	public float getPitch(float defaultValue)
++	{
++		return this.rotating ? this.pitch : defaultValue;
++	}
++    
 +    public double getX()
 +    {
 +        return this.x;

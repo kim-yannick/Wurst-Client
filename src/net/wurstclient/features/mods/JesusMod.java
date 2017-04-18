@@ -113,9 +113,9 @@ public final class JesusMod extends Mod
 		event.cancel();
 		
 		// get position
-		double x = packet.getX();
-		double y = packet.getY();
-		double z = packet.getZ();
+		double x = packet.getX(0);
+		double y = packet.getY(0);
+		double z = packet.getZ(0);
 		
 		// offset y
 		if(WMinecraft.getPlayer().ticksExisted % 2 == 0)
@@ -129,7 +129,7 @@ public final class JesusMod extends Mod
 			newPacket = new CPacketPlayer.Position(x, y, z, true);
 		else
 			newPacket = new CPacketPlayer.PositionRotation(x, y, z,
-				packet.getYaw(), packet.getPitch(), true);
+				packet.getYaw(0), packet.getPitch(0), true);
 		
 		// send new packet
 		WConnection.sendPacketBypass(newPacket);
