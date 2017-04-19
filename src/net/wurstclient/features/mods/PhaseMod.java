@@ -16,7 +16,10 @@ import net.wurstclient.events.listeners.UpdateListener;
 	name = "Phase",
 	tags = "Phaze",
 	help = "Mods/Phase")
-@Mod.Bypasses
+@Mod.Bypasses(ghostMode = false,
+	latestNCP = false,
+	antiCheat = false,
+	mineplex = false)
 public final class PhaseMod extends Mod implements UpdateListener
 {
 	@Override
@@ -26,17 +29,17 @@ public final class PhaseMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+		WMinecraft.getPlayer().noClip = false;
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		WMinecraft.getPlayer().noClip = true;
 		WMinecraft.getPlayer().fallDistance = 0;
 		WMinecraft.getPlayer().onGround = true;
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
-		WMinecraft.getPlayer().noClip = false;
 	}
 }
