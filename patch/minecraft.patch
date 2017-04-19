@@ -1,6 +1,6 @@
-From 81e8dee589de564f79b684d3a15cb5749d706e67 Mon Sep 17 00:00:00 2001
+From 966bb2c0630c89a4871f5d83ac9376d1e0d26c31 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 19 Apr 2017 07:09:34 +0200
+Date: Wed, 19 Apr 2017 07:57:37 +0200
 Subject: [PATCH] mod
 
 ---
@@ -138,7 +138,7 @@ Subject: [PATCH] mod
  net/minecraft/client/audio/SoundManager.java       |  12 +-
  .../client/entity/AbstractClientPlayer.java        |  21 +-
  .../client/entity/EntityOtherPlayerMP.java         |  10 +-
- net/minecraft/client/entity/EntityPlayerSP.java    | 157 ++++---
+ net/minecraft/client/entity/EntityPlayerSP.java    | 158 ++++---
  net/minecraft/client/gui/ChatLine.java             |   8 +-
  net/minecraft/client/gui/FontRenderer.java         |  52 ++-
  net/minecraft/client/gui/Gui.java                  |   8 +-
@@ -866,7 +866,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 862 files changed, 9611 insertions(+), 8080 deletions(-)
+ 862 files changed, 9612 insertions(+), 8080 deletions(-)
  delete mode 100644 net/minecraft/event/ClickEvent.java
  delete mode 100644 net/minecraft/event/HoverEvent.java
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
@@ -5620,7 +5620,7 @@ index 4b48cd3..e1672fd 100644
          Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(message);
      }
 diff --git a/net/minecraft/client/entity/EntityPlayerSP.java b/net/minecraft/client/entity/EntityPlayerSP.java
-index 58f696b..338b2d5 100644
+index 58f696b..0544224 100644
 --- a/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/net/minecraft/client/entity/EntityPlayerSP.java
 @@ -10,14 +10,7 @@ import net.minecraft.client.gui.GuiMerchant;
@@ -5942,18 +5942,20 @@ index 58f696b..338b2d5 100644
      }
  
      /**
-@@ -738,7 +781,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -738,8 +781,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
          boolean var4 = this.movementInput.moveForward >= var3;
          this.movementInput.updatePlayerMoveState();
  
 -        if (this.isUsingItem() && !this.isRiding())
-+        //TODO: Client
-+        if (this.isHandActive() && !this.isRiding()
-+        	&& !WurstClient.INSTANCE.mods.noSlowdownMod.isActive())
-         {
++		// TODO: Client
++		if(this.isHandActive() && !this.isRiding()
++			&& !WurstClient.INSTANCE.mods.noSlowdownMod.isActive())
+ 		{
++			
              this.movementInput.moveStrafe *= 0.2F;
              this.movementInput.moveForward *= 0.2F;
-@@ -751,7 +796,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+             this.sprintToggleTimer = 0;
+@@ -751,7 +797,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
          this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, this.getEntityBoundingBox().minY + 0.5D, this.posZ + (double)this.width * 0.35D);
          boolean var5 = (float)this.getFoodStats().getFoodLevel() > 6.0F || this.capabilities.allowFlying;
  
@@ -5962,7 +5964,7 @@ index 58f696b..338b2d5 100644
          {
              if (this.sprintToggleTimer <= 0 && !this.mc.gameSettings.keyBindSprint.getIsKeyPressed())
              {
-@@ -763,7 +808,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -763,7 +809,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
              }
          }
  
