@@ -8,21 +8,13 @@
 package net.wurstclient.features.mods;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBow;
-import net.minecraft.item.ItemEgg;
-import net.minecraft.item.ItemEnderPearl;
-import net.minecraft.item.ItemPotion;
-import net.minecraft.item.ItemSnowball;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.item.*;
 import net.minecraft.util.math.Vec3d;
+import net.wurstclient.compatibility.WItem;
 import net.wurstclient.compatibility.WMath;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.RenderListener;
@@ -51,25 +43,26 @@ public final class TrajectoriesMod extends Mod implements RenderListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(RenderListener.class, this);
+	}
+	
+	@Override
 	public void onRender(float partialTicks)
 	{
 		EntityPlayerSP player = WMinecraft.getPlayer();
 		
 		// check if player is holding item
-		ItemStack stack = player.getCurrentEquippedItem();
+		ItemStack stack = player.inventory.getCurrentItem();
 		if(stack == null)
 			return;
 		
 		// check if item is throwable
-		Item item = stack.getItem();
-		if(!(item instanceof ItemBow || item instanceof ItemSnowball
-			|| item instanceof ItemEgg || item instanceof ItemEnderPearl
-			|| item instanceof ItemPotion
-				&& ItemPotion.isSplash(stack.getItemDamage())))
+		if(!WItem.isThrowable(stack))
 			return;
 		
-		boolean usingBow =
-			player.getCurrentEquippedItem().getItem() instanceof ItemBow;
+		boolean usingBow = stack.getItem() instanceof ItemBow;
 		
 		// calculate starting position
 		double arrowPosX = player.lastTickPosX
@@ -103,16 +96,14 @@ public final class TrajectoriesMod extends Mod implements RenderListener
 			float bowPower = (72000 - player.getItemInUseCount()) / 20F;
 			bowPower = (bowPower * bowPower + bowPower * 2F) / 3F;
 			
-			if(bowPower > 1F)
-				bowPower = 1F;
-			
-			if(bowPower <= 0.1F)
+			if(bowPower > 1F || bowPower <= 0.1F)
 				bowPower = 1F;
 			
 			bowPower *= 3F;
 			arrowMotionX *= bowPower;
 			arrowMotionY *= bowPower;
 			arrowMotionZ *= bowPower;
+			
 		}else
 		{
 			arrowMotionX *= 1.5D;
@@ -122,23 +113,23 @@ public final class TrajectoriesMod extends Mod implements RenderListener
 		
 		// GL settings
 		GL11.glPushMatrix();
-		GL11.glEnable(GL11.GL_LINE_SMOOTH);
-		GL11.glBlendFunc(770, 771);
-		GL11.glEnable(3042);
-		GL11.glDisable(3553);
-		GL11.glDisable(2929);
-		GL11.glEnable(GL13.GL_MULTISAMPLE);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		GL11.glDepthMask(false);
-		GL11.glLineWidth(1.8F);
+		GL11.glEnable(GL11.GL_LINE_SMOOTH);
+		GL11.glLineWidth(2);
 		
 		RenderManager renderManager = mc.getRenderManager();
 		
 		// draw trajectory line
 		double gravity =
-			usingBow ? 0.05D : item instanceof ItemPotion ? 0.4D : 0.03D;
+			usingBow ? 0.05D : stack.getItem() instanceof ItemPotion ? 0.4D
+				: stack.getItem() instanceof ItemFishingRod ? 0.15D : 0.03D;
 		Vec3d playerVector = new Vec3d(player.posX,
 			player.posY + player.getEyeHeight(), player.posZ);
-		GL11.glColor3d(0, 1, 0);
+		GL11.glColor4f(0, 1, 0, 0.75F);
 		GL11.glBegin(GL11.GL_LINE_STRIP);
 		for(int i = 0; i < 1000; i++)
 		{
@@ -146,13 +137,13 @@ public final class TrajectoriesMod extends Mod implements RenderListener
 				arrowPosY - renderManager.renderPosY,
 				arrowPosZ - renderManager.renderPosZ);
 			
-			arrowPosX += arrowMotionX;
-			arrowPosY += arrowMotionY;
-			arrowPosZ += arrowMotionZ;
-			arrowMotionX *= 0.99D;
-			arrowMotionY *= 0.99D;
-			arrowMotionZ *= 0.99D;
-			arrowMotionY -= gravity;
+			arrowPosX += arrowMotionX * 0.1;
+			arrowPosY += arrowMotionY * 0.1;
+			arrowPosZ += arrowMotionZ * 0.1;
+			arrowMotionX *= 0.999D;
+			arrowMotionY *= 0.999D;
+			arrowMotionZ *= 0.999D;
+			arrowMotionY -= gravity * 0.1;
 			
 			if(WMinecraft.getWorld().rayTraceBlocks(playerVector,
 				new Vec3d(arrowPosX, arrowPosY, arrowPosZ)) != null)
@@ -164,26 +155,23 @@ public final class TrajectoriesMod extends Mod implements RenderListener
 		double renderX = arrowPosX - renderManager.renderPosX;
 		double renderY = arrowPosY - renderManager.renderPosY;
 		double renderZ = arrowPosZ - renderManager.renderPosZ;
-		AxisAlignedBB bb = new AxisAlignedBB(renderX - 0.5, renderY - 0.5,
-			renderZ - 0.5, renderX + 0.5, renderY + 0.5, renderZ + 0.5);
-		GL11.glColor4d(0, 1, 0, 0.15F);
-		RenderUtils.drawColorBox(bb);
-		GL11.glColor4d(0, 0, 0, 0.5F);
-		RenderGlobal.drawOutlinedBoundingBox(bb, -1);
+		
+		GL11.glPushMatrix();
+		GL11.glTranslated(renderX - 0.5, renderY - 0.5, renderZ - 0.5);
+		
+		GL11.glColor4f(0F, 1F, 0F, 0.25F);
+		RenderUtils.drawSolidBox();
+		GL11.glColor4f(0, 1, 0, 0.75F);
+		RenderUtils.drawOutlinedBox();
+		
+		GL11.glPopMatrix();
 		
 		// GL resets
-		GL11.glDisable(3042);
-		GL11.glEnable(3553);
-		GL11.glEnable(2929);
-		GL11.glDisable(GL13.GL_MULTISAMPLE);
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glDepthMask(true);
 		GL11.glDisable(GL11.GL_LINE_SMOOTH);
 		GL11.glPopMatrix();
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(RenderListener.class, this);
 	}
 }
