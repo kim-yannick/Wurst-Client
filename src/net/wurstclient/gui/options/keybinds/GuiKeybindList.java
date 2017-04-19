@@ -13,11 +13,11 @@ import java.util.Map.Entry;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiSlot;
 import net.wurstclient.WurstClient;
 import net.wurstclient.features.mods.Mod;
-import net.wurstclient.gui.GuiWurstSlot;
 
-public class GuiKeybindList extends GuiWurstSlot
+public class GuiKeybindList extends GuiSlot
 {
 	public GuiKeybindList(Minecraft par1Minecraft, GuiScreen prevScreen)
 	{
