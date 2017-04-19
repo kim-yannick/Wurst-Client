@@ -13,18 +13,15 @@ import java.util.HashSet;
 
 import com.google.common.collect.AbstractIterator;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockChest;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
 import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.wurstclient.WurstClient;
+import net.wurstclient.compatibility.WBlock;
 import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.compatibility.WPlayer;
@@ -33,55 +30,6 @@ import net.wurstclient.compatibility.WPlayerController;
 public final class BlockUtils
 {
 	private static final Minecraft mc = Minecraft.getMinecraft();
-	
-	private static final AxisAlignedBB CHEST_AABB =
-		new AxisAlignedBB(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
-	
-	public static IBlockState getState(BlockPos pos)
-	{
-		return WMinecraft.getWorld().getBlockState(pos);
-	}
-	
-	public static Block getBlock(BlockPos pos)
-	{
-		return getState(pos).getBlock();
-	}
-	
-	public static int getId(BlockPos pos)
-	{
-		return Block.getIdFromBlock(getBlock(pos));
-	}
-	
-	public static String getName(Block block)
-	{
-		return "" + Block.blockRegistry.getNameForObject(block);
-	}
-	
-	public static Material getMaterial(BlockPos pos)
-	{
-		return getBlock(pos).getMaterial();
-	}
-	
-	public static AxisAlignedBB getBoundingBox(BlockPos pos)
-	{
-		Block block = getBlock(pos);
-		
-		if(block instanceof BlockChest)
-			return CHEST_AABB.offset(pos);
-		
-		return block.getSelectedBoundingBox(WMinecraft.getWorld(), pos);
-	}
-	
-	public static boolean canBeClicked(BlockPos pos)
-	{
-		return getBlock(pos).canCollideCheck(getState(pos), false);
-	}
-	
-	public static float getHardness(BlockPos pos)
-	{
-		return getBlock(pos).getPlayerRelativeBlockHardness(
-			WMinecraft.getPlayer(), WMinecraft.getWorld(), pos);
-	}
 	
 	public static boolean placeBlockLegit(BlockPos pos)
 	{
@@ -94,7 +42,7 @@ public final class BlockUtils
 			BlockPos neighbor = pos.offset(side);
 			
 			// check if neighbor can be right clicked
-			if(!canBeClicked(neighbor))
+			if(!WBlock.canBeClicked(neighbor))
 				continue;
 			
 			Vec3d dirVec = new Vec3d(side.getDirectionVec());
@@ -138,7 +86,7 @@ public final class BlockUtils
 			BlockPos neighbor = pos.offset(side);
 			
 			// check if neighbor can be right clicked
-			if(!canBeClicked(neighbor))
+			if(!WBlock.canBeClicked(neighbor))
 				continue;
 			
 			Vec3d hitVec =
@@ -446,7 +394,7 @@ public final class BlockUtils
 					if(eyesPos.squareDistanceTo(new Vec3d(current)) > rangeSq)
 						continue;
 					
-					boolean canBeClicked = canBeClicked(current);
+					boolean canBeClicked = WBlock.canBeClicked(current);
 					
 					if(ignoreVisibility || !canBeClicked)
 						// add neighbors
@@ -549,7 +497,7 @@ public final class BlockUtils
 				while((pos = computeNextUnchecked()) != null)
 				{
 					// skip air blocks
-					if(getMaterial(pos) == Material.AIR)
+					if(WBlock.getMaterial(pos) == Material.AIR)
 						continue;
 					
 					// check if block is valid
