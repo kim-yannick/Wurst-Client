@@ -1,6 +1,6 @@
-From 7a0ea9e2f7baec8625141cd12be2ba9a9402fe36 Mon Sep 17 00:00:00 2001
+From 81e8dee589de564f79b684d3a15cb5749d706e67 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 18 Apr 2017 21:26:33 +0200
+Date: Wed, 19 Apr 2017 07:09:34 +0200
 Subject: [PATCH] mod
 
 ---
@@ -160,7 +160,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/GuiErrorScreen.java       |   2 +
  net/minecraft/client/gui/GuiFlatPresets.java       |  24 +-
  net/minecraft/client/gui/GuiGameOver.java          |  15 +-
- net/minecraft/client/gui/GuiIngame.java            |  68 +--
+ net/minecraft/client/gui/GuiIngame.java            |  73 +--
  net/minecraft/client/gui/GuiIngameMenu.java        |  53 ++-
  net/minecraft/client/gui/GuiKeyBindingList.java    |   9 +-
  net/minecraft/client/gui/GuiLanguage.java          |   5 +-
@@ -279,11 +279,11 @@ Subject: [PATCH] mod
  .../client/renderer/BlockRendererDispatcher.java   |   2 +-
  .../client/renderer/ChunkRenderContainer.java      |   2 +-
  .../client/renderer/DestroyBlockProgress.java      |   2 +-
- net/minecraft/client/renderer/EntityRenderer.java  | 188 ++++----
+ net/minecraft/client/renderer/EntityRenderer.java  | 202 +++++----
  .../client/renderer/ImageBufferDownload.java       |   6 +-
  .../client/renderer/InventoryEffectRenderer.java   |   4 +-
  net/minecraft/client/renderer/ItemModelMesher.java |  15 +-
- net/minecraft/client/renderer/ItemRenderer.java    |  26 +-
+ net/minecraft/client/renderer/ItemRenderer.java    |  36 +-
  .../client/renderer/RegionRenderCache.java         |   6 +-
  net/minecraft/client/renderer/RenderGlobal.java    | 111 +++--
  net/minecraft/client/renderer/RenderHelper.java    |   8 +-
@@ -866,7 +866,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 862 files changed, 9583 insertions(+), 8079 deletions(-)
+ 862 files changed, 9611 insertions(+), 8080 deletions(-)
  delete mode 100644 net/minecraft/event/ClickEvent.java
  delete mode 100644 net/minecraft/event/HoverEvent.java
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
@@ -7117,7 +7117,7 @@ index 2483f94..944a681 100644
      }
  }
 diff --git a/net/minecraft/client/gui/GuiIngame.java b/net/minecraft/client/gui/GuiIngame.java
-index 12b2457..196c1de 100644
+index 12b2457..2dc1929 100644
 --- a/net/minecraft/client/gui/GuiIngame.java
 +++ b/net/minecraft/client/gui/GuiIngame.java
 @@ -1,13 +1,15 @@
@@ -7139,7 +7139,7 @@ index 12b2457..196c1de 100644
  import net.minecraft.block.material.Material;
  import net.minecraft.client.Minecraft;
  import net.minecraft.client.renderer.GlStateManager;
-@@ -33,15 +35,13 @@ import net.minecraft.scoreboard.Score;
+@@ -33,15 +35,14 @@ import net.minecraft.scoreboard.Score;
  import net.minecraft.scoreboard.ScoreObjective;
  import net.minecraft.scoreboard.ScorePlayerTeam;
  import net.minecraft.scoreboard.Scoreboard;
@@ -7157,11 +7157,12 @@ index 12b2457..196c1de 100644
 +import net.minecraft.util.text.TextFormatting;
 +import net.minecraft.util.text.ITextComponent;
  import net.minecraft.world.border.WorldBorder;
++import net.wurstclient.WurstClient;
 +import net.wurstclient.gui.UIRenderer;
  
  public class GuiIngame extends Gui
  {
-@@ -211,7 +211,7 @@ public class GuiIngame extends Gui
+@@ -211,7 +212,7 @@ public class GuiIngame extends Gui
          {
              this.func_175182_a(var2);
          }
@@ -7170,7 +7171,7 @@ index 12b2457..196c1de 100644
          {
              this.field_175197_u.func_175263_a(var2);
          }
-@@ -277,7 +277,7 @@ public class GuiIngame extends Gui
+@@ -277,7 +278,7 @@ public class GuiIngame extends Gui
                  var8 = (int)(var7 * 255.0F / (float)this.field_175193_B);
              }
  
@@ -7179,7 +7180,7 @@ index 12b2457..196c1de 100644
  
              if (var8 > 8)
              {
-@@ -288,11 +288,11 @@ public class GuiIngame extends Gui
+@@ -288,11 +289,11 @@ public class GuiIngame extends Gui
                  GlStateManager.pushMatrix();
                  GlStateManager.scale(4.0F, 4.0F, 4.0F);
                  var9 = var8 << 24 & -16777216;
@@ -7193,7 +7194,7 @@ index 12b2457..196c1de 100644
                  GlStateManager.popMatrix();
                  GlStateManager.disableBlend();
                  GlStateManager.popMatrix();
-@@ -322,6 +322,10 @@ public class GuiIngame extends Gui
+@@ -322,6 +323,10 @@ public class GuiIngame extends Gui
              this.func_180475_a(var16, var2);
          }
  
@@ -7204,7 +7205,7 @@ index 12b2457..196c1de 100644
          GlStateManager.enableBlend();
          GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
          GlStateManager.disableAlpha();
-@@ -333,7 +337,7 @@ public class GuiIngame extends Gui
+@@ -333,7 +338,7 @@ public class GuiIngame extends Gui
          GlStateManager.popMatrix();
          var16 = var12.getObjectiveInDisplaySlot(0);
  
@@ -7213,7 +7214,7 @@ index 12b2457..196c1de 100644
          {
              this.overlayPlayerList.func_175246_a(true);
              this.overlayPlayerList.func_175249_a(var3, var12, var16);
-@@ -350,11 +354,11 @@ public class GuiIngame extends Gui
+@@ -350,11 +355,11 @@ public class GuiIngame extends Gui
  
      protected void func_180479_a(ScaledResolution p_180479_1_, float p_180479_2_)
      {
@@ -7227,7 +7228,7 @@ index 12b2457..196c1de 100644
              int var4 = p_180479_1_.getScaledWidth() / 2;
              float var5 = this.zLevel;
              this.zLevel = -90.0F;
-@@ -446,7 +450,7 @@ public class GuiIngame extends Gui
+@@ -446,7 +451,7 @@ public class GuiIngame extends Gui
  
              if (this.highlightingItemStack.hasDisplayName())
              {
@@ -7236,7 +7237,7 @@ index 12b2457..196c1de 100644
              }
  
              int var3 = (p_175182_1_.getScaledWidth() - this.func_175179_f().getStringWidth(var2)) / 2;
-@@ -469,7 +473,7 @@ public class GuiIngame extends Gui
+@@ -469,7 +474,7 @@ public class GuiIngame extends Gui
                  GlStateManager.pushMatrix();
                  GlStateManager.enableBlend();
                  GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
@@ -7245,7 +7246,7 @@ index 12b2457..196c1de 100644
                  GlStateManager.disableBlend();
                  GlStateManager.popMatrix();
              }
-@@ -493,7 +497,7 @@ public class GuiIngame extends Gui
+@@ -493,7 +498,7 @@ public class GuiIngame extends Gui
          }
  
          int var3 = this.func_175179_f().getStringWidth(var2);
@@ -7254,7 +7255,7 @@ index 12b2457..196c1de 100644
          this.mc.mcProfiler.endSection();
      }
  
-@@ -511,9 +515,9 @@ public class GuiIngame extends Gui
+@@ -511,9 +516,9 @@ public class GuiIngame extends Gui
              }
              else
              {
@@ -7266,7 +7267,7 @@ index 12b2457..196c1de 100644
  
                      if (this.mc.theWorld.getTileEntity(var1) instanceof IInventory)
                      {
-@@ -569,7 +573,7 @@ public class GuiIngame extends Gui
+@@ -569,7 +574,7 @@ public class GuiIngame extends Gui
          {
              Score var8 = (Score)var7.next();
              ScorePlayerTeam var9 = var3.getPlayersTeam(var8.getPlayerName());
@@ -7275,7 +7276,7 @@ index 12b2457..196c1de 100644
          }
  
          int var22 = var21.size() * this.func_175179_f().FONT_HEIGHT;
-@@ -585,7 +589,7 @@ public class GuiIngame extends Gui
+@@ -585,7 +590,7 @@ public class GuiIngame extends Gui
              ++var11;
              ScorePlayerTeam var14 = var3.getPlayersTeam(var13.getPlayerName());
              String var15 = ScorePlayerTeam.formatPlayerName(var14, var13.getPlayerName());
@@ -7284,7 +7285,7 @@ index 12b2457..196c1de 100644
              int var18 = var23 - var11 * this.func_175179_f().FONT_HEIGHT;
              int var19 = p_180475_2_.getScaledWidth() - var24 + 2;
              drawRect(var25 - 2, var18, var19, var18 + this.func_175179_f().FONT_HEIGHT, 1342177280);
-@@ -604,9 +608,9 @@ public class GuiIngame extends Gui
+@@ -604,9 +609,9 @@ public class GuiIngame extends Gui
  
      private void func_180477_d(ScaledResolution p_180477_1_)
      {
@@ -7296,7 +7297,7 @@ index 12b2457..196c1de 100644
              int var3 = MathHelper.ceiling_float_int(var2.getHealth());
              boolean var4 = this.field_175191_F > (long)this.updateCounter && (this.field_175191_F - (long)this.updateCounter) / 3L % 2L == 1L;
  
-@@ -921,7 +925,7 @@ public class GuiIngame extends Gui
+@@ -921,7 +926,7 @@ public class GuiIngame extends Gui
              }
  
              String var8 = BossStatus.bossName;
@@ -7305,7 +7306,18 @@ index 12b2457..196c1de 100644
              GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
              this.mc.getTextureManager().bindTexture(icons);
          }
-@@ -952,7 +956,7 @@ public class GuiIngame extends Gui
+@@ -929,6 +934,10 @@ public class GuiIngame extends Gui
+ 
+     private void func_180476_e(ScaledResolution p_180476_1_)
+     {
++		// TODO: Client
++		if(WurstClient.INSTANCE.mods.noOverlayMod.isActive())
++			return;
++    	
+         GlStateManager.disableDepth();
+         GlStateManager.depthMask(false);
+         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+@@ -952,7 +961,7 @@ public class GuiIngame extends Gui
      private void func_180480_a(float p_180480_1_, ScaledResolution p_180480_2_)
      {
          p_180480_1_ = 1.0F - p_180480_1_;
@@ -7314,7 +7326,7 @@ index 12b2457..196c1de 100644
          WorldBorder var3 = this.mc.theWorld.getWorldBorder();
          float var4 = (float)var3.getClosestDistance(this.mc.thePlayer);
          double var5 = Math.min(var3.func_177749_o() * (double)var3.getWarningTime() * 1000.0D, Math.abs(var3.getTargetSize() - var3.getDiameter()));
-@@ -1047,14 +1051,14 @@ public class GuiIngame extends Gui
+@@ -1047,14 +1056,14 @@ public class GuiIngame extends Gui
                  GlStateManager.translate((float)(-(p_175184_2_ + 8)), (float)(-(p_175184_3_ + 12)), 0.0F);
              }
  
@@ -7331,7 +7343,7 @@ index 12b2457..196c1de 100644
          }
      }
  
-@@ -1159,7 +1163,7 @@ public class GuiIngame extends Gui
+@@ -1159,7 +1168,7 @@ public class GuiIngame extends Gui
          }
      }
  
@@ -14191,7 +14203,7 @@ index edfa983..012b773 100644
  public class DestroyBlockProgress
  {
 diff --git a/net/minecraft/client/renderer/EntityRenderer.java b/net/minecraft/client/renderer/EntityRenderer.java
-index 9f404dc..c9229e0 100644
+index 9f404dc..bb6a671 100644
 --- a/net/minecraft/client/renderer/EntityRenderer.java
 +++ b/net/minecraft/client/renderer/EntityRenderer.java
 @@ -1,11 +1,11 @@
@@ -14751,6 +14763,38 @@ index 9f404dc..c9229e0 100644
              var6 = 5.0F;
              int var7 = ((EntityLivingBase)var3).getActivePotionEffect(Potion.blindness).getDuration();
  
+@@ -1987,8 +2023,13 @@ public class EntityRenderer implements IResourceManagerReloadListener
+         {
+             GlStateManager.setFog(2048);
+ 
+-            if (var3 instanceof EntityLivingBase && ((EntityLivingBase)var3).isPotionActive(Potion.waterBreathing))
++			// TODO: Client
++			if(var3 instanceof EntityLivingBase
++				&& ((EntityLivingBase)var3)
++					.isPotionActive(Potion.waterBreathing)
++				|| WurstClient.INSTANCE.mods.noOverlayMod.isActive())
+ 			{
++            	
+                 GlStateManager.setFogDensity(0.01F);
+             }
+             else
+@@ -1998,9 +2039,16 @@ public class EntityRenderer implements IResourceManagerReloadListener
+         }
+         else if (var5.getMaterial() == Material.lava)
+         {
++			// TODO: Client
++			if(WurstClient.INSTANCE.mods.noOverlayMod.isActive())
++				GlStateManager.setFogDensity(0.01F);
++			else
++			{
++				
+ 				GlStateManager.setFog(2048);
+ 				GlStateManager.setFogDensity(2.0F);
+ 			}
++        }
+         else
+         {
+             var6 = this.farPlaneDistance;
 diff --git a/net/minecraft/client/renderer/ImageBufferDownload.java b/net/minecraft/client/renderer/ImageBufferDownload.java
 index f98b5f2..8db8462 100644
 --- a/net/minecraft/client/renderer/ImageBufferDownload.java
@@ -14821,10 +14865,10 @@ index a2263ad..77057af 100644
          if (var3 == null)
          {
 diff --git a/net/minecraft/client/renderer/ItemRenderer.java b/net/minecraft/client/renderer/ItemRenderer.java
-index 255b3ae..9a41566 100644
+index 255b3ae..5b2c394 100644
 --- a/net/minecraft/client/renderer/ItemRenderer.java
 +++ b/net/minecraft/client/renderer/ItemRenderer.java
-@@ -18,10 +18,10 @@ import net.minecraft.init.Items;
+@@ -18,11 +18,13 @@ import net.minecraft.init.Items;
  import net.minecraft.item.EnumAction;
  import net.minecraft.item.Item;
  import net.minecraft.item.ItemStack;
@@ -14834,9 +14878,12 @@ index 255b3ae..9a41566 100644
  import net.minecraft.util.ResourceLocation;
 +import net.minecraft.util.math.BlockPos;
  import net.minecraft.world.storage.MapData;
++import net.wurstclient.WurstClient;
++
  import org.lwjgl.opengl.GL11;
  
-@@ -115,7 +115,7 @@ public class ItemRenderer
+ public class ItemRenderer
+@@ -115,7 +117,7 @@ public class ItemRenderer
      private float func_178100_c(float p_178100_1_)
      {
          float var2 = 1.0F - p_178100_1_ / 45.0F + 0.1F;
@@ -14845,7 +14892,7 @@ index 255b3ae..9a41566 100644
          var2 = -MathHelper.cos(var2 * (float)Math.PI) * 0.5F + 0.5F;
          return var2;
      }
-@@ -157,8 +157,8 @@ public class ItemRenderer
+@@ -157,8 +159,8 @@ public class ItemRenderer
  
      private void func_178097_a(AbstractClientPlayer p_178097_1_, float p_178097_2_, float p_178097_3_, float p_178097_4_)
      {
@@ -14856,7 +14903,7 @@ index 255b3ae..9a41566 100644
          float var7 = -0.2F * MathHelper.sin(p_178097_4_ * (float)Math.PI);
          GlStateManager.translate(var5, var6, var7);
          float var8 = this.func_178100_c(p_178097_2_);
-@@ -170,7 +170,7 @@ public class ItemRenderer
+@@ -170,7 +172,7 @@ public class ItemRenderer
          GlStateManager.rotate(0.0F, 1.0F, 0.0F, 0.0F);
          this.func_178102_b(p_178097_1_);
          float var9 = MathHelper.sin(p_178097_4_ * p_178097_4_ * (float)Math.PI);
@@ -14865,7 +14912,7 @@ index 255b3ae..9a41566 100644
          GlStateManager.rotate(var9 * -20.0F, 0.0F, 1.0F, 0.0F);
          GlStateManager.rotate(var10 * -20.0F, 0.0F, 0.0F, 1.0F);
          GlStateManager.rotate(var10 * -80.0F, 1.0F, 0.0F, 0.0F);
-@@ -200,15 +200,15 @@ public class ItemRenderer
+@@ -200,15 +202,15 @@ public class ItemRenderer
  
      private void func_178095_a(AbstractClientPlayer p_178095_1_, float p_178095_2_, float p_178095_3_)
      {
@@ -14884,7 +14931,7 @@ index 255b3ae..9a41566 100644
          GlStateManager.rotate(var8 * 70.0F, 0.0F, 1.0F, 0.0F);
          GlStateManager.rotate(var7 * -20.0F, 0.0F, 0.0F, 1.0F);
          this.mc.getTextureManager().bindTexture(p_178095_1_.getLocationSkin());
-@@ -225,8 +225,8 @@ public class ItemRenderer
+@@ -225,8 +227,8 @@ public class ItemRenderer
  
      private void func_178105_d(float p_178105_1_)
      {
@@ -14895,7 +14942,7 @@ index 255b3ae..9a41566 100644
          float var4 = -0.2F * MathHelper.sin(p_178105_1_ * (float)Math.PI);
          GlStateManager.translate(var2, var3, var4);
      }
-@@ -256,7 +256,7 @@ public class ItemRenderer
+@@ -256,7 +258,7 @@ public class ItemRenderer
          GlStateManager.translate(0.0F, p_178096_1_ * -0.6F, 0.0F);
          GlStateManager.rotate(45.0F, 0.0F, 1.0F, 0.0F);
          float var3 = MathHelper.sin(p_178096_2_ * p_178096_2_ * (float)Math.PI);
@@ -14904,7 +14951,7 @@ index 255b3ae..9a41566 100644
          GlStateManager.rotate(var3 * -20.0F, 0.0F, 1.0F, 0.0F);
          GlStateManager.rotate(var4 * -20.0F, 0.0F, 0.0F, 1.0F);
          GlStateManager.rotate(var4 * -80.0F, 1.0F, 0.0F, 0.0F);
-@@ -396,7 +396,7 @@ public class ItemRenderer
+@@ -396,7 +398,7 @@ public class ItemRenderer
              }
          }
  
@@ -14913,7 +14960,29 @@ index 255b3ae..9a41566 100644
          {
              if (this.mc.thePlayer.isInsideOfMaterial(Material.water))
              {
-@@ -542,7 +542,7 @@ public class ItemRenderer
+@@ -445,6 +447,10 @@ public class ItemRenderer
+      */
+     private void renderWaterOverlayTexture(float p_78448_1_)
+     {
++		// TODO: Client
++		if(WurstClient.INSTANCE.mods.noOverlayMod.isActive())
++			return;
++    	
+         this.mc.getTextureManager().bindTexture(RES_UNDERWATER_OVERLAY);
+         Tessellator var2 = Tessellator.getInstance();
+         WorldRenderer var3 = var2.getWorldRenderer();
+@@ -477,6 +483,10 @@ public class ItemRenderer
+      */
+     private void renderFireInFirstPerson(float p_78442_1_)
+     {
++		// TODO: Client
++		if(WurstClient.INSTANCE.mods.noOverlayMod.isActive())
++			return;
++    	
+         Tessellator var2 = Tessellator.getInstance();
+         WorldRenderer var3 = var2.getWorldRenderer();
+         GlStateManager.color(1.0F, 1.0F, 1.0F, 0.9F);
+@@ -542,7 +552,7 @@ public class ItemRenderer
  
          float var4 = 0.4F;
          float var5 = var3 ? 0.0F : 1.0F;
