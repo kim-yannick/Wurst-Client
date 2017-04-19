@@ -12,12 +12,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SPacketSoundEffect;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.compatibility.WPlayerController;
+import net.wurstclient.compatibility.WSoundEvents;
 import net.wurstclient.events.PacketInputEvent;
 import net.wurstclient.events.listeners.PacketInputListener;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.utils.ChatUtils;
 import net.wurstclient.utils.InventoryUtils;
-import net.wurstclient.utils.SoundEvents;
 
 @Mod.Info(
 	description = "Automatically catches fish until either all of your fishing rods are completely used up or your\n"
@@ -161,8 +161,7 @@ public final class AutoFishMod extends Mod
 			return;
 		
 		// check sound type
-		if(!SoundEvents.ENTITY_BOBBER_SPLASH
-			.equals(((SPacketSoundEffect)event.getPacket()).getSound()))
+		if(!WSoundEvents.isBobberSplash((SPacketSoundEffect)event.getPacket()))
 			return;
 		
 		// catch fish
