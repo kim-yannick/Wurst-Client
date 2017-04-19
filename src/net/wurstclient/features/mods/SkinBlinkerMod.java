@@ -18,7 +18,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 	name = "SkinBlinker",
 	tags = "SpookySkin, skin blinker, spooky skin",
 	help = "Mods/SkinBlinker")
-@Mod.Bypasses
+@Mod.Bypasses(ghostMode = false)
 public final class SkinBlinkerMod extends Mod implements UpdateListener
 {
 	@Override
@@ -28,24 +28,24 @@ public final class SkinBlinkerMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+		for(EnumPlayerModelParts part : EnumPlayerModelParts.values())
+			mc.gameSettings.setModelPartEnabled(part, true);
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		updateMS();
 		if(hasTimePassedS(5f))
 		{
 			updateLastMS();
-			Set activeParts = mc.gameSettings.func_178876_d();
+			Set activeParts = mc.gameSettings.getModelParts();
 			for(EnumPlayerModelParts part : EnumPlayerModelParts.values())
-				mc.gameSettings.func_178878_a(part,
+				mc.gameSettings.setModelPartEnabled(part,
 					!activeParts.contains(part));
 		}
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
-		for(EnumPlayerModelParts part : EnumPlayerModelParts.values())
-			mc.gameSettings.func_178878_a(part, true);
 	}
 }

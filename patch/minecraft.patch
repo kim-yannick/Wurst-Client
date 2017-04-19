@@ -1,6 +1,6 @@
-From 98ed5ca96777bec32a5aedbb99e1e3f18e8f8ba3 Mon Sep 17 00:00:00 2001
+From 9047c136d637c2347a5773048aeca55f595ffa12 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 19 Apr 2017 08:54:14 +0200
+Date: Wed, 19 Apr 2017 09:03:49 +0200
 Subject: [PATCH] mod
 
 ---
@@ -352,7 +352,7 @@ Subject: [PATCH] mod
  .../client/resources/data/PackMetadataSection.java |   8 +-
  .../data/PackMetadataSectionSerializer.java        |   5 +-
  .../client/resources/model/ModelBakery.java        |  30 +-
- net/minecraft/client/settings/GameSettings.java    |  11 +-
+ net/minecraft/client/settings/GameSettings.java    |  24 +-
  net/minecraft/client/settings/KeyBinding.java      |   8 +-
  net/minecraft/client/shader/Framebuffer.java       |   2 +-
  net/minecraft/client/shader/Shader.java            |   2 +-
@@ -867,7 +867,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 863 files changed, 9637 insertions(+), 8080 deletions(-)
+ 863 files changed, 9650 insertions(+), 8080 deletions(-)
  delete mode 100644 net/minecraft/event/ClickEvent.java
  delete mode 100644 net/minecraft/event/HoverEvent.java
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
@@ -17801,7 +17801,7 @@ index afea5d9..a363d3d 100644
          this.variantNames.put(Items.coal, Lists.newArrayList(new String[] {"coal", "charcoal"}));
          this.variantNames.put(Items.fishing_rod, Lists.newArrayList(new String[] {"fishing_rod", "fishing_rod_cast"}));
 diff --git a/net/minecraft/client/settings/GameSettings.java b/net/minecraft/client/settings/GameSettings.java
-index b1cd818..396492b 100644
+index b1cd818..3af6fda 100644
 --- a/net/minecraft/client/settings/GameSettings.java
 +++ b/net/minecraft/client/settings/GameSettings.java
 @@ -168,7 +168,8 @@ public class GameSettings
@@ -17814,7 +17814,7 @@ index b1cd818..396492b 100644
  
      /** Determines amount of particles. 0 = All, 1 = Decreased, 2 = Minimal */
      public int particleSetting;
-@@ -1258,7 +1259,7 @@ public class GameSettings
+@@ -1258,10 +1259,23 @@ public class GameSettings
                  var3 = (EnumPlayerModelParts)var2.next();
              }
  
@@ -17822,8 +17822,24 @@ index b1cd818..396492b 100644
 +            this.mc.thePlayer.connection.sendPacket(new C15PacketClientSettings(this.language, this.renderDistanceChunks, this.chatVisibility, this.chatColours, var1));
          }
      }
- 
-@@ -1423,18 +1424,18 @@ public class GameSettings
+     
++	// TODO: Client
++	public Set<EnumPlayerModelParts> getModelParts()
++	{
++		return func_178876_d();
++	}
++	
++	// TODO: Client
++	public void setModelPartEnabled(EnumPlayerModelParts modelPart,
++		boolean enable)
++	{
++		func_178878_a(modelPart, enable);
++	}
++    
+     public Set func_178876_d()
+     {
+         return ImmutableSet.copyOf(this.field_178882_aU);
+@@ -1423,18 +1437,18 @@ public class GameSettings
  
          public float normalizeValue(float p_148266_1_)
          {
