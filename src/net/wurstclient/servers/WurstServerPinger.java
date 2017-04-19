@@ -14,7 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.client.network.OldServerPinger;
+import net.minecraft.client.network.ServerPinger;
 
 public class WurstServerPinger
 {
@@ -31,13 +31,13 @@ public class WurstServerPinger
 	
 	public void ping(final String ip, final int port)
 	{
-		server = new ServerData("", ip + ":" + port);
+		server = new ServerData("", ip + ":" + port, false);
 		new Thread("Wurst Server Connector #" + threadNumber.incrementAndGet())
 		{
 			@Override
 			public void run()
 			{
-				OldServerPinger pinger = new OldServerPinger();
+				ServerPinger pinger = new ServerPinger();
 				try
 				{
 					logger.info("Pinging " + ip + ":" + port + "...");
