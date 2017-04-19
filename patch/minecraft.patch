@@ -1,6 +1,6 @@
-From 6e33f51856735e29b201c8dc7902e802759d2701 Mon Sep 17 00:00:00 2001
+From f319adef87999c17c5ebb925eb7eda6002946d4d Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 19 Apr 2017 09:31:26 +0200
+Date: Wed, 19 Apr 2017 09:39:42 +0200
 Subject: [PATCH] mod
 
 ---
@@ -36833,7 +36833,7 @@ index 8169170..6b01368 100644
  
          while (true)
 diff --git a/net/minecraft/util/Timer.java b/net/minecraft/util/Timer.java
-index 7ec66f4..d3e3072 100644
+index 7ec66f4..e591d3b 100644
 --- a/net/minecraft/util/Timer.java
 +++ b/net/minecraft/util/Timer.java
 @@ -1,6 +1,8 @@
@@ -36851,7 +36851,7 @@ index 7ec66f4..d3e3072 100644
      {
 +		// TODO: Client
 +		TimerMod timerMod = WurstClient.INSTANCE.mods.timerMod;
-+		timerSpeed = timerMod.isActive() ? timerMod.speed : 1F;
++		timerSpeed = timerMod.isActive() ? timerMod.speed.getValueF() : 1F;
 +    	
          long var1 = Minecraft.getSystemTime();
          long var3 = var1 - this.lastSyncSysClock;
