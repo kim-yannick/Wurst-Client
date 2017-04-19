@@ -63,7 +63,8 @@ public final class ScaffoldWalkMod extends Mod implements UpdateListener
 				continue;
 			
 			// filter out non-solid blocks
-			if(!Block.getBlockFromItem(stack.getItem()).isFullBlock())
+			if(!Block.getBlockFromItem(stack.getItem()).getDefaultState()
+				.isFullBlock())
 				continue;
 			
 			newSlot = i;

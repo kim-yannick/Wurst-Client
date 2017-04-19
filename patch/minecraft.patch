@@ -1,6 +1,6 @@
-From 588c8c208430ec4c0aee2032ef70202952297714 Mon Sep 17 00:00:00 2001
+From 98ed5ca96777bec32a5aedbb99e1e3f18e8f8ba3 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 19 Apr 2017 08:20:46 +0200
+Date: Wed, 19 Apr 2017 08:54:14 +0200
 Subject: [PATCH] mod
 
 ---
@@ -130,6 +130,7 @@ Subject: [PATCH] mod
  net/minecraft/block/material/Material.java         | 118 +++--
  .../block/state/BlockPistonStructureHelper.java    |   2 +-
  net/minecraft/block/state/BlockWorldState.java     |   2 +-
+ net/minecraft/block/state/IBlockState.java         |   6 +
  .../block/state/pattern/BlockPattern.java          |   4 +-
  net/minecraft/client/LoadingScreenRenderer.java    |  10 +-
  net/minecraft/client/Minecraft.java                | 323 +++++++-------
@@ -866,7 +867,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 862 files changed, 9631 insertions(+), 8080 deletions(-)
+ 863 files changed, 9637 insertions(+), 8080 deletions(-)
  delete mode 100644 net/minecraft/event/ClickEvent.java
  delete mode 100644 net/minecraft/event/HoverEvent.java
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
@@ -4563,6 +4564,23 @@ index 667b614..dd547bd 100644
  import net.minecraft.world.World;
  
  public class BlockWorldState
+diff --git a/net/minecraft/block/state/IBlockState.java b/net/minecraft/block/state/IBlockState.java
+index 75660a7..a5b05cb 100644
+--- a/net/minecraft/block/state/IBlockState.java
++++ b/net/minecraft/block/state/IBlockState.java
+@@ -7,6 +7,12 @@ import net.minecraft.block.properties.IProperty;
+ 
+ public interface IBlockState
+ {
++	// TODO: Client
++	default boolean isFullBlock()
++	{
++		return getBlock().isFullBlock();
++	}
++	
+     /**
+      * Get the names of all properties defined for this BlockState
+      */
 diff --git a/net/minecraft/block/state/pattern/BlockPattern.java b/net/minecraft/block/state/pattern/BlockPattern.java
 index 52d9c6e..1778b3a 100644
 --- a/net/minecraft/block/state/pattern/BlockPattern.java
