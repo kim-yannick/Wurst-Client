@@ -1,6 +1,6 @@
-From 9047c136d637c2347a5773048aeca55f595ffa12 Mon Sep 17 00:00:00 2001
+From 6e33f51856735e29b201c8dc7902e802759d2701 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 19 Apr 2017 09:03:49 +0200
+Date: Wed, 19 Apr 2017 09:31:26 +0200
 Subject: [PATCH] mod
 
 ---
@@ -130,7 +130,7 @@ Subject: [PATCH] mod
  net/minecraft/block/material/Material.java         | 118 +++--
  .../block/state/BlockPistonStructureHelper.java    |   2 +-
  net/minecraft/block/state/BlockWorldState.java     |   2 +-
- net/minecraft/block/state/IBlockState.java         |   6 +
+ net/minecraft/block/state/IBlockState.java         |  17 +
  .../block/state/pattern/BlockPattern.java          |   4 +-
  net/minecraft/client/LoadingScreenRenderer.java    |  10 +-
  net/minecraft/client/Minecraft.java                | 323 +++++++-------
@@ -867,7 +867,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 863 files changed, 9650 insertions(+), 8080 deletions(-)
+ 863 files changed, 9661 insertions(+), 8080 deletions(-)
  delete mode 100644 net/minecraft/event/ClickEvent.java
  delete mode 100644 net/minecraft/event/HoverEvent.java
  delete mode 100644 net/minecraft/network/play/client/C01PacketChatMessage.java
@@ -4565,10 +4565,17 @@ index 667b614..dd547bd 100644
  
  public class BlockWorldState
 diff --git a/net/minecraft/block/state/IBlockState.java b/net/minecraft/block/state/IBlockState.java
-index 75660a7..a5b05cb 100644
+index 75660a7..bd64829 100644
 --- a/net/minecraft/block/state/IBlockState.java
 +++ b/net/minecraft/block/state/IBlockState.java
-@@ -7,6 +7,12 @@ import net.minecraft.block.properties.IProperty;
+@@ -4,9 +4,26 @@ import com.google.common.collect.ImmutableMap;
+ import java.util.Collection;
+ import net.minecraft.block.Block;
+ import net.minecraft.block.properties.IProperty;
++import net.minecraft.util.math.AxisAlignedBB;
++import net.minecraft.util.math.BlockPos;
++import net.minecraft.world.IBlockAccess;
++import net.minecraft.world.World;
  
  public interface IBlockState
  {
@@ -4576,6 +4583,13 @@ index 75660a7..a5b05cb 100644
 +	default boolean isFullBlock()
 +	{
 +		return getBlock().isFullBlock();
++	}
++	
++	// TODO: Client
++	default AxisAlignedBB getBoundingBox(IBlockAccess blockAccess, BlockPos pos)
++	{
++		return getBlock().getCollisionBoundingBox((World)blockAccess, pos,
++			this);
 +	}
 +	
      /**

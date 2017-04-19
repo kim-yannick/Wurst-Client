@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.network.play.client.CPacketPlayer.Position;
+import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
@@ -26,26 +26,26 @@ import net.wurstclient.settings.SliderSetting.ValueDisplay;
 @Mod.Bypasses
 public final class StepMod extends Mod implements UpdateListener
 {
-	public float height = 1F;
+	public SliderSetting height =
+		new SliderSetting("Height", 1, 1, 100, 1, ValueDisplay.INTEGER);
 	
 	@Override
 	public void initSettings()
 	{
-		settings.add(
-			new SliderSetting("Height", height, 1, 100, 1, ValueDisplay.INTEGER)
-			{
-				@Override
-				public void update()
-				{
-					height = (float)getValue();
-				}
-			});
+		settings.add(height);
 	}
 	
 	@Override
 	public void onEnable()
 	{
 		wurst.events.add(UpdateListener.class, this);
+	}
+	
+	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+		WMinecraft.getPlayer().stepHeight = 0.5F;
 	}
 	
 	@Override
@@ -62,27 +62,41 @@ public final class StepMod extends Mod implements UpdateListener
 				&& canStep() && !WMinecraft.getPlayer().movementInput.jump
 				&& WMinecraft.getPlayer().isCollidedHorizontally)
 			{
-				WConnection.sendPacket(new Position(WMinecraft.getPlayer().posX,
-					WMinecraft.getPlayer().posY + 0.42D,
-					WMinecraft.getPlayer().posZ,
-					WMinecraft.getPlayer().onGround));
-				WConnection.sendPacket(new Position(WMinecraft.getPlayer().posX,
-					WMinecraft.getPlayer().posY + 0.753D,
-					WMinecraft.getPlayer().posZ,
-					WMinecraft.getPlayer().onGround));
+				WConnection.sendPacket(
+					new CPacketPlayer.Position(WMinecraft.getPlayer().posX,
+						WMinecraft.getPlayer().posY + 0.42D,
+						WMinecraft.getPlayer().posZ,
+						WMinecraft.getPlayer().onGround));
+				WConnection.sendPacket(
+					new CPacketPlayer.Position(WMinecraft.getPlayer().posX,
+						WMinecraft.getPlayer().posY + 0.753D,
+						WMinecraft.getPlayer().posZ,
+						WMinecraft.getPlayer().onGround));
 				WMinecraft.getPlayer().setPosition(WMinecraft.getPlayer().posX,
 					WMinecraft.getPlayer().posY + 1D,
 					WMinecraft.getPlayer().posZ);
 			}
 		}else
-			WMinecraft.getPlayer().stepHeight = isEnabled() ? height : 0.5F;
+			WMinecraft.getPlayer().stepHeight = height.getValueF();
 	}
 	
 	@Override
-	public void onDisable()
+	public void onYesCheatUpdate(BypassLevel bypassLevel)
 	{
-		wurst.events.remove(UpdateListener.class, this);
-		WMinecraft.getPlayer().stepHeight = 0.5F;
+		switch(bypassLevel)
+		{
+			default:
+			case OFF:
+			case MINEPLEX:
+			height.unlock();
+			break;
+			case ANTICHEAT:
+			case OLDER_NCP:
+			case LATEST_NCP:
+			case GHOST_MODE:
+			height.lock(() -> 1);
+			break;
+		}
 	}
 	
 	private boolean canStep()
@@ -99,7 +113,7 @@ public final class StepMod extends Mod implements UpdateListener
 				player.getEntityBoundingBox().maxY + 0.001D,
 				player.getEntityBoundingBox().maxZ + 0.001D);
 		
-		if(player.worldObj.isAreaLoaded(pos1, pos2))
+		if(WMinecraft.getWorld().isAreaLoaded(pos1, pos2))
 			for(int x = pos1.getX(); x <= pos2.getX(); x++)
 				for(int y = pos1.getY(); y <= pos2.getY(); y++)
 					for(int z = pos1.getZ(); z <= pos2.getZ(); z++)
@@ -109,12 +123,12 @@ public final class StepMod extends Mod implements UpdateListener
 		BlockPos belowPlayerPos =
 			new BlockPos(player.posX, player.posY - 1.0D, player.posZ);
 		for(BlockPos collisionBlock : collisionBlocks)
-			if(!(player.worldObj.getBlockState(collisionBlock.add(0, 1, 0))
+			if(!(WMinecraft.getWorld()
+				.getBlockState(collisionBlock.add(0, 1, 0))
 				.getBlock() instanceof BlockFenceGate))
-				if(player.worldObj.getBlockState(collisionBlock.add(0, 1, 0))
-					.getBlock().getCollisionBoundingBox(WMinecraft.getWorld(),
-						belowPlayerPos, WMinecraft.getWorld()
-							.getBlockState(collisionBlock)) != null)
+				if(WMinecraft.getWorld()
+					.getBlockState(collisionBlock.add(0, 1, 0)).getBoundingBox(
+						WMinecraft.getWorld(), belowPlayerPos) != null)
 					return false;
 				
 		return true;
