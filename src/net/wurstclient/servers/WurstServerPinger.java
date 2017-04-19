@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.network.OldServerPinger;
 
-public class ServerPinger
+public class WurstServerPinger
 {
 	private static final AtomicInteger threadNumber = new AtomicInteger(0);
 	public static final Logger logger = LogManager.getLogger();

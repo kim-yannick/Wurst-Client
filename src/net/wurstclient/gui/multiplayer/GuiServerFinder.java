@@ -21,7 +21,7 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.multiplayer.ServerData;
 import net.wurstclient.WurstClient;
 import net.wurstclient.files.ConfigFiles;
-import net.wurstclient.servers.ServerPinger;
+import net.wurstclient.servers.WurstServerPinger;
 import net.wurstclient.utils.MiscUtils;
 
 public class GuiServerFinder extends GuiScreen
@@ -171,7 +171,7 @@ public class GuiServerFinder extends GuiScreen
 									ipParts[i] = addr.getAddress()[i] & 0xff;
 								
 								state = ServerFinderState.SEARCHING;
-								ArrayList<ServerPinger> pingers =
+								ArrayList<WurstServerPinger> pingers =
 									new ArrayList<>();
 								int[] changes = {0, 1, -1, 2, -2, 3, -3};
 								for(int change : changes)
@@ -188,8 +188,8 @@ public class GuiServerFinder extends GuiScreen
 											+ ipParts2[1] + "." + ipParts2[2]
 											+ "." + ipParts2[3];
 										
-										ServerPinger pinger =
-											new ServerPinger();
+										WurstServerPinger pinger =
+											new WurstServerPinger();
 										pinger.ping(ip);
 										pingers.add(pinger);
 										while(pingers
@@ -244,7 +244,7 @@ public class GuiServerFinder extends GuiScreen
 		return false;
 	}
 	
-	private void updatePingers(ArrayList<ServerPinger> pingers)
+	private void updatePingers(ArrayList<WurstServerPinger> pingers)
 	{
 		for(int i = 0; i < pingers.size(); i++)
 			if(!pingers.get(i).isStillPinging())
@@ -259,7 +259,7 @@ public class GuiServerFinder extends GuiScreen
 						GuiServerFinder.this.prevScreen.savedServerList
 							.addServerData(
 								new ServerData("Grief me #" + working,
-									pingers.get(i).server.serverIP));
+									pingers.get(i).server.serverIP, false));
 						GuiServerFinder.this.prevScreen.savedServerList
 							.saveServerList();
 						GuiServerFinder.this.prevScreen.serverListSelector
