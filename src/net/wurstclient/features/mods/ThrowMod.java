@@ -17,7 +17,7 @@ import net.wurstclient.events.listeners.UpdateListener;
 		+ "Use the .throw command to change the amount of uses per click.",
 	name = "Throw",
 	help = "Mods/Throw")
-@Mod.Bypasses
+@Mod.Bypasses(ghostMode = false)
 public final class ThrowMod extends Mod implements UpdateListener
 {
 	@Override
@@ -33,6 +33,12 @@ public final class ThrowMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		if((mc.rightClickDelayTimer == 4 || wurst.mods.fastPlaceMod.isActive())
@@ -44,11 +50,5 @@ public final class ThrowMod extends Mod implements UpdateListener
 			for(int i = 0; i < wurst.options.throwAmount - 1; i++)
 				mc.rightClickMouse();
 		}
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
 	}
 }
