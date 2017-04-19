@@ -19,13 +19,19 @@ import net.wurstclient.events.listeners.UpdateListener;
 	name = "SpeedHack",
 	tags = "speed hack",
 	help = "Mods/SpeedHack")
-@Mod.Bypasses
+@Mod.Bypasses(ghostMode = false, latestNCP = false)
 public final class SpeedHackMod extends Mod implements UpdateListener
 {
 	@Override
 	public void onEnable()
 	{
 		wurst.events.add(UpdateListener.class, this);
+	}
+	
+	@Override
+	public void onDisable()
+	{
+		wurst.events.remove(UpdateListener.class, this);
 	}
 	
 	@Override
@@ -64,11 +70,5 @@ public final class SpeedHackMod extends Mod implements UpdateListener
 					WMinecraft.getPlayer().motionZ / currentSpeed * maxSpeed;
 			}
 		}
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		wurst.events.remove(UpdateListener.class, this);
 	}
 }
