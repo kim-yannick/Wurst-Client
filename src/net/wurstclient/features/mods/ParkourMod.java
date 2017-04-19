@@ -25,21 +25,23 @@ public final class ParkourMod extends Mod implements UpdateListener
 	}
 	
 	@Override
+	public void onDisable()
+	{
+		WurstClient.INSTANCE.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
 	public void onUpdate()
 	{
 		if(WMinecraft.getPlayer().onGround
 			&& !WMinecraft.getPlayer().isSneaking()
+			&& !mc.gameSettings.keyBindSneak.pressed
+			&& !mc.gameSettings.keyBindJump.pressed
 			&& WMinecraft.getWorld()
 				.getCollisionBoxes(WMinecraft.getPlayer(),
 					WMinecraft.getPlayer().getEntityBoundingBox()
-						.offset(0, -0.5, 0).contract(0.001, 0, 0.001))
+						.offset(0, -0.5, 0).expand(-0.001, 0, -0.001))
 				.isEmpty())
 			WMinecraft.getPlayer().jump();
-	}
-	
-	@Override
-	public void onDisable()
-	{
-		WurstClient.INSTANCE.events.remove(UpdateListener.class, this);
 	}
 }
