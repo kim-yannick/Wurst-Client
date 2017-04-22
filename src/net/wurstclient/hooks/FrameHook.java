@@ -46,7 +46,7 @@ public class FrameHook
 			return;
 		
 		// create frame
-		frame = new JFrame("Minecraft 1.8");
+		frame = new JFrame("Minecraft " + WMinecraft.DISPLAY_VERSION);
 		
 		// add LWJGL
 		Canvas canvas = new Canvas();
@@ -66,10 +66,10 @@ public class FrameHook
 		InputStream icon32 = null;
 		try
 		{
-			icon16 = mcDefaultResourcePack
-				.func_152780_c(new ResourceLocation("icons/icon_16x16.png"));
-			icon32 = mcDefaultResourcePack
-				.func_152780_c(new ResourceLocation("icons/icon_32x32.png"));
+			icon16 = mcDefaultResourcePack.getInputStreamAssets(
+				new ResourceLocation("icons/icon_16x16.png"));
+			icon32 = mcDefaultResourcePack.getInputStreamAssets(
+				new ResourceLocation("icons/icon_32x32.png"));
 			ArrayList<BufferedImage> icons = new ArrayList<>();
 			icons.add(ImageIO.read(icon16));
 			icons.add(ImageIO.read(icon32));

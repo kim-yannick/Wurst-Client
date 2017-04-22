@@ -1,6 +1,6 @@
-From 062394194c3f32c766a201362a8bf843b0c3f142 Mon Sep 17 00:00:00 2001
+From 5e60cac484e078cf723f5396cda13b14b5920746 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 19 Apr 2017 11:52:22 +0200
+Date: Sat, 22 Apr 2017 12:01:28 +0200
 Subject: [PATCH] mod
 
 ---
@@ -343,7 +343,7 @@ Subject: [PATCH] mod
  .../tileentity/TileEntitySignRenderer.java         |   7 +-
  .../tileentity/TileEntitySkullRenderer.java        |   4 +-
  .../client/resources/DefaultPlayerSkin.java        |  21 +-
- .../client/resources/DefaultResourcePack.java      |   4 +
+ .../client/resources/DefaultResourcePack.java      |  10 +
  .../client/resources/FallbackResourceManager.java  |   5 +
  .../client/resources/ResourcePackListEntry.java    |   4 +-
  .../resources/ResourcePackListEntryDefault.java    |   5 +-
@@ -868,7 +868,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 864 files changed, 9998 insertions(+), 8417 deletions(-)
+ 864 files changed, 10004 insertions(+), 8417 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -18092,7 +18092,7 @@ index 6f44429..dfd503d 100644
      }
  }
 diff --git a/net/minecraft/client/resources/DefaultResourcePack.java b/net/minecraft/client/resources/DefaultResourcePack.java
-index 07aa33f..8517494 100644
+index 07aa33f..a379644 100644
 --- a/net/minecraft/client/resources/DefaultResourcePack.java
 +++ b/net/minecraft/client/resources/DefaultResourcePack.java
 @@ -1,6 +1,7 @@
@@ -18111,11 +18111,17 @@ index 07aa33f..8517494 100644
  import net.minecraft.client.renderer.texture.TextureUtil;
  import net.minecraft.client.resources.data.IMetadataSection;
  import net.minecraft.client.resources.data.IMetadataSerializer;
-@@ -48,6 +50,8 @@ public class DefaultResourcePack implements IResourcePack
+@@ -48,6 +50,14 @@ public class DefaultResourcePack implements IResourcePack
          }
      }
  
-+    //TODO: Client
++	// TODO: Client
++	public InputStream getInputStreamAssets(ResourceLocation location)
++		throws IOException, FileNotFoundException
++	{
++		return func_152780_c(location);
++	}
++    
 +    @SuppressWarnings("resource")
      public InputStream func_152780_c(ResourceLocation p_152780_1_) throws IOException
      {
