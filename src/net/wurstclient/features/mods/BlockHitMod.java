@@ -15,17 +15,20 @@ import net.wurstclient.events.listeners.LeftClickListener;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.utils.InventoryUtils;
 
-@Mod.Info(
-	description = "Automatically blocks whenever you hit something with a sword.\n"
-		+ "Some say that you will receive less damage in PVP when doing this.",
-	name = "BlockHit",
-	tags = "AutoBlock, BlockHitting, auto block, block hitting",
+@Mod.Info(tags = "AutoBlock, BlockHitting, auto block, block hitting",
 	help = "Mods/BlockHit")
 @Mod.Bypasses
 public final class BlockHitMod extends Mod
 	implements LeftClickListener, UpdateListener
 {
 	private int timer;
+	
+	public BlockHitMod()
+	{
+		super("BlockHit",
+			"Automatically blocks whenever you hit something with a sword.\n"
+				+ "Some say that you will receive less damage in PVP when doing this.");
+	}
 	
 	@Override
 	public void onEnable()

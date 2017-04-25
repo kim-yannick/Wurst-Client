@@ -19,13 +19,7 @@ import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 
-@Mod.Info(
-	description = "Allows you to you fly.\n"
-		+ "Bypasses NoCheat+ if YesCheat+ is enabled.\n"
-		+ "Bypasses MAC if AntiMAC is enabled.",
-	name = "Flight",
-	tags = "FlyHack,fly hack,flying",
-	help = "Mods/Flight")
+@Mod.Info(tags = "FlyHack,fly hack,flying", help = "Mods/Flight")
 @Mod.Bypasses
 public final class FlightMod extends Mod implements UpdateListener
 {
@@ -37,6 +31,14 @@ public final class FlightMod extends Mod implements UpdateListener
 	
 	public final CheckboxSetting flightKickBypass =
 		new CheckboxSetting("Flight-Kick-Bypass", false);
+	
+	public FlightMod()
+	{
+		super("Flight",
+			"Allows you to you fly.\n"
+				+ "Bypasses NoCheat+ if YesCheat+ is enabled.\n"
+				+ "Bypasses MAC if AntiMAC is enabled.");
+	}
 	
 	@Override
 	public String getRenderName()

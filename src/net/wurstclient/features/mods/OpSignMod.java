@@ -11,18 +11,21 @@ import net.wurstclient.features.Feature;
 import net.wurstclient.gui.mods.GuiOpSign;
 import net.wurstclient.utils.ChatUtils;
 
-@Mod.Info(
-	description = "Enable this mod, place a sign and click it to get OP.\n"
-		+ "Can also be used to run any other command.\n"
-		+ "Only works on servers running Minecraft 1.8 - 1.8.5 without Spigot!\n"
-		+ "Type .sv to check the server version.",
-	name = "OP-Sign",
-	tags = "Force OP,OP Sign,Sign OP,sign hack,admin hack,OpSign",
+@Mod.Info(tags = "Force OP,OP Sign,Sign OP,sign hack,admin hack,OpSign",
 	help = "Mods/OP-Sign_(Force_OP)")
 @Mod.Bypasses
 public final class OpSignMod extends Mod
 {
 	public String command;
+	
+	public OpSignMod()
+	{
+		super("OP-Sign",
+			"Enable this mod, place a sign and click it to get OP.\n"
+				+ "Can also be used to run any other command.\n"
+				+ "Only works on servers running Minecraft 1.8 - 1.8.5 without Spigot!\n"
+				+ "Type .sv to check the server version.");
+	}
 	
 	@Override
 	public Feature[] getSeeAlso()

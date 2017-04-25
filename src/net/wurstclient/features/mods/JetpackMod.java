@@ -13,17 +13,18 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.settings.CheckboxSetting;
 
-@Mod.Info(
-	description = "Allows you to jump in mid-air.\n"
-		+ "Looks as if you had a jetpack.",
-	name = "Jetpack",
-	tags = "jet pack",
-	help = "Mods/Jetpack")
+@Mod.Info(tags = "jet pack", help = "Mods/Jetpack")
 @Mod.Bypasses
 public final class JetpackMod extends Mod implements UpdateListener
 {
 	public final CheckboxSetting flightKickBypass =
 		new CheckboxSetting("Flight-Kick-Bypass", false);
+	
+	public JetpackMod()
+	{
+		super("Jetpack", "Allows you to jump in mid-air.\n"
+			+ "Looks as if you had a jetpack.");
+	}
 	
 	@Override
 	public void onEnable()
