@@ -12,6 +12,8 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.TreeMap;
 
+import net.wurstclient.features.Mod;
+
 @Mod.Bypasses
 public final class ModManager
 {

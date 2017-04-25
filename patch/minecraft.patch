@@ -1,6 +1,6 @@
-From a35e9c6a7ff95a7511617ffcf2cdfc68263ba58a Mon Sep 17 00:00:00 2001
+From 89f16311879c876f1a9f5accf62706e053c6c662 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 25 Apr 2017 07:11:14 +0200
+Date: Tue, 25 Apr 2017 10:22:56 +0200
 Subject: [PATCH] mod
 
 ---
@@ -868,7 +868,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 864 files changed, 10009 insertions(+), 8417 deletions(-)
+ 864 files changed, 10008 insertions(+), 8418 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -21165,14 +21165,13 @@ index 6e5f3cb..85fa613 100644
  
      /**
 diff --git a/net/minecraft/entity/EntityLivingBase.java b/net/minecraft/entity/EntityLivingBase.java
-index 80f1f20..0d40d00 100644
+index 80f1f20..a1dd532 100644
 --- a/net/minecraft/entity/EntityLivingBase.java
 +++ b/net/minecraft/entity/EntityLivingBase.java
 @@ -1,12 +1,14 @@
  package net.minecraft.entity;
  
- import com.google.common.collect.Maps;
-+
+-import com.google.common.collect.Maps;
  import java.util.Collection;
  import java.util.Iterator;
  import java.util.List;
@@ -21180,10 +21179,12 @@ index 80f1f20..0d40d00 100644
  import java.util.Random;
  import java.util.UUID;
 +
++import com.google.common.collect.Maps;
++
  import net.minecraft.block.Block;
  import net.minecraft.block.material.Material;
  import net.minecraft.block.state.IBlockState;
-@@ -38,15 +40,19 @@ import net.minecraft.potion.Potion;
+@@ -38,15 +40,17 @@ import net.minecraft.potion.Potion;
  import net.minecraft.potion.PotionEffect;
  import net.minecraft.potion.PotionHelper;
  import net.minecraft.scoreboard.Team;
@@ -21201,12 +21202,10 @@ index 80f1f20..0d40d00 100644
  import net.minecraft.world.WorldServer;
 +import net.wurstclient.WurstClient;
 +import net.wurstclient.features.mods.HighJumpMod;
-+import net.wurstclient.features.mods.Mod;
-+import net.wurstclient.features.mods.NoSlowdownMod;
  
  public abstract class EntityLivingBase extends Entity
  {
-@@ -850,7 +856,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -850,7 +854,7 @@ public abstract class EntityLivingBase extends Entity
  
      public void setHealth(float p_70606_1_)
      {
@@ -21215,7 +21214,7 @@ index 80f1f20..0d40d00 100644
      }
  
      /**
-@@ -1000,11 +1006,11 @@ public abstract class EntityLivingBase extends Entity
+@@ -1000,11 +1004,11 @@ public abstract class EntityLivingBase extends Entity
  
          for (int var2 = 0; var2 < 5; ++var2)
          {
@@ -21229,7 +21228,7 @@ index 80f1f20..0d40d00 100644
              var6 = var6.rotatePitch(-this.rotationPitch * (float)Math.PI / 180.0F);
              var6 = var6.rotateYaw(-this.rotationYaw * (float)Math.PI / 180.0F);
              var6 = var6.addVector(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
-@@ -1070,7 +1076,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -1070,7 +1074,7 @@ public abstract class EntityLivingBase extends Entity
          if (this.rand.nextDouble() >= this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getAttributeValue())
          {
              this.isAirBorne = true;
@@ -21238,7 +21237,7 @@ index 80f1f20..0d40d00 100644
              float var8 = 0.4F;
              this.motionX /= 2.0D;
              this.motionY /= 2.0D;
-@@ -1121,7 +1127,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -1121,7 +1125,7 @@ public abstract class EntityLivingBase extends Entity
          int var2 = MathHelper.floor_double(this.getEntityBoundingBox().minY);
          int var3 = MathHelper.floor_double(this.posZ);
          Block var4 = this.worldObj.getBlockState(new BlockPos(var1, var2, var3)).getBlock();
@@ -21247,7 +21246,7 @@ index 80f1f20..0d40d00 100644
      }
  
      /**
-@@ -1326,7 +1332,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -1326,7 +1330,7 @@ public abstract class EntityLivingBase extends Entity
      /**
       * Swings the item the player is holding.
       */
@@ -21256,7 +21255,7 @@ index 80f1f20..0d40d00 100644
      {
          if (!this.isSwingInProgress || this.swingProgressInt >= this.getArmSwingAnimationEnd() / 2 || this.swingProgressInt < 0)
          {
-@@ -1557,6 +1563,11 @@ public abstract class EntityLivingBase extends Entity
+@@ -1557,6 +1561,11 @@ public abstract class EntityLivingBase extends Entity
      {
  		this.motionY = (double)this.func_175134_bD();
  		
@@ -21268,7 +21267,7 @@ index 80f1f20..0d40d00 100644
          if (this.isPotionActive(Potion.jump))
          {
              this.motionY += (double)((float)(this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F);
-@@ -1598,8 +1609,15 @@ public abstract class EntityLivingBase extends Entity
+@@ -1598,8 +1607,15 @@ public abstract class EntityLivingBase extends Entity
              float var5;
              float var6;
  
@@ -21285,7 +21284,7 @@ index 80f1f20..0d40d00 100644
                  var8 = this.posY;
                  var5 = 0.8F;
                  var6 = 0.02F;
-@@ -1679,8 +1697,8 @@ public abstract class EntityLivingBase extends Entity
+@@ -1679,8 +1695,8 @@ public abstract class EntityLivingBase extends Entity
                  if (this.isOnLadder())
                  {
                      var6 = 0.15F;
@@ -21296,7 +21295,7 @@ index 80f1f20..0d40d00 100644
                      this.fallDistance = 0.0F;
  
                      if (this.motionY < -0.15D)
-@@ -1728,7 +1746,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -1728,7 +1744,7 @@ public abstract class EntityLivingBase extends Entity
          this.prevLimbSwingAmount = this.limbSwingAmount;
          var8 = this.posX - this.prevPosX;
          double var9 = this.posZ - this.prevPosZ;
@@ -21305,7 +21304,7 @@ index 80f1f20..0d40d00 100644
  
          if (var10 > 1.0F)
          {
-@@ -1902,9 +1920,9 @@ public abstract class EntityLivingBase extends Entity
+@@ -1902,9 +1918,9 @@ public abstract class EntityLivingBase extends Entity
  
      protected float func_110146_f(float p_110146_1_, float p_110146_2_)
      {
@@ -21317,7 +21316,7 @@ index 80f1f20..0d40d00 100644
          boolean var5 = var4 < -90.0F || var4 >= 90.0F;
  
          if (var4 < -75.0F)
-@@ -1948,7 +1966,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -1948,7 +1964,7 @@ public abstract class EntityLivingBase extends Entity
              double var1 = this.posX + (this.newPosX - this.posX) / (double)this.newPosRotationIncrements;
              double var3 = this.posY + (this.newPosY - this.posY) / (double)this.newPosRotationIncrements;
              double var5 = this.posZ + (this.newPosZ - this.posZ) / (double)this.newPosRotationIncrements;
@@ -21326,7 +21325,7 @@ index 80f1f20..0d40d00 100644
              this.rotationYaw = (float)((double)this.rotationYaw + var7 / (double)this.newPosRotationIncrements);
              this.rotationPitch = (float)((double)this.rotationPitch + (this.newRotationPitch - (double)this.rotationPitch) / (double)this.newPosRotationIncrements);
              --this.newPosRotationIncrements;
-@@ -2141,13 +2159,13 @@ public abstract class EntityLivingBase extends Entity
+@@ -2141,13 +2157,13 @@ public abstract class EntityLivingBase extends Entity
       */
      public boolean canEntityBeSeen(Entity p_70685_1_)
      {
@@ -21342,7 +21341,7 @@ index 80f1f20..0d40d00 100644
      {
          return this.getLook(1.0F);
      }
-@@ -2155,7 +2173,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -2155,7 +2171,7 @@ public abstract class EntityLivingBase extends Entity
      /**
       * interpolated look vector
       */

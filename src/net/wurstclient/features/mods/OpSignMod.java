@@ -8,6 +8,7 @@
 package net.wurstclient.features.mods;
 
 import net.wurstclient.features.Feature;
+import net.wurstclient.features.Mod;
 import net.wurstclient.gui.mods.GuiOpSign;
 import net.wurstclient.utils.ChatUtils;
 
