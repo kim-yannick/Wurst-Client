@@ -1,6 +1,6 @@
-From 5e60cac484e078cf723f5396cda13b14b5920746 Mon Sep 17 00:00:00 2001
+From 70529cdc92dc109b078fcc0f7cfc257fd149bb4f Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Sat, 22 Apr 2017 12:01:28 +0200
+Date: Tue, 25 Apr 2017 07:02:09 +0200
 Subject: [PATCH] mod
 
 ---
@@ -300,7 +300,7 @@ Subject: [PATCH] mod
  .../client/renderer/chunk/ListedRenderChunk.java   |   2 +-
  .../client/renderer/chunk/RenderChunk.java         |   4 +-
  .../client/renderer/chunk/VboChunkFactory.java     |   2 +-
- net/minecraft/client/renderer/chunk/VisGraph.java  |   7 +-
+ net/minecraft/client/renderer/chunk/VisGraph.java  |  11 +-
  .../renderer/culling/ClippingHelperImpl.java       |   2 +-
  .../client/renderer/culling/Frustrum.java          |   2 +-
  net/minecraft/client/renderer/culling/ICamera.java |   2 +-
@@ -868,7 +868,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 864 files changed, 10004 insertions(+), 8417 deletions(-)
+ 864 files changed, 10008 insertions(+), 8417 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -16432,10 +16432,10 @@ index c96a07e..59a2031 100644
  
  public class VboChunkFactory implements IRenderChunkFactory
 diff --git a/net/minecraft/client/renderer/chunk/VisGraph.java b/net/minecraft/client/renderer/chunk/VisGraph.java
-index 7508484..9c3331c 100644
+index 7508484..7814899 100644
 --- a/net/minecraft/client/renderer/chunk/VisGraph.java
 +++ b/net/minecraft/client/renderer/chunk/VisGraph.java
-@@ -5,8 +5,9 @@ import java.util.BitSet;
+@@ -5,8 +5,10 @@ import java.util.BitSet;
  import java.util.EnumSet;
  import java.util.LinkedList;
  import java.util.Set;
@@ -16443,16 +16443,20 @@ index 7508484..9c3331c 100644
 +
  import net.minecraft.util.EnumFacing;
 +import net.minecraft.util.math.BlockPos;
++import net.wurstclient.WurstClient;
  
  public class VisGraph
  {
-@@ -20,7 +21,9 @@ public class VisGraph
+@@ -20,7 +22,12 @@ public class VisGraph
  
      public void func_178606_a(BlockPos p_178606_1_)
      {
 -        this.field_178612_d.set(func_178608_c(p_178606_1_), true);
-+    	//TODO: Client
-+        //this.field_178612_d.set(func_178608_c(p_178606_1_), true);
++		// TODO: Client
++		if(WurstClient.INSTANCE.mods.xRayMod.isActive()
++			|| WurstClient.INSTANCE.mods.freecamMod.isActive()
++			|| WurstClient.INSTANCE.mods.caveFinderMod.isActive())
++			return;
 +    	
          --this.field_178611_f;
      }
