@@ -13,12 +13,13 @@ import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.LeftClickEvent;
 import net.wurstclient.events.listeners.LeftClickListener;
 import net.wurstclient.events.listeners.UpdateListener;
+import net.wurstclient.features.HelpPage;
 import net.wurstclient.features.Mod;
 import net.wurstclient.features.SearchTags;
 import net.wurstclient.utils.InventoryUtils;
 
 @SearchTags({"AutoBlock", "BlockHitting", "auto block", "block hitting"})
-@Mod.Info(help = "Mods/BlockHit")
+@HelpPage("Mods/BlockHit")
 @Mod.Bypasses
 public final class BlockHitMod extends Mod
 	implements LeftClickListener, UpdateListener
