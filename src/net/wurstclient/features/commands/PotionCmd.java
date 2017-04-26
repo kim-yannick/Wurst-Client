@@ -18,9 +18,10 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.features.Cmd;
+import net.wurstclient.features.HelpPage;
 import net.wurstclient.utils.MiscUtils;
 
-@Cmd.Info(help = "Commands/potion")
+@HelpPage("Commands/potion")
 public final class PotionCmd extends Cmd
 {
 	public PotionCmd()
