@@ -12,9 +12,11 @@ import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.Mod;
+import net.wurstclient.features.SearchTags;
 import net.wurstclient.settings.CheckboxSetting;
 
-@Mod.Info(tags = "jet pack", help = "Mods/Jetpack")
+@SearchTags({"jet pack"})
+@Mod.Info(help = "Mods/Jetpack")
 @Mod.Bypasses
 public final class JetpackMod extends Mod implements UpdateListener
 {

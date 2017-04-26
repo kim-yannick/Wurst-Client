@@ -9,11 +9,13 @@ package net.wurstclient.features.mods;
 
 import net.wurstclient.features.Feature;
 import net.wurstclient.features.Mod;
+import net.wurstclient.features.SearchTags;
 import net.wurstclient.gui.mods.GuiOpSign;
 import net.wurstclient.utils.ChatUtils;
 
-@Mod.Info(tags = "Force OP,OP Sign,Sign OP,sign hack,admin hack,OpSign",
-	help = "Mods/OP-Sign_(Force_OP)")
+@SearchTags({"Force OP", "OP Sign", "Sign OP", "sign hack", "admin hack",
+	"OpSign"})
+@Mod.Info(help = "Mods/OP-Sign_(Force_OP)")
 @Mod.Bypasses
 public final class OpSignMod extends Mod
 {
