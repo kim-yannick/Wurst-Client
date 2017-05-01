@@ -5,11 +5,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package net.wurstclient.utils;
+package net.wurstclient.compatibility;
 
 import net.minecraft.potion.Potion;
 
-public class MobEffects
+public class WPotionEffects
 {
 	public static final Potion SPEED = Potion.moveSpeed;
 	public static final Potion SLOWNESS = Potion.moveSlowdown;

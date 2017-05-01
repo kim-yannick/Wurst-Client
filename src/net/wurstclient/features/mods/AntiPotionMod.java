@@ -9,23 +9,23 @@ package net.wurstclient.features.mods;
 
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.potion.Potion;
+import net.wurstclient.compatibility.WPotionEffects;
 import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.HelpPage;
 import net.wurstclient.features.Mod;
 import net.wurstclient.features.SearchTags;
-import net.wurstclient.utils.MobEffects;
 
 @SearchTags({"NoPotion", "Zoot", "anti potions", "no potions"})
 @HelpPage("Mods/AntiPotion")
 @Mod.Bypasses(ghostMode = false, latestNCP = false, olderNCP = false)
 public final class AntiPotionMod extends Mod implements UpdateListener
 {
-	private final Potion[] blockedEffects = new Potion[]{MobEffects.HUNGER,
-		MobEffects.SLOWNESS, MobEffects.MINING_FATIGUE,
-		MobEffects.INSTANT_DAMAGE, MobEffects.NAUSEA, MobEffects.BLINDNESS,
-		MobEffects.WEAKNESS, MobEffects.WITHER, MobEffects.POISON};
+	private final Potion[] blockedEffects = new Potion[]{WPotionEffects.HUNGER,
+		WPotionEffects.SLOWNESS, WPotionEffects.MINING_FATIGUE,
+		WPotionEffects.INSTANT_DAMAGE, WPotionEffects.NAUSEA, WPotionEffects.BLINDNESS,
+		WPotionEffects.WEAKNESS, WPotionEffects.WITHER, WPotionEffects.POISON};
 	
 	public AntiPotionMod()
 	{

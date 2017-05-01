@@ -9,6 +9,7 @@ package net.wurstclient.features.mods;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketPlayer;
+import net.wurstclient.compatibility.WPotionEffects;
 import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.compatibility.WPlayerController;
@@ -22,7 +23,6 @@ import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.SliderSetting;
 import net.wurstclient.settings.SliderSetting.ValueDisplay;
 import net.wurstclient.utils.InventoryUtils;
-import net.wurstclient.utils.MobEffects;
 
 @SearchTags({"AutoPotion", "auto potion", "auto splash potion"})
 @HelpPage("Mods/AutoSplashPot")
@@ -151,7 +151,7 @@ public final class AutoSplashPotMod extends Mod implements UpdateListener
 				continue;
 			
 			// search for instant health effects
-			if(InventoryUtils.hasEffect(stack, MobEffects.INSTANT_HEALTH))
+			if(InventoryUtils.hasEffect(stack, WPotionEffects.INSTANT_HEALTH))
 				return i;
 		}
 		
