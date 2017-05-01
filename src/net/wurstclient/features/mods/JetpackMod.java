@@ -8,6 +8,7 @@
 package net.wurstclient.features.mods;
 
 import net.minecraft.network.play.client.CPacketPlayer;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.wurstclient.compatibility.WConnection;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.listeners.UpdateListener;
@@ -18,65 +19,127 @@ import net.wurstclient.settings.CheckboxSetting;
 
 @SearchTags({"jet pack"})
 @HelpPage("Mods/Jetpack")
-@Mod.Bypasses
+@Mod.Bypasses(ghostMode = false,
+	latestNCP = false,
+	olderNCP = false,
+	antiCheat = false,
+	mineplex = false)
 public final class JetpackMod extends Mod implements UpdateListener
 {
-	public final CheckboxSetting flightKickBypass =
-		new CheckboxSetting("Flight-Kick-Bypass", false);
+	private final CheckboxSetting flightKickBypass = WMinecraft.COOLDOWN ? null
+		: new CheckboxSetting("Flight-Kick-Bypass", false);
+	private double flyHeight;
 	
 	public JetpackMod()
 	{
-		super("Jetpack", "Allows you to jump in mid-air.\n"
-			+ "Looks as if you had a jetpack.");
-	}
-	
-	@Override
-	public void onEnable()
-	{
-		if(wurst.mods.flightMod.isEnabled())
-			wurst.mods.flightMod.setEnabled(false);
-		wurst.events.add(UpdateListener.class, this);
-	}
-	
-	@Override
-	public void initSettings()
-	{
-		settings.add(flightKickBypass);
+		super("Jetpack", "Allows you to fly as if you had a jetpack.");
 	}
 	
 	@Override
 	public String getRenderName()
 	{
-		return getName() + (flightKickBypass.isChecked() ? "[Kick: "
-			+ (wurst.mods.flightMod.flyHeight <= 300 ? "Safe" : "Unsafe") + "]"
-			: "");
+		if(flightKickBypass == null || !flightKickBypass.isChecked())
+			return getName();
+		
+		return getName() + "[Kick: " + (flyHeight <= 300 ? "Safe" : "Unsafe")
+			+ "]";
 	}
 	
 	@Override
-	public void onUpdate()
+	public void initSettings()
 	{
-		updateMS();
-		
-		if(mc.gameSettings.keyBindJump.pressed)
-			WMinecraft.getPlayer().jump();
-		
-		if(flightKickBypass.isChecked())
-		{
-			wurst.mods.flightMod.updateFlyHeight();
-			WConnection.sendPacket(new CPacketPlayer(true));
-			
-			if(wurst.mods.flightMod.flyHeight <= 290 && hasTimePassedM(500)
-				|| wurst.mods.flightMod.flyHeight > 290 && hasTimePassedM(100))
-			{
-				wurst.mods.flightMod.goToGround();
-				updateLastMS();
-			}
-		}
+		if(flightKickBypass != null)
+			settings.add(flightKickBypass);
+	}
+	
+	@Override
+	public void onEnable()
+	{
+		wurst.mods.flightMod.setEnabled(false);
+		wurst.events.add(UpdateListener.class, this);
 	}
 	
 	@Override
 	public void onDisable()
 	{
 		wurst.events.remove(UpdateListener.class, this);
+	}
+	
+	@Override
+	public void onUpdate()
+	{
+		if(mc.gameSettings.keyBindJump.pressed)
+			WMinecraft.getPlayer().jump();
+		
+		if(flightKickBypass != null && flightKickBypass.isChecked())
+		{
+			updateMS();
+			
+			updateFlyHeight();
+			WConnection.sendPacket(new CPacketPlayer(true));
+			
+			if(flyHeight <= 290 && hasTimePassedM(500)
+				|| flyHeight > 290 && hasTimePassedM(100))
+			{
+				goToGround();
+				updateLastMS();
+			}
+		}
+	}
+	
+	private void updateFlyHeight()
+	{
+		double h = 1;
+		AxisAlignedBB box = WMinecraft.getPlayer().getEntityBoundingBox()
+			.expand(0.0625, 0.0625, 0.0625);
+		for(flyHeight = 0; flyHeight < WMinecraft.getPlayer().posY; flyHeight +=
+			h)
+		{
+			AxisAlignedBB nextBox = box.offset(0, -flyHeight, 0);
+			
+			if(WMinecraft.getWorld().checkBlockCollision(nextBox))
+			{
+				if(h < 0.0625)
+					break;
+				
+				flyHeight -= h;
+				h /= 2;
+			}
+		}
+	}
+	
+	private void goToGround()
+	{
+		if(flyHeight > 300)
+			return;
+		
+		double minY = WMinecraft.getPlayer().posY - flyHeight;
+		
+		if(minY <= 0)
+			return;
+		
+		for(double y = WMinecraft.getPlayer().posY; y > minY;)
+		{
+			y -= 8;
+			if(y < minY)
+				y = minY;
+			
+			CPacketPlayer.Position packet =
+				new CPacketPlayer.Position(WMinecraft.getPlayer().posX, y,
+					WMinecraft.getPlayer().posZ, true);
+			WConnection.sendPacket(packet);
+		}
+		
+		for(double y = minY; y < WMinecraft.getPlayer().posY;)
+		{
+			y += 8;
+			if(y > WMinecraft.getPlayer().posY)
+				y = WMinecraft.getPlayer().posY;
+			
+			CPacketPlayer.Position packet =
+				new CPacketPlayer.Position(WMinecraft.getPlayer().posX, y,
+					WMinecraft.getPlayer().posZ, true);
+			WConnection.sendPacket(packet);
+		}
 	}
 }
