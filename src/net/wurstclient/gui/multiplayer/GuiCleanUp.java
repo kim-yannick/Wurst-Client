@@ -8,11 +8,9 @@
 package net.wurstclient.gui.multiplayer;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.lwjgl.input.Keyboard;
-
-import com.google.common.collect.Lists;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiMultiplayer;
@@ -68,8 +66,8 @@ public class GuiCleanUp extends GuiScreen
 		Keyboard.enableRepeatEvents(true);
 		buttonList.clear();
 		buttonList.add(
-			new GuiButton(0, width / 2 - 100, height / 4 + 144 + 12, "Cancel"));
-		buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 168 + 12,
+			new GuiButton(0, width / 2 - 100, height / 4 + 168 + 12, "Cancel"));
+		buttonList.add(new GuiButton(1, width / 2 - 100, height / 4 + 144 + 12,
 			"Clean Up"));
 		buttonList.add(new GuiButton(2, width / 2 - 100, height / 4 - 24 + 12,
 			"Unknown Hosts: "
@@ -268,9 +266,8 @@ public class GuiCleanUp extends GuiScreen
 			GuiButton button = buttonList.get(i);
 			if(button.isMouseOver() && !toolTips[button.id].isEmpty())
 			{
-				ArrayList toolTip =
-					Lists.newArrayList(toolTips[button.id].split("\n"));
-				drawHoveringText(toolTip, par1, par2);
+				drawHoveringText(Arrays.asList(toolTips[button.id].split("\n")),
+					par1, par2);
 				break;
 			}
 		}
