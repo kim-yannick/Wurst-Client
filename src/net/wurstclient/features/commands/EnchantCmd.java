@@ -9,6 +9,7 @@ package net.wurstclient.features.commands;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
+import net.wurstclient.compatibility.WEnchantments;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.ChatOutputEvent;
 import net.wurstclient.features.Cmd;
@@ -34,10 +35,10 @@ public final class EnchantCmd extends Cmd
 				WMinecraft.getPlayer().inventory.getCurrentItem();
 			if(currentItem == null)
 				error("There is no item in your hand.");
-			for(Enchantment enchantment : Enchantment.enchantmentsList)
+			for(Enchantment enchantment : Enchantment.REGISTRY)
 				try
 				{
-					if(enchantment == Enchantment.silkTouch)
+					if(enchantment == WEnchantments.SILK_TOUCH)
 						continue;
 					currentItem.addEnchantment(enchantment, 127);
 				}catch(Exception e)
@@ -54,10 +55,10 @@ public final class EnchantCmd extends Cmd
 				if(currentItem == null)
 					continue;
 				items++;
-				for(Enchantment enchantment : Enchantment.enchantmentsList)
+				for(Enchantment enchantment : Enchantment.REGISTRY)
 					try
 					{
-						if(enchantment == Enchantment.silkTouch)
+						if(enchantment == WEnchantments.SILK_TOUCH)
 							continue;
 						currentItem.addEnchantment(enchantment, 127);
 					}catch(Exception e)

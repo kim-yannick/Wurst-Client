@@ -1,6 +1,6 @@
-From b482bc6f0f294b56ab4b52e850b65190053a23c0 Mon Sep 17 00:00:00 2001
+From 800ea83f89edc8a9ece58c24753921cebbcdf960 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 26 Apr 2017 14:51:21 +0200
+Date: Wed, 3 May 2017 17:28:23 +0200
 Subject: [PATCH] mod
 
 ---
@@ -421,6 +421,7 @@ Subject: [PATCH] mod
  net/minecraft/crash/CrashReportCategory.java       |  11 +-
  net/minecraft/creativetab/CreativeTabs.java        |   4 +-
  net/minecraft/dispenser/IBlockSource.java          |   2 +-
+ net/minecraft/enchantment/Enchantment.java         |   9 +-
  net/minecraft/entity/DataWatcher.java              |  12 +-
  net/minecraft/entity/Entity.java                   | 154 ++++---
  net/minecraft/entity/EntityAgeable.java            |   2 +-
@@ -868,7 +869,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 864 files changed, 10010 insertions(+), 8421 deletions(-)
+ 865 files changed, 10017 insertions(+), 8423 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -20525,6 +20526,33 @@ index a2d2668..bdcb6a5 100644
  
  public interface IBlockSource extends ILocatableSource
  {
+diff --git a/net/minecraft/enchantment/Enchantment.java b/net/minecraft/enchantment/Enchantment.java
+index 49950f7..edc204f 100644
+--- a/net/minecraft/enchantment/Enchantment.java
++++ b/net/minecraft/enchantment/Enchantment.java
+@@ -1,10 +1,12 @@
+ package net.minecraft.enchantment;
+ 
+-import com.google.common.collect.Lists;
+-import com.google.common.collect.Maps;
+ import java.util.ArrayList;
+ import java.util.Iterator;
+ import java.util.Map;
++
++import com.google.common.collect.Lists;
++import com.google.common.collect.Maps;
++
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.EntityLivingBase;
+ import net.minecraft.entity.EnumCreatureAttribute;
+@@ -243,4 +245,7 @@ public abstract class Enchantment
+ 
+         enchantmentsList = (Enchantment[])var0.toArray(new Enchantment[var0.size()]);
+     }
++    
++	// TODO: Client
++	public static final Enchantment[] REGISTRY = enchantmentsList;
+ }
 diff --git a/net/minecraft/entity/DataWatcher.java b/net/minecraft/entity/DataWatcher.java
 index 6bd900a..b3482c7 100644
 --- a/net/minecraft/entity/DataWatcher.java
