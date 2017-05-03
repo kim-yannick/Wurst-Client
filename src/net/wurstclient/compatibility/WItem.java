@@ -14,6 +14,7 @@ import net.minecraft.item.ItemEnderPearl;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemSnowball;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 public final class WItem
 {
@@ -24,5 +25,10 @@ public final class WItem
 			|| item instanceof ItemEgg || item instanceof ItemEnderPearl
 			|| item instanceof ItemPotion
 				&& ItemPotion.isSplash(stack.getItemDamage());
+	}
+	
+	public static Item getFromRegistry(ResourceLocation location)
+	{
+		return (Item)Item.REGISTRY.getObject(location);
 	}
 }
