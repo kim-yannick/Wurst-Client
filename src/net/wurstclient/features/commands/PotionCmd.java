@@ -9,14 +9,13 @@ package net.wurstclient.features.commands;
 
 import java.util.List;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.wurstclient.compatibility.WItem;
 import net.wurstclient.compatibility.WMinecraft;
+import net.wurstclient.compatibility.WPotion;
 import net.wurstclient.features.Cmd;
 import net.wurstclient.features.HelpPage;
 import net.wurstclient.utils.MiscUtils;
@@ -41,28 +40,28 @@ public final class PotionCmd extends Cmd
 		
 		ItemStack currentItem =
 			WMinecraft.getPlayer().inventory.getCurrentItem();
-		if(currentItem == null
-			|| Item.getIdFromItem(currentItem.getItem()) != 373)
+		if(!WItem.isPotion(currentItem))
 			error("You are not holding a potion in your hand.");
 		
 		NBTTagList newEffects = new NBTTagList();
 		
 		// remove
-		if(args.length == 2)
+		if(args[0].equalsIgnoreCase("remove"))
 		{
-			if(!args[0].equalsIgnoreCase("Remove"))
+			if(args.length != 2)
 				syntaxError();
 			int id = 0;
 			id = parsePotionEffectId(args[1]);
-			List oldEffects = new ItemPotion().getEffects(currentItem);
+			List<PotionEffect> oldEffects =
+				WPotion.getEffectsFromStack(currentItem);
 			if(oldEffects != null)
 				for(int i = 0; i < oldEffects.size(); i++)
 				{
-					PotionEffect temp = (PotionEffect)oldEffects.get(i);
-					if(temp.getPotionID() != id)
+					PotionEffect temp = oldEffects.get(i);
+					if(WPotion.getIdFromEffect(temp) != id)
 					{
 						NBTTagCompound effect = new NBTTagCompound();
-						effect.setInteger("Id", temp.getPotionID());
+						effect.setInteger("Id", WPotion.getIdFromEffect(temp));
 						effect.setInteger("Amplifier", temp.getAmplifier());
 						effect.setInteger("Duration", temp.getDuration());
 						newEffects.appendTag(effect);
@@ -76,13 +75,14 @@ public final class PotionCmd extends Cmd
 		// add
 		if(args[0].equalsIgnoreCase("add"))
 		{
-			List oldEffects = new ItemPotion().getEffects(currentItem);
+			List<PotionEffect> oldEffects =
+				WPotion.getEffectsFromStack(currentItem);
 			if(oldEffects != null)
 				for(int i = 0; i < oldEffects.size(); i++)
 				{
-					PotionEffect temp = (PotionEffect)oldEffects.get(i);
+					PotionEffect temp = oldEffects.get(i);
 					NBTTagCompound effect = new NBTTagCompound();
-					effect.setInteger("Id", temp.getPotionID());
+					effect.setInteger("Id", WPotion.getIdFromEffect(temp));
 					effect.setInteger("Amplifier", temp.getAmplifier());
 					effect.setInteger("Duration", temp.getDuration());
 					newEffects.appendTag(effect);
@@ -111,6 +111,7 @@ public final class PotionCmd extends Cmd
 			effect.setInteger("Duration", duration * 20);
 			newEffects.appendTag(effect);
 		}
+		System.out.println(newEffects);
 		currentItem.setTagInfo("CustomPotionEffects", newEffects);
 	}
 	
@@ -124,7 +125,7 @@ public final class PotionCmd extends Cmd
 		{
 			try
 			{
-				id = Potion.func_180142_b(input).id;
+				id = WPotion.getIdFromResourceLocation(input);
 			}catch(NullPointerException e)
 			{
 				syntaxError();

@@ -7,13 +7,7 @@
  */
 package net.wurstclient.compatibility;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBow;
-import net.minecraft.item.ItemEgg;
-import net.minecraft.item.ItemEnderPearl;
-import net.minecraft.item.ItemPotion;
-import net.minecraft.item.ItemSnowball;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.util.ResourceLocation;
 
 public final class WItem
@@ -25,6 +19,11 @@ public final class WItem
 			|| item instanceof ItemEgg || item instanceof ItemEnderPearl
 			|| item instanceof ItemPotion
 				&& ItemPotion.isSplash(stack.getItemDamage());
+	}
+	
+	public static boolean isPotion(ItemStack stack)
+	{
+		return stack != null && stack.getItem() instanceof ItemPotion;
 	}
 	
 	public static Item getFromRegistry(ResourceLocation location)
