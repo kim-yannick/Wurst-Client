@@ -27,7 +27,7 @@ public final class BookHackSpf extends Spf
 	@Override
 	public Feature[] getSeeAlso()
 	{
-		return new Feature[]{wurst.mods.opSignMod, wurst.mods.forceOpMod,
+		return new Feature[]{wurst.mods.forceOpMod,
 			wurst.special.sessionStealerSpf};
 	}
 }
