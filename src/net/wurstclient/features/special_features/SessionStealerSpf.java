@@ -28,7 +28,6 @@ public final class SessionStealerSpf extends Spf
 	@Override
 	public Feature[] getSeeAlso()
 	{
-		return new Feature[]{wurst.mods.opSignMod, wurst.special.bookHackSpf,
-			wurst.mods.forceOpMod};
+		return new Feature[]{wurst.special.bookHackSpf, wurst.mods.forceOpMod};
 	}
 }
