@@ -1,6 +1,6 @@
-From 800ea83f89edc8a9ece58c24753921cebbcdf960 Mon Sep 17 00:00:00 2001
+From 9f7e46229ef4a632e637e72a294b45cecc8d619a Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 3 May 2017 17:28:23 +0200
+Date: Mon, 8 May 2017 15:08:54 +0200
 Subject: [PATCH] mod
 
 ---
@@ -133,7 +133,7 @@ Subject: [PATCH] mod
  net/minecraft/block/state/IBlockState.java         |  17 +
  .../block/state/pattern/BlockPattern.java          |   4 +-
  net/minecraft/client/LoadingScreenRenderer.java    |  10 +-
- net/minecraft/client/Minecraft.java                | 323 +++++++-------
+ net/minecraft/client/Minecraft.java                | 320 +++++++-------
  .../client/audio/MovingSoundMinecart.java          |   6 +-
  .../client/audio/MovingSoundMinecartRiding.java    |   4 +-
  net/minecraft/client/audio/SoundManager.java       |  12 +-
@@ -869,7 +869,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 865 files changed, 10017 insertions(+), 8423 deletions(-)
+ 865 files changed, 10005 insertions(+), 8432 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -4655,10 +4655,10 @@ index 0875566..d98e274 100644
  
                  if (OpenGlHelper.isFramebufferEnabled())
 diff --git a/net/minecraft/client/Minecraft.java b/net/minecraft/client/Minecraft.java
-index a9a0567..8f3bf78 100644
+index a9a0567..26358e5 100644
 --- a/net/minecraft/client/Minecraft.java
 +++ b/net/minecraft/client/Minecraft.java
-@@ -1,17 +1,15 @@
+@@ -1,17 +1,5 @@
  package net.minecraft.client;
  
 -import com.google.common.collect.Iterables;
@@ -4673,20 +4673,10 @@ index a9a0567..8f3bf78 100644
 -import com.mojang.authlib.properties.Property;
 -import com.mojang.authlib.properties.PropertyMap;
 -import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
-+import java.awt.Color;
-+import java.awt.Component;
-+import java.awt.Dimension;
-+import java.awt.FlowLayout;
-+import java.awt.Toolkit;
-+import java.awt.datatransfer.StringSelection;
-+import java.awt.event.ActionEvent;
-+import java.awt.event.ActionListener;
-+import java.awt.event.WindowAdapter;
-+import java.awt.event.WindowEvent;
  import java.awt.image.BufferedImage;
  import java.io.File;
  import java.io.IOException;
-@@ -22,39 +20,20 @@ import java.nio.ByteBuffer;
+@@ -22,39 +10,43 @@ import java.nio.ByteBuffer;
  import java.nio.ByteOrder;
  import java.text.DecimalFormat;
  import java.text.SimpleDateFormat;
@@ -4706,7 +4696,30 @@ index a9a0567..8f3bf78 100644
  import java.util.concurrent.FutureTask;
 +
  import javax.imageio.ImageIO;
-+import javax.swing.*;
++
++import org.apache.commons.io.IOUtils;
++import org.apache.commons.lang3.Validate;
++import org.apache.logging.log4j.LogManager;
++import org.apache.logging.log4j.Logger;
++import org.lwjgl.LWJGLException;
++import org.lwjgl.Sys;
++import org.lwjgl.input.Keyboard;
++import org.lwjgl.input.Mouse;
++import org.lwjgl.opengl.*;
++import org.lwjgl.util.glu.GLU;
++
++import com.google.common.collect.Iterables;
++import com.google.common.collect.Lists;
++import com.google.common.collect.Maps;
++import com.google.common.collect.Queues;
++import com.google.common.collect.Sets;
++import com.google.common.util.concurrent.Futures;
++import com.google.common.util.concurrent.ListenableFuture;
++import com.google.common.util.concurrent.ListenableFutureTask;
++import com.mojang.authlib.minecraft.MinecraftSessionService;
++import com.mojang.authlib.properties.Property;
++import com.mojang.authlib.properties.PropertyMap;
++import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 +
  import net.minecraft.block.Block;
  import net.minecraft.block.material.Material;
@@ -4731,7 +4744,7 @@ index a9a0567..8f3bf78 100644
  import net.minecraft.client.gui.achievement.GuiAchievement;
  import net.minecraft.client.gui.inventory.GuiInventory;
  import net.minecraft.client.gui.stream.GuiStreamUnavailable;
-@@ -66,42 +45,15 @@ import net.minecraft.client.multiplayer.WorldClient;
+@@ -66,42 +58,15 @@ import net.minecraft.client.multiplayer.WorldClient;
  import net.minecraft.client.network.NetHandlerLoginClient;
  import net.minecraft.client.network.NetHandlerPlayClient;
  import net.minecraft.client.particle.EffectRenderer;
@@ -4777,7 +4790,7 @@ index a9a0567..8f3bf78 100644
  import net.minecraft.client.resources.model.ModelManager;
  import net.minecraft.client.settings.GameSettings;
  import net.minecraft.client.settings.KeyBinding;
-@@ -144,20 +96,12 @@ import net.minecraft.stats.AchievementList;
+@@ -144,20 +109,12 @@ import net.minecraft.stats.AchievementList;
  import net.minecraft.stats.IStatStringFormat;
  import net.minecraft.stats.StatFileWriter;
  import net.minecraft.tileentity.TileEntity;
@@ -4802,26 +4815,18 @@ index a9a0567..8f3bf78 100644
  import net.minecraft.world.EnumDifficulty;
  import net.minecraft.world.WorldProviderEnd;
  import net.minecraft.world.WorldProviderHell;
-@@ -166,6 +110,15 @@ import net.minecraft.world.chunk.storage.AnvilSaveConverter;
+@@ -166,29 +123,20 @@ import net.minecraft.world.chunk.storage.AnvilSaveConverter;
  import net.minecraft.world.storage.ISaveFormat;
  import net.minecraft.world.storage.ISaveHandler;
  import net.minecraft.world.storage.WorldInfo;
-+import net.wurstclient.WurstClient;
-+import net.wurstclient.bot.WurstBot;
-+import net.wurstclient.events.LeftClickEvent;
-+import net.wurstclient.events.RightClickEvent;
-+import net.wurstclient.gui.main.GuiWurstMainMenu;
-+import net.wurstclient.hooks.FrameHook;
-+import net.wurstclient.spam.SpamProcessor;
-+import net.wurstclient.utils.MiscUtils;
-+
- import org.apache.commons.io.IOUtils;
- import org.apache.commons.lang3.Validate;
- import org.apache.logging.log4j.LogManager;
-@@ -174,21 +127,28 @@ import org.lwjgl.LWJGLException;
- import org.lwjgl.Sys;
- import org.lwjgl.input.Keyboard;
- import org.lwjgl.input.Mouse;
+-import org.apache.commons.io.IOUtils;
+-import org.apache.commons.lang3.Validate;
+-import org.apache.logging.log4j.LogManager;
+-import org.apache.logging.log4j.Logger;
+-import org.lwjgl.LWJGLException;
+-import org.lwjgl.Sys;
+-import org.lwjgl.input.Keyboard;
+-import org.lwjgl.input.Mouse;
 -import org.lwjgl.opengl.ContextCapabilities;
 -import org.lwjgl.opengl.Display;
 -import org.lwjgl.opengl.DisplayMode;
@@ -4830,22 +4835,15 @@ index a9a0567..8f3bf78 100644
 -import org.lwjgl.opengl.GLContext;
 -import org.lwjgl.opengl.OpenGLException;
 -import org.lwjgl.opengl.PixelFormat;
-+import org.lwjgl.opengl.*;
- import org.lwjgl.util.glu.GLU;
+-import org.lwjgl.util.glu.GLU;
++import net.wurstclient.WurstClient;
++import net.wurstclient.bot.WurstBot;
++import net.wurstclient.events.LeftClickEvent;
++import net.wurstclient.events.RightClickEvent;
++import net.wurstclient.gui.main.GuiWurstMainMenu;
++import net.wurstclient.hooks.FrameHook;
++import net.wurstclient.spam.SpamProcessor;
  
-+import com.google.common.collect.Iterables;
-+import com.google.common.collect.Lists;
-+import com.google.common.collect.Maps;
-+import com.google.common.collect.Queues;
-+import com.google.common.collect.Sets;
-+import com.google.common.util.concurrent.Futures;
-+import com.google.common.util.concurrent.ListenableFuture;
-+import com.google.common.util.concurrent.ListenableFutureTask;
-+import com.mojang.authlib.minecraft.MinecraftSessionService;
-+import com.mojang.authlib.properties.Property;
-+import com.mojang.authlib.properties.PropertyMap;
-+import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
-+
  public class Minecraft implements IThreadListener, IPlayerUsage
  {
      private static final Logger logger = LogManager.getLogger();
@@ -4857,7 +4855,7 @@ index a9a0567..8f3bf78 100644
  
      /** A 10MiB preallocation to ensure the heap is reasonably sized. */
      public static byte[] memoryReserve = new byte[10485760];
-@@ -213,7 +173,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -213,7 +161,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
      private CrashReport crashReporter;
      public int displayWidth;
      public int displayHeight;
@@ -4867,7 +4865,7 @@ index a9a0567..8f3bf78 100644
  
      /** Instance of PlayerUsageSnooper. */
      private PlayerUsageSnooper usageSnooper = new PlayerUsageSnooper("client", this, MinecraftServer.getCurrentTimeMillis());
-@@ -226,7 +187,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -226,7 +175,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
      private Entity field_175622_Z;
      public Entity pointedEntity;
      public EffectRenderer effectRenderer;
@@ -4876,7 +4874,7 @@ index a9a0567..8f3bf78 100644
      private boolean isGamePaused;
  
      /** The font renderer used for displaying and measuring text */
-@@ -258,7 +219,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -258,7 +207,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
      public boolean skipRenderWorld;
  
      /** The ray trace hit that the mouse is over. */
@@ -4885,7 +4883,7 @@ index a9a0567..8f3bf78 100644
  
      /** The game settings that currently hold effect. */
      public GameSettings gameSettings;
-@@ -280,7 +241,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -280,7 +229,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
      /**
       * When you place a block, it's set to 6, decremented once per tick, when it's 0, you can place another block.
       */
@@ -4894,7 +4892,7 @@ index a9a0567..8f3bf78 100644
      private String serverName;
      private int serverPort;
  
-@@ -345,6 +306,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -345,6 +294,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
  
      /** Profiler currently displayed in the debug screen pie chart */
      private String debugProfilerName = "root";
@@ -4902,7 +4900,7 @@ index a9a0567..8f3bf78 100644
      private static final String __OBFID = "CL_00000631";
  
      public Minecraft(GameConfiguration p_i45547_1_)
-@@ -466,9 +428,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -466,9 +416,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
          }
  
          logger.info("LWJGL Version: " + Sys.getVersion());
@@ -4915,7 +4913,7 @@ index a9a0567..8f3bf78 100644
          OpenGlHelper.initializeTextures();
          this.framebufferMc = new Framebuffer(this.displayWidth, this.displayHeight, true);
          this.framebufferMc.setFramebufferColor(0.0F, 0.0F, 0.0F, 0.0F);
-@@ -552,13 +514,16 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -552,13 +502,16 @@ public class Minecraft implements IThreadListener, IPlayerUsage
          this.checkGLError("Post startup");
          this.ingameGUI = new GuiIngame(this);
  
@@ -4934,7 +4932,7 @@ index a9a0567..8f3bf78 100644
          }
  
          this.renderEngine.deleteTexture(this.mojangLogo);
-@@ -581,6 +546,10 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -581,6 +534,10 @@ public class Minecraft implements IThreadListener, IPlayerUsage
          }
  
          this.renderGlobal.func_174966_b();
@@ -4945,7 +4943,7 @@ index a9a0567..8f3bf78 100644
      }
  
      private void func_175608_ak()
-@@ -605,7 +574,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -605,7 +562,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
          }
      }
  
@@ -4954,7 +4952,7 @@ index a9a0567..8f3bf78 100644
      {
          Display.setResizable(true);
          Display.setTitle("Minecraft 1.8");
-@@ -636,22 +605,24 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -636,22 +593,24 @@ public class Minecraft implements IThreadListener, IPlayerUsage
          }
      }
  
@@ -4984,7 +4982,7 @@ index a9a0567..8f3bf78 100644
      {
          Util.EnumOS var1 = Util.getOSType();
  
-@@ -751,17 +722,15 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -751,17 +710,15 @@ public class Minecraft implements IThreadListener, IPlayerUsage
          File var3 = new File(var2, "crash-" + (new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss")).format(new Date()) + "-client.txt");
          Bootstrap.func_179870_a(crashReportIn.getCompleteReport());
  
@@ -5005,7 +5003,7 @@ index a9a0567..8f3bf78 100644
          {
              Bootstrap.func_179870_a("#@?@# Game crashed! Crash report could not be saved. #@?@#");
              System.exit(-2);
-@@ -917,14 +886,14 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -917,14 +874,14 @@ public class Minecraft implements IThreadListener, IPlayerUsage
          Tessellator var6 = Tessellator.getInstance();
          WorldRenderer var7 = var6.getWorldRenderer();
          var7.startDrawingQuads();
@@ -5022,7 +5020,7 @@ index a9a0567..8f3bf78 100644
          short var8 = 256;
          short var9 = 256;
          this.scaledTessellator((var2.getScaledWidth() - var8) / 2, (var2.getScaledHeight() - var9) / 2, 0, 0, var8, var9);
-@@ -973,7 +942,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -973,7 +930,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
  
          if (guiScreenIn == null && this.theWorld == null)
          {
@@ -5031,7 +5029,7 @@ index a9a0567..8f3bf78 100644
          }
          else if (guiScreenIn == null && this.thePlayer.getHealth() <= 0.0F)
          {
-@@ -1197,6 +1166,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1197,6 +1154,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
      public void func_175601_h()
      {
          this.mcProfiler.startSection("display_update");
@@ -5039,7 +5037,7 @@ index a9a0567..8f3bf78 100644
          Display.update();
          this.mcProfiler.endSection();
          this.func_175604_i();
-@@ -1329,7 +1299,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1329,7 +1287,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
              int var9 = this.displayHeight - var7 * 2;
              GlStateManager.enableBlend();
              var6.startDrawingQuads();
@@ -5048,7 +5046,7 @@ index a9a0567..8f3bf78 100644
              var6.addVertex((double)((float)var8 - (float)var7 * 1.1F), (double)((float)var9 - (float)var7 * 0.6F - 16.0F), 0.0D);
              var6.addVertex((double)((float)var8 - (float)var7 * 1.1F), (double)(var9 + var7 * 2), 0.0D);
              var6.addVertex((double)((float)var8 + (float)var7 * 1.1F), (double)(var9 + var7 * 2), 0.0D);
-@@ -1344,7 +1314,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1344,7 +1302,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                  Profiler.Result var13 = (Profiler.Result)var3.get(var12);
                  var14 = MathHelper.floor_double(var13.field_76332_a / 4.0D) + 1;
                  var6.startDrawing(6);
@@ -5057,7 +5055,7 @@ index a9a0567..8f3bf78 100644
                  var6.addVertex((double)var8, (double)var9, 0.0D);
                  int var15;
                  float var16;
-@@ -1361,7 +1331,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1361,7 +1319,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
  
                  var5.draw();
                  var6.startDrawing(5);
@@ -5066,7 +5064,7 @@ index a9a0567..8f3bf78 100644
  
                  for (var15 = var14; var15 >= 0; --var15)
                  {
-@@ -1395,8 +1365,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1395,8 +1353,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
              }
  
              var14 = 16777215;
@@ -5077,7 +5075,7 @@ index a9a0567..8f3bf78 100644
  
              for (int var21 = 0; var21 < var3.size(); ++var21)
              {
-@@ -1413,9 +1383,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1413,9 +1371,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                  }
  
                  var23 = var23 + var22.field_76331_c;
@@ -5090,7 +5088,7 @@ index a9a0567..8f3bf78 100644
              }
          }
      }
-@@ -1482,16 +1452,16 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1482,16 +1440,16 @@ public class Minecraft implements IThreadListener, IPlayerUsage
              this.leftClickCounter = 0;
          }
  
@@ -5113,7 +5111,7 @@ index a9a0567..8f3bf78 100644
                  }
              }
              else
-@@ -1505,7 +1475,13 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1505,7 +1463,13 @@ public class Minecraft implements IThreadListener, IPlayerUsage
      {
          if (this.leftClickCounter <= 0)
          {
@@ -5128,7 +5126,7 @@ index a9a0567..8f3bf78 100644
  
              if (this.objectMouseOver == null)
              {
-@@ -1525,11 +1501,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1525,11 +1489,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                          break;
  
                      case 2:
@@ -5142,7 +5140,7 @@ index a9a0567..8f3bf78 100644
                              break;
                          }
  
-@@ -1547,8 +1523,14 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1547,8 +1511,14 @@ public class Minecraft implements IThreadListener, IPlayerUsage
      /**
       * Called when user clicked he's mouse right button (place)
       */
@@ -5158,7 +5156,7 @@ index a9a0567..8f3bf78 100644
          this.rightClickDelayTimer = 4;
          boolean var1 = true;
          ItemStack var2 = this.thePlayer.inventory.getCurrentItem();
-@@ -1574,16 +1556,16 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1574,16 +1544,16 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                      break;
  
                  case 2:
@@ -5178,7 +5176,7 @@ index a9a0567..8f3bf78 100644
                          }
  
                          if (var2 == null)
-@@ -1607,7 +1589,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1607,7 +1577,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
          {
              ItemStack var5 = this.thePlayer.inventory.getCurrentItem();
  
@@ -5187,7 +5185,7 @@ index a9a0567..8f3bf78 100644
              {
                  this.entityRenderer.itemRenderer.resetEquippedProgress2();
              }
-@@ -1761,8 +1743,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1761,8 +1731,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
          CrashReport var2;
          CrashReportCategory var3;
  
@@ -5200,7 +5198,7 @@ index a9a0567..8f3bf78 100644
              try
              {
                  this.currentScreen.handleInput();
-@@ -1805,8 +1790,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1805,8 +1778,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
              }
          }
  
@@ -5213,7 +5211,7 @@ index a9a0567..8f3bf78 100644
              this.mcProfiler.endStartSection("mouse");
              int var1;
  
-@@ -1817,7 +1805,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1817,7 +1793,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
  
                  if (Mouse.getEventButtonState())
                  {
@@ -5222,7 +5220,7 @@ index a9a0567..8f3bf78 100644
                      {
                          this.ingameGUI.func_175187_g().func_175261_b();
                      }
-@@ -1835,7 +1823,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1835,7 +1811,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
  
                      if (var4 != 0)
                      {
@@ -5231,7 +5229,7 @@ index a9a0567..8f3bf78 100644
                          {
                              var4 = var4 < 0 ? -1 : 1;
  
-@@ -1845,7 +1833,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1845,7 +1821,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                              }
                              else
                              {
@@ -5240,26 +5238,17 @@ index a9a0567..8f3bf78 100644
                                  this.thePlayer.capabilities.setFlySpeed(var5);
                              }
                          }
-@@ -1918,6 +1906,18 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -1918,6 +1894,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                      }
                      else
                      {
 +						// TODO: Client
-+						if(Keyboard.getEventKey() != 0
-+							&& WurstClient.INSTANCE.isEnabled())
-+						{
-+							TreeSet<String> eventCommands =
-+								WurstClient.INSTANCE.keybinds.get(Keyboard
-+									.getKeyName(Keyboard.getEventKey()));
-+							if(eventCommands != null)
-+								eventCommands.forEach((cmd) -> thePlayer
-+									.sendAutomaticChatMessage(cmd));
-+						}
++						WurstClient.INSTANCE.keybinds.onKeyPress();
 +                    	
                          if (var1 == 1)
                          {
                              this.displayInGameMenu();
-@@ -2013,7 +2013,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2013,7 +1992,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
  
                              if (this.gameSettings.thirdPersonView == 0)
                              {
@@ -5268,7 +5257,7 @@ index a9a0567..8f3bf78 100644
                              }
                              else if (this.gameSettings.thirdPersonView == 1)
                              {
-@@ -2049,7 +2049,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2049,7 +2028,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
              {
                  if (this.gameSettings.keyBindsHotbar[var1].isPressed())
                  {
@@ -5277,7 +5266,7 @@ index a9a0567..8f3bf78 100644
                      {
                          this.ingameGUI.func_175187_g().func_175260_a(var1);
                      }
-@@ -2070,14 +2070,14 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2070,14 +2049,14 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                  }
                  else
                  {
@@ -5294,7 +5283,7 @@ index a9a0567..8f3bf78 100644
                  {
                      this.thePlayer.dropOneItem(GuiScreen.isCtrlKeyDown());
                  }
-@@ -2093,7 +2093,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2093,7 +2072,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                  this.displayGuiScreen(new GuiChat("/"));
              }
  
@@ -5303,7 +5292,7 @@ index a9a0567..8f3bf78 100644
              {
                  if (!this.gameSettings.keyBindUseItem.getIsKeyPressed())
                  {
-@@ -2141,7 +2141,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2141,7 +2120,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                  }
              }
  
@@ -5312,7 +5301,7 @@ index a9a0567..8f3bf78 100644
              {
                  this.rightClickMouse();
              }
-@@ -2225,8 +2225,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2225,8 +2204,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
  
              this.mcProfiler.endStartSection("animateTick");
  
@@ -5325,7 +5314,7 @@ index a9a0567..8f3bf78 100644
                  this.theWorld.doVoidFogParticles(MathHelper.floor_double(this.thePlayer.posX), MathHelper.floor_double(this.thePlayer.posY), MathHelper.floor_double(this.thePlayer.posZ));
              }
  
-@@ -2315,6 +2318,10 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2315,6 +2297,10 @@ public class Minecraft implements IThreadListener, IPlayerUsage
          var12.sendPacket(new C00Handshake(47, var11.toString(), 0, EnumConnectionState.LOGIN));
          var12.sendPacket(new C00PacketLoginStart(this.getSession().getProfile()));
          this.myNetworkManager = var12;
@@ -5336,7 +5325,7 @@ index a9a0567..8f3bf78 100644
      }
  
      /**
-@@ -2420,7 +2427,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2420,7 +2406,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage
              var2 = this.thePlayer.getEntityId();
              this.theWorld.removeEntity(this.thePlayer);
              var3 = this.thePlayer.getClientBrand();
@@ -5344,7 +5333,7 @@ index a9a0567..8f3bf78 100644
  
          this.field_175622_Z = null;
          EntityPlayerSP var4 = this.thePlayer;
-@@ -2436,6 +2442,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2436,6 +2421,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
          this.thePlayer.setEntityId(var2);
          this.playerController.setPlayerCapabilities(this.thePlayer);
          this.thePlayer.func_175150_k(var4.func_175140_cp());
@@ -5352,7 +5341,7 @@ index a9a0567..8f3bf78 100644
  
          if (this.currentScreen instanceof GuiGameOver)
          {
-@@ -2453,7 +2460,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2453,7 +2439,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
  
      public NetHandlerPlayClient getNetHandler()
      {
@@ -5361,7 +5350,7 @@ index a9a0567..8f3bf78 100644
      }
  
      public static boolean isGuiEnabled()
-@@ -2487,9 +2494,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2487,9 +2473,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
              TileEntity var5 = null;
              Object var2;
  
@@ -5373,7 +5362,7 @@ index a9a0567..8f3bf78 100644
                  Block var7 = this.theWorld.getBlockState(var6).getBlock();
  
                  if (var7.getMaterial() == Material.air)
-@@ -2515,7 +2522,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -2515,7 +2501,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
              }
              else
              {
@@ -5386,7 +5375,7 @@ index a9a0567..8f3bf78 100644
                  {
                      return;
                  }
-@@ -3075,7 +3086,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -3075,7 +3065,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                          {
                              if (this.theWorld != null)
                              {
@@ -5395,7 +5384,7 @@ index a9a0567..8f3bf78 100644
                              }
                          }
                          else
-@@ -3135,7 +3146,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -3135,7 +3125,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
          return this.skinManager;
      }
  
@@ -5404,7 +5393,7 @@ index a9a0567..8f3bf78 100644
      {
          return this.field_175622_Z;
      }
-@@ -3273,11 +3284,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -3273,11 +3263,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                  ;
              }
  
@@ -5418,7 +5407,7 @@ index a9a0567..8f3bf78 100644
              }
              catch (NoSuchFieldError var3)
              {
-@@ -3286,7 +3297,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -3286,7 +3276,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
  
              try
              {
@@ -5427,7 +5416,7 @@ index a9a0567..8f3bf78 100644
              }
              catch (NoSuchFieldError var2)
              {
-@@ -3295,7 +3306,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
+@@ -3295,7 +3285,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
  
              try
              {
