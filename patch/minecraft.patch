@@ -1,6 +1,6 @@
-From 9f7e46229ef4a632e637e72a294b45cecc8d619a Mon Sep 17 00:00:00 2001
+From ed30cd339aa202454473b0dfc34d4bd0631f8450 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Mon, 8 May 2017 15:08:54 +0200
+Date: Tue, 9 May 2017 17:17:16 +0200
 Subject: [PATCH] mod
 
 ---
@@ -431,7 +431,7 @@ Subject: [PATCH] mod
  net/minecraft/entity/EntityHanging.java            |   8 +-
  net/minecraft/entity/EntityLeashKnot.java          |   4 +-
  net/minecraft/entity/EntityLiving.java             |   8 +-
- net/minecraft/entity/EntityLivingBase.java         |  56 ++-
+ net/minecraft/entity/EntityLivingBase.java         |  57 ++-
  .../entity/EntityMinecartCommandBlock.java         |  18 +-
  net/minecraft/entity/EntityTracker.java            |   3 +
  net/minecraft/entity/EntityTrackerEntry.java       |   2 +-
@@ -869,7 +869,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 865 files changed, 10005 insertions(+), 8432 deletions(-)
+ 865 files changed, 10006 insertions(+), 8432 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -3759,7 +3759,7 @@ index 5dd1857..e4be3b5 100644
  import net.minecraft.world.World;
  
 diff --git a/net/minecraft/block/BlockSoulSand.java b/net/minecraft/block/BlockSoulSand.java
-index 973d27c..e7b4632 100644
+index 973d27c..ad8c9cc 100644
 --- a/net/minecraft/block/BlockSoulSand.java
 +++ b/net/minecraft/block/BlockSoulSand.java
 @@ -4,9 +4,11 @@ import net.minecraft.block.material.Material;
@@ -3781,7 +3781,7 @@ index 973d27c..e7b4632 100644
      public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
      {
 +		// TODO: Client
-+		if(WurstClient.INSTANCE.mods.noSlowdownMod.isActive())
++		if(WurstClient.INSTANCE.mods.noSlowdownMod.blockSoulSandSlowness())
 +			return;
 +    	
          entityIn.motionX *= 0.4D;
@@ -5645,7 +5645,7 @@ index 4b48cd3..e1672fd 100644
          Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(message);
      }
 diff --git a/net/minecraft/client/entity/EntityPlayerSP.java b/net/minecraft/client/entity/EntityPlayerSP.java
-index 58f696b..0544224 100644
+index 58f696b..43647c2 100644
 --- a/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/net/minecraft/client/entity/EntityPlayerSP.java
 @@ -10,14 +10,7 @@ import net.minecraft.client.gui.GuiMerchant;
@@ -5974,7 +5974,7 @@ index 58f696b..0544224 100644
 -        if (this.isUsingItem() && !this.isRiding())
 +		// TODO: Client
 +		if(this.isHandActive() && !this.isRiding()
-+			&& !WurstClient.INSTANCE.mods.noSlowdownMod.isActive())
++			&& !WurstClient.INSTANCE.mods.noSlowdownMod.blockItemSlowness())
  		{
 +			
              this.movementInput.moveStrafe *= 0.2F;
@@ -21189,7 +21189,7 @@ index 6e5f3cb..85fa613 100644
  
      /**
 diff --git a/net/minecraft/entity/EntityLivingBase.java b/net/minecraft/entity/EntityLivingBase.java
-index 80f1f20..a1dd532 100644
+index 80f1f20..062ddeb 100644
 --- a/net/minecraft/entity/EntityLivingBase.java
 +++ b/net/minecraft/entity/EntityLivingBase.java
 @@ -1,12 +1,14 @@
@@ -21291,7 +21291,7 @@ index 80f1f20..a1dd532 100644
          if (this.isPotionActive(Potion.jump))
          {
              this.motionY += (double)((float)(this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F);
-@@ -1598,8 +1607,15 @@ public abstract class EntityLivingBase extends Entity
+@@ -1598,8 +1607,16 @@ public abstract class EntityLivingBase extends Entity
              float var5;
              float var6;
  
@@ -21302,13 +21302,14 @@ index 80f1f20..a1dd532 100644
 +					|| !((EntityPlayer)this).capabilities.isFlying)
 +				&& !WurstClient.INSTANCE.mods.flightMod.isActive()
 +				&& !WurstClient.INSTANCE.mods.freecamMod.isActive()
-+				&& !WurstClient.INSTANCE.mods.noSlowdownMod.isActive())
++				&& !WurstClient.INSTANCE.mods.noSlowdownMod
++					.blockWaterSlowness())
  			{
 +            	
                  var8 = this.posY;
                  var5 = 0.8F;
                  var6 = 0.02F;
-@@ -1679,8 +1695,8 @@ public abstract class EntityLivingBase extends Entity
+@@ -1679,8 +1696,8 @@ public abstract class EntityLivingBase extends Entity
                  if (this.isOnLadder())
                  {
                      var6 = 0.15F;
@@ -21319,7 +21320,7 @@ index 80f1f20..a1dd532 100644
                      this.fallDistance = 0.0F;
  
                      if (this.motionY < -0.15D)
-@@ -1728,7 +1744,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -1728,7 +1745,7 @@ public abstract class EntityLivingBase extends Entity
          this.prevLimbSwingAmount = this.limbSwingAmount;
          var8 = this.posX - this.prevPosX;
          double var9 = this.posZ - this.prevPosZ;
@@ -21328,7 +21329,7 @@ index 80f1f20..a1dd532 100644
  
          if (var10 > 1.0F)
          {
-@@ -1902,9 +1918,9 @@ public abstract class EntityLivingBase extends Entity
+@@ -1902,9 +1919,9 @@ public abstract class EntityLivingBase extends Entity
  
      protected float func_110146_f(float p_110146_1_, float p_110146_2_)
      {
@@ -21340,7 +21341,7 @@ index 80f1f20..a1dd532 100644
          boolean var5 = var4 < -90.0F || var4 >= 90.0F;
  
          if (var4 < -75.0F)
-@@ -1948,7 +1964,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -1948,7 +1965,7 @@ public abstract class EntityLivingBase extends Entity
              double var1 = this.posX + (this.newPosX - this.posX) / (double)this.newPosRotationIncrements;
              double var3 = this.posY + (this.newPosY - this.posY) / (double)this.newPosRotationIncrements;
              double var5 = this.posZ + (this.newPosZ - this.posZ) / (double)this.newPosRotationIncrements;
@@ -21349,7 +21350,7 @@ index 80f1f20..a1dd532 100644
              this.rotationYaw = (float)((double)this.rotationYaw + var7 / (double)this.newPosRotationIncrements);
              this.rotationPitch = (float)((double)this.rotationPitch + (this.newRotationPitch - (double)this.rotationPitch) / (double)this.newPosRotationIncrements);
              --this.newPosRotationIncrements;
-@@ -2141,13 +2157,13 @@ public abstract class EntityLivingBase extends Entity
+@@ -2141,13 +2158,13 @@ public abstract class EntityLivingBase extends Entity
       */
      public boolean canEntityBeSeen(Entity p_70685_1_)
      {
@@ -21365,7 +21366,7 @@ index 80f1f20..a1dd532 100644
      {
          return this.getLook(1.0F);
      }
-@@ -2155,7 +2171,7 @@ public abstract class EntityLivingBase extends Entity
+@@ -2155,7 +2172,7 @@ public abstract class EntityLivingBase extends Entity
      /**
       * interpolated look vector
       */
