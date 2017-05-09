@@ -1,6 +1,6 @@
-From ed30cd339aa202454473b0dfc34d4bd0631f8450 Mon Sep 17 00:00:00 2001
+From f92605c475de43e09c8a4586d37747f3825506b9 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 9 May 2017 17:17:16 +0200
+Date: Tue, 9 May 2017 19:04:03 +0200
 Subject: [PATCH] mod
 
 ---
@@ -10844,7 +10844,7 @@ index 3dc2b1e..736b9ec 100644
          }
          else if (button instanceof GuiBeacon.PowerButton)
 diff --git a/net/minecraft/client/gui/inventory/GuiChest.java b/net/minecraft/client/gui/inventory/GuiChest.java
-index 15a710a..ca2e623 100644
+index 15a710a..d6966ec 100644
 --- a/net/minecraft/client/gui/inventory/GuiChest.java
 +++ b/net/minecraft/client/gui/inventory/GuiChest.java
 @@ -1,54 +1,136 @@
@@ -10858,7 +10858,7 @@ index 15a710a..ca2e623 100644
 +import net.minecraft.inventory.Slot;
  import net.minecraft.util.ResourceLocation;
 +import net.wurstclient.WurstClient;
-+import net.wurstclient.features.special_features.YesCheatSpf.BypassLevel;
++import net.wurstclient.features.special_features.YesCheatSpf.Profile;
  
  public class GuiChest extends GuiContainer
  {
@@ -10924,8 +10924,8 @@ index 15a710a..ca2e623 100644
 +							if(slot.getStack() == null)
 +								continue;
 +							if(WurstClient.INSTANCE.special.yesCheatSpf
-+								.getBypassLevel()
-+								.ordinal() >= BypassLevel.ANTICHEAT.ordinal())
++								.getProfile()
++								.ordinal() >= Profile.ANTICHEAT.ordinal())
 +								Thread.sleep(250);
 +							handleMouseClick(slot, slot.slotNumber, 0, 1);
 +							handleMouseClick(slot, slot.slotNumber, 0, 6);
@@ -10952,8 +10952,8 @@ index 15a710a..ca2e623 100644
 +							if(slot.getStack() == null)
 +								continue;
 +							if(WurstClient.INSTANCE.special.yesCheatSpf
-+								.getBypassLevel()
-+								.ordinal() >= BypassLevel.ANTICHEAT.ordinal())
++								.getProfile()
++								.ordinal() >= Profile.ANTICHEAT.ordinal())
 +								Thread.sleep(250);
 +							handleMouseClick(slot, slot.slotNumber, 0, 1);
 +							handleMouseClick(slot, slot.slotNumber, 0, 6);
