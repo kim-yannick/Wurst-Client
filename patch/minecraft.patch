@@ -1,6 +1,6 @@
-From f92605c475de43e09c8a4586d37747f3825506b9 Mon Sep 17 00:00:00 2001
+From dd7b94b3ec7fa32514efe50a51a420bdddc7b648 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 9 May 2017 19:04:03 +0200
+Date: Thu, 11 May 2017 12:08:41 +0200
 Subject: [PATCH] mod
 
 ---
@@ -423,7 +423,7 @@ Subject: [PATCH] mod
  net/minecraft/dispenser/IBlockSource.java          |   2 +-
  net/minecraft/enchantment/Enchantment.java         |   9 +-
  net/minecraft/entity/DataWatcher.java              |  12 +-
- net/minecraft/entity/Entity.java                   | 154 ++++---
+ net/minecraft/entity/Entity.java                   | 160 ++++---
  net/minecraft/entity/EntityAgeable.java            |   2 +-
  net/minecraft/entity/EntityBodyHelper.java         |   2 +-
  net/minecraft/entity/EntityCreature.java           |   2 +-
@@ -869,7 +869,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 865 files changed, 10006 insertions(+), 8432 deletions(-)
+ 865 files changed, 10012 insertions(+), 8432 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -20592,7 +20592,7 @@ index 6bd900a..b3482c7 100644
  
      /**
 diff --git a/net/minecraft/entity/Entity.java b/net/minecraft/entity/Entity.java
-index 7865119..ee75136 100644
+index 7865119..bf6f7b4 100644
 --- a/net/minecraft/entity/Entity.java
 +++ b/net/minecraft/entity/Entity.java
 @@ -5,6 +5,7 @@ import java.util.List;
@@ -20714,12 +20714,12 @@ index 7865119..ee75136 100644
 +		if(this.noClip
 +			|| ((freecamActive || WurstClient.INSTANCE.mods.phaseMod.isActive() || WurstClient.INSTANCE.mods.noClipMod
 +				.isActive()) && this instanceof EntityPlayer))
-+		{
+ 		{
 +        	
 +			// TODO: Client
 +			// Fixes Freecam flight speed
 +			if(this == Minecraft.getMinecraft().thePlayer && freecamActive)
-         {
++        {
 +        		
 +        		this.func_174826_a(this.getEntityBoundingBox().offset(x * 10, y, z * 10));
 +        	}else
@@ -20824,7 +20824,20 @@ index 7865119..ee75136 100644
  
          if (var1 > 1.0F)
          {
-@@ -1212,7 +1234,7 @@ public abstract class Entity implements ICommandSender
+@@ -1198,6 +1220,12 @@ public abstract class Entity implements ICommandSender
+         }
+     }
+ 	
++	// TODO: Client
++	public boolean isInLava()
++	{
++		return func_180799_ab();
++	}
++	
+     public boolean func_180799_ab()
+     {
+         return this.worldObj.isMaterialInBB(this.getEntityBoundingBox().expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), Material.lava);
+@@ -1212,7 +1240,7 @@ public abstract class Entity implements ICommandSender
  
          if (var4 >= 1.0E-4F)
          {
@@ -20833,7 +20846,7 @@ index 7865119..ee75136 100644
  
              if (var4 < 1.0F)
              {
-@@ -1324,7 +1346,7 @@ public abstract class Entity implements ICommandSender
+@@ -1324,7 +1352,7 @@ public abstract class Entity implements ICommandSender
          float var2 = (float)(this.posX - entityIn.posX);
          float var3 = (float)(this.posY - entityIn.posY);
          float var4 = (float)(this.posZ - entityIn.posZ);
@@ -20842,7 +20855,7 @@ index 7865119..ee75136 100644
      }
  
      /**
-@@ -1343,7 +1365,7 @@ public abstract class Entity implements ICommandSender
+@@ -1343,7 +1371,7 @@ public abstract class Entity implements ICommandSender
          return p_174818_1_.distanceSq(this.posX, this.posY, this.posZ);
      }
  
@@ -20851,7 +20864,7 @@ index 7865119..ee75136 100644
      {
          return p_174831_1_.distanceSqToCenter(this.posX, this.posY, this.posZ);
      }
-@@ -1356,7 +1378,7 @@ public abstract class Entity implements ICommandSender
+@@ -1356,7 +1384,7 @@ public abstract class Entity implements ICommandSender
          double var7 = this.posX - x;
          double var9 = this.posY - y;
          double var11 = this.posZ - z;
@@ -20860,7 +20873,7 @@ index 7865119..ee75136 100644
      }
  
      /**
-@@ -1390,7 +1412,7 @@ public abstract class Entity implements ICommandSender
+@@ -1390,7 +1418,7 @@ public abstract class Entity implements ICommandSender
  
                  if (var6 >= 0.009999999776482582D)
                  {
@@ -20869,7 +20882,7 @@ index 7865119..ee75136 100644
                      var2 /= var6;
                      var4 /= var6;
                      double var8 = 1.0D / var6;
-@@ -1459,7 +1481,7 @@ public abstract class Entity implements ICommandSender
+@@ -1459,7 +1487,7 @@ public abstract class Entity implements ICommandSender
      /**
       * interpolated look vector
       */
@@ -20878,7 +20891,7 @@ index 7865119..ee75136 100644
      {
          if (p_70676_1_ == 1.0F)
          {
-@@ -1473,35 +1495,35 @@ public abstract class Entity implements ICommandSender
+@@ -1473,35 +1501,35 @@ public abstract class Entity implements ICommandSender
          }
      }
  
@@ -20923,7 +20936,7 @@ index 7865119..ee75136 100644
          return this.worldObj.rayTraceBlocks(var4, var6, false, false, true);
      }
  
-@@ -2001,7 +2023,7 @@ public abstract class Entity implements ICommandSender
+@@ -2001,7 +2029,7 @@ public abstract class Entity implements ICommandSender
      {
          this.setPosition(p_180426_1_, p_180426_3_, p_180426_5_);
          this.setRotation(p_180426_7_, p_180426_8_);
@@ -20932,7 +20945,7 @@ index 7865119..ee75136 100644
  
          if (!var11.isEmpty())
          {
-@@ -2031,7 +2053,7 @@ public abstract class Entity implements ICommandSender
+@@ -2031,7 +2059,7 @@ public abstract class Entity implements ICommandSender
      /**
       * returns a (normalized) vector of where this entity is looking
       */
@@ -20941,7 +20954,7 @@ index 7865119..ee75136 100644
      {
          return null;
      }
-@@ -2083,9 +2105,15 @@ public abstract class Entity implements ICommandSender
+@@ -2083,9 +2111,15 @@ public abstract class Entity implements ICommandSender
       */
      public void setVelocity(double x, double y, double z)
      {
@@ -20960,7 +20973,7 @@ index 7865119..ee75136 100644
      }
  
      public void handleHealthUpdate(byte p_70103_1_) {}
-@@ -2170,7 +2198,7 @@ public abstract class Entity implements ICommandSender
+@@ -2170,7 +2204,7 @@ public abstract class Entity implements ICommandSender
       */
      public boolean isInvisibleToPlayer(EntityPlayer playerIn)
      {
@@ -20969,7 +20982,7 @@ index 7865119..ee75136 100644
      }
  
      public void setInvisible(boolean invisible)
-@@ -2569,11 +2597,11 @@ public abstract class Entity implements ICommandSender
+@@ -2569,11 +2603,11 @@ public abstract class Entity implements ICommandSender
          return true;
      }
  
@@ -20985,7 +20998,7 @@ index 7865119..ee75136 100644
          return var1;
      }
  
-@@ -2623,7 +2651,7 @@ public abstract class Entity implements ICommandSender
+@@ -2623,7 +2657,7 @@ public abstract class Entity implements ICommandSender
  
      public void func_145781_i(int p_145781_1_) {}
  
@@ -20994,7 +21007,7 @@ index 7865119..ee75136 100644
      {
          return EnumFacing.getHorizontal(MathHelper.floor_double((double)(this.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3);
      }
-@@ -2640,7 +2668,7 @@ public abstract class Entity implements ICommandSender
+@@ -2640,7 +2674,7 @@ public abstract class Entity implements ICommandSender
          }
  
          var1.setString("name", this.getName());
@@ -21003,7 +21016,7 @@ index 7865119..ee75136 100644
      }
  
      public boolean func_174827_a(EntityPlayerMP p_174827_1_)
-@@ -2684,7 +2712,7 @@ public abstract class Entity implements ICommandSender
+@@ -2684,7 +2718,7 @@ public abstract class Entity implements ICommandSender
       * (like "I fetched this block for you by ID, but I'd like you to know that every time you do this, I die a little
       * inside"), and errors (like "it's not called iron_pixacke, silly").
       */
@@ -21012,7 +21025,7 @@ index 7865119..ee75136 100644
  
      /**
       * Returns true if the command sender is allowed to use the given command.
-@@ -2699,9 +2727,9 @@ public abstract class Entity implements ICommandSender
+@@ -2699,9 +2733,9 @@ public abstract class Entity implements ICommandSender
          return new BlockPos(this.posX, this.posY + 0.5D, this.posZ);
      }
  
@@ -21024,7 +21037,7 @@ index 7865119..ee75136 100644
      }
  
      public World getEntityWorld()
-@@ -2741,7 +2769,7 @@ public abstract class Entity implements ICommandSender
+@@ -2741,7 +2775,7 @@ public abstract class Entity implements ICommandSender
  
      public void func_174834_g(NBTTagCompound p_174834_1_) {}
  
