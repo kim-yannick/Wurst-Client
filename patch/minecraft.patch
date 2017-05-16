@@ -1,6 +1,6 @@
-From dd7b94b3ec7fa32514efe50a51a420bdddc7b648 Mon Sep 17 00:00:00 2001
+From 855b5ba3f184694842f48b408dcfa8beab7b3ce9 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Thu, 11 May 2017 12:08:41 +0200
+Date: Tue, 16 May 2017 12:50:24 +0200
 Subject: [PATCH] mod
 
 ---
@@ -740,7 +740,7 @@ Subject: [PATCH] mod
  net/minecraft/util/Timer.java                      |   8 +-
  net/minecraft/util/Vec3.java                       | 208 ---------
  net/minecraft/util/Vec3i.java                      | 134 ------
- net/minecraft/util/math/AxisAlignedBB.java         | 433 ++++++++++++++++++
+ net/minecraft/util/math/AxisAlignedBB.java         | 439 ++++++++++++++++++
  net/minecraft/util/math/BlockPos.java              | 491 +++++++++++++++++++++
  net/minecraft/util/math/RayTraceResult.java        |  78 ++++
  net/minecraft/util/math/Vec3d.java                 | 224 ++++++++++
@@ -869,7 +869,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 865 files changed, 10012 insertions(+), 8432 deletions(-)
+ 865 files changed, 10018 insertions(+), 8432 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -37899,10 +37899,10 @@ index 2035ffa..0000000
 -}
 diff --git a/net/minecraft/util/math/AxisAlignedBB.java b/net/minecraft/util/math/AxisAlignedBB.java
 new file mode 100644
-index 0000000..50d642e
+index 0000000..6538e3c
 --- /dev/null
 +++ b/net/minecraft/util/math/AxisAlignedBB.java
-@@ -0,0 +1,433 @@
+@@ -0,0 +1,439 @@
 +package net.minecraft.util.math;
 +
 +import net.minecraft.util.EnumFacing;
@@ -37952,6 +37952,12 @@ index 0000000..50d642e
 +			this.minY + (double)pos.getY(), this.minZ + (double)pos.getZ(),
 +			this.maxX + (double)pos.getX(), this.maxY + (double)pos.getY(),
 +			this.maxZ + (double)pos.getZ());
++	}
++	
++	// TODO: Client
++	public AxisAlignedBB expandXyz(double value)
++	{
++		return this.expand(value, value, value);
 +	}
 +
 +    /**
