@@ -1,6 +1,6 @@
-From 855b5ba3f184694842f48b408dcfa8beab7b3ce9 Mon Sep 17 00:00:00 2001
+From 9522344e81001ce34cae3a721a487dd9accb2970 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 16 May 2017 12:50:24 +0200
+Date: Wed, 17 May 2017 18:51:11 +0200
 Subject: [PATCH] mod
 
 ---
@@ -60,7 +60,7 @@ Subject: [PATCH] mod
  net/minecraft/block/BlockLeavesBase.java           |   2 +-
  net/minecraft/block/BlockLever.java                |  10 +-
  net/minecraft/block/BlockLilyPad.java              |   6 +-
- net/minecraft/block/BlockLiquid.java               |  43 +-
+ net/minecraft/block/BlockLiquid.java               |  40 +-
  net/minecraft/block/BlockLog.java                  |   2 +-
  net/minecraft/block/BlockMobSpawner.java           |   2 +-
  net/minecraft/block/BlockMushroom.java             |  10 +-
@@ -869,7 +869,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 865 files changed, 10018 insertions(+), 8432 deletions(-)
+ 865 files changed, 10015 insertions(+), 8432 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -2522,7 +2522,7 @@ index 8156a1e..8bd27eb 100644
  
      public boolean canBlockStay(World worldIn, BlockPos p_180671_2_, IBlockState p_180671_3_)
 diff --git a/net/minecraft/block/BlockLiquid.java b/net/minecraft/block/BlockLiquid.java
-index be12b92..2bece40 100644
+index be12b92..45c6316 100644
 --- a/net/minecraft/block/BlockLiquid.java
 +++ b/net/minecraft/block/BlockLiquid.java
 @@ -2,6 +2,7 @@ package net.minecraft.block;
@@ -2533,7 +2533,7 @@ index be12b92..2bece40 100644
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyInteger;
-@@ -10,15 +11,19 @@ import net.minecraft.block.state.IBlockState;
+@@ -10,15 +11,16 @@ import net.minecraft.block.state.IBlockState;
  import net.minecraft.entity.Entity;
  import net.minecraft.init.Blocks;
  import net.minecraft.item.Item;
@@ -2550,13 +2550,10 @@ index be12b92..2bece40 100644
  import net.minecraft.world.World;
  import net.minecraft.world.biome.BiomeColorHelper;
 +import net.wurstclient.WurstClient;
-+import net.wurstclient.features.mods.JesusMod;
-+import net.wurstclient.features.mods.LiquidsMod;
-+import net.wurstclient.features.mods.XRayMod;
  
  public abstract class BlockLiquid extends Block
  {
-@@ -35,7 +40,9 @@ public abstract class BlockLiquid extends Block
+@@ -35,7 +37,9 @@ public abstract class BlockLiquid extends Block
  
      public boolean isPassable(IBlockAccess blockAccess, BlockPos pos)
      {
@@ -2567,7 +2564,7 @@ index be12b92..2bece40 100644
      }
  
      public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass)
-@@ -79,7 +86,9 @@ public abstract class BlockLiquid extends Block
+@@ -79,7 +83,9 @@ public abstract class BlockLiquid extends Block
  
      public boolean canCollideCheck(IBlockState state, boolean p_176209_2_)
      {
@@ -2578,7 +2575,7 @@ index be12b92..2bece40 100644
      }
  
      /**
-@@ -118,7 +127,11 @@ public abstract class BlockLiquid extends Block
+@@ -118,7 +124,11 @@ public abstract class BlockLiquid extends Block
  
      public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
      {
@@ -2591,7 +2588,7 @@ index be12b92..2bece40 100644
      }
  
      /**
-@@ -147,9 +160,9 @@ public abstract class BlockLiquid extends Block
+@@ -147,9 +157,9 @@ public abstract class BlockLiquid extends Block
          return 0;
      }
  
@@ -2603,7 +2600,7 @@ index be12b92..2bece40 100644
          int var4 = this.func_176366_f(p_180687_1_, p_180687_2_);
          Iterator var5 = EnumFacing.Plane.HORIZONTAL.iterator();
          EnumFacing var6;
-@@ -202,7 +215,7 @@ public abstract class BlockLiquid extends Block
+@@ -202,7 +212,7 @@ public abstract class BlockLiquid extends Block
          return var3.normalize();
      }
  
@@ -2612,7 +2609,7 @@ index be12b92..2bece40 100644
      {
          return motion.add(this.func_180687_h(worldIn, pos));
      }
-@@ -295,7 +308,7 @@ public abstract class BlockLiquid extends Block
+@@ -295,7 +305,7 @@ public abstract class BlockLiquid extends Block
  
      public static double func_180689_a(IBlockAccess p_180689_0_, BlockPos p_180689_1_, Material p_180689_2_)
      {
@@ -2621,7 +2618,7 @@ index be12b92..2bece40 100644
          return var3.xCoord == 0.0D && var3.zCoord == 0.0D ? -1000.0D : Math.atan2(var3.zCoord, var3.xCoord) - (Math.PI / 2D);
      }
  
-@@ -334,7 +347,7 @@ public abstract class BlockLiquid extends Block
+@@ -334,7 +344,7 @@ public abstract class BlockLiquid extends Block
  
                  if (var9.intValue() == 0)
                  {
@@ -2630,7 +2627,7 @@ index be12b92..2bece40 100644
                      this.func_180688_d(worldIn, p_176365_2_);
                      return true;
                  }
-@@ -389,11 +402,11 @@ public abstract class BlockLiquid extends Block
+@@ -389,11 +399,11 @@ public abstract class BlockLiquid extends Block
      {
          if (p_176361_0_ == Material.water)
          {
@@ -2644,7 +2641,7 @@ index be12b92..2bece40 100644
          }
          else
          {
-@@ -405,11 +418,11 @@ public abstract class BlockLiquid extends Block
+@@ -405,11 +415,11 @@ public abstract class BlockLiquid extends Block
      {
          if (p_176363_0_ == Material.water)
          {
