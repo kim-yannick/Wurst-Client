@@ -9,6 +9,7 @@ package net.wurstclient.features.mods;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.wurstclient.compatibility.WItem;
 import net.wurstclient.compatibility.WMinecraft;
 import net.wurstclient.events.LeftClickEvent;
 import net.wurstclient.events.listeners.LeftClickListener;
@@ -16,7 +17,6 @@ import net.wurstclient.events.listeners.UpdateListener;
 import net.wurstclient.features.HelpPage;
 import net.wurstclient.features.Mod;
 import net.wurstclient.features.SearchTags;
-import net.wurstclient.utils.InventoryUtils;
 
 @SearchTags({"AutoBlock", "BlockHitting", "auto block", "block hitting"})
 @HelpPage("Mods/BlockHit")
@@ -54,8 +54,7 @@ public final class BlockHitMod extends Mod
 	{
 		// check held item
 		ItemStack stack = WMinecraft.getPlayer().getCurrentEquippedItem();
-		if(InventoryUtils.isEmptySlot(stack)
-			|| !(stack.getItem() instanceof ItemSword))
+		if(WItem.isNull(stack) || !(stack.getItem() instanceof ItemSword))
 			return;
 		
 		doBlock();
