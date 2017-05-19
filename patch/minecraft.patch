@@ -1,6 +1,6 @@
-From 2a2b523e4180091e331f1ef397660d45b67072b2 Mon Sep 17 00:00:00 2001
+From debaa05b4d0f69ce28aaffb8ddd3e8d7264c293d Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 19 May 2017 14:19:03 +0200
+Date: Fri, 19 May 2017 14:52:14 +0200
 Subject: [PATCH] mod
 
 ---
@@ -214,7 +214,7 @@ Subject: [PATCH] mod
  .../client/gui/achievement/GuiAchievements.java    |  26 +-
  net/minecraft/client/gui/achievement/GuiStats.java |  28 +-
  net/minecraft/client/gui/inventory/GuiBeacon.java  |   7 +-
- net/minecraft/client/gui/inventory/GuiChest.java   | 107 ++++-
+ net/minecraft/client/gui/inventory/GuiChest.java   | 112 ++++-
  .../client/gui/inventory/GuiContainer.java         |  56 ++-
  .../client/gui/inventory/GuiContainerCreative.java |  23 +-
  .../client/gui/inventory/GuiCrafting.java          |   2 +-
@@ -869,7 +869,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 865 files changed, 10009 insertions(+), 8432 deletions(-)
+ 865 files changed, 10014 insertions(+), 8432 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -10841,10 +10841,10 @@ index 3dc2b1e..736b9ec 100644
          }
          else if (button instanceof GuiBeacon.PowerButton)
 diff --git a/net/minecraft/client/gui/inventory/GuiChest.java b/net/minecraft/client/gui/inventory/GuiChest.java
-index 15a710a..2f380f8 100644
+index 15a710a..a3ac979 100644
 --- a/net/minecraft/client/gui/inventory/GuiChest.java
 +++ b/net/minecraft/client/gui/inventory/GuiChest.java
-@@ -1,54 +1,131 @@
+@@ -1,54 +1,136 @@
  package net.minecraft.client.gui.inventory;
  
  import net.minecraft.client.Minecraft;
@@ -10855,6 +10855,7 @@ index 15a710a..2f380f8 100644
 +import net.minecraft.inventory.Slot;
  import net.minecraft.util.ResourceLocation;
 +import net.wurstclient.WurstClient;
++import net.wurstclient.compatibility.WItem;
 +import net.wurstclient.features.special_features.YesCheatSpf.Profile;
 +import net.wurstclient.utils.ClickType;
  
@@ -10921,9 +10922,11 @@ index 15a710a..2f380f8 100644
 +				{
 +					for(int i = 0; i < inventoryRows * 9; i++)
 +					{
-+						Slot slot = (Slot)inventorySlots.inventorySlots.get(i);
-+						if(slot.getStack() == null)
++						Slot slot = inventorySlots.inventorySlots.get(i);
++						if(WItem.isNull(slot.getStack()))
 +							continue;
++						if(mc.currentScreen == null)
++							break;
 +						if(WurstClient.INSTANCE.special.yesCheatSpf.getProfile()
 +							.ordinal() >= Profile.ANTICHEAT.ordinal())
 +							Thread.sleep(250);
@@ -10942,9 +10945,11 @@ index 15a710a..2f380f8 100644
 +					for(int i = inventoryRows * 9; i < inventoryRows * 9
 +						+ 44; i++)
 +					{
-+						Slot slot = (Slot)inventorySlots.inventorySlots.get(i);
-+						if(slot.getStack() == null)
++						Slot slot = inventorySlots.inventorySlots.get(i);
++						if(WItem.isNull(slot.getStack()))
 +							continue;
++						if(mc.currentScreen == null)
++							break;
 +						if(WurstClient.INSTANCE.special.yesCheatSpf.getProfile()
 +							.ordinal() >= Profile.ANTICHEAT.ordinal())
 +							Thread.sleep(250);
