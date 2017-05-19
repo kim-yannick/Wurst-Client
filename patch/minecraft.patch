@@ -1,6 +1,6 @@
-From debaa05b4d0f69ce28aaffb8ddd3e8d7264c293d Mon Sep 17 00:00:00 2001
+From a757ce4dd825e7536d7f591189343a666f5c6ed4 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 19 May 2017 14:52:14 +0200
+Date: Fri, 19 May 2017 15:26:20 +0200
 Subject: [PATCH] mod
 
 ---
@@ -214,7 +214,7 @@ Subject: [PATCH] mod
  .../client/gui/achievement/GuiAchievements.java    |  26 +-
  net/minecraft/client/gui/achievement/GuiStats.java |  28 +-
  net/minecraft/client/gui/inventory/GuiBeacon.java  |   7 +-
- net/minecraft/client/gui/inventory/GuiChest.java   | 112 ++++-
+ net/minecraft/client/gui/inventory/GuiChest.java   | 109 ++++-
  .../client/gui/inventory/GuiContainer.java         |  56 ++-
  .../client/gui/inventory/GuiContainerCreative.java |  23 +-
  .../client/gui/inventory/GuiCrafting.java          |   2 +-
@@ -869,7 +869,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 865 files changed, 10014 insertions(+), 8432 deletions(-)
+ 865 files changed, 10011 insertions(+), 8432 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -10841,10 +10841,10 @@ index 3dc2b1e..736b9ec 100644
          }
          else if (button instanceof GuiBeacon.PowerButton)
 diff --git a/net/minecraft/client/gui/inventory/GuiChest.java b/net/minecraft/client/gui/inventory/GuiChest.java
-index 15a710a..a3ac979 100644
+index 15a710a..8ca0698 100644
 --- a/net/minecraft/client/gui/inventory/GuiChest.java
 +++ b/net/minecraft/client/gui/inventory/GuiChest.java
-@@ -1,54 +1,136 @@
+@@ -1,54 +1,133 @@
  package net.minecraft.client.gui.inventory;
  
  import net.minecraft.client.Minecraft;
@@ -10856,7 +10856,6 @@ index 15a710a..a3ac979 100644
  import net.minecraft.util.ResourceLocation;
 +import net.wurstclient.WurstClient;
 +import net.wurstclient.compatibility.WItem;
-+import net.wurstclient.features.special_features.YesCheatSpf.Profile;
 +import net.wurstclient.utils.ClickType;
  
  public class GuiChest extends GuiContainer
@@ -10927,9 +10926,8 @@ index 15a710a..a3ac979 100644
 +							continue;
 +						if(mc.currentScreen == null)
 +							break;
-+						if(WurstClient.INSTANCE.special.yesCheatSpf.getProfile()
-+							.ordinal() >= Profile.ANTICHEAT.ordinal())
-+							Thread.sleep(250);
++						Thread.sleep(
++							WurstClient.INSTANCE.mods.autoStealMod.getDelay());
 +						handleMouseClick(slot, slot.slotNumber, 0,
 +							ClickType.QUICK_MOVE);
 +					}
@@ -10950,9 +10948,8 @@ index 15a710a..a3ac979 100644
 +							continue;
 +						if(mc.currentScreen == null)
 +							break;
-+						if(WurstClient.INSTANCE.special.yesCheatSpf.getProfile()
-+							.ordinal() >= Profile.ANTICHEAT.ordinal())
-+							Thread.sleep(250);
++						Thread.sleep(
++							WurstClient.INSTANCE.mods.autoStealMod.getDelay());
 +						handleMouseClick(slot, slot.slotNumber, 0,
 +							ClickType.QUICK_MOVE);
 +					}
