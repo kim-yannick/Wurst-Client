@@ -9,7 +9,6 @@ package net.wurstclient.utils;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
@@ -57,11 +56,6 @@ public class InventoryUtils
 		ItemStack stack = new ItemStack(Items.potionitem);
 		stack.setItemDamage(16384);
 		return stack;
-	}
-	
-	public static int getArmorType(ItemArmor armor)
-	{
-		return 3 - armor.armorType;
 	}
 	
 	public static float getStrVsBlock(ItemStack stack, BlockPos pos)

@@ -7,13 +7,7 @@
  */
 package net.wurstclient.compatibility;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBow;
-import net.minecraft.item.ItemEgg;
-import net.minecraft.item.ItemEnderPearl;
-import net.minecraft.item.ItemPotion;
-import net.minecraft.item.ItemSnowball;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.util.ResourceLocation;
 
 public final class WItem
@@ -26,6 +20,11 @@ public final class WItem
 	public static boolean isNull(ItemStack stack)
 	{
 		return stack == null;
+	}
+	
+	public static int getArmorType(ItemArmor armor)
+	{
+		return 3 - armor.armorType;
 	}
 	
 	public static boolean isThrowable(ItemStack stack)
