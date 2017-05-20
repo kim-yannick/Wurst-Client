@@ -1,6 +1,6 @@
-From aae33f344044bfcaf907ed6c736e1b18416d6f67 Mon Sep 17 00:00:00 2001
+From c1c663082e650c1347d144660f42cde0f9238bda Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Fri, 19 May 2017 16:05:34 +0200
+Date: Sat, 20 May 2017 14:35:37 +0200
 Subject: [PATCH] mod
 
 ---
@@ -16,7 +16,7 @@ Subject: [PATCH] mod
  net/minecraft/block/BlockBrewingStand.java         |   4 +-
  net/minecraft/block/BlockBush.java                 |   8 +-
  net/minecraft/block/BlockButton.java               |   4 +-
- net/minecraft/block/BlockCactus.java               |  14 +-
+ net/minecraft/block/BlockCactus.java               |  13 +-
  net/minecraft/block/BlockCake.java                 |   4 +-
  net/minecraft/block/BlockCarpet.java               |   2 +-
  net/minecraft/block/BlockCauldron.java             |   6 +-
@@ -869,7 +869,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 865 files changed, 9996 insertions(+), 8435 deletions(-)
+ 865 files changed, 9995 insertions(+), 8435 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -1296,7 +1296,7 @@ index 34c2766..09a4ee6 100644
  import net.minecraft.world.World;
  
 diff --git a/net/minecraft/block/BlockCactus.java b/net/minecraft/block/BlockCactus.java
-index fbdcfb5..9f1e696 100644
+index fbdcfb5..7ac8f4e 100644
 --- a/net/minecraft/block/BlockCactus.java
 +++ b/net/minecraft/block/BlockCactus.java
 @@ -2,6 +2,7 @@ package net.minecraft.block;
@@ -1307,7 +1307,7 @@ index fbdcfb5..9f1e696 100644
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyInteger;
-@@ -10,12 +11,14 @@ import net.minecraft.block.state.IBlockState;
+@@ -10,12 +11,13 @@ import net.minecraft.block.state.IBlockState;
  import net.minecraft.creativetab.CreativeTabs;
  import net.minecraft.entity.Entity;
  import net.minecraft.init.Blocks;
@@ -1320,11 +1320,10 @@ index fbdcfb5..9f1e696 100644
 +import net.minecraft.util.math.BlockPos;
  import net.minecraft.world.World;
 +import net.wurstclient.WurstClient;
-+import net.wurstclient.features.mods.AntiCactusMod;
  
  public class BlockCactus extends Block
  {
-@@ -64,7 +67,10 @@ public class BlockCactus extends Block
+@@ -64,7 +66,10 @@ public class BlockCactus extends Block
  
      public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
      {
@@ -1336,7 +1335,7 @@ index fbdcfb5..9f1e696 100644
          return new AxisAlignedBB((double)((float)pos.getX() + var4), (double)pos.getY(), (double)((float)pos.getZ() + var4), (double)((float)(pos.getX() + 1) - var4), (double)((float)(pos.getY() + 1) - var4), (double)((float)(pos.getZ() + 1) - var4));
      }
  
-@@ -112,7 +118,7 @@ public class BlockCactus extends Block
+@@ -112,7 +117,7 @@ public class BlockCactus extends Block
          }
  
          Block var5 = worldIn.getBlockState(p_176586_2_.offsetDown()).getBlock();
