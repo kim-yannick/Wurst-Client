@@ -1,6 +1,6 @@
-From c1c663082e650c1347d144660f42cde0f9238bda Mon Sep 17 00:00:00 2001
+From 8cd9a5d9664537d7596050c6afdd42e669cd344d Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Sat, 20 May 2017 14:35:37 +0200
+Date: Mon, 22 May 2017 20:35:16 +0200
 Subject: [PATCH] mod
 
 ---
@@ -423,7 +423,7 @@ Subject: [PATCH] mod
  net/minecraft/dispenser/IBlockSource.java          |   2 +-
  net/minecraft/enchantment/Enchantment.java         |   9 +-
  net/minecraft/entity/DataWatcher.java              |  12 +-
- net/minecraft/entity/Entity.java                   | 160 ++++---
+ net/minecraft/entity/Entity.java                   | 148 ++++---
  net/minecraft/entity/EntityAgeable.java            |   2 +-
  net/minecraft/entity/EntityBodyHelper.java         |   2 +-
  net/minecraft/entity/EntityCreature.java           |   2 +-
@@ -519,7 +519,7 @@ Subject: [PATCH] mod
  net/minecraft/entity/passive/EntitySquid.java      |   2 +-
  net/minecraft/entity/passive/EntityVillager.java   |  16 +-
  net/minecraft/entity/passive/EntityWolf.java       |   4 +-
- net/minecraft/entity/player/EntityPlayer.java      | 134 +++---
+ net/minecraft/entity/player/EntityPlayer.java      | 136 +++---
  net/minecraft/entity/player/EntityPlayerMP.java    |  30 +-
  .../entity/player/EnumPlayerModelParts.java        |   6 +-
  net/minecraft/entity/player/InventoryPlayer.java   |  11 +-
@@ -869,7 +869,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 865 files changed, 9995 insertions(+), 8435 deletions(-)
+ 865 files changed, 9988 insertions(+), 8432 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -20570,7 +20570,7 @@ index 6bd900a..b3482c7 100644
  
      /**
 diff --git a/net/minecraft/entity/Entity.java b/net/minecraft/entity/Entity.java
-index 7865119..bf6f7b4 100644
+index 7865119..09add0f 100644
 --- a/net/minecraft/entity/Entity.java
 +++ b/net/minecraft/entity/Entity.java
 @@ -5,6 +5,7 @@ import java.util.List;
@@ -20597,23 +20597,22 @@ index 7865119..bf6f7b4 100644
  import net.minecraft.init.Blocks;
  import net.minecraft.item.Item;
  import net.minecraft.item.ItemStack;
-@@ -31,21 +32,23 @@ import net.minecraft.nbt.NBTTagDouble;
+@@ -31,21 +32,24 @@ import net.minecraft.nbt.NBTTagDouble;
  import net.minecraft.nbt.NBTTagFloat;
  import net.minecraft.nbt.NBTTagList;
  import net.minecraft.server.MinecraftServer;
 -import net.minecraft.util.AxisAlignedBB;
 -import net.minecraft.util.BlockPos;
 -import net.minecraft.util.ChatComponentText;
--import net.minecraft.util.DamageSource;
--import net.minecraft.util.EnumFacing;
--import net.minecraft.util.EnumParticleTypes;
+ import net.minecraft.util.DamageSource;
+ import net.minecraft.util.EnumFacing;
+ import net.minecraft.util.EnumParticleTypes;
 -import net.minecraft.util.IChatComponent;
--import net.minecraft.util.MathHelper;
+ import net.minecraft.util.MathHelper;
 -import net.minecraft.util.MovingObjectPosition;
--import net.minecraft.util.ReportedException;
--import net.minecraft.util.StatCollector;
+ import net.minecraft.util.ReportedException;
+ import net.minecraft.util.StatCollector;
 -import net.minecraft.util.Vec3;
-+import net.minecraft.util.*;
 +import net.minecraft.util.math.AxisAlignedBB;
 +import net.minecraft.util.math.BlockPos;
 +import net.minecraft.util.math.RayTraceResult;
@@ -20625,15 +20624,11 @@ index 7865119..bf6f7b4 100644
  import net.minecraft.world.World;
  import net.minecraft.world.WorldServer;
 +import net.wurstclient.WurstClient;
-+import net.wurstclient.features.mods.AntiKnockbackMod;
-+import net.wurstclient.features.mods.FreecamMod;
-+import net.wurstclient.features.mods.NoClipMod;
-+import net.wurstclient.features.mods.PhaseMod;
-+import net.wurstclient.features.mods.SafeWalkMod;
++import net.wurstclient.compatibility.WMinecraft;
  
  public abstract class Entity implements ICommandSender
  {
-@@ -99,8 +102,8 @@ public abstract class Entity implements ICommandSender
+@@ -99,8 +103,8 @@ public abstract class Entity implements ICommandSender
      public float prevRotationYaw;
      public float prevRotationPitch;
  
@@ -20644,7 +20639,7 @@ index 7865119..bf6f7b4 100644
      public boolean onGround;
  
      /**
-@@ -118,7 +121,8 @@ public abstract class Entity implements ICommandSender
+@@ -118,7 +122,8 @@ public abstract class Entity implements ICommandSender
       */
      public boolean isCollided;
      public boolean velocityChanged;
@@ -20654,7 +20649,7 @@ index 7865119..bf6f7b4 100644
      private boolean isOutsideBorder;
  
      /**
-@@ -304,7 +308,7 @@ public abstract class Entity implements ICommandSender
+@@ -304,7 +309,7 @@ public abstract class Entity implements ICommandSender
              {
                  this.setPosition(this.posX, this.posY, this.posZ);
  
@@ -20663,7 +20658,7 @@ index 7865119..bf6f7b4 100644
                  {
                      break;
                  }
-@@ -376,7 +380,7 @@ public abstract class Entity implements ICommandSender
+@@ -376,7 +381,7 @@ public abstract class Entity implements ICommandSender
          float var4 = this.rotationYaw;
          this.rotationYaw = (float)((double)this.rotationYaw + (double)yaw * 0.15D);
          this.rotationPitch = (float)((double)this.rotationPitch - (double)pitch * 0.15D);
@@ -20672,7 +20667,7 @@ index 7865119..bf6f7b4 100644
          this.prevRotationPitch += this.rotationPitch - var3;
          this.prevRotationYaw += this.rotationYaw - var4;
      }
-@@ -570,7 +574,7 @@ public abstract class Entity implements ICommandSender
+@@ -570,7 +575,7 @@ public abstract class Entity implements ICommandSender
  
      private boolean func_174809_b(AxisAlignedBB p_174809_1_)
      {
@@ -20681,7 +20676,7 @@ index 7865119..bf6f7b4 100644
      }
  
      /**
-@@ -578,8 +582,21 @@ public abstract class Entity implements ICommandSender
+@@ -578,8 +583,21 @@ public abstract class Entity implements ICommandSender
       */
      public void moveEntity(double x, double y, double z)
      {
@@ -20704,7 +20699,7 @@ index 7865119..bf6f7b4 100644
              this.func_174826_a(this.getEntityBoundingBox().offset(x, y, z));
              this.func_174829_m();
          }
-@@ -604,13 +621,18 @@ public abstract class Entity implements ICommandSender
+@@ -604,13 +622,18 @@ public abstract class Entity implements ICommandSender
              double var13 = x;
              double var15 = y;
              double var17 = z;
@@ -20725,7 +20720,7 @@ index 7865119..bf6f7b4 100644
                  {
                      if (x < var20 && x >= -var20)
                      {
-@@ -626,7 +648,7 @@ public abstract class Entity implements ICommandSender
+@@ -626,7 +649,7 @@ public abstract class Entity implements ICommandSender
                      }
                  }
  
@@ -20734,7 +20729,7 @@ index 7865119..bf6f7b4 100644
                  {
                      if (z < var20 && z >= -var20)
                      {
-@@ -642,7 +664,7 @@ public abstract class Entity implements ICommandSender
+@@ -642,7 +665,7 @@ public abstract class Entity implements ICommandSender
                      }
                  }
  
@@ -20743,7 +20738,7 @@ index 7865119..bf6f7b4 100644
                  {
                      if (x < var20 && x >= -var20)
                      {
-@@ -674,7 +696,7 @@ public abstract class Entity implements ICommandSender
+@@ -674,7 +697,7 @@ public abstract class Entity implements ICommandSender
                  }
              }
  
@@ -20752,7 +20747,7 @@ index 7865119..bf6f7b4 100644
              AxisAlignedBB var21 = this.getEntityBoundingBox();
              AxisAlignedBB var23;
  
-@@ -710,7 +732,7 @@ public abstract class Entity implements ICommandSender
+@@ -710,7 +733,7 @@ public abstract class Entity implements ICommandSender
                  AxisAlignedBB var29 = this.getEntityBoundingBox();
                  this.func_174826_a(var21);
                  y = (double)this.stepHeight;
@@ -20761,7 +20756,7 @@ index 7865119..bf6f7b4 100644
                  AxisAlignedBB var31 = this.getEntityBoundingBox();
                  AxisAlignedBB var32 = var31.addCoord(var13, 0.0D, var17);
                  double var33 = y;
-@@ -860,8 +882,8 @@ public abstract class Entity implements ICommandSender
+@@ -860,8 +883,8 @@ public abstract class Entity implements ICommandSender
                      var60.onEntityCollidedWithBlock(this.worldObj, var26, this);
                  }
  
@@ -20772,7 +20767,7 @@ index 7865119..bf6f7b4 100644
  
                  if (this.distanceWalkedOnStepModified > (float)this.nextStepDistance && var60.getMaterial() != Material.air)
                  {
-@@ -869,7 +891,7 @@ public abstract class Entity implements ICommandSender
+@@ -869,7 +892,7 @@ public abstract class Entity implements ICommandSender
  
                      if (this.isInWater())
                      {
@@ -20781,7 +20776,7 @@ index 7865119..bf6f7b4 100644
  
                          if (var34 > 1.0F)
                          {
-@@ -975,9 +997,9 @@ public abstract class Entity implements ICommandSender
+@@ -975,9 +998,9 @@ public abstract class Entity implements ICommandSender
      {
          Block.SoundType var3 = p_180429_2_.stepSound;
  
@@ -20793,7 +20788,7 @@ index 7865119..bf6f7b4 100644
              this.playSound(var3.getStepSound(), var3.getVolume() * 0.15F, var3.getFrequency());
          }
          else if (!p_180429_2_.getMaterial().isLiquid())
-@@ -1119,7 +1141,7 @@ public abstract class Entity implements ICommandSender
+@@ -1119,7 +1142,7 @@ public abstract class Entity implements ICommandSender
       */
      protected void resetHeight()
      {
@@ -20802,7 +20797,7 @@ index 7865119..bf6f7b4 100644
  
          if (var1 > 1.0F)
          {
-@@ -1198,6 +1220,12 @@ public abstract class Entity implements ICommandSender
+@@ -1198,6 +1221,12 @@ public abstract class Entity implements ICommandSender
          }
      }
  	
@@ -20815,7 +20810,7 @@ index 7865119..bf6f7b4 100644
      public boolean func_180799_ab()
      {
          return this.worldObj.isMaterialInBB(this.getEntityBoundingBox().expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), Material.lava);
-@@ -1212,7 +1240,7 @@ public abstract class Entity implements ICommandSender
+@@ -1212,7 +1241,7 @@ public abstract class Entity implements ICommandSender
  
          if (var4 >= 1.0E-4F)
          {
@@ -20824,7 +20819,7 @@ index 7865119..bf6f7b4 100644
  
              if (var4 < 1.0F)
              {
-@@ -1324,7 +1352,7 @@ public abstract class Entity implements ICommandSender
+@@ -1324,7 +1353,7 @@ public abstract class Entity implements ICommandSender
          float var2 = (float)(this.posX - entityIn.posX);
          float var3 = (float)(this.posY - entityIn.posY);
          float var4 = (float)(this.posZ - entityIn.posZ);
@@ -20833,7 +20828,7 @@ index 7865119..bf6f7b4 100644
      }
  
      /**
-@@ -1343,7 +1371,7 @@ public abstract class Entity implements ICommandSender
+@@ -1343,7 +1372,7 @@ public abstract class Entity implements ICommandSender
          return p_174818_1_.distanceSq(this.posX, this.posY, this.posZ);
      }
  
@@ -20842,7 +20837,7 @@ index 7865119..bf6f7b4 100644
      {
          return p_174831_1_.distanceSqToCenter(this.posX, this.posY, this.posZ);
      }
-@@ -1356,7 +1384,7 @@ public abstract class Entity implements ICommandSender
+@@ -1356,7 +1385,7 @@ public abstract class Entity implements ICommandSender
          double var7 = this.posX - x;
          double var9 = this.posY - y;
          double var11 = this.posZ - z;
@@ -20851,7 +20846,7 @@ index 7865119..bf6f7b4 100644
      }
  
      /**
-@@ -1390,7 +1418,7 @@ public abstract class Entity implements ICommandSender
+@@ -1390,7 +1419,7 @@ public abstract class Entity implements ICommandSender
  
                  if (var6 >= 0.009999999776482582D)
                  {
@@ -20860,7 +20855,7 @@ index 7865119..bf6f7b4 100644
                      var2 /= var6;
                      var4 /= var6;
                      double var8 = 1.0D / var6;
-@@ -1459,7 +1487,7 @@ public abstract class Entity implements ICommandSender
+@@ -1459,7 +1488,7 @@ public abstract class Entity implements ICommandSender
      /**
       * interpolated look vector
       */
@@ -20869,7 +20864,7 @@ index 7865119..bf6f7b4 100644
      {
          if (p_70676_1_ == 1.0F)
          {
-@@ -1473,35 +1501,35 @@ public abstract class Entity implements ICommandSender
+@@ -1473,35 +1502,35 @@ public abstract class Entity implements ICommandSender
          }
      }
  
@@ -20914,7 +20909,7 @@ index 7865119..bf6f7b4 100644
          return this.worldObj.rayTraceBlocks(var4, var6, false, false, true);
      }
  
-@@ -2001,7 +2029,7 @@ public abstract class Entity implements ICommandSender
+@@ -2001,7 +2030,7 @@ public abstract class Entity implements ICommandSender
      {
          this.setPosition(p_180426_1_, p_180426_3_, p_180426_5_);
          this.setRotation(p_180426_7_, p_180426_8_);
@@ -20923,7 +20918,7 @@ index 7865119..bf6f7b4 100644
  
          if (!var11.isEmpty())
          {
-@@ -2031,7 +2059,7 @@ public abstract class Entity implements ICommandSender
+@@ -2031,7 +2060,7 @@ public abstract class Entity implements ICommandSender
      /**
       * returns a (normalized) vector of where this entity is looking
       */
@@ -20932,7 +20927,7 @@ index 7865119..bf6f7b4 100644
      {
          return null;
      }
-@@ -2083,9 +2111,15 @@ public abstract class Entity implements ICommandSender
+@@ -2083,9 +2112,14 @@ public abstract class Entity implements ICommandSender
       */
      public void setVelocity(double x, double y, double z)
      {
@@ -20941,10 +20936,9 @@ index 7865119..bf6f7b4 100644
 -        this.motionZ = z;
 +		// TODO: Client
 +		float strength = 1F;
-+		AntiKnockbackMod antiKnockbackMod =
-+			WurstClient.INSTANCE.mods.antiKnockbackMod;
-+		if(antiKnockbackMod.isActive())
-+			strength = 1F - antiKnockbackMod.strength.getValueF();
++		if(this == WMinecraft.getPlayer())
++			strength = WurstClient.INSTANCE.mods.antiKnockbackMod
++				.getKnockbackModifier();
 +		this.motionX = x * strength;
 +		this.motionY = y * strength;
 +		this.motionZ = z * strength;
@@ -24023,10 +24017,10 @@ index b1345a2..021de51 100644
              if (this.timeWolfIsShaking == 0.0F)
              {
 diff --git a/net/minecraft/entity/player/EntityPlayer.java b/net/minecraft/entity/player/EntityPlayer.java
-index 04f22d7..f591498 100644
+index 04f22d7..94810d1 100644
 --- a/net/minecraft/entity/player/EntityPlayer.java
 +++ b/net/minecraft/entity/player/EntityPlayer.java
-@@ -1,17 +1,16 @@
+@@ -1,27 +1,23 @@
  package net.minecraft.entity.player;
  
 -import com.google.common.base.Charsets;
@@ -24037,6 +24031,10 @@ index 04f22d7..f591498 100644
  import java.util.List;
  import java.util.UUID;
 +
++import com.google.common.base.Charsets;
++import com.google.common.collect.Lists;
++import com.mojang.authlib.GameProfile;
++
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockBed;
  import net.minecraft.block.BlockDirectional;
@@ -24045,8 +24043,19 @@ index 04f22d7..f591498 100644
 +import net.minecraft.client.Minecraft;
  import net.minecraft.command.server.CommandBlockLogic;
  import net.minecraft.enchantment.EnchantmentHelper;
- import net.minecraft.entity.Entity;
-@@ -33,7 +32,6 @@ import net.minecraft.entity.passive.EntityHorse;
+-import net.minecraft.entity.Entity;
+-import net.minecraft.entity.EntityList;
+-import net.minecraft.entity.EntityLiving;
+-import net.minecraft.entity.EntityLivingBase;
+-import net.minecraft.entity.EnumCreatureAttribute;
+-import net.minecraft.entity.IEntityMultiPart;
+-import net.minecraft.entity.IMerchant;
+-import net.minecraft.entity.SharedMonsterAttributes;
++import net.minecraft.entity.*;
+ import net.minecraft.entity.ai.attributes.IAttributeInstance;
+ import net.minecraft.entity.boss.EntityDragonPart;
+ import net.minecraft.entity.item.EntityBoat;
+@@ -33,7 +29,6 @@ import net.minecraft.entity.passive.EntityHorse;
  import net.minecraft.entity.passive.EntityPig;
  import net.minecraft.entity.projectile.EntityArrow;
  import net.minecraft.entity.projectile.EntityFishHook;
@@ -24054,21 +24063,20 @@ index 04f22d7..f591498 100644
  import net.minecraft.init.Blocks;
  import net.minecraft.init.Items;
  import net.minecraft.inventory.Container;
-@@ -60,21 +58,25 @@ import net.minecraft.stats.AchievementList;
+@@ -60,21 +55,24 @@ import net.minecraft.stats.AchievementList;
  import net.minecraft.stats.StatBase;
  import net.minecraft.stats.StatList;
  import net.minecraft.tileentity.TileEntitySign;
 -import net.minecraft.util.AxisAlignedBB;
 -import net.minecraft.util.BlockPos;
 -import net.minecraft.util.ChatComponentText;
--import net.minecraft.util.DamageSource;
--import net.minecraft.util.EnumFacing;
--import net.minecraft.util.EnumParticleTypes;
--import net.minecraft.util.FoodStats;
+ import net.minecraft.util.DamageSource;
+ import net.minecraft.util.EnumFacing;
+ import net.minecraft.util.EnumParticleTypes;
+ import net.minecraft.util.FoodStats;
 -import net.minecraft.util.IChatComponent;
--import net.minecraft.util.MathHelper;
+ import net.minecraft.util.MathHelper;
 -import net.minecraft.util.Vec3;
-+import net.minecraft.util.*;
 +import net.minecraft.util.math.AxisAlignedBB;
 +import net.minecraft.util.math.BlockPos;
 +import net.minecraft.util.math.Vec3d;
@@ -24082,15 +24090,10 @@ index 04f22d7..f591498 100644
  import net.minecraft.world.WorldSettings;
 +import net.wurstclient.WurstClient;
 +import net.wurstclient.bot.WurstBot;
-+import net.wurstclient.features.mods.AntiKnockbackMod;
-+
-+import com.google.common.base.Charsets;
-+import com.google.common.collect.Lists;
-+import com.mojang.authlib.GameProfile;
  
  public abstract class EntityPlayer extends EntityLivingBase
  {
-@@ -108,9 +110,9 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -108,9 +106,9 @@ public abstract class EntityPlayer extends EntityLivingBase
      public double field_71091_bM;
      public double field_71096_bN;
      public double field_71097_bO;
@@ -24103,7 +24106,7 @@ index 04f22d7..f591498 100644
  
      /** Boolean value indicating weather a player is sleeping or not */
      protected boolean sleeping;
-@@ -222,7 +224,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -222,7 +220,7 @@ public abstract class EntityPlayer extends EntityLivingBase
      /**
       * Checks if the entity is currently using an item (e.g., bow, food, sword) by holding down the useItemButton
       */
@@ -24112,7 +24115,7 @@ index 04f22d7..f591498 100644
      {
          return this.itemInUse != null;
      }
-@@ -232,7 +234,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -232,7 +230,7 @@ public abstract class EntityPlayer extends EntityLivingBase
       */
      public int getItemInUseDuration()
      {
@@ -24121,7 +24124,7 @@ index 04f22d7..f591498 100644
      }
  
      public void stopUsingItem()
-@@ -258,7 +260,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -258,7 +256,7 @@ public abstract class EntityPlayer extends EntityLivingBase
  
      public boolean isBlocking()
      {
@@ -24130,7 +24133,7 @@ index 04f22d7..f591498 100644
      }
  
      /**
-@@ -266,9 +268,9 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -266,9 +264,9 @@ public abstract class EntityPlayer extends EntityLivingBase
       */
      public void onUpdate()
      {
@@ -24142,7 +24145,7 @@ index 04f22d7..f591498 100644
          {
              this.onGround = false;
          }
-@@ -344,47 +346,47 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -344,47 +342,47 @@ public abstract class EntityPlayer extends EntityLivingBase
              this.extinguish();
          }
  
@@ -24205,7 +24208,7 @@ index 04f22d7..f591498 100644
  
          if (this.ridingEntity == null)
          {
-@@ -403,8 +405,8 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -403,8 +401,8 @@ public abstract class EntityPlayer extends EntityLivingBase
          }
  
          int var9 = 29999999;
@@ -24216,7 +24219,7 @@ index 04f22d7..f591498 100644
  
          if (var10 != this.posX || var12 != this.posZ)
          {
-@@ -457,11 +459,11 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -457,11 +455,11 @@ public abstract class EntityPlayer extends EntityLivingBase
          {
              for (int var3 = 0; var3 < p_71010_2_; ++var3)
              {
@@ -24230,7 +24233,7 @@ index 04f22d7..f591498 100644
                  var7 = var7.rotatePitch(-this.rotationPitch * (float)Math.PI / 180.0F);
                  var7 = var7.rotateYaw(-this.rotationYaw * (float)Math.PI / 180.0F);
                  var7 = var7.addVector(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
-@@ -633,7 +635,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -633,7 +631,7 @@ public abstract class EntityPlayer extends EntityLivingBase
          }
  
          this.setAIMoveSpeed((float)var1.getAttributeValue());
@@ -24239,7 +24242,7 @@ index 04f22d7..f591498 100644
          float var3 = (float)(Math.atan(-this.motionY * 0.20000000298023224D) * 15.0D);
  
          if (var2 > 0.1F)
-@@ -654,7 +656,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -654,7 +652,7 @@ public abstract class EntityPlayer extends EntityLivingBase
          this.cameraYaw += (var2 - this.cameraYaw) * 0.4F;
          this.cameraPitch += (var3 - this.cameraPitch) * 0.8F;
  
@@ -24248,7 +24251,7 @@ index 04f22d7..f591498 100644
          {
              AxisAlignedBB var4 = null;
  
-@@ -713,6 +715,10 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -713,6 +711,10 @@ public abstract class EntityPlayer extends EntityLivingBase
       */
      public void onDeath(DamageSource cause)
      {
@@ -24259,7 +24262,7 @@ index 04f22d7..f591498 100644
          super.onDeath(cause);
          this.setSize(0.2F, 0.2F);
          this.setPosition(this.posX, this.posY, this.posZ);
-@@ -1216,7 +1222,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -1216,7 +1218,7 @@ public abstract class EntityPlayer extends EntityLivingBase
  
      public boolean interactWith(Entity p_70998_1_)
      {
@@ -24268,7 +24271,7 @@ index 04f22d7..f591498 100644
          {
              if (p_70998_1_ instanceof IInventory)
              {
-@@ -1702,7 +1708,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -1702,7 +1704,7 @@ public abstract class EntityPlayer extends EntityLivingBase
          return this.sleepTimer;
      }
  
@@ -24277,7 +24280,7 @@ index 04f22d7..f591498 100644
  
      public BlockPos func_180470_cg()
      {
-@@ -1806,7 +1812,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -1806,7 +1808,7 @@ public abstract class EntityPlayer extends EntityLivingBase
  
              if (this.isInsideOfMaterial(Material.water))
              {
@@ -24286,7 +24289,7 @@ index 04f22d7..f591498 100644
  
                  if (var7 > 0)
                  {
-@@ -1816,7 +1822,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -1816,7 +1818,7 @@ public abstract class EntityPlayer extends EntityLivingBase
              }
              else if (this.isInWater())
              {
@@ -24295,7 +24298,7 @@ index 04f22d7..f591498 100644
  
                  if (var7 > 0)
                  {
-@@ -1833,7 +1839,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -1833,7 +1835,7 @@ public abstract class EntityPlayer extends EntityLivingBase
              }
              else if (this.onGround)
              {
@@ -24304,7 +24307,7 @@ index 04f22d7..f591498 100644
  
                  if (var7 > 0)
                  {
-@@ -1857,7 +1863,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -1857,7 +1859,7 @@ public abstract class EntityPlayer extends EntityLivingBase
              }
              else
              {
@@ -24313,7 +24316,7 @@ index 04f22d7..f591498 100644
  
                  if (var7 > 25)
                  {
-@@ -1874,7 +1880,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -1874,7 +1876,7 @@ public abstract class EntityPlayer extends EntityLivingBase
      {
          if (this.ridingEntity != null)
          {
@@ -24322,7 +24325,7 @@ index 04f22d7..f591498 100644
  
              if (var7 > 0)
              {
-@@ -1925,7 +1931,7 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -1925,7 +1927,7 @@ public abstract class EntityPlayer extends EntityLivingBase
       */
      protected void resetHeight()
      {
@@ -24331,7 +24334,7 @@ index 04f22d7..f591498 100644
          {
              super.resetHeight();
          }
-@@ -2246,18 +2252,18 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -2246,18 +2248,18 @@ public abstract class EntityPlayer extends EntityLivingBase
          {
              return false;
          }
@@ -24353,7 +24356,7 @@ index 04f22d7..f591498 100644
  
      /**
       * returns the inventory of this entity (only used in EntityPlayerMP it seems)
-@@ -2269,7 +2275,9 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -2269,7 +2271,9 @@ public abstract class EntityPlayer extends EntityLivingBase
  
      public boolean isPushedByWater()
      {
@@ -24364,7 +24367,7 @@ index 04f22d7..f591498 100644
      }
  
      public Scoreboard getWorldScoreboard()
-@@ -2282,12 +2290,12 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -2282,12 +2286,12 @@ public abstract class EntityPlayer extends EntityLivingBase
          return this.getWorldScoreboard().getPlayersTeam(this.getName());
      }
  
@@ -24382,7 +24385,7 @@ index 04f22d7..f591498 100644
          return var1;
      }
  
-@@ -2332,15 +2340,15 @@ public abstract class EntityPlayer extends EntityLivingBase
+@@ -2332,15 +2336,15 @@ public abstract class EntityPlayer extends EntityLivingBase
  
          if (var1 == null)
          {
