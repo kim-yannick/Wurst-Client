@@ -1,6 +1,6 @@
-From 8cd9a5d9664537d7596050c6afdd42e669cd344d Mon Sep 17 00:00:00 2001
+From b415277096bbe11ba2c45218ac79a94abc6af9c3 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Mon, 22 May 2017 20:35:16 +0200
+Date: Tue, 23 May 2017 08:47:34 +0200
 Subject: [PATCH] mod
 
 ---
@@ -218,7 +218,7 @@ Subject: [PATCH] mod
  .../client/gui/inventory/GuiContainer.java         |  56 ++-
  .../client/gui/inventory/GuiContainerCreative.java |  23 +-
  .../client/gui/inventory/GuiCrafting.java          |   2 +-
- .../client/gui/inventory/GuiEditSign.java          |  37 +-
+ .../client/gui/inventory/GuiEditSign.java          |  38 +-
  .../client/gui/inventory/GuiInventory.java         |   1 +
  .../client/gui/spectator/BaseSpectatorGroup.java   |   8 +-
  .../client/gui/spectator/ISpectatorMenuObject.java |   4 +-
@@ -869,7 +869,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 865 files changed, 9988 insertions(+), 8432 deletions(-)
+ 865 files changed, 9988 insertions(+), 8433 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -11243,35 +11243,36 @@ index dd28a72..1257b99 100644
  
  public class GuiCrafting extends GuiContainer
 diff --git a/net/minecraft/client/gui/inventory/GuiEditSign.java b/net/minecraft/client/gui/inventory/GuiEditSign.java
-index c3c8bf5..dc003f2 100644
+index c3c8bf5..dce3338 100644
 --- a/net/minecraft/client/gui/inventory/GuiEditSign.java
 +++ b/net/minecraft/client/gui/inventory/GuiEditSign.java
-@@ -1,6 +1,7 @@
+@@ -1,6 +1,9 @@
  package net.minecraft.client.gui.inventory;
  
  import java.io.IOException;
 +
++import org.lwjgl.input.Keyboard;
++
  import net.minecraft.block.Block;
  import net.minecraft.client.gui.GuiButton;
  import net.minecraft.client.gui.GuiScreen;
-@@ -12,7 +13,15 @@ import net.minecraft.init.Blocks;
+@@ -12,8 +15,13 @@ import net.minecraft.init.Blocks;
  import net.minecraft.network.play.client.C12PacketUpdateSign;
  import net.minecraft.tileentity.TileEntitySign;
  import net.minecraft.util.ChatAllowedCharacters;
 -import net.minecraft.util.ChatComponentText;
+-import org.lwjgl.input.Keyboard;
++import net.minecraft.util.ChatStyle;
 +import net.minecraft.util.text.ITextComponent;
 +import net.minecraft.util.text.TextComponentString;
 +import net.minecraft.util.text.event.ClickEvent;
 +import net.minecraft.util.text.event.ClickEvent.Action;
 +import net.wurstclient.WurstClient;
-+import net.wurstclient.features.mods.AutoSignMod;
 +import net.wurstclient.features.mods.OpSignMod;
-+import net.minecraft.util.ChatStyle;
-+
- import org.lwjgl.input.Keyboard;
  
  public class GuiEditSign extends GuiScreen
-@@ -28,6 +37,7 @@ public class GuiEditSign extends GuiScreen
+ {
+@@ -28,6 +36,7 @@ public class GuiEditSign extends GuiScreen
  
      /** "Done" button for the GUI. */
      private GuiButton doneBtn;
@@ -11279,15 +11280,16 @@ index c3c8bf5..dc003f2 100644
      private static final String __OBFID = "CL_00000764";
  
      public GuiEditSign(TileEntitySign p_i1097_1_)
-@@ -40,6 +50,22 @@ public class GuiEditSign extends GuiScreen
+@@ -40,6 +49,23 @@ public class GuiEditSign extends GuiScreen
       */
      public void initGui()
      {
 +		// TODO: Client
-+    	AutoSignMod autoSign = WurstClient.INSTANCE.mods.autoSignMod;
-+		if(autoSign.isActive() && autoSign.signText != null)
++		ITextComponent[] autoSignText =
++			WurstClient.INSTANCE.mods.autoSignMod.getSignText();
++		if(autoSignText != null)
 +		{
-+			this.tileSign.signText = autoSign.signText;
++			tileSign.signText = autoSignText;
 +			mc.displayGuiScreen(null);
 +		}
 +		OpSignMod opSign = WurstClient.INSTANCE.mods.opSignMod;
@@ -11311,19 +11313,18 @@ index c3c8bf5..dc003f2 100644
          }
  
          this.tileSign.setEditable(true);
-@@ -76,6 +102,11 @@ public class GuiEditSign extends GuiScreen
+@@ -76,6 +102,10 @@ public class GuiEditSign extends GuiScreen
          {
              if (button.id == 0)
              {
 +				// TODO: Client
-+				AutoSignMod autoSign = WurstClient.INSTANCE.mods.autoSignMod;
-+				if(autoSign.isActive() && autoSign.signText == null)
-+					autoSign.signText = this.tileSign.signText;
++				WurstClient.INSTANCE.mods.autoSignMod
++					.setSignText(tileSign.signText);
 +            	
                  this.tileSign.markDirty();
                  this.mc.displayGuiScreen((GuiScreen)null);
              }
-@@ -110,7 +141,7 @@ public class GuiEditSign extends GuiScreen
+@@ -110,7 +140,7 @@ public class GuiEditSign extends GuiScreen
              var3 = var3 + typedChar;
          }
  
