@@ -1,6 +1,6 @@
-From ed516c2a9a6683467171112ac7c30b9a8823a877 Mon Sep 17 00:00:00 2001
+From 9d21ee75b8a6fc35f9e939ae0e4e650dd9ee37f6 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 24 May 2017 15:41:04 +0200
+Date: Wed, 24 May 2017 15:59:45 +0200
 Subject: [PATCH] mod
 
 ---
@@ -869,7 +869,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 865 files changed, 9979 insertions(+), 8427 deletions(-)
+ 865 files changed, 9978 insertions(+), 8428 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -16460,18 +16460,20 @@ index 39fc3d3..708c964 100644
  public interface ICamera
  {
 diff --git a/net/minecraft/client/renderer/entity/Render.java b/net/minecraft/client/renderer/entity/Render.java
-index e756669..9ff1b8d 100644
+index e756669..1ae0923 100644
 --- a/net/minecraft/client/renderer/entity/Render.java
 +++ b/net/minecraft/client/renderer/entity/Render.java
-@@ -1,6 +1,7 @@
+@@ -1,6 +1,9 @@
  package net.minecraft.client.renderer.entity;
  
  import java.util.Iterator;
 +
++import org.lwjgl.opengl.GL11;
++
  import net.minecraft.block.Block;
  import net.minecraft.client.Minecraft;
  import net.minecraft.client.gui.FontRenderer;
-@@ -12,12 +13,17 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+@@ -12,13 +15,14 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
  import net.minecraft.client.renderer.texture.TextureMap;
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.EntityLiving;
@@ -16484,14 +16486,12 @@ index e756669..9ff1b8d 100644
 +import net.minecraft.util.math.AxisAlignedBB;
 +import net.minecraft.util.math.BlockPos;
  import net.minecraft.world.World;
+-import org.lwjgl.opengl.GL11;
 +import net.wurstclient.WurstClient;
-+import net.wurstclient.features.mods.HealthTagsMod;
-+import net.wurstclient.features.mods.NameTagsMod;
-+
- import org.lwjgl.opengl.GL11;
  
  public abstract class Render
-@@ -235,7 +241,7 @@ public abstract class Render
+ {
+@@ -235,7 +239,7 @@ public abstract class Render
                      var19 = 1.0D;
                  }
  
@@ -16500,7 +16500,7 @@ index e756669..9ff1b8d 100644
                  double var21 = (double)p_180549_8_.getX() + p_180549_1_.getBlockBoundsMinX() + p_180549_11_;
                  double var23 = (double)p_180549_8_.getX() + p_180549_1_.getBlockBoundsMaxX() + p_180549_11_;
                  double var25 = (double)p_180549_8_.getY() + p_180549_1_.getBlockBoundsMinY() + p_180549_13_ + 0.015625D;
-@@ -317,7 +323,7 @@ public abstract class Render
+@@ -317,7 +321,7 @@ public abstract class Render
                  }
              }
  
@@ -16509,7 +16509,7 @@ index e756669..9ff1b8d 100644
              {
                  this.renderEntityOnFire(p_76979_1_, p_76979_2_, p_76979_4_, p_76979_6_, p_76979_9_);
              }
-@@ -343,7 +349,27 @@ public abstract class Render
+@@ -343,7 +347,27 @@ public abstract class Render
          {
              FontRenderer var12 = this.getFontRendererFromRenderManager();
              float var13 = 1.6F;
@@ -16538,7 +16538,7 @@ index e756669..9ff1b8d 100644
              GlStateManager.pushMatrix();
              GlStateManager.translate((float)p_147906_3_ + 0.0F, (float)p_147906_5_ + p_147906_1_.height + 0.5F, (float)p_147906_7_);
              GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-@@ -364,10 +390,32 @@ public abstract class Render
+@@ -364,10 +388,32 @@ public abstract class Render
                  var17 = -10;
              }
  
