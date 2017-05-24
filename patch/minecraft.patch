@@ -1,6 +1,6 @@
-From b415277096bbe11ba2c45218ac79a94abc6af9c3 Mon Sep 17 00:00:00 2001
+From c607046b8d90ed11333294b948a0ba04bc54d8e8 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 23 May 2017 08:47:34 +0200
+Date: Wed, 24 May 2017 13:14:15 +0200
 Subject: [PATCH] mod
 
 ---
@@ -238,7 +238,7 @@ Subject: [PATCH] mod
  net/minecraft/client/model/TexturedQuad.java       |   8 +-
  .../client/multiplayer/ChunkProviderClient.java    |   2 +-
  .../client/multiplayer/GuiConnecting.java          |  14 +-
- .../client/multiplayer/PlayerControllerMP.java     | 129 +++---
+ .../client/multiplayer/PlayerControllerMP.java     | 128 +++---
  net/minecraft/client/multiplayer/ServerData.java   |  14 +-
  net/minecraft/client/multiplayer/ServerList.java   |  16 +-
  net/minecraft/client/multiplayer/WorldClient.java  |  10 +-
@@ -869,7 +869,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 865 files changed, 9988 insertions(+), 8433 deletions(-)
+ 865 files changed, 9987 insertions(+), 8433 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -12218,23 +12218,23 @@ index 1aa77b6..f8f9248 100644
  
              this.mc.displayGuiScreen(this.previousGuiScreen);
 diff --git a/net/minecraft/client/multiplayer/PlayerControllerMP.java b/net/minecraft/client/multiplayer/PlayerControllerMP.java
-index ca6ffd5..69c66ca 100644
+index ca6ffd5..fb066d3 100644
 --- a/net/minecraft/client/multiplayer/PlayerControllerMP.java
 +++ b/net/minecraft/client/multiplayer/PlayerControllerMP.java
-@@ -13,21 +13,23 @@ import net.minecraft.entity.player.EntityPlayer;
+@@ -13,21 +13,22 @@ import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.item.ItemBlock;
  import net.minecraft.item.ItemStack;
  import net.minecraft.item.ItemSword;
 -import net.minecraft.network.play.client.C02PacketUseEntity;
 -import net.minecraft.network.play.client.C07PacketPlayerDigging;
-+import net.minecraft.network.play.client.CPacketUseEntity;
-+import net.minecraft.network.play.client.CPacketPlayerDigging;
  import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
  import net.minecraft.network.play.client.C09PacketHeldItemChange;
  import net.minecraft.network.play.client.C0EPacketClickWindow;
 -import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
-+import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
  import net.minecraft.network.play.client.C11PacketEnchantItem;
++import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
++import net.minecraft.network.play.client.CPacketPlayerDigging;
++import net.minecraft.network.play.client.CPacketUseEntity;
  import net.minecraft.stats.StatFileWriter;
 -import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
@@ -12247,11 +12247,10 @@ index ca6ffd5..69c66ca 100644
  import net.minecraft.world.World;
  import net.minecraft.world.WorldSettings;
 +import net.wurstclient.WurstClient;
-+import net.wurstclient.features.mods.FastBreakMod;
  
  public class PlayerControllerMP
  {
-@@ -40,7 +42,7 @@ public class PlayerControllerMP
+@@ -40,7 +41,7 @@ public class PlayerControllerMP
      private ItemStack currentItemHittingBlock;
  
      /** Current block damage (MP) */
@@ -12260,7 +12259,7 @@ index ca6ffd5..69c66ca 100644
  
      /**
       * Tick counter, when it hits 4 it resets back to 0 and plays the step sound
-@@ -69,11 +71,17 @@ public class PlayerControllerMP
+@@ -69,11 +70,17 @@ public class PlayerControllerMP
          this.netClientHandler = p_i45062_2_;
      }
      
@@ -12280,7 +12279,7 @@ index ca6ffd5..69c66ca 100644
          }
      }
  
-@@ -118,7 +126,7 @@ public class PlayerControllerMP
+@@ -118,7 +125,7 @@ public class PlayerControllerMP
          return this.currentGameType.isSurvivalOrAdventure();
      }
  
@@ -12289,7 +12288,7 @@ index ca6ffd5..69c66ca 100644
      {
          if (this.currentGameType.isAdventure())
          {
-@@ -129,7 +137,7 @@ public class PlayerControllerMP
+@@ -129,7 +136,7 @@ public class PlayerControllerMP
  
              if (!this.mc.thePlayer.func_175142_cm())
              {
@@ -12298,7 +12297,7 @@ index ca6ffd5..69c66ca 100644
                  ItemStack var4 = this.mc.thePlayer.getCurrentEquippedItem();
  
                  if (var4 == null)
-@@ -151,7 +159,7 @@ public class PlayerControllerMP
+@@ -151,7 +158,7 @@ public class PlayerControllerMP
          else
          {
              WorldClient var8 = this.mc.theWorld;
@@ -12307,7 +12306,7 @@ index ca6ffd5..69c66ca 100644
              Block var5 = var9.getBlock();
  
              if (var5.getMaterial() == Material.air)
-@@ -160,12 +168,12 @@ public class PlayerControllerMP
+@@ -160,12 +167,12 @@ public class PlayerControllerMP
              }
              else
              {
@@ -12323,7 +12322,7 @@ index ca6ffd5..69c66ca 100644
                  }
  
                  this.field_178895_c = new BlockPos(this.field_178895_c.getX(), -1, this.field_178895_c.getZ());
-@@ -176,7 +184,7 @@ public class PlayerControllerMP
+@@ -176,7 +183,7 @@ public class PlayerControllerMP
  
                      if (var7 != null)
                      {
@@ -12332,7 +12331,7 @@ index ca6ffd5..69c66ca 100644
  
                          if (var7.stackSize == 0)
                          {
-@@ -190,7 +198,7 @@ public class PlayerControllerMP
+@@ -190,7 +197,7 @@ public class PlayerControllerMP
          }
      }
  
@@ -12341,7 +12340,7 @@ index ca6ffd5..69c66ca 100644
      {
          Block var3;
  
-@@ -226,18 +234,22 @@ public class PlayerControllerMP
+@@ -226,18 +233,22 @@ public class PlayerControllerMP
          {
              if (this.currentGameType.isCreative())
              {
@@ -12353,7 +12352,7 @@ index ca6ffd5..69c66ca 100644
 +                
 +				// TODO: Client
 +				this.blockHitDelay =
-+					WurstClient.INSTANCE.mods.fastBreakMod.isEnabled() ? 0 : 5;
++					WurstClient.INSTANCE.mods.fastBreakMod.isActive() ? 0 : 5;
 +                
              }
 -            else if (!this.isHittingBlock || !this.func_178893_a(p_180511_1_))
@@ -12370,7 +12369,7 @@ index ca6ffd5..69c66ca 100644
                  var3 = this.mc.theWorld.getBlockState(p_180511_1_).getBlock();
                  boolean var5 = var3.getMaterial() != Material.air;
  
-@@ -248,7 +260,7 @@ public class PlayerControllerMP
+@@ -248,7 +259,7 @@ public class PlayerControllerMP
  
                  if (var5 && var3.getPlayerRelativeBlockHardness(this.mc.thePlayer, this.mc.thePlayer.worldObj, p_180511_1_) >= 1.0F)
                  {
@@ -12379,7 +12378,7 @@ index ca6ffd5..69c66ca 100644
                  }
                  else
                  {
-@@ -272,14 +284,17 @@ public class PlayerControllerMP
+@@ -272,14 +283,17 @@ public class PlayerControllerMP
      {
          if (this.isHittingBlock)
          {
@@ -12399,7 +12398,7 @@ index ca6ffd5..69c66ca 100644
      {
          this.syncCurrentPlayItem();
  
-@@ -290,12 +305,15 @@ public class PlayerControllerMP
+@@ -290,12 +304,15 @@ public class PlayerControllerMP
          }
          else if (this.currentGameType.isCreative() && this.mc.theWorld.getWorldBorder().contains(p_180512_1_))
          {
@@ -12408,7 +12407,7 @@ index ca6ffd5..69c66ca 100644
 -            func_178891_a(this.mc, this, p_180512_1_, p_180512_2_);
 +			// TODO: Client
 +			this.blockHitDelay =
-+				WurstClient.INSTANCE.mods.fastBreakMod.isEnabled() ? 0 : 5;
++				WurstClient.INSTANCE.mods.fastBreakMod.isActive() ? 0 : 5;
 +            
 +            this.netClientHandler.sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, p_180512_1_, p_180512_2_));
 +            clickBlockCreative(this.mc, this, p_180512_1_, p_180512_2_);
@@ -12419,7 +12418,7 @@ index ca6ffd5..69c66ca 100644
          {
              Block var3 = this.mc.theWorld.getBlockState(p_180512_1_).getBlock();
  
-@@ -318,12 +336,18 @@ public class PlayerControllerMP
+@@ -318,12 +335,18 @@ public class PlayerControllerMP
                  if (this.curBlockDamageMP >= 1.0F)
                  {
                      this.isHittingBlock = false;
@@ -12441,7 +12440,7 @@ index ca6ffd5..69c66ca 100644
  
                  this.mc.theWorld.sendBlockBreakProgress(this.mc.thePlayer.getEntityId(), this.field_178895_c, (int)(this.curBlockDamageMP * 10.0F) - 1);
                  return true;
-@@ -331,7 +355,7 @@ public class PlayerControllerMP
+@@ -331,7 +354,7 @@ public class PlayerControllerMP
          }
          else
          {
@@ -12450,7 +12449,7 @@ index ca6ffd5..69c66ca 100644
          }
      }
  
-@@ -357,7 +381,7 @@ public class PlayerControllerMP
+@@ -357,7 +380,7 @@ public class PlayerControllerMP
          }
      }
  
@@ -12459,7 +12458,7 @@ index ca6ffd5..69c66ca 100644
      {
          ItemStack var2 = this.mc.thePlayer.getHeldItem();
          boolean var3 = this.currentItemHittingBlock == null && var2 == null;
-@@ -380,12 +404,15 @@ public class PlayerControllerMP
+@@ -380,12 +403,15 @@ public class PlayerControllerMP
          if (var1 != this.currentPlayerItem)
          {
              this.currentPlayerItem = var1;
@@ -12477,7 +12476,7 @@ index ca6ffd5..69c66ca 100644
          this.syncCurrentPlayItem();
          float var7 = (float)(p_178890_6_.xCoord - (double)p_178890_4_.getX());
          float var8 = (float)(p_178890_6_.yCoord - (double)p_178890_4_.getY());
-@@ -418,7 +445,7 @@ public class PlayerControllerMP
+@@ -418,7 +444,7 @@ public class PlayerControllerMP
                  }
              }
  
@@ -12486,7 +12485,7 @@ index ca6ffd5..69c66ca 100644
  
              if (!var10 && this.currentGameType != WorldSettings.GameType.SPECTATOR)
              {
-@@ -450,7 +477,7 @@ public class PlayerControllerMP
+@@ -450,7 +476,7 @@ public class PlayerControllerMP
      /**
       * Notifies the server of things like consuming food, etc...
       */
@@ -12495,7 +12494,7 @@ index ca6ffd5..69c66ca 100644
      {
          if (this.currentGameType == WorldSettings.GameType.SPECTATOR)
          {
-@@ -459,11 +486,11 @@ public class PlayerControllerMP
+@@ -459,11 +485,11 @@ public class PlayerControllerMP
          else
          {
              this.syncCurrentPlayItem();
@@ -12509,7 +12508,7 @@ index ca6ffd5..69c66ca 100644
              {
                  return false;
              }
-@@ -492,7 +519,7 @@ public class PlayerControllerMP
+@@ -492,7 +518,7 @@ public class PlayerControllerMP
      public void attackEntity(EntityPlayer playerIn, Entity targetEntity)
      {
          this.syncCurrentPlayItem();
@@ -12518,7 +12517,7 @@ index ca6ffd5..69c66ca 100644
  
          if (this.currentGameType != WorldSettings.GameType.SPECTATOR)
          {
-@@ -506,15 +533,15 @@ public class PlayerControllerMP
+@@ -506,15 +532,15 @@ public class PlayerControllerMP
      public boolean interactWithEntitySendPacket(EntityPlayer playerIn, Entity targetEntity)
      {
          this.syncCurrentPlayItem();
@@ -12538,7 +12537,7 @@ index ca6ffd5..69c66ca 100644
          return this.currentGameType != WorldSettings.GameType.SPECTATOR && p_178894_2_.func_174825_a(p_178894_1_, var4);
      }
  
-@@ -525,7 +552,7 @@ public class PlayerControllerMP
+@@ -525,7 +551,7 @@ public class PlayerControllerMP
      {
          short var6 = playerIn.openContainer.getNextTransactionID(playerIn.inventory);
          ItemStack var7 = playerIn.openContainer.slotClick(slotId, p_78753_3_, p_78753_4_, playerIn);
@@ -12547,7 +12546,7 @@ index ca6ffd5..69c66ca 100644
          return var7;
      }
  
-@@ -535,7 +562,7 @@ public class PlayerControllerMP
+@@ -535,7 +561,7 @@ public class PlayerControllerMP
       */
      public void sendEnchantPacket(int p_78756_1_, int p_78756_2_)
      {
@@ -12556,7 +12555,7 @@ index ca6ffd5..69c66ca 100644
      }
  
      /**
-@@ -545,7 +572,7 @@ public class PlayerControllerMP
+@@ -545,7 +571,7 @@ public class PlayerControllerMP
      {
          if (this.currentGameType.isCreative())
          {
@@ -12565,7 +12564,7 @@ index ca6ffd5..69c66ca 100644
          }
      }
  
-@@ -556,14 +583,14 @@ public class PlayerControllerMP
+@@ -556,14 +582,14 @@ public class PlayerControllerMP
      {
          if (this.currentGameType.isCreative() && itemStackIn != null)
          {
