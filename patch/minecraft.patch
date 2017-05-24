@@ -1,10 +1,10 @@
-From c607046b8d90ed11333294b948a0ba04bc54d8e8 Mon Sep 17 00:00:00 2001
+From ed516c2a9a6683467171112ac7c30b9a8823a877 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 24 May 2017 13:14:15 +0200
+Date: Wed, 24 May 2017 15:41:04 +0200
 Subject: [PATCH] mod
 
 ---
- net/minecraft/block/Block.java                     |  69 +--
+ net/minecraft/block/Block.java                     |  58 ++-
  net/minecraft/block/BlockAir.java                  |   4 +-
  net/minecraft/block/BlockAnvil.java                |   8 +-
  net/minecraft/block/BlockBanner.java               |   4 +-
@@ -98,7 +98,7 @@ Subject: [PATCH] mod
  net/minecraft/block/BlockSign.java                 |   4 +-
  net/minecraft/block/BlockSilverfish.java           |   8 +-
  net/minecraft/block/BlockSkull.java                |  14 +-
- net/minecraft/block/BlockSlab.java                 |  11 +-
+ net/minecraft/block/BlockSlab.java                 |  10 +-
  net/minecraft/block/BlockSlime.java                |   2 +-
  net/minecraft/block/BlockSnow.java                 |   6 +-
  net/minecraft/block/BlockSnowBlock.java            |   2 +-
@@ -137,7 +137,7 @@ Subject: [PATCH] mod
  .../client/audio/MovingSoundMinecart.java          |   6 +-
  .../client/audio/MovingSoundMinecartRiding.java    |   4 +-
  net/minecraft/client/audio/SoundManager.java       |  12 +-
- .../client/entity/AbstractClientPlayer.java        |  21 +-
+ .../client/entity/AbstractClientPlayer.java        |  20 +-
  .../client/entity/EntityOtherPlayerMP.java         |  10 +-
  net/minecraft/client/entity/EntityPlayerSP.java    | 158 ++++---
  net/minecraft/client/gui/ChatLine.java             |   8 +-
@@ -317,7 +317,7 @@ Subject: [PATCH] mod
  .../client/renderer/entity/RenderMinecart.java     |  10 +-
  .../renderer/entity/RenderMinecartMobSpawner.java  |   2 +-
  .../client/renderer/entity/RenderPainting.java     |   2 +-
- .../client/renderer/entity/RenderPlayer.java       |   7 +-
+ .../client/renderer/entity/RenderPlayer.java       |   6 +-
  .../client/renderer/entity/RenderRabbit.java       |   4 +-
  .../client/renderer/entity/RenderTNTPrimed.java    |   2 +-
  .../client/renderer/entity/RenderTntMinecart.java  |   2 +-
@@ -869,7 +869,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 865 files changed, 9987 insertions(+), 8433 deletions(-)
+ 865 files changed, 9979 insertions(+), 8427 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -916,7 +916,7 @@ Subject: [PATCH] mod
  create mode 100644 net/minecraft/util/text/event/HoverEvent.java
 
 diff --git a/net/minecraft/block/Block.java b/net/minecraft/block/Block.java
-index d8fe39f..1ab9b17 100644
+index d8fe39f..a566023 100644
 --- a/net/minecraft/block/Block.java
 +++ b/net/minecraft/block/Block.java
 @@ -3,6 +3,7 @@ package net.minecraft.block;
@@ -927,21 +927,20 @@ index d8fe39f..1ab9b17 100644
  import net.minecraft.block.material.MapColor;
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
-@@ -20,19 +21,20 @@ import net.minecraft.item.ItemBlock;
+@@ -20,19 +21,21 @@ import net.minecraft.item.ItemBlock;
  import net.minecraft.item.ItemStack;
  import net.minecraft.stats.StatList;
  import net.minecraft.tileentity.TileEntity;
 -import net.minecraft.util.AxisAlignedBB;
 -import net.minecraft.util.BlockPos;
--import net.minecraft.util.EnumFacing;
--import net.minecraft.util.EnumWorldBlockLayer;
+ import net.minecraft.util.EnumFacing;
+ import net.minecraft.util.EnumWorldBlockLayer;
 -import net.minecraft.util.MovingObjectPosition;
--import net.minecraft.util.ObjectIntIdentityMap;
--import net.minecraft.util.RegistryNamespacedDefaultedByKey;
--import net.minecraft.util.ResourceLocation;
--import net.minecraft.util.StatCollector;
+ import net.minecraft.util.ObjectIntIdentityMap;
+ import net.minecraft.util.RegistryNamespacedDefaultedByKey;
+ import net.minecraft.util.ResourceLocation;
+ import net.minecraft.util.StatCollector;
 -import net.minecraft.util.Vec3;
-+import net.minecraft.util.*;
 +import net.minecraft.util.math.AxisAlignedBB;
 +import net.minecraft.util.math.BlockPos;
 +import net.minecraft.util.math.RayTraceResult;
@@ -950,15 +949,11 @@ index d8fe39f..1ab9b17 100644
  import net.minecraft.world.IBlockAccess;
  import net.minecraft.world.World;
 +import net.wurstclient.WurstClient;
-+import net.wurstclient.features.mods.FreecamMod;
-+import net.wurstclient.features.mods.GhostHandMod;
-+import net.wurstclient.features.mods.NoClipMod;
-+import net.wurstclient.features.mods.XRayMod;
 +import net.wurstclient.utils.XRayUtils;
  
  public class Block
  {
-@@ -351,7 +353,10 @@ public class Block
+@@ -351,7 +354,10 @@ public class Block
  
      public boolean isFullCube()
      {
@@ -970,7 +965,7 @@ index d8fe39f..1ab9b17 100644
      }
  
      public boolean isPassable(IBlockAccess blockAccess, BlockPos pos)
-@@ -453,6 +458,10 @@ public class Block
+@@ -453,6 +459,10 @@ public class Block
  
      public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
      {
@@ -981,7 +976,7 @@ index d8fe39f..1ab9b17 100644
          return side == EnumFacing.DOWN && this.minY > 0.0D ? true : (side == EnumFacing.UP && this.maxY < 1.0D ? true : (side == EnumFacing.NORTH && this.minZ > 0.0D ? true : (side == EnumFacing.SOUTH && this.maxZ < 1.0D ? true : (side == EnumFacing.WEST && this.minX > 0.0D ? true : (side == EnumFacing.EAST && this.maxX < 1.0D ? true : !worldIn.getBlockState(pos).getBlock().isOpaqueCube())))));
      }
  
-@@ -496,6 +505,10 @@ public class Block
+@@ -496,6 +506,10 @@ public class Block
  
      public boolean canCollideCheck(IBlockState state, boolean p_176209_2_)
      {
@@ -992,7 +987,7 @@ index d8fe39f..1ab9b17 100644
          return this.isCollidable();
      }
  
-@@ -562,7 +575,13 @@ public class Block
+@@ -562,7 +576,13 @@ public class Block
      public float getPlayerRelativeBlockHardness(EntityPlayer playerIn, World worldIn, BlockPos pos)
      {
          float var4 = this.getBlockHardness(worldIn, pos);
@@ -1007,7 +1002,7 @@ index d8fe39f..1ab9b17 100644
      }
  
      /**
-@@ -659,17 +678,17 @@ public class Block
+@@ -659,17 +679,17 @@ public class Block
       * @param start The start vector
       * @param end The end vector
       */
@@ -1032,7 +1027,7 @@ index d8fe39f..1ab9b17 100644
  
          if (!this.isVecInsideYZBounds(var5))
          {
-@@ -701,7 +720,7 @@ public class Block
+@@ -701,7 +721,7 @@ public class Block
              var10 = null;
          }
  
@@ -1041,7 +1036,7 @@ index d8fe39f..1ab9b17 100644
  
          if (var5 != null && (var11 == null || start.squareDistanceTo(var5) < start.squareDistanceTo(var11)))
          {
-@@ -771,14 +790,14 @@ public class Block
+@@ -771,14 +791,14 @@ public class Block
                  var12 = EnumFacing.SOUTH;
              }
  
@@ -1058,7 +1053,7 @@ index d8fe39f..1ab9b17 100644
      {
          return point == null ? false : point.yCoord >= this.minY && point.yCoord <= this.maxY && point.zCoord >= this.minZ && point.zCoord <= this.maxZ;
      }
-@@ -786,7 +805,7 @@ public class Block
+@@ -786,7 +806,7 @@ public class Block
      /**
       * Checks if a vector is within the X and Z bounds of the block.
       */
@@ -1067,7 +1062,7 @@ index d8fe39f..1ab9b17 100644
      {
          return point == null ? false : point.xCoord >= this.minX && point.xCoord <= this.maxX && point.zCoord >= this.minZ && point.zCoord <= this.maxZ;
      }
-@@ -794,7 +813,7 @@ public class Block
+@@ -794,7 +814,7 @@ public class Block
      /**
       * Checks if a vector is within the X and Y bounds of the block.
       */
@@ -1076,7 +1071,7 @@ index d8fe39f..1ab9b17 100644
      {
          return point == null ? false : point.xCoord >= this.minX && point.xCoord <= this.maxX && point.yCoord >= this.minY && point.yCoord <= this.maxY;
      }
-@@ -844,7 +863,7 @@ public class Block
+@@ -844,7 +864,7 @@ public class Block
  
      public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn) {}
  
@@ -3663,7 +3658,7 @@ index 322a1bd..b642f98 100644
  
          return this.field_176421_O;
 diff --git a/net/minecraft/block/BlockSlab.java b/net/minecraft/block/BlockSlab.java
-index 5f3a260..952f1f6 100644
+index 5f3a260..890ab1c 100644
 --- a/net/minecraft/block/BlockSlab.java
 +++ b/net/minecraft/block/BlockSlab.java
 @@ -2,6 +2,7 @@ package net.minecraft.block;
@@ -3674,7 +3669,7 @@ index 5f3a260..952f1f6 100644
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyEnum;
-@@ -10,12 +11,14 @@ import net.minecraft.entity.Entity;
+@@ -10,12 +11,13 @@ import net.minecraft.entity.Entity;
  import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.init.Blocks;
  import net.minecraft.item.ItemStack;
@@ -3687,11 +3682,10 @@ index 5f3a260..952f1f6 100644
  import net.minecraft.world.IBlockAccess;
  import net.minecraft.world.World;
 +import net.wurstclient.WurstClient;
-+import net.wurstclient.features.mods.FreecamMod;
  
  public abstract class BlockSlab extends Block
  {
-@@ -114,7 +117,9 @@ public abstract class BlockSlab extends Block
+@@ -114,7 +116,9 @@ public abstract class BlockSlab extends Block
  
      public boolean isFullCube()
      {
@@ -5521,30 +5515,29 @@ index 387c172..bc9857b 100644
  
      /**
 diff --git a/net/minecraft/client/entity/AbstractClientPlayer.java b/net/minecraft/client/entity/AbstractClientPlayer.java
-index a073d5e..9373950 100644
+index a073d5e..b7cc84d 100644
 --- a/net/minecraft/client/entity/AbstractClientPlayer.java
 +++ b/net/minecraft/client/entity/AbstractClientPlayer.java
-@@ -1,7 +1,7 @@
+@@ -1,7 +1,9 @@
  package net.minecraft.client.entity;
  
 -import com.mojang.authlib.GameProfile;
  import java.io.File;
 +
++import com.mojang.authlib.GameProfile;
++
  import net.minecraft.client.Minecraft;
  import net.minecraft.client.network.NetworkPlayerInfo;
  import net.minecraft.client.renderer.ImageBufferDownload;
-@@ -17,6 +17,10 @@ import net.minecraft.util.ResourceLocation;
+@@ -17,6 +19,7 @@ import net.minecraft.util.ResourceLocation;
  import net.minecraft.util.StringUtils;
  import net.minecraft.world.World;
  import net.minecraft.world.WorldSettings;
 +import net.wurstclient.WurstClient;
-+import net.wurstclient.features.mods.FreecamMod;
-+
-+import com.mojang.authlib.GameProfile;
  
  public abstract class AbstractClientPlayer extends EntityPlayer
  {
-@@ -28,10 +32,13 @@ public abstract class AbstractClientPlayer extends EntityPlayer
+@@ -28,10 +31,13 @@ public abstract class AbstractClientPlayer extends EntityPlayer
          super(worldIn, p_i45074_2_);
      }
  
@@ -5560,7 +5553,7 @@ index a073d5e..9373950 100644
      }
  
      public boolean hasCape()
-@@ -58,7 +65,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
+@@ -58,7 +64,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
      public ResourceLocation getLocationSkin()
      {
          NetworkPlayerInfo var1 = this.func_175155_b();
@@ -5569,7 +5562,7 @@ index a073d5e..9373950 100644
      }
  
      public ResourceLocation getLocationCape()
-@@ -74,7 +81,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
+@@ -74,7 +80,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
  
          if (var3 == null)
          {
@@ -5578,7 +5571,7 @@ index a073d5e..9373950 100644
              var2.loadTexture(resourceLocationIn, (ITextureObject)var3);
          }
  
-@@ -89,7 +96,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
+@@ -89,7 +95,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
      public String func_175154_l()
      {
          NetworkPlayerInfo var1 = this.func_175155_b();
@@ -5587,7 +5580,7 @@ index a073d5e..9373950 100644
      }
  
      public float func_175156_o()
-@@ -109,7 +116,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
+@@ -109,7 +115,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
              var1 = 1.0F;
          }
  
@@ -17425,19 +17418,18 @@ index 37b82ed..ac1a1ac 100644
  public class RenderPainting extends Render
  {
 diff --git a/net/minecraft/client/renderer/entity/RenderPlayer.java b/net/minecraft/client/renderer/entity/RenderPlayer.java
-index 1311949..7086bcd 100644
+index 1311949..c896938 100644
 --- a/net/minecraft/client/renderer/entity/RenderPlayer.java
 +++ b/net/minecraft/client/renderer/entity/RenderPlayer.java
-@@ -20,6 +20,8 @@ import net.minecraft.scoreboard.Score;
+@@ -20,6 +20,7 @@ import net.minecraft.scoreboard.Score;
  import net.minecraft.scoreboard.ScoreObjective;
  import net.minecraft.scoreboard.Scoreboard;
  import net.minecraft.util.ResourceLocation;
 +import net.wurstclient.WurstClient;
-+import net.wurstclient.features.mods.FreecamMod;
  
  public class RenderPlayer extends RendererLivingEntity
  {
-@@ -68,8 +70,11 @@ public class RenderPlayer extends RendererLivingEntity
+@@ -68,8 +69,11 @@ public class RenderPlayer extends RendererLivingEntity
      {
          ModelPlayer var2 = this.func_177136_g();
  
