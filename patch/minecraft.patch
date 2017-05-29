@@ -1,6 +1,6 @@
-From 6b47a18765c1b9c2a30bd0651b5075107818f3bf Mon Sep 17 00:00:00 2001
+From ce17196716095d4ddd71fb4321e3c8a9d4a9939f Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Mon, 29 May 2017 12:57:58 +0200
+Date: Mon, 29 May 2017 16:27:20 +0200
 Subject: [PATCH] mod
 
 ---
@@ -322,7 +322,7 @@ Subject: [PATCH] mod
  .../client/renderer/entity/RenderTNTPrimed.java    |   2 +-
  .../client/renderer/entity/RenderTntMinecart.java  |   2 +-
  .../client/renderer/entity/RenderXPOrb.java        |   2 +-
- .../renderer/entity/RendererLivingEntity.java      |  27 +-
+ .../renderer/entity/RendererLivingEntity.java      |  32 +-
  .../client/renderer/entity/layers/LayerArrow.java  |   2 +-
  .../client/renderer/entity/layers/LayerCape.java   |   8 +-
  .../entity/layers/LayerEnderDragonDeath.java       |   4 +-
@@ -869,7 +869,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 865 files changed, 9976 insertions(+), 8428 deletions(-)
+ 865 files changed, 9977 insertions(+), 8432 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -17505,35 +17505,41 @@ index 31fd670..9aeef16 100644
          var26.addVertexWithUV((double)(0.0F - var16), (double)(0.0F - var17), 0.0D, (double)var11, (double)var14);
          var26.addVertexWithUV((double)(var15 - var16), (double)(0.0F - var17), 0.0D, (double)var12, (double)var14);
 diff --git a/net/minecraft/client/renderer/entity/RendererLivingEntity.java b/net/minecraft/client/renderer/entity/RendererLivingEntity.java
-index 0bd5f10..eca46d1 100644
+index 0bd5f10..3a84792 100644
 --- a/net/minecraft/client/renderer/entity/RendererLivingEntity.java
 +++ b/net/minecraft/client/renderer/entity/RendererLivingEntity.java
-@@ -1,9 +1,11 @@
+@@ -1,9 +1,15 @@
  package net.minecraft.client.renderer.entity;
  
- import com.google.common.collect.Lists;
-+
+-import com.google.common.collect.Lists;
  import java.nio.FloatBuffer;
  import java.util.Iterator;
  import java.util.List;
 +
++import org.apache.logging.log4j.LogManager;
++import org.apache.logging.log4j.Logger;
++import org.lwjgl.opengl.GL11;
++
++import com.google.common.collect.Lists;
++
  import net.minecraft.client.Minecraft;
  import net.minecraft.client.entity.EntityPlayerSP;
  import net.minecraft.client.gui.FontRenderer;
-@@ -21,8 +23,11 @@ import net.minecraft.entity.player.EntityPlayer;
+@@ -21,11 +27,9 @@ import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.entity.player.EnumPlayerModelParts;
  import net.minecraft.scoreboard.ScorePlayerTeam;
  import net.minecraft.scoreboard.Team;
 -import net.minecraft.util.EnumChatFormatting;
  import net.minecraft.util.MathHelper;
+-import org.apache.logging.log4j.LogManager;
+-import org.apache.logging.log4j.Logger;
+-import org.lwjgl.opengl.GL11;
 +import net.minecraft.util.text.TextFormatting;
 +import net.wurstclient.WurstClient;
-+import net.wurstclient.features.mods.TrueSightMod;
-+
- import org.apache.logging.log4j.LogManager;
- import org.apache.logging.log4j.Logger;
- import org.lwjgl.opengl.GL11;
-@@ -109,7 +114,7 @@ public abstract class RendererLivingEntity extends Render
+ 
+ public abstract class RendererLivingEntity extends Render
+ {
+@@ -109,7 +113,7 @@ public abstract class RendererLivingEntity extends Render
                  EntityLivingBase var13 = (EntityLivingBase)p_76986_1_.ridingEntity;
                  var10 = this.interpolateRotation(var13.prevRenderYawOffset, var13.renderYawOffset, p_76986_9_);
                  var12 = var11 - var10;
@@ -17542,7 +17548,7 @@ index 0bd5f10..eca46d1 100644
  
                  if (var14 < -85.0F)
                  {
-@@ -178,7 +183,7 @@ public abstract class RendererLivingEntity extends Render
+@@ -178,7 +182,7 @@ public abstract class RendererLivingEntity extends Render
  
                  GlStateManager.depthMask(true);
  
@@ -17551,7 +17557,7 @@ index 0bd5f10..eca46d1 100644
                  {
                      this.func_177093_a(p_76986_1_, var17, var16, p_76986_9_, var14, var12, var20, 0.0625F);
                  }
-@@ -217,7 +222,7 @@ public abstract class RendererLivingEntity extends Render
+@@ -217,7 +221,7 @@ public abstract class RendererLivingEntity extends Render
  
                  if (var4.length() >= 2)
                  {
@@ -17560,22 +17566,20 @@ index 0bd5f10..eca46d1 100644
                  }
              }
          }
-@@ -251,7 +256,13 @@ public abstract class RendererLivingEntity extends Render
+@@ -251,7 +255,11 @@ public abstract class RendererLivingEntity extends Render
      protected void renderModel(EntityLivingBase p_77036_1_, float p_77036_2_, float p_77036_3_, float p_77036_4_, float p_77036_5_, float p_77036_6_, float p_77036_7_)
      {
          boolean var8 = !p_77036_1_.isInvisible();
 -        boolean var9 = !var8 && !p_77036_1_.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer);
 +        
 +		// TODO: Client
-+		boolean var9 =
-+			!var8
-+				&& (!p_77036_1_
-+					.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer) || WurstClient.INSTANCE.mods.trueSightMod
-+					.isActive());
++		boolean var9 = !var8 && (!p_77036_1_
++			.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer)
++			|| WurstClient.INSTANCE.mods.trueSightMod.isActive());
  
          if (var8 || var9)
          {
-@@ -424,7 +435,7 @@ public abstract class RendererLivingEntity extends Render
+@@ -424,7 +432,7 @@ public abstract class RendererLivingEntity extends Render
          if (p_77043_1_.deathTime > 0)
          {
              float var5 = ((float)p_77043_1_.deathTime + p_77043_4_ - 1.0F) / 20.0F * 1.6F;
@@ -17584,7 +17588,7 @@ index 0bd5f10..eca46d1 100644
  
              if (var5 > 1.0F)
              {
-@@ -435,7 +446,7 @@ public abstract class RendererLivingEntity extends Render
+@@ -435,7 +443,7 @@ public abstract class RendererLivingEntity extends Render
          }
          else
          {
@@ -17593,7 +17597,7 @@ index 0bd5f10..eca46d1 100644
  
              if (var6 != null && (var6.equals("Dinnerbone") || var6.equals("Grumm")) && (!(p_77043_1_ instanceof EntityPlayer) || ((EntityPlayer)p_77043_1_).func_175148_a(EnumPlayerModelParts.CAPE)))
              {
-@@ -532,7 +543,7 @@ public abstract class RendererLivingEntity extends Render
+@@ -532,7 +540,7 @@ public abstract class RendererLivingEntity extends Render
                      WorldRenderer var15 = var14.getWorldRenderer();
                      var15.startDrawingQuads();
                      int var16 = var13.getStringWidth(var11) / 2;
