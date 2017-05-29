@@ -1,6 +1,6 @@
-From ba6fe7dc816dd6fad48c8f44a06e2ce73a345dc2 Mon Sep 17 00:00:00 2001
+From 6b47a18765c1b9c2a30bd0651b5075107818f3bf Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Mon, 29 May 2017 12:37:44 +0200
+Date: Mon, 29 May 2017 12:57:58 +0200
 Subject: [PATCH] mod
 
 ---
@@ -737,7 +737,7 @@ Subject: [PATCH] mod
  net/minecraft/util/MessageSerializer.java          |   6 +-
  net/minecraft/util/MovingObjectPosition.java       |  71 ---
  net/minecraft/util/ScreenShotHelper.java           |  27 +-
- net/minecraft/util/Timer.java                      |   8 +-
+ net/minecraft/util/Timer.java                      |   6 +-
  net/minecraft/util/Vec3.java                       | 208 ---------
  net/minecraft/util/Vec3i.java                      | 134 ------
  net/minecraft/util/math/AxisAlignedBB.java         | 439 ++++++++++++++++++
@@ -869,7 +869,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 865 files changed, 9978 insertions(+), 8428 deletions(-)
+ 865 files changed, 9976 insertions(+), 8428 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -37483,30 +37483,28 @@ index 8169170..6b01368 100644
  
          while (true)
 diff --git a/net/minecraft/util/Timer.java b/net/minecraft/util/Timer.java
-index 7ec66f4..e591d3b 100644
+index 7ec66f4..ff9a6c1 100644
 --- a/net/minecraft/util/Timer.java
 +++ b/net/minecraft/util/Timer.java
-@@ -1,6 +1,8 @@
+@@ -1,6 +1,7 @@
  package net.minecraft.util;
  
  import net.minecraft.client.Minecraft;
 +import net.wurstclient.WurstClient;
-+import net.wurstclient.features.mods.TimerMod;
  
  public class Timer
  {
-@@ -63,6 +65,10 @@ public class Timer
+@@ -63,6 +64,9 @@ public class Timer
       */
      public void updateTimer()
      {
 +		// TODO: Client
-+		TimerMod timerMod = WurstClient.INSTANCE.mods.timerMod;
-+		timerSpeed = timerMod.isActive() ? timerMod.speed.getValueF() : 1F;
++		timerSpeed = WurstClient.INSTANCE.mods.timerMod.getTimerSpeed();
 +    	
          long var1 = Minecraft.getSystemTime();
          long var3 = var1 - this.lastSyncSysClock;
          long var5 = System.nanoTime() / 1000000L;
-@@ -94,7 +100,7 @@ public class Timer
+@@ -94,7 +98,7 @@ public class Timer
          this.lastSyncSysClock = var1;
          double var13 = (var7 - this.lastHRTime) * this.timeSyncAdjustment;
          this.lastHRTime = var7;
