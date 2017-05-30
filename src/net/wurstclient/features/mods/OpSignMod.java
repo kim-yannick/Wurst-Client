@@ -34,8 +34,7 @@ public final class OpSignMod extends Mod
 	@Override
 	public Feature[] getSeeAlso()
 	{
-		return new Feature[]{wurst.special.bookHackSpf, wurst.mods.forceOpMod,
-			wurst.special.sessionStealerSpf};
+		return new Feature[]{wurst.special.bookHackSpf, wurst.mods.forceOpMod};
 	}
 	
 	@Override
