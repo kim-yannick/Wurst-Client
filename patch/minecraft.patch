@@ -1,6 +1,6 @@
-From b44af700316bbf24032e212e82c480c7ff3043c4 Mon Sep 17 00:00:00 2001
+From bd89c997efbc570e828599d2393f3a925f14d575 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 30 May 2017 11:31:03 +0200
+Date: Tue, 30 May 2017 11:51:52 +0200
 Subject: [PATCH] mod
 
 ---
@@ -764,7 +764,7 @@ Subject: [PATCH] mod
  net/minecraft/world/NextTickListEntry.java         |   2 +-
  net/minecraft/world/SpawnerAnimals.java            |  15 +-
  net/minecraft/world/Teleporter.java                |  10 +-
- net/minecraft/world/World.java                     | 126 +++---
+ net/minecraft/world/World.java                     | 127 +++---
  net/minecraft/world/WorldManager.java              |  14 +-
  net/minecraft/world/WorldProvider.java             |  12 +-
  net/minecraft/world/WorldProviderEnd.java          |  10 +-
@@ -869,7 +869,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 865 files changed, 9976 insertions(+), 8432 deletions(-)
+ 865 files changed, 9973 insertions(+), 8436 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -40585,39 +40585,44 @@ index fc9a24e..8ce0309 100644
              }
  
 diff --git a/net/minecraft/world/World.java b/net/minecraft/world/World.java
-index 18e9ecf..fda62a0 100644
+index 18e9ecf..b33ddbd 100644
 --- a/net/minecraft/world/World.java
 +++ b/net/minecraft/world/World.java
-@@ -3,6 +3,7 @@ package net.minecraft.world;
+@@ -1,17 +1,12 @@
+ package net.minecraft.world;
+ 
++import java.util.*;
++import java.util.concurrent.Callable;
++
  import com.google.common.base.Predicate;
  import com.google.common.collect.Lists;
  import com.google.common.collect.Sets;
-+
- import java.util.ArrayList;
- import java.util.Calendar;
- import java.util.Collection;
-@@ -12,6 +13,7 @@ import java.util.Random;
- import java.util.Set;
- import java.util.UUID;
- import java.util.concurrent.Callable;
+-import java.util.ArrayList;
+-import java.util.Calendar;
+-import java.util.Collection;
+-import java.util.Iterator;
+-import java.util.List;
+-import java.util.Random;
+-import java.util.Set;
+-import java.util.UUID;
+-import java.util.concurrent.Callable;
 +
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockHopper;
  import net.minecraft.block.BlockLiquid;
-@@ -34,15 +36,11 @@ import net.minecraft.scoreboard.Scoreboard;
+@@ -34,15 +29,15 @@ import net.minecraft.scoreboard.Scoreboard;
  import net.minecraft.server.MinecraftServer;
  import net.minecraft.server.gui.IUpdatePlayerListBox;
  import net.minecraft.tileentity.TileEntity;
 -import net.minecraft.util.AxisAlignedBB;
 -import net.minecraft.util.BlockPos;
--import net.minecraft.util.EnumFacing;
--import net.minecraft.util.EnumParticleTypes;
--import net.minecraft.util.IntHashMap;
--import net.minecraft.util.MathHelper;
+ import net.minecraft.util.EnumFacing;
+ import net.minecraft.util.EnumParticleTypes;
+ import net.minecraft.util.IntHashMap;
+ import net.minecraft.util.MathHelper;
 -import net.minecraft.util.MovingObjectPosition;
--import net.minecraft.util.ReportedException;
+ import net.minecraft.util.ReportedException;
 -import net.minecraft.util.Vec3;
-+import net.minecraft.util.*;
 +import net.minecraft.util.math.AxisAlignedBB;
 +import net.minecraft.util.math.BlockPos;
 +import net.minecraft.util.math.RayTraceResult;
@@ -40625,7 +40630,7 @@ index 18e9ecf..fda62a0 100644
  import net.minecraft.village.VillageCollection;
  import net.minecraft.world.biome.BiomeGenBase;
  import net.minecraft.world.biome.WorldChunkManager;
-@@ -53,6 +51,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
+@@ -53,6 +48,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
  import net.minecraft.world.storage.ISaveHandler;
  import net.minecraft.world.storage.MapStorage;
  import net.minecraft.world.storage.WorldInfo;
@@ -40633,7 +40638,7 @@ index 18e9ecf..fda62a0 100644
  
  public abstract class World implements IBlockAccess
  {
-@@ -62,17 +61,17 @@ public abstract class World implements IBlockAccess
+@@ -62,17 +58,17 @@ public abstract class World implements IBlockAccess
      protected boolean scheduledUpdatesAreImmediate;
  
      /** A list of all Entities in all currently-loaded chunks */
@@ -40654,7 +40659,7 @@ index 18e9ecf..fda62a0 100644
  
      /** a list of all the lightning entities */
      public final List weatherEffects = Lists.newArrayList();
-@@ -82,12 +81,15 @@ public abstract class World implements IBlockAccess
+@@ -82,12 +78,15 @@ public abstract class World implements IBlockAccess
      /** How much light is subtracted from full daylight */
      private int skylightSubtracted;
  
@@ -40671,7 +40676,7 @@ index 18e9ecf..fda62a0 100644
  
      /**
       * magic number used to generate fast random numbers for 3d distribution within a chunk
-@@ -104,9 +106,6 @@ public abstract class World implements IBlockAccess
+@@ -104,9 +103,6 @@ public abstract class World implements IBlockAccess
       */
      private int lastLightningBolt;
  
@@ -40681,7 +40686,7 @@ index 18e9ecf..fda62a0 100644
      /** The WorldProvider instance that World uses. */
      public final WorldProvider provider;
      protected List worldAccesses = Lists.newArrayList();
-@@ -397,7 +396,7 @@ public abstract class World implements IBlockAccess
+@@ -397,7 +393,7 @@ public abstract class World implements IBlockAccess
  
      public boolean setBlockToAir(BlockPos pos)
      {
@@ -40690,7 +40695,7 @@ index 18e9ecf..fda62a0 100644
      }
  
      public boolean destroyBlock(BlockPos pos, boolean dropBlock)
-@@ -418,7 +417,7 @@ public abstract class World implements IBlockAccess
+@@ -418,7 +414,7 @@ public abstract class World implements IBlockAccess
                  var4.dropBlockAsItem(this, pos, var3, 0);
              }
  
@@ -40699,7 +40704,7 @@ index 18e9ecf..fda62a0 100644
          }
      }
  
-@@ -850,7 +849,7 @@ public abstract class World implements IBlockAccess
+@@ -850,7 +846,7 @@ public abstract class World implements IBlockAccess
      {
          if (!this.isValid(pos))
          {
@@ -40708,7 +40713,7 @@ index 18e9ecf..fda62a0 100644
          }
          else
          {
-@@ -870,12 +869,12 @@ public abstract class World implements IBlockAccess
+@@ -870,12 +866,12 @@ public abstract class World implements IBlockAccess
      /**
       * ray traces all blocks, including non-collideable ones
       */
@@ -40723,7 +40728,7 @@ index 18e9ecf..fda62a0 100644
      {
          return this.rayTraceBlocks(p_72901_1_, p_72901_2_, p_72901_3_, false, false);
      }
-@@ -884,7 +883,7 @@ public abstract class World implements IBlockAccess
+@@ -884,7 +880,7 @@ public abstract class World implements IBlockAccess
       * Performs a raycast against all blocks in the world. Args : Vec1, Vec2, stopOnLiquid,
       * ignoreBlockWithoutBoundingBox, returnLastUncollidableBlock
       */
@@ -40732,7 +40737,7 @@ index 18e9ecf..fda62a0 100644
      {
          if (!Double.isNaN(p_147447_1_.xCoord) && !Double.isNaN(p_147447_1_.yCoord) && !Double.isNaN(p_147447_1_.zCoord))
          {
-@@ -903,7 +902,7 @@ public abstract class World implements IBlockAccess
+@@ -903,7 +899,7 @@ public abstract class World implements IBlockAccess
  
                  if ((!p_147447_4_ || var15.getCollisionBoundingBox(this, var12, var14) != null) && var15.canCollideCheck(var14, p_147447_3_))
                  {
@@ -40741,7 +40746,7 @@ index 18e9ecf..fda62a0 100644
  
                      if (var16 != null)
                      {
-@@ -911,7 +910,7 @@ public abstract class World implements IBlockAccess
+@@ -911,7 +907,7 @@ public abstract class World implements IBlockAccess
                      }
                  }
  
@@ -40750,7 +40755,7 @@ index 18e9ecf..fda62a0 100644
                  int var42 = 200;
  
                  while (var42-- >= 0)
-@@ -1014,17 +1013,17 @@ public abstract class World implements IBlockAccess
+@@ -1014,17 +1010,17 @@ public abstract class World implements IBlockAccess
                      if (var25 < var27 && var25 < var29)
                      {
                          var37 = var6 > var9 ? EnumFacing.WEST : EnumFacing.EAST;
@@ -40771,7 +40776,7 @@ index 18e9ecf..fda62a0 100644
                      }
  
                      var9 = MathHelper.floor_double(p_147447_1_.xCoord) - (var37 == EnumFacing.EAST ? 1 : 0);
-@@ -1038,7 +1037,7 @@ public abstract class World implements IBlockAccess
+@@ -1038,7 +1034,7 @@ public abstract class World implements IBlockAccess
                      {
                          if (var39.canCollideCheck(var38, p_147447_3_))
                          {
@@ -40780,7 +40785,7 @@ index 18e9ecf..fda62a0 100644
  
                              if (var40 != null)
                              {
-@@ -1047,7 +1046,7 @@ public abstract class World implements IBlockAccess
+@@ -1047,7 +1043,7 @@ public abstract class World implements IBlockAccess
                          }
                          else
                          {
@@ -40789,7 +40794,7 @@ index 18e9ecf..fda62a0 100644
                          }
                      }
                  }
-@@ -1261,9 +1260,9 @@ public abstract class World implements IBlockAccess
+@@ -1261,9 +1257,9 @@ public abstract class World implements IBlockAccess
       * Returns a list of bounding boxes that collide with aabb excluding the passed in entity's collision. Args: entity,
       * aabb
       */
@@ -40801,7 +40806,7 @@ index 18e9ecf..fda62a0 100644
          int var4 = MathHelper.floor_double(p_72945_2_.minX);
          int var5 = MathHelper.floor_double(p_72945_2_.maxX + 1.0D);
          int var6 = MathHelper.floor_double(p_72945_2_.minY);
-@@ -1296,7 +1295,7 @@ public abstract class World implements IBlockAccess
+@@ -1296,7 +1292,7 @@ public abstract class World implements IBlockAccess
  
                          if (!this.getWorldBorder().contains(var13) && var15)
                          {
@@ -40810,7 +40815,7 @@ index 18e9ecf..fda62a0 100644
                          }
                          else
                          {
-@@ -1314,8 +1313,6 @@ public abstract class World implements IBlockAccess
+@@ -1314,8 +1310,6 @@ public abstract class World implements IBlockAccess
  
          for (int var19 = 0; var19 < var18.size(); ++var19)
          {
@@ -40819,7 +40824,7 @@ index 18e9ecf..fda62a0 100644
                  AxisAlignedBB var20 = ((Entity)var18.get(var19)).getBoundingBox();
  
                  if (var20 != null && var20.intersectsWith(p_72945_2_))
-@@ -1330,7 +1327,6 @@ public abstract class World implements IBlockAccess
+@@ -1330,7 +1324,6 @@ public abstract class World implements IBlockAccess
                      var3.add(var20);
                  }
              }
@@ -40827,7 +40832,7 @@ index 18e9ecf..fda62a0 100644
  
          return var3;
      }
-@@ -1387,7 +1383,7 @@ public abstract class World implements IBlockAccess
+@@ -1387,7 +1380,7 @@ public abstract class World implements IBlockAccess
                          }
                          else
                          {
@@ -40836,7 +40841,7 @@ index 18e9ecf..fda62a0 100644
                          }
  
                          var12.getBlock().addCollisionBoxesToList(this, var13, var12, p_147461_1_, var2, (Entity)null);
-@@ -1406,7 +1402,7 @@ public abstract class World implements IBlockAccess
+@@ -1406,7 +1399,7 @@ public abstract class World implements IBlockAccess
      {
          float var2 = this.getCelestialAngle(p_72967_1_);
          float var3 = 1.0F - (MathHelper.cos(var2 * (float)Math.PI * 2.0F) * 2.0F + 0.5F);
@@ -40845,7 +40850,7 @@ index 18e9ecf..fda62a0 100644
          var3 = 1.0F - var3;
          var3 = (float)((double)var3 * (1.0D - (double)(this.getRainStrength(p_72967_1_) * 5.0F) / 16.0D));
          var3 = (float)((double)var3 * (1.0D - (double)(this.getWeightedThunderStrength(p_72967_1_) * 5.0F) / 16.0D));
-@@ -1421,7 +1417,7 @@ public abstract class World implements IBlockAccess
+@@ -1421,7 +1414,7 @@ public abstract class World implements IBlockAccess
      {
          float var2 = this.getCelestialAngle(p_72971_1_);
          float var3 = 1.0F - (MathHelper.cos(var2 * (float)Math.PI * 2.0F) * 2.0F + 0.2F);
@@ -40854,7 +40859,7 @@ index 18e9ecf..fda62a0 100644
          var3 = 1.0F - var3;
          var3 = (float)((double)var3 * (1.0D - (double)(this.getRainStrength(p_72971_1_) * 5.0F) / 16.0D));
          var3 = (float)((double)var3 * (1.0D - (double)(this.getWeightedThunderStrength(p_72971_1_) * 5.0F) / 16.0D));
-@@ -1431,11 +1427,11 @@ public abstract class World implements IBlockAccess
+@@ -1431,11 +1424,11 @@ public abstract class World implements IBlockAccess
      /**
       * Calculates the color for the skybox
       */
@@ -40868,7 +40873,7 @@ index 18e9ecf..fda62a0 100644
          int var5 = MathHelper.floor_double(p_72833_1_.posX);
          int var6 = MathHelper.floor_double(p_72833_1_.posY);
          int var7 = MathHelper.floor_double(p_72833_1_.posZ);
-@@ -1488,7 +1484,7 @@ public abstract class World implements IBlockAccess
+@@ -1488,7 +1481,7 @@ public abstract class World implements IBlockAccess
              var14 = var14 * (1.0F - var17) + 1.0F * var17;
          }
  
@@ -40877,15 +40882,14 @@ index 18e9ecf..fda62a0 100644
      }
  
      /**
-@@ -1496,11 +1492,24 @@ public abstract class World implements IBlockAccess
+@@ -1496,11 +1489,21 @@ public abstract class World implements IBlockAccess
       */
      public float getCelestialAngle(float p_72826_1_)
      {
 +		// TODO: Client
-+		if(WurstClient.INSTANCE.mods.noWeatherMod.isActive()
-+			&& WurstClient.INSTANCE.mods.noWeatherMod.changeTime.isChecked())
++		if(WurstClient.INSTANCE.mods.noWeatherMod.isTimeChanged())
 +			return provider.calculateCelestialAngle(
-+				(long)WurstClient.INSTANCE.mods.noWeatherMod.time.getValueI(),
++				WurstClient.INSTANCE.mods.noWeatherMod.getChangedTime(),
 +				p_72826_1_);
 +		
          return this.provider.calculateCelestialAngle(this.worldInfo.getWorldTime(), p_72826_1_);
@@ -40894,15 +40898,13 @@ index 18e9ecf..fda62a0 100644
      public int getMoonPhase()
      {
 +		// TODO: Client
-+		if(WurstClient.INSTANCE.mods.noWeatherMod.isActive()
-+			&& WurstClient.INSTANCE.mods.noWeatherMod.changeMoonPhase
-+				.isChecked())
-+			return WurstClient.INSTANCE.mods.noWeatherMod.moonPhase.getValueI();
++		if(WurstClient.INSTANCE.mods.noWeatherMod.isMoonPhaseChanged())
++			return WurstClient.INSTANCE.mods.noWeatherMod.getChangedMoonPhase();
 +		
          return this.provider.getMoonPhase(this.worldInfo.getWorldTime());
      }
  
-@@ -1521,11 +1530,11 @@ public abstract class World implements IBlockAccess
+@@ -1521,11 +1524,11 @@ public abstract class World implements IBlockAccess
          return var2 * (float)Math.PI * 2.0F;
      }
  
@@ -40916,7 +40918,7 @@ index 18e9ecf..fda62a0 100644
          float var4 = (float)(this.cloudColour >> 16 & 255L) / 255.0F;
          float var5 = (float)(this.cloudColour >> 8 & 255L) / 255.0F;
          float var6 = (float)(this.cloudColour & 255L) / 255.0F;
-@@ -1556,13 +1565,13 @@ public abstract class World implements IBlockAccess
+@@ -1556,13 +1559,13 @@ public abstract class World implements IBlockAccess
              var6 = var6 * var10 + var9 * (1.0F - var10);
          }
  
@@ -40932,7 +40934,7 @@ index 18e9ecf..fda62a0 100644
      {
          float var2 = this.getCelestialAngle(p_72948_1_);
          return this.provider.getFogColor(var2, p_72948_1_);
-@@ -1600,7 +1609,7 @@ public abstract class World implements IBlockAccess
+@@ -1600,7 +1603,7 @@ public abstract class World implements IBlockAccess
      {
          float var2 = this.getCelestialAngle(p_72880_1_);
          float var3 = 1.0F - (MathHelper.cos(var2 * (float)Math.PI * 2.0F) * 2.0F + 0.25F);
@@ -40941,7 +40943,7 @@ index 18e9ecf..fda62a0 100644
          return var3 * var3 * 0.5F;
      }
  
-@@ -2061,7 +2070,7 @@ public abstract class World implements IBlockAccess
+@@ -2061,7 +2064,7 @@ public abstract class World implements IBlockAccess
                      {
                          Block var11 = this.getBlockState(new BlockPos(var8, var9, var10)).getBlock();
  
@@ -40950,7 +40952,7 @@ index 18e9ecf..fda62a0 100644
                          {
                              return true;
                          }
-@@ -2092,7 +2101,7 @@ public abstract class World implements IBlockAccess
+@@ -2092,7 +2095,7 @@ public abstract class World implements IBlockAccess
          else
          {
              boolean var10 = false;
@@ -40959,7 +40961,7 @@ index 18e9ecf..fda62a0 100644
  
              for (int var12 = var4; var12 < var5; ++var12)
              {
-@@ -2226,7 +2235,7 @@ public abstract class World implements IBlockAccess
+@@ -2226,7 +2229,7 @@ public abstract class World implements IBlockAccess
      /**
       * Gets the percentage of real blocks within within a bounding box, along a specified vector.
       */
@@ -40968,7 +40970,7 @@ index 18e9ecf..fda62a0 100644
      {
          double var3 = 1.0D / ((p_72842_2_.maxX - p_72842_2_.minX) * 2.0D + 1.0D);
          double var5 = 1.0D / ((p_72842_2_.maxY - p_72842_2_.minY) * 2.0D + 1.0D);
-@@ -2247,7 +2256,7 @@ public abstract class World implements IBlockAccess
+@@ -2247,7 +2250,7 @@ public abstract class World implements IBlockAccess
                          double var16 = p_72842_2_.minY + (p_72842_2_.maxY - p_72842_2_.minY) * (double)var12;
                          double var18 = p_72842_2_.minZ + (p_72842_2_.maxZ - p_72842_2_.minZ) * (double)var13;
  
@@ -40977,7 +40979,7 @@ index 18e9ecf..fda62a0 100644
                          {
                              ++var9;
                          }
-@@ -2542,7 +2551,7 @@ public abstract class World implements IBlockAccess
+@@ -2542,7 +2545,7 @@ public abstract class World implements IBlockAccess
                      this.thunderingStrength = (float)((double)this.thunderingStrength - 0.01D);
                  }
  
@@ -40986,7 +40988,7 @@ index 18e9ecf..fda62a0 100644
                  int var3 = this.worldInfo.getRainTime();
  
                  if (var3 <= 0)
-@@ -2578,7 +2587,7 @@ public abstract class World implements IBlockAccess
+@@ -2578,7 +2581,7 @@ public abstract class World implements IBlockAccess
                      this.rainingStrength = (float)((double)this.rainingStrength - 0.01D);
                  }
  
@@ -40995,7 +40997,7 @@ index 18e9ecf..fda62a0 100644
              }
          }
      }
-@@ -2703,7 +2712,7 @@ public abstract class World implements IBlockAccess
+@@ -2703,7 +2706,7 @@ public abstract class World implements IBlockAccess
                  IBlockState var5 = this.getBlockState(p_175670_1_);
                  Block var6 = var5.getBlock();
  
@@ -41004,7 +41006,7 @@ index 18e9ecf..fda62a0 100644
                  {
                      if (!p_175670_2_)
                      {
-@@ -2747,7 +2756,7 @@ public abstract class World implements IBlockAccess
+@@ -2747,7 +2750,7 @@ public abstract class World implements IBlockAccess
              {
                  Block var5 = this.getBlockState(p_175708_1_).getBlock();
  
@@ -41013,19 +41015,18 @@ index 18e9ecf..fda62a0 100644
                  {
                      return true;
                  }
-@@ -3531,6 +3540,11 @@ public abstract class World implements IBlockAccess
+@@ -3531,6 +3534,10 @@ public abstract class World implements IBlockAccess
       */
      public float getRainStrength(float p_72867_1_)
      {
 +		// TODO: Client
-+		if(WurstClient.INSTANCE.mods.noWeatherMod.isActive()
-+			&& WurstClient.INSTANCE.mods.noWeatherMod.disableRain.isChecked())
++		if(WurstClient.INSTANCE.mods.noWeatherMod.isRainDisabled())
 +			return 0;
 +		
          return this.prevRainingStrength + (this.rainingStrength - this.prevRainingStrength) * p_72867_1_;
      }
  
-@@ -3727,6 +3741,10 @@ public abstract class World implements IBlockAccess
+@@ -3727,6 +3734,10 @@ public abstract class World implements IBlockAccess
          {
              this.worldInfo.addToCrashReport(var2);
          }
