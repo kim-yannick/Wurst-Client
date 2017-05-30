@@ -1,6 +1,6 @@
-From bd89c997efbc570e828599d2393f3a925f14d575 Mon Sep 17 00:00:00 2001
+From 9ac210dbaf9f6531fafd2f5f2436e97709cc9ddd Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 30 May 2017 11:51:52 +0200
+Date: Tue, 30 May 2017 12:30:51 +0200
 Subject: [PATCH] mod
 
 ---
@@ -307,7 +307,7 @@ Subject: [PATCH] mod
  net/minecraft/client/renderer/entity/Render.java   |  60 ++-
  .../client/renderer/entity/RenderCreeper.java      |   4 +-
  .../client/renderer/entity/RenderDragon.java       |  12 +-
- .../client/renderer/entity/RenderFallingBlock.java |   9 +-
+ .../client/renderer/entity/RenderFallingBlock.java |   4 +-
  .../client/renderer/entity/RenderFish.java         |   8 +-
  .../client/renderer/entity/RenderGuardian.java     |  21 +-
  .../client/renderer/entity/RenderItem.java         | 220 ++++-----
@@ -869,7 +869,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 865 files changed, 9973 insertions(+), 8436 deletions(-)
+ 865 files changed, 9968 insertions(+), 8436 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -16639,10 +16639,10 @@ index 689b2cc..7262a87 100644
          }
  
 diff --git a/net/minecraft/client/renderer/entity/RenderFallingBlock.java b/net/minecraft/client/renderer/entity/RenderFallingBlock.java
-index b6569da..9210a5c 100644
+index b6569da..241f32a 100644
 --- a/net/minecraft/client/renderer/entity/RenderFallingBlock.java
 +++ b/net/minecraft/client/renderer/entity/RenderFallingBlock.java
-@@ -12,9 +12,11 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+@@ -12,8 +12,8 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
  import net.minecraft.client.resources.model.IBakedModel;
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.item.EntityFallingBlock;
@@ -16650,24 +16650,17 @@ index b6569da..9210a5c 100644
  import net.minecraft.util.ResourceLocation;
 +import net.minecraft.util.math.BlockPos;
  import net.minecraft.world.World;
-+import net.wurstclient.WurstClient;
-+import net.wurstclient.features.mods.ProphuntEspMod;
  
  public class RenderFallingBlock extends Render
- {
-@@ -28,8 +30,11 @@ public class RenderFallingBlock extends Render
+@@ -28,7 +28,7 @@ public class RenderFallingBlock extends Render
  
      public void doRender(EntityFallingBlock p_180557_1_, double p_180557_2_, double p_180557_4_, double p_180557_6_, float p_180557_8_, float p_180557_9_)
      {
 -        if (p_180557_1_.getBlock() != null)
-+		// TODO: Client
-+		if(p_180557_1_.getBlock() != null
-+			&& !WurstClient.INSTANCE.mods.prophuntEspMod.isActive())
++		if(p_180557_1_.getBlock() != null)
          {
-+        	
              this.bindTexture(TextureMap.locationBlocksTexture);
              IBlockState var10 = p_180557_1_.getBlock();
-             Block var11 = var10.getBlock();
 diff --git a/net/minecraft/client/renderer/entity/RenderFish.java b/net/minecraft/client/renderer/entity/RenderFish.java
 index d1b8265..8846cf7 100644
 --- a/net/minecraft/client/renderer/entity/RenderFish.java
