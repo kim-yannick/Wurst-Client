@@ -1,6 +1,6 @@
-From 9ac210dbaf9f6531fafd2f5f2436e97709cc9ddd Mon Sep 17 00:00:00 2001
+From 63ec771857c0845c040b49d065bb29b03fc2d0b4 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 30 May 2017 12:30:51 +0200
+Date: Tue, 30 May 2017 13:11:07 +0200
 Subject: [PATCH] mod
 
 ---
@@ -139,7 +139,7 @@ Subject: [PATCH] mod
  net/minecraft/client/audio/SoundManager.java       |  12 +-
  .../client/entity/AbstractClientPlayer.java        |  20 +-
  .../client/entity/EntityOtherPlayerMP.java         |  10 +-
- net/minecraft/client/entity/EntityPlayerSP.java    | 158 ++++---
+ net/minecraft/client/entity/EntityPlayerSP.java    | 156 ++++---
  net/minecraft/client/gui/ChatLine.java             |   8 +-
  net/minecraft/client/gui/FontRenderer.java         |  52 ++-
  net/minecraft/client/gui/Gui.java                  |   8 +-
@@ -664,7 +664,7 @@ Subject: [PATCH] mod
  net/minecraft/pathfinding/PathNavigateGround.java  |  16 +-
  net/minecraft/pathfinding/PathNavigateSwimmer.java |  18 +-
  net/minecraft/pathfinding/PathPoint.java           |   2 +-
- net/minecraft/potion/PotionEffect.java             |  11 +-
+ net/minecraft/potion/PotionEffect.java             |  10 +-
  net/minecraft/realms/DisconnectedRealmsScreen.java |   7 +-
  .../RealmsClickableScrolledSelectionList.java      |   2 +-
  net/minecraft/realms/RealmsConnect.java            |   2 +
@@ -869,7 +869,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 865 files changed, 9968 insertions(+), 8436 deletions(-)
+ 865 files changed, 9963 insertions(+), 8438 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -5633,7 +5633,7 @@ index 4b48cd3..e1672fd 100644
          Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(message);
      }
 diff --git a/net/minecraft/client/entity/EntityPlayerSP.java b/net/minecraft/client/entity/EntityPlayerSP.java
-index 58f696b..43647c2 100644
+index 58f696b..1e19045 100644
 --- a/net/minecraft/client/entity/EntityPlayerSP.java
 +++ b/net/minecraft/client/entity/EntityPlayerSP.java
 @@ -10,14 +10,7 @@ import net.minecraft.client.gui.GuiMerchant;
@@ -5763,7 +5763,7 @@ index 58f696b..43647c2 100644
              }
  
              this.field_175170_bN = var2;
-@@ -184,36 +180,62 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -184,36 +180,60 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
          if (this.func_175160_A())
          {
@@ -5790,9 +5790,7 @@ index 58f696b..43647c2 100644
 +			// Stops motion updates
 +			if(WurstClient.INSTANCE.mods.remoteViewMod.isActive()
 +				|| WurstClient.INSTANCE.mods.freecamMod.isActive()
-+				|| (WurstClient.INSTANCE.mods.potionSaverMod.isActive()
-+					&& !getActivePotionEffects().isEmpty() && motionX == 0
-+					&& motionZ == 0))
++				|| WurstClient.INSTANCE.mods.potionSaverMod.isFrozen())
 +			{
 +				
 +            }else if(this.ridingEntity == null)
@@ -5836,7 +5834,7 @@ index 58f696b..43647c2 100644
                  var13 = false;
              }
  
-@@ -240,8 +262,8 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -240,8 +260,8 @@ public class EntityPlayerSP extends AbstractClientPlayer
       */
      public EntityItem dropOneItem(boolean p_71040_1_)
      {
@@ -5847,7 +5845,7 @@ index 58f696b..43647c2 100644
          return null;
      }
  
-@@ -255,21 +277,42 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -255,21 +275,42 @@ public class EntityPlayerSP extends AbstractClientPlayer
       */
      public void sendChatMessage(String p_71165_1_)
      {
@@ -5895,7 +5893,7 @@ index 58f696b..43647c2 100644
      }
  
      /**
-@@ -289,7 +332,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -289,7 +330,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
       */
      public void closeScreen()
      {
@@ -5904,7 +5902,7 @@ index 58f696b..43647c2 100644
          this.func_175159_q();
      }
  
-@@ -353,7 +396,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -353,7 +394,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
       */
      public void sendPlayerAbilities()
      {
@@ -5913,7 +5911,7 @@ index 58f696b..43647c2 100644
      }
  
      public boolean func_175144_cb()
-@@ -363,12 +406,12 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -363,12 +404,12 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
      protected void sendHorseJump()
      {
@@ -5928,7 +5926,7 @@ index 58f696b..43647c2 100644
      }
  
      public void func_175158_f(String p_175158_1_)
-@@ -386,7 +429,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -386,7 +427,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
          return this.field_146108_bO;
      }
  
@@ -5937,7 +5935,7 @@ index 58f696b..43647c2 100644
      {
          this.mc.ingameGUI.getChatGUI().printChatMessage(p_146105_1_);
      }
-@@ -489,7 +532,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -489,7 +530,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
       * (like "I fetched this block for you by ID, but I'd like you to know that every time you do this, I die a little
       * inside"), and errors (like "it's not called iron_pixacke, silly").
       */
@@ -5946,7 +5944,7 @@ index 58f696b..43647c2 100644
      {
          this.mc.ingameGUI.getChatGUI().printChatMessage(message);
      }
-@@ -658,7 +701,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -658,7 +699,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
  
      protected boolean func_175160_A()
      {
@@ -5955,7 +5953,7 @@ index 58f696b..43647c2 100644
      }
  
      /**
-@@ -738,8 +781,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -738,8 +779,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
          boolean var4 = this.movementInput.moveForward >= var3;
          this.movementInput.updatePlayerMoveState();
  
@@ -5968,7 +5966,7 @@ index 58f696b..43647c2 100644
              this.movementInput.moveStrafe *= 0.2F;
              this.movementInput.moveForward *= 0.2F;
              this.sprintToggleTimer = 0;
-@@ -751,7 +797,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -751,7 +795,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
          this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, this.getEntityBoundingBox().minY + 0.5D, this.posZ + (double)this.width * 0.35D);
          boolean var5 = (float)this.getFoodStats().getFoodLevel() > 6.0F || this.capabilities.allowFlying;
  
@@ -5977,7 +5975,7 @@ index 58f696b..43647c2 100644
          {
              if (this.sprintToggleTimer <= 0 && !this.mc.gameSettings.keyBindSprint.getIsKeyPressed())
              {
-@@ -763,7 +809,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
+@@ -763,7 +807,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
              }
          }
  
@@ -33100,31 +33098,31 @@ index 112fc1e..2426f90 100644
  
      /**
 diff --git a/net/minecraft/potion/PotionEffect.java b/net/minecraft/potion/PotionEffect.java
-index 9853f33..ea00072 100644
+index 9853f33..5c97998 100644
 --- a/net/minecraft/potion/PotionEffect.java
 +++ b/net/minecraft/potion/PotionEffect.java
-@@ -1,7 +1,12 @@
+@@ -1,10 +1,12 @@
  package net.minecraft.potion;
  
-+import net.minecraft.client.Minecraft;
-+import net.minecraft.client.entity.EntityPlayerSP;
- import net.minecraft.entity.EntityLivingBase;
- import net.minecraft.nbt.NBTTagCompound;
-+import net.wurstclient.WurstClient;
-+import net.wurstclient.features.mods.PotionSaverMod;
-+
+-import net.minecraft.entity.EntityLivingBase;
+-import net.minecraft.nbt.NBTTagCompound;
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
  
-@@ -141,7 +146,11 @@ public class PotionEffect
++import net.minecraft.entity.EntityLivingBase;
++import net.minecraft.nbt.NBTTagCompound;
++import net.wurstclient.WurstClient;
++
+ public class PotionEffect
+ {
+     private static final Logger LOGGER = LogManager.getLogger();
+@@ -141,7 +143,9 @@ public class PotionEffect
  
      private int deincrementDuration()
      {
 -        return --this.duration;
 +		// TODO: Client
-+		EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
-+		return player.motionX == 0 && player.motionZ == 0
-+			&& WurstClient.INSTANCE.mods.potionSaverMod.isActive() ? duration
++		return WurstClient.INSTANCE.mods.potionSaverMod.isFrozen() ? duration
 +			: --duration;
      }
  
