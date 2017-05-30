@@ -1,6 +1,6 @@
-From 3ce852e2dbee0846d8a82f8babdf0f07d5202c9b Mon Sep 17 00:00:00 2001
+From 626215598792f5089e05aa3306b8803b85b9721f Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 30 May 2017 14:11:09 +0200
+Date: Tue, 30 May 2017 15:11:00 +0200
 Subject: [PATCH] mod
 
 ---
@@ -322,7 +322,7 @@ Subject: [PATCH] mod
  .../client/renderer/entity/RenderTNTPrimed.java    |   2 +-
  .../client/renderer/entity/RenderTntMinecart.java  |   2 +-
  .../client/renderer/entity/RenderXPOrb.java        |   2 +-
- .../renderer/entity/RendererLivingEntity.java      |  32 +-
+ .../renderer/entity/RendererLivingEntity.java      |  37 +-
  .../client/renderer/entity/layers/LayerArrow.java  |   2 +-
  .../client/renderer/entity/layers/LayerCape.java   |   8 +-
  .../entity/layers/LayerEnderDragonDeath.java       |   4 +-
@@ -869,7 +869,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 865 files changed, 9941 insertions(+), 8443 deletions(-)
+ 865 files changed, 9945 insertions(+), 8444 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -17483,7 +17483,7 @@ index 31fd670..9aeef16 100644
          var26.addVertexWithUV((double)(0.0F - var16), (double)(0.0F - var17), 0.0D, (double)var11, (double)var14);
          var26.addVertexWithUV((double)(var15 - var16), (double)(0.0F - var17), 0.0D, (double)var12, (double)var14);
 diff --git a/net/minecraft/client/renderer/entity/RendererLivingEntity.java b/net/minecraft/client/renderer/entity/RendererLivingEntity.java
-index 0bd5f10..3a84792 100644
+index 0bd5f10..c1436aa 100644
 --- a/net/minecraft/client/renderer/entity/RendererLivingEntity.java
 +++ b/net/minecraft/client/renderer/entity/RendererLivingEntity.java
 @@ -1,9 +1,15 @@
@@ -17575,7 +17575,20 @@ index 0bd5f10..3a84792 100644
  
              if (var6 != null && (var6.equals("Dinnerbone") || var6.equals("Grumm")) && (!(p_77043_1_ instanceof EntityPlayer) || ((EntityPlayer)p_77043_1_).func_175148_a(EnumPlayerModelParts.CAPE)))
              {
-@@ -532,7 +540,7 @@ public abstract class RendererLivingEntity extends Render
+@@ -513,8 +521,11 @@ public abstract class RendererLivingEntity extends Render
+                 float var12 = 0.02666667F;
+                 GlStateManager.alphaFunc(516, 0.1F);
+ 
+-                if (p_77033_1_.isSneaking())
++				// TODO: Client
++				if(p_77033_1_.isSneaking()
++					&& !WurstClient.INSTANCE.mods.nameTagsMod.isActive())
+ 				{
++					
+                     FontRenderer var13 = this.getFontRendererFromRenderManager();
+                     GlStateManager.pushMatrix();
+                     GlStateManager.translate((float)p_77033_2_, (float)p_77033_4_ + p_77033_1_.height + 0.5F - (p_77033_1_.isChild() ? p_77033_1_.height / 2.0F : 0.0F), (float)p_77033_6_);
+@@ -532,7 +543,7 @@ public abstract class RendererLivingEntity extends Render
                      WorldRenderer var15 = var14.getWorldRenderer();
                      var15.startDrawingQuads();
                      int var16 = var13.getStringWidth(var11) / 2;
