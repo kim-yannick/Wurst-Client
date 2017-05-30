@@ -1,6 +1,6 @@
-From 63ec771857c0845c040b49d065bb29b03fc2d0b4 Mon Sep 17 00:00:00 2001
+From 3ce852e2dbee0846d8a82f8babdf0f07d5202c9b Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Tue, 30 May 2017 13:11:07 +0200
+Date: Tue, 30 May 2017 14:11:09 +0200
 Subject: [PATCH] mod
 
 ---
@@ -141,7 +141,7 @@ Subject: [PATCH] mod
  .../client/entity/EntityOtherPlayerMP.java         |  10 +-
  net/minecraft/client/entity/EntityPlayerSP.java    | 156 ++++---
  net/minecraft/client/gui/ChatLine.java             |   8 +-
- net/minecraft/client/gui/FontRenderer.java         |  52 ++-
+ net/minecraft/client/gui/FontRenderer.java         |  35 +-
  net/minecraft/client/gui/Gui.java                  |   8 +-
  net/minecraft/client/gui/GuiButton.java            |  96 ++--
  net/minecraft/client/gui/GuiButtonLanguage.java    |   1 +
@@ -869,7 +869,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 865 files changed, 9963 insertions(+), 8438 deletions(-)
+ 865 files changed, 9941 insertions(+), 8443 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -6021,7 +6021,7 @@ index 9056a9b..4740765 100644
          return this.lineString;
      }
 diff --git a/net/minecraft/client/gui/FontRenderer.java b/net/minecraft/client/gui/FontRenderer.java
-index de97013..35eec23 100644
+index de97013..ce08233 100644
 --- a/net/minecraft/client/gui/FontRenderer.java
 +++ b/net/minecraft/client/gui/FontRenderer.java
 @@ -1,8 +1,5 @@
@@ -6033,34 +6033,32 @@ index de97013..35eec23 100644
  import java.awt.image.BufferedImage;
  import java.io.IOException;
  import java.io.InputStream;
-@@ -10,7 +7,9 @@ import java.util.Arrays;
+@@ -10,6 +7,14 @@ import java.util.Arrays;
  import java.util.Iterator;
  import java.util.List;
  import java.util.Random;
 +
- import net.minecraft.client.Minecraft;
-+import net.minecraft.client.network.NetworkPlayerInfo;
- import net.minecraft.client.renderer.GlStateManager;
- import net.minecraft.client.renderer.Tessellator;
- import net.minecraft.client.renderer.WorldRenderer;
-@@ -20,9 +19,16 @@ import net.minecraft.client.resources.IResourceManager;
- import net.minecraft.client.resources.IResourceManagerReloadListener;
- import net.minecraft.client.settings.GameSettings;
- import net.minecraft.util.ResourceLocation;
-+import net.wurstclient.WurstClient;
-+import net.wurstclient.features.mods.NameProtectMod;
++import org.apache.commons.io.IOUtils;
++import org.lwjgl.opengl.GL11;
 +
- import org.apache.commons.io.IOUtils;
- import org.lwjgl.opengl.GL11;
- 
 +import com.ibm.icu.text.ArabicShaping;
 +import com.ibm.icu.text.ArabicShapingException;
 +import com.ibm.icu.text.Bidi;
 +
+ import net.minecraft.client.Minecraft;
+ import net.minecraft.client.renderer.GlStateManager;
+ import net.minecraft.client.renderer.Tessellator;
+@@ -20,8 +25,7 @@ import net.minecraft.client.resources.IResourceManager;
+ import net.minecraft.client.resources.IResourceManagerReloadListener;
+ import net.minecraft.client.settings.GameSettings;
+ import net.minecraft.util.ResourceLocation;
+-import org.apache.commons.io.IOUtils;
+-import org.lwjgl.opengl.GL11;
++import net.wurstclient.WurstClient;
+ 
  public class FontRenderer implements IResourceManagerReloadListener
  {
-     private static final ResourceLocation[] unicodePageLocations = new ResourceLocation[256];
-@@ -317,9 +323,9 @@ public class FontRenderer implements IResourceManagerReloadListener
+@@ -317,9 +321,9 @@ public class FontRenderer implements IResourceManagerReloadListener
          }
      }
  
@@ -6072,7 +6070,7 @@ index de97013..35eec23 100644
      }
  
      /**
-@@ -327,11 +333,39 @@ public class FontRenderer implements IResourceManagerReloadListener
+@@ -327,23 +331,26 @@ public class FontRenderer implements IResourceManagerReloadListener
       */
      public int drawString(String text, int x, int y, int color)
      {
@@ -6081,40 +6079,30 @@ index de97013..35eec23 100644
      }
  
 -    public int func_175065_a(String p_175065_1_, float p_175065_2_, float p_175065_3_, int p_175065_4_, boolean p_175065_5_)
-+    public int drawString(String p_175065_1_, float p_175065_2_, float p_175065_3_, int p_175065_4_, boolean p_175065_5_)
++    public int drawString(String text, float p_175065_2_, float p_175065_3_, int p_175065_4_, boolean p_175065_5_)
      {
 +		// TODO: Client
-+		if(Minecraft.getMinecraft().getNetHandler() != null
-+			&& WurstClient.INSTANCE.mods.nameProtectMod.isActive())
-+		{
-+			Iterator itr =
-+				Minecraft.getMinecraft().getNetHandler().getPlayerInfoMap()
-+					.iterator();
-+			int i = 0;
-+			while(itr.hasNext())
-+			{
-+				NetworkPlayerInfo info = (NetworkPlayerInfo)itr.next();
-+				String name = info.getPlayerNameForReal();
-+				i++;
-+				if(p_175065_1_.contains(Minecraft.getMinecraft().session
-+					.getUsername()))
-+				{
-+					p_175065_1_ =
-+						p_175065_1_.replace(
-+							Minecraft.getMinecraft().session.getUsername(),
-+							"§oMe§r");
-+				}else if(p_175065_1_.contains(name))
-+    {
-+					p_175065_1_ =
-+						p_175065_1_.replace(name, "§oPlayer" + i + "§r");
-+				}
-+			}
-+		}
++		text = WurstClient.INSTANCE.mods.nameProtectMod.protect(text);
 +    	
          GlStateManager.enableAlpha();
          this.resetStyles();
          int var6;
-@@ -837,7 +871,7 @@ public class FontRenderer implements IResourceManagerReloadListener
+ 
+         if (p_175065_5_)
+         {
+-            var6 = this.func_180455_b(p_175065_1_, p_175065_2_ + 1.0F, p_175065_3_ + 1.0F, p_175065_4_, true);
+-            var6 = Math.max(var6, this.func_180455_b(p_175065_1_, p_175065_2_, p_175065_3_, p_175065_4_, false));
++            var6 = this.func_180455_b(text, p_175065_2_ + 1.0F, p_175065_3_ + 1.0F, p_175065_4_, true);
++            var6 = Math.max(var6, this.func_180455_b(text, p_175065_2_, p_175065_3_, p_175065_4_, false));
+         }
+         else
+         {
+-            var6 = this.func_180455_b(p_175065_1_, p_175065_2_, p_175065_3_, p_175065_4_, false);
++            var6 = this.func_180455_b(text, p_175065_2_, p_175065_3_, p_175065_4_, false);
+         }
+ 
+         return var6;
+@@ -837,7 +844,7 @@ public class FontRenderer implements IResourceManagerReloadListener
      /**
       * Inserts newline and formatting into a string to wrap it within the specified width.
       */
@@ -6123,7 +6111,7 @@ index de97013..35eec23 100644
      {
          int var3 = this.sizeStringToWidth(str, wrapWidth);
  
-@@ -977,7 +1011,7 @@ public class FontRenderer implements IResourceManagerReloadListener
+@@ -977,7 +984,7 @@ public class FontRenderer implements IResourceManagerReloadListener
          return this.bidiFlag;
      }
  
