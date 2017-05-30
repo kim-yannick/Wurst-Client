@@ -1,6 +1,6 @@
-From ce17196716095d4ddd71fb4321e3c8a9d4a9939f Mon Sep 17 00:00:00 2001
+From b44af700316bbf24032e212e82c480c7ff3043c4 Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Mon, 29 May 2017 16:27:20 +0200
+Date: Tue, 30 May 2017 11:31:03 +0200
 Subject: [PATCH] mod
 
 ---
@@ -102,7 +102,7 @@ Subject: [PATCH] mod
  net/minecraft/block/BlockSlime.java                |   2 +-
  net/minecraft/block/BlockSnow.java                 |   6 +-
  net/minecraft/block/BlockSnowBlock.java            |   2 +-
- net/minecraft/block/BlockSoulSand.java             |  10 +-
+ net/minecraft/block/BlockSoulSand.java             |   9 +-
  net/minecraft/block/BlockSourceImpl.java           |   2 +-
  net/minecraft/block/BlockSponge.java               |   8 +-
  net/minecraft/block/BlockStainedGlass.java         |   2 +-
@@ -869,7 +869,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 865 files changed, 9977 insertions(+), 8432 deletions(-)
+ 865 files changed, 9976 insertions(+), 8432 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -3749,10 +3749,10 @@ index 5dd1857..e4be3b5 100644
  import net.minecraft.world.World;
  
 diff --git a/net/minecraft/block/BlockSoulSand.java b/net/minecraft/block/BlockSoulSand.java
-index 973d27c..ad8c9cc 100644
+index 973d27c..a6c74f3 100644
 --- a/net/minecraft/block/BlockSoulSand.java
 +++ b/net/minecraft/block/BlockSoulSand.java
-@@ -4,9 +4,11 @@ import net.minecraft.block.material.Material;
+@@ -4,9 +4,10 @@ import net.minecraft.block.material.Material;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.creativetab.CreativeTabs;
  import net.minecraft.entity.Entity;
@@ -3762,11 +3762,10 @@ index 973d27c..ad8c9cc 100644
 +import net.minecraft.util.math.BlockPos;
  import net.minecraft.world.World;
 +import net.wurstclient.WurstClient;
-+import net.wurstclient.features.mods.NoSlowdownMod;
  
  public class BlockSoulSand extends Block
  {
-@@ -29,6 +31,10 @@ public class BlockSoulSand extends Block
+@@ -29,6 +30,10 @@ public class BlockSoulSand extends Block
       */
      public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
      {
