@@ -1,6 +1,6 @@
-From 8e052d93fc48c5ec20389343f797eca0a8cac132 Mon Sep 17 00:00:00 2001
+From bf539d366cf77123152f911d0e8f53a3120bd55b Mon Sep 17 00:00:00 2001
 From: Alexander01998 <contact.wurstimperium@gmail.com>
-Date: Wed, 31 May 2017 12:56:57 +0200
+Date: Thu, 1 Jun 2017 11:17:32 +0200
 Subject: [PATCH] mod
 
 ---
@@ -155,7 +155,7 @@ Subject: [PATCH] mod
  net/minecraft/client/gui/GuiCreateWorld.java       |   6 +-
  net/minecraft/client/gui/GuiCustomizeSkin.java     |   2 +
  .../client/gui/GuiCustomizeWorldScreen.java        |  43 +-
- net/minecraft/client/gui/GuiDisconnected.java      |  91 +++-
+ net/minecraft/client/gui/GuiDisconnected.java      | 100 ++++-
  net/minecraft/client/gui/GuiDownloadTerrain.java   |   2 +-
  net/minecraft/client/gui/GuiEnchantment.java       |  23 +-
  net/minecraft/client/gui/GuiErrorScreen.java       |   2 +
@@ -869,7 +869,7 @@ Subject: [PATCH] mod
  net/minecraft/world/storage/DerivedWorldInfo.java  |   2 +-
  net/minecraft/world/storage/MapData.java           |   4 +-
  net/minecraft/world/storage/WorldInfo.java         |   2 +-
- 865 files changed, 9959 insertions(+), 8444 deletions(-)
+ 865 files changed, 9963 insertions(+), 8449 deletions(-)
  delete mode 100644 net/minecraft/client/network/OldServerPinger.java
  create mode 100644 net/minecraft/client/network/ServerPinger.java
  delete mode 100644 net/minecraft/event/ClickEvent.java
@@ -6755,15 +6755,13 @@ index b98bb52..726b794 100644
              var7.addVertexWithUV((double)(this.width / 2 + 90), 185.0D, 0.0D, 5.625D, 2.65625D);
              var7.addVertexWithUV((double)(this.width / 2 + 90), 100.0D, 0.0D, 5.625D, 0.0D);
 diff --git a/net/minecraft/client/gui/GuiDisconnected.java b/net/minecraft/client/gui/GuiDisconnected.java
-index 54720cc..fcaa55b 100644
+index 54720cc..768c3b9 100644
 --- a/net/minecraft/client/gui/GuiDisconnected.java
 +++ b/net/minecraft/client/gui/GuiDisconnected.java
 @@ -3,23 +3,36 @@ package net.minecraft.client.gui;
  import java.io.IOException;
  import java.util.Iterator;
  import java.util.List;
-+
-+import org.apache.logging.log4j.LogManager;
 +
  import net.minecraft.client.resources.I18n;
 -import net.minecraft.util.IChatComponent;
@@ -6780,76 +6778,55 @@ index 54720cc..fcaa55b 100644
 +    private ITextComponent message;
      private List multilineMessage;
      private final GuiScreen parentScreen;
-     private int field_175353_i;
-+    //TODO: Client
-+	private int autoReconnectTimer;
+-    private int field_175353_i;
++    private int textHeight;
      private static final String __OBFID = "CL_00000693";
- 
+     
 -    public GuiDisconnected(GuiScreen p_i45020_1_, String p_i45020_2_, IChatComponent p_i45020_3_)
++	// TODO: Client
++	private int autoReconnectTimer;
++
 +    public GuiDisconnected(GuiScreen p_i45020_1_, String p_i45020_2_, ITextComponent p_i45020_3_)
      {
          this.parentScreen = p_i45020_1_;
          this.reason = I18n.format(p_i45020_2_, new Object[0]);
          this.message = p_i45020_3_;
-+		LogManager.getLogger().info(
-+			"Disconnected.\n    Message: "
-+				+ (message == null ? null : message.getUnformattedText())
-+				+ "\n    Reason: " + reason);
++        
++		// TODO: Client
++		System.out.println("Disconnected.\n    Message: "
++			+ (message == null ? null : message.getUnformattedText())
++			+ "\n    Reason: " + reason);
      }
  
      /**
-@@ -37,13 +50,83 @@ public class GuiDisconnected extends GuiScreen
+@@ -35,15 +48,84 @@ public class GuiDisconnected extends GuiScreen
+     {
+         this.buttonList.clear();
          this.multilineMessage = this.fontRendererObj.listFormattedStringToWidth(this.message.getFormattedText(), this.width - 50);
-         this.field_175353_i = this.multilineMessage.size() * this.fontRendererObj.FONT_HEIGHT;
-         this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + this.fontRendererObj.FONT_HEIGHT, I18n.format("gui.toMenu", new Object[0])));
+-        this.field_175353_i = this.multilineMessage.size() * this.fontRendererObj.FONT_HEIGHT;
+-        this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + this.fontRendererObj.FONT_HEIGHT, I18n.format("gui.toMenu", new Object[0])));
++        this.textHeight = this.multilineMessage.size() * this.fontRendererObj.FONT_HEIGHT;
++        this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 2 + this.textHeight / 2 + this.fontRendererObj.FONT_HEIGHT, I18n.format("gui.toMenu", new Object[0])));
 +        
 +		// TODO: Client
-+		this.buttonList.add(new GuiButton(1, this.width / 2 - 100,
-+			this.height / 4 + 144 + 12, "Reconnect"));
-+		this.buttonList.add(new GuiButton(2, this.width / 2 - 100,
-+			this.height / 4 + 168 + 12, "AutoReconnect"));
++		buttonList.add(new GuiButton(1, width / 2 - 100,
++			height / 2 + textHeight / 2 + fontRendererObj.FONT_HEIGHT + 24,
++			"Reconnect"));
++		buttonList.add(new GuiButton(2, width / 2 - 100,
++			height / 2 + textHeight / 2 + fontRendererObj.FONT_HEIGHT + 48,
++			"AutoReconnect"));
 +		if(message.getUnformattedText().toLowerCase().contains("whitelist")
 +			|| message.getUnformattedText().toLowerCase()
 +				.contains("white-list"))
 +			if(parentScreen instanceof GuiMultiplayer
 +				&& ((GuiMultiplayer)parentScreen).serverListSelector
 +					.getSelected() != -1)
-+				this.buttonList.add(new GuiButton(3, this.width / 2 - 100,
-+					this.height / 4 + 192 + 12, "§4Delete Server§r"));
++				buttonList.add(new GuiButton(3,
++					width / 2 - 100, height / 2 + textHeight / 2
++						+ fontRendererObj.FONT_HEIGHT + 72,
++					"§4Delete Server§r"));
 +		if(WurstClient.INSTANCE.options.autoReconnect)
-+			this.autoReconnectTimer = 100;
-+    }
-+
-+    //TODO: Client
-+    /**
-+     * Called from the main game loop to update the screen.
-+     */
-+    public void updateScreen()
-+    {
-+        super.updateScreen();
-+        if(WurstClient.INSTANCE.options.autoReconnect)
-+		{
-+			if(buttonList.size() < 2)
-+				return;
-+			((GuiButton)this.buttonList.get(2)).displayString =
-+				"AutoReconnect (" + ((this.autoReconnectTimer / 20) + 1) + ")";
-+			if(this.autoReconnectTimer > 0)
-+				this.autoReconnectTimer--;
-+			else
-+			{
-+				try
-+				{
-+					this.actionPerformed((GuiButton)this.buttonList.get(1));
-+				}catch(IOException e)
-+				{
-+					e.printStackTrace();
-+				}
-+			}
-+		}
-+        else
-+        {
-+        	((GuiButton)this.buttonList.get(2)).displayString = "AutoReconnect";
-+        }
++			autoReconnectTimer = 100;
      }
  
      protected void actionPerformed(GuiButton button) throws IOException
@@ -6862,14 +6839,14 @@ index 54720cc..fcaa55b 100644
 +			// TODO: Client
 +		}else if(button.id == 1)
 +		{
-+			ServerHook.reconnectToLastServer(this);
++			ServerHook.reconnectToLastServer(parentScreen);
 +		}else if(button.id == 2)
 +		{
 +			WurstClient.INSTANCE.options.autoReconnect =
 +				!WurstClient.INSTANCE.options.autoReconnect;
 +			ConfigFiles.OPTIONS.save();
 +			if(WurstClient.INSTANCE.options.autoReconnect)
-+				this.autoReconnectTimer = 100;
++				autoReconnectTimer = 100;
 +		}else if(button.id == 3)
 +		{
 +			GuiMultiplayer servers = (GuiMultiplayer)parentScreen;
@@ -6880,9 +6857,47 @@ index 54720cc..fcaa55b 100644
 +			servers.serverListSelector
 +				.updateOnlineServers(servers.savedServerList);
 +			mc.displayGuiScreen(servers);
++		}
++    }
++    
++	// TODO: Client
++	public void updateScreen()
++	{
++		if(WurstClient.INSTANCE.options.autoReconnect)
++		{
++			if(buttonList.size() < 2)
++				return;
++			buttonList.get(2).displayString =
++				"AutoReconnect (" + (autoReconnectTimer / 20 + 1) + ")";
++			if(autoReconnectTimer > 0)
++				autoReconnectTimer--;
++			else
++			{
++				try
++				{
++					actionPerformed(buttonList.get(1));
++				}catch(IOException e)
++				{
++					e.printStackTrace();
++				}
++			}
++		}else
++		{
++			buttonList.get(2).displayString = "AutoReconnect";
  		}
-     }
+ 	}
  
+@@ -53,8 +135,8 @@ public class GuiDisconnected extends GuiScreen
+     public void drawScreen(int mouseX, int mouseY, float partialTicks)
+     {
+         this.drawDefaultBackground();
+-        this.drawCenteredString(this.fontRendererObj, this.reason, this.width / 2, this.height / 2 - this.field_175353_i / 2 - this.fontRendererObj.FONT_HEIGHT * 2, 11184810);
+-        int var4 = this.height / 2 - this.field_175353_i / 2;
++        this.drawCenteredString(this.fontRendererObj, this.reason, this.width / 2, this.height / 2 - this.textHeight / 2 - this.fontRendererObj.FONT_HEIGHT * 2, 11184810);
++        int var4 = this.height / 2 - this.textHeight / 2;
+ 
+         if (this.multilineMessage != null)
+         {
 diff --git a/net/minecraft/client/gui/GuiDownloadTerrain.java b/net/minecraft/client/gui/GuiDownloadTerrain.java
 index a0b3510..82df0d7 100644
 --- a/net/minecraft/client/gui/GuiDownloadTerrain.java
